@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Human Architecture | عمارة الإنسان</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              alabaster: '#F2F0EB',
+              concrete: '#E6E2DD',
+              slate: '#8C9598',
+              bronze: '#C5A065',
+              charcoal: '#2B2B2B',
+              darkBg: '#1A1A1A',
+            },
+            fontFamily: {
+              amiri: ['Amiri', 'serif'],
+              ibm: ['IBM Plex Sans Arabic', 'sans-serif'],
+              playfair: ['Playfair Display', 'serif'],
+              montserrat: ['Montserrat', 'sans-serif'],
+            },
+            cursor: {
+              none: 'none',
+            }
+          },
+        },
+      }
+    </script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+      /* Custom Scrollbar for that architectural feel */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #E6E2DD; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #8C9598; 
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #C5A065; 
+      }
+      
+      body {
+        cursor: none; /* Hide default cursor for custom one */
+      }
+
+      /* Architectural Grid Pattern */
+      .architectural-grid {
+        background-size: 60px 60px;
+        background-image: linear-gradient(to right, rgba(140, 149, 152, 0.05) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(140, 149, 152, 0.05) 1px, transparent 1px);
+      }
+
+      /* Noise Texture */
+      .noise-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.05;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+      }
+
+      /* Smooth Selection */
+      ::selection {
+        background: #C5A065;
+        color: #F2F0EB;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
+    "recharts": "https://aistudiocdn.com/recharts@^3.4.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-alabaster text-charcoal antialiased transition-colors duration-700 overflow-x-hidden">
+    <div id="root"></div>
+  </body>
+</html>
