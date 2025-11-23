@@ -45,6 +45,16 @@ export const TRANSLATIONS = {
       endorse: { ar: 'اعتماد المخطط', en: 'Endorse Plan', fr: 'Approuver' },
       review: { ar: 'مراجعة الأقران', en: 'Peer Review', fr: 'Revoir' }
     }
+  },
+  checkout: {
+      title: { ar: 'عقد الاستحواذ', en: 'Acquisition Contract', fr: 'Contrat d\'Acquisition' },
+      summary: { ar: 'ملخص المواد', en: 'Material Summary', fr: 'Résumé du Matériel' },
+      total: { ar: 'إجمالي التكلفة', en: 'Total Cost', fr: 'Coût Total' },
+      client: { ar: 'بيانات العميل', en: 'Client Identification', fr: 'Identification du Client' },
+      pay: { ar: 'دفع وتوقيع العقد', en: 'Pay & Sign Contract', fr: 'Payer et Signer' },
+      secure: { ar: 'بوابة دفع آمنة (PayPal)', en: 'Secure Gateway (PayPal)', fr: 'Paiement Sécurisé' },
+      success: { ar: 'تم إصدار التصريح', en: 'Permit Issued', fr: 'Permis Délivré' },
+      redirect: { ar: 'جاري تحويلك للمخطط...', en: 'Redirecting to Blueprint...', fr: 'Redirection...' }
   }
 };
 

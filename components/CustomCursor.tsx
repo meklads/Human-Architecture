@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
@@ -12,7 +13,7 @@ export const CustomCursor = () => {
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      // Check if the hovered element is clickable (button, link, input, or has specific class)
+      // Check if the hovered element is clickable
       if (
         target.tagName === 'BUTTON' ||
         target.tagName === 'A' ||
@@ -38,38 +39,54 @@ export const CustomCursor = () => {
 
   return (
     <>
-      {/* Main Dot */}
+      {/* 1. The Crosshair (Visible when NOT hovering) - Precision Mode */}
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 bg-bronze rounded-full pointer-events-none z-[10000] mix-blend-difference"
+        className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference"
         animate={{
-          x: mousePosition.x - 4,
-          y: mousePosition.y - 4,
-          scale: isHovering ? 0 : 1,
+          x: mousePosition.x,
+          y: mousePosition.y,
+          opacity: isHovering ? 0 : 1 // Hide standard crosshair when focusing
         }}
-        transition={{ type: 'tween', ease: 'backOut', duration: 0.1 }}
-      />
-
-      {/* Outer Ring / Crosshair */}
-      <motion.div
-        className="fixed top-0 left-0 border border-charcoal dark:border-alabaster pointer-events-none z-[9999] flex items-center justify-center"
-        animate={{
-          x: mousePosition.x - (isHovering ? 24 : 16),
-          y: mousePosition.y - (isHovering ? 24 : 16),
-          width: isHovering ? 48 : 32,
-          height: isHovering ? 48 : 32,
-          borderRadius: isHovering ? '50%' : '0%', // Square to Circle on hover
-          borderColor: isHovering ? '#C5A065' : 'currentColor',
-          opacity: 0.6
-        }}
-        transition={{ type: 'spring', stiffness: 150, damping: 15, mass: 0.1 }}
+        transition={{ duration: 0.1 }}
       >
-        {/* Crosshair lines visible only when not hovering (precision mode) */}
-        {!isHovering && (
-            <>
-                <div className="absolute w-[120%] h-[1px] bg-current opacity-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-                <div className="absolute h-[120%] w-[1px] bg-current opacity-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-            </>
-        )}
+        {/* Minimalist Crosshair */}
+        <div className="absolute w-[1px] h-3 bg-white -top-1.5 left-0"></div>
+        <div className="absolute h-[1px] w-3 bg-white -left-1.5 top-0"></div>
+      </motion.div>
+
+      {/* 2. The Focus Frame (Visible when Hovering) - Refined CAD Snap Style */}
+      <motion.div
+        className="fixed top-0 left-0 pointer-events-none z-[9999]"
+        animate={{
+          x: mousePosition.x - 12, // Center a 24px box (half of 24)
+          y: mousePosition.y - 12,
+          scale: isHovering ? 1 : 0.5,
+          opacity: isHovering ? 1 : 0,
+        }}
+        style={{
+            width: 24,
+            height: 24,
+        }}
+        transition={{ type: 'spring', stiffness: 500, damping: 28 }}
+      >
+        {/* The Frame Construction */}
+        <div className="relative w-full h-full">
+            {/* Top Left Bracket */}
+            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-bronze"></div>
+            {/* Top Right Bracket */}
+            <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-bronze"></div>
+            {/* Bottom Left Bracket */}
+            <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-bronze"></div>
+            {/* Bottom Right Bracket */}
+            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-bronze"></div>
+            
+            {/* Center Plus for Precision */}
+            <div className="absolute top-1/2 left-1/2 w-2 h-[1px] bg-bronze -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute top-1/2 left-1/2 h-2 w-[1px] bg-bronze -translate-x-1/2 -translate-y-1/2"></div>
+            
+            {/* Subtle Glow */}
+            <div className="absolute inset-0 bg-bronze/5 blur-[1px]"></div>
+        </div>
       </motion.div>
     </>
   );

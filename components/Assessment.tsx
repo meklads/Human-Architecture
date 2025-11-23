@@ -1,13 +1,13 @@
-
 import React, { useState } from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
-import { Language, AssessmentCategory } from '../types';
+import { Language, AssessmentCategory, View } from '../types';
 import { TRANSLATIONS, REPAIR_PROTOCOLS } from '../constants';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Activity, Shield, AlertTriangle, Check, RefreshCw } from './Icons';
 
 interface AssessmentProps {
   lang: Language;
+  setView: (view: View) => void;
 }
 
 const QUESTIONS = [
@@ -19,7 +19,7 @@ const QUESTIONS = [
   { id: 6, category: AssessmentCategory.STRUCTURE, text: { ar: 'هل تعاني من التفكير الزائد (Overthinking)؟', en: 'Do you suffer from Overthinking?', fr: 'Souffrez-vous de trop penser ?' } },
 ];
 
-export const Assessment: React.FC<AssessmentProps> = ({ lang }) => {
+export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
   const isAr = lang === 'ar';
   const [step, setStep] = useState(0); // 0 = intro, 1-N = questions, N+1 = processing, N+2 = result
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -259,7 +259,10 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang }) => {
                          ? 'هذا التقرير هو مجرد تشخيص. الحل الجذري يكمن في استلام "المخطط الأصلي" والبدء في التنفيذ.'
                          : 'This report is just a diagnosis. The radical solution lies in acquiring the "Master Blueprint" and starting execution.'}
                     </p>
-                    <button className="w-full py-4 bg-bronze text-white uppercase tracking-[0.2em] font-bold hover:bg-charcoal transition-colors shadow-lg flex items-center justify-center gap-3">
+                    <button 
+                        onClick={() => setView('landing')}
+                        className="w-full py-4 bg-bronze text-white uppercase tracking-[0.2em] font-bold hover:bg-charcoal transition-colors shadow-lg flex items-center justify-center gap-3"
+                    >
                          {isAr ? 'استلام خطة العمل (الكتاب)' : 'Get Action Plan (The Book)'} <ArrowRight size={16} />
                     </button>
                     <div className="mt-4 text-center">

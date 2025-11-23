@@ -16,16 +16,30 @@
               slate: '#8C9598',
               bronze: '#C5A065',
               charcoal: '#2B2B2B',
-              darkBg: '#1A1A1A',
+              darkBg: '#0F0F0F',
+              blueprint: '#003366',
+              blueprintLine: '#4da6ff',
             },
             fontFamily: {
               amiri: ['Amiri', 'serif'],
               ibm: ['IBM Plex Sans Arabic', 'sans-serif'],
               playfair: ['Playfair Display', 'serif'],
               montserrat: ['Montserrat', 'sans-serif'],
+              mono: ['IBM Plex Mono', 'monospace'],
             },
             cursor: {
               none: 'none',
+            },
+            animation: {
+              'spin-slow': 'spin 10s linear infinite',
+              'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'scan': 'scan 2s linear infinite',
+            },
+            keyframes: {
+              scan: {
+                '0%': { transform: 'translateY(-100%)' },
+                '100%': { transform: 'translateY(100%)' },
+              }
             }
           },
         },
@@ -34,31 +48,65 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
-      /* Custom Scrollbar for that architectural feel */
+      /* Custom Scrollbar */
       ::-webkit-scrollbar {
-        width: 6px;
+        width: 4px;
       }
       ::-webkit-scrollbar-track {
-        background: #E6E2DD; 
+        background: #1a1a1a; 
       }
       ::-webkit-scrollbar-thumb {
-        background: #8C9598; 
-      }
-      ::-webkit-scrollbar-thumb:hover {
         background: #C5A065; 
       }
       
       body {
-        cursor: none; /* Hide default cursor for custom one */
+        cursor: none;
+        overflow-x: hidden;
       }
 
-      /* Architectural Grid Pattern */
+      /* Luxury Mode Grid */
       .architectural-grid {
-        background-size: 60px 60px;
+        background-size: 40px 40px;
         background-image: linear-gradient(to right, rgba(140, 149, 152, 0.05) 1px, transparent 1px),
                           linear-gradient(to bottom, rgba(140, 149, 152, 0.05) 1px, transparent 1px);
+      }
+
+      /* BLUEPRINT MODE STYLES (The High-Impact Feature) */
+      body.blueprint-mode {
+        background-color: #0a192f !important;
+        color: #64ffda !important;
+      }
+      
+      body.blueprint-mode .architectural-grid {
+        background-size: 20px 20px;
+        background-image: linear-gradient(to right, rgba(100, 255, 218, 0.1) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(100, 255, 218, 0.1) 1px, transparent 1px);
+      }
+
+      body.blueprint-mode .bg-alabaster,
+      body.blueprint-mode .bg-white,
+      body.blueprint-mode .bg-concrete {
+        background-color: rgba(10, 25, 47, 0.95) !important;
+        border-color: rgba(100, 255, 218, 0.3) !important;
+        color: #64ffda !important;
+      }
+
+      body.blueprint-mode .text-charcoal,
+      body.blueprint-mode .text-slate {
+        color: #8892b0 !important;
+      }
+      
+      body.blueprint-mode .text-bronze {
+        color: #64ffda !important;
+        text-shadow: 0 0 5px rgba(100, 255, 218, 0.5);
+      }
+
+      body.blueprint-mode img {
+        filter: grayscale(100%) sepia(100%) hue-rotate(170deg) saturate(300%) contrast(1.2);
+        opacity: 0.8;
+        mix-blend-mode: screen;
       }
 
       /* Noise Texture */
@@ -70,15 +118,20 @@
         height: 100%;
         pointer-events: none;
         z-index: 9999;
-        opacity: 0.05;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.07;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
       }
 
-      /* Smooth Selection */
       ::selection {
         background: #C5A065;
-        color: #F2F0EB;
+        color: #000;
       }
+      
+      /* Smooth fade for view transitions */
+      .fade-enter { opacity: 0; }
+      .fade-enter-active { opacity: 1; transition: opacity 500ms ease-in; }
+      .fade-exit { opacity: 1; }
+      .fade-exit-active { opacity: 0; transition: opacity 300ms ease-out; }
     </style>
   <script type="importmap">
 {
@@ -94,7 +147,7 @@
 }
 </script>
 </head>
-  <body class="bg-alabaster text-charcoal antialiased transition-colors duration-700 overflow-x-hidden">
+  <body class="bg-darkBg text-concrete antialiased transition-colors duration-700 overflow-x-hidden">
     <div id="root"></div>
   </body>
 </html>

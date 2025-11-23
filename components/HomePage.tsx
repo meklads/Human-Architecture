@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, View } from '../types';
 import { Hero } from './Hero';
@@ -22,13 +21,35 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
   const generateQrUrl = (data: string) => {
     return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(data)}&color=2B2B2B&bgcolor=F2F0EB`;
   };
+  
+  // Handle Incoming Scroll Requests
+  useEffect(() => {
+      const hash = window.location.hash;
+      if (hash === '#assessment') {
+           setTimeout(() => {
+              document.getElementById('assessment-section')?.scrollIntoView({ behavior: 'smooth' });
+              // Clear hash to allow re-triggering later
+              try {
+                // Use safer URL construction and try-catch for sandboxed environments
+                history.replaceState(null, '', window.location.pathname + window.location.search); 
+              } catch (e) {
+                // Ignore security errors in strict sandboxes
+                console.debug('Hash clear skipped', e);
+              }
+           }, 500);
+      }
+  }, []); // Run on mount
 
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
     >
-      <Hero lang={lang} />
-      <Assessment lang={lang} />
+      <Hero lang={lang} setView={setView} />
+      
+      {/* Added ID for linking */}
+      <div id="assessment-section">
+        <Assessment lang={lang} setView={setView} />
+      </div>
 
       {/* Pillars Preview - Architectural Gallery */}
       <section className="py-24 bg-concrete/30 dark:bg-white/5 relative overflow-hidden">
@@ -54,12 +75,12 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                 onClick={() => setView('philosophy')}
                 className="group relative h-[500px] lg:h-[650px] overflow-hidden cursor-pointer"
               >
-                {/* 1. Image Layer - The Room */}
+                {/* 1. Image Layer - The Room (UPDATED OPACITY TO 10%) */}
                 <div className="absolute inset-0 bg-charcoal">
                    <img 
                     src={pillar.image} 
                     alt={pillar.title[lang]} 
-                    className="w-full h-full object-cover opacity-30 group-hover:opacity-80 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-[800ms] ease-out"
+                    className="w-full h-full object-cover opacity-10 group-hover:opacity-80 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-[800ms] ease-out"
                    />
                 </div>
 
@@ -158,7 +179,11 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {RESTORATION_LOGS.map((log) => (
-                      <div key={log.id} className="bg-white dark:bg-white/5 p-8 border border-slate/10 shadow-sm hover:shadow-md transition-shadow relative group">
+                      <div 
+                        key={log.id} 
+                        onClick={() => setView('community')}
+                        className="bg-white dark:bg-white/5 p-8 border border-slate/10 shadow-sm hover:shadow-md transition-shadow relative group cursor-pointer"
+                      >
                           <div className="absolute top-4 right-4 text-slate/10">
                               <Quote size={48} />
                           </div>
@@ -179,6 +204,7 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                           </div>
                           {/* Decorative corner */}
                           <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-bronze opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                          <div className="absolute top-0 left-0 w-full h-full bg-bronze/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                       </div>
                   ))}
               </div>

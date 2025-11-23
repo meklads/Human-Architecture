@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, CommunityPost, PeerReview } from '../types';
 import { COMMUNITY_POSTS, TRANSLATIONS, PILLARS, TOP_BUILDERS } from '../constants';
-import { MessageCircle, ThumbsUp, Share2, Plus, Filter, Shield, Compass, X, Check, Users, Star, Activity, Award, Lock, ArrowRight, Quote } from './Icons';
+import { MessageCircle, ThumbsUp, Share2, Plus, Filter, Shield, Compass, X, Check, Users, Star, Activity, Award, Lock, ArrowRight, Quote, Loader2 } from './Icons';
 
 interface CommunityPageProps {
   lang: Language;
@@ -36,6 +36,10 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
   // Interaction State
   const [selectedPost, setSelectedPost] = useState<CommunityPost | null>(null);
   const [reviewContent, setReviewContent] = useState('');
+  
+  // Loading State for Archive
+  const [loadingArchive, setLoadingArchive] = useState(false);
+  const [archiveLoaded, setArchiveLoaded] = useState(false);
 
   // Form State
   const [regName, setRegName] = useState('');
@@ -76,6 +80,45 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
     } else {
         setShowRegisterModal(true);
     }
+  };
+  
+  const loadArchivedLogs = () => {
+      setLoadingArchive(true);
+      // Simulate API call delay
+      setTimeout(() => {
+          // Mock Data Append
+          const archived: CommunityPost[] = [
+              {
+                id: 'arch-001',
+                author: 'Master Arch. Ziad',
+                role: { ar: 'مستشار', en: 'Advisor', fr: 'Conseiller' },
+                rankLevel: 3,
+                phase: 'Maintenance',
+                title: { ar: 'سجل قديم: أهمية الصيانة الدورية', en: 'Archived: Importance of Routine Maintenance', fr: '' },
+                content: { ar: 'تذكروا دائماً: الترميم ليس حدثاً، بل أسلوب حياة. الجدران تتشقق دائماً، السر في سرعة الاستجابة.', en: 'Remember: Restoration is not an event, but a lifestyle. Walls always crack; the secret is in response time.', fr: '' },
+                endorsements: 890,
+                reviews: [],
+                tags: ['History', 'Wisdom'],
+                timestamp: '2 years ago'
+              },
+               {
+                id: 'arch-002',
+                author: 'Builder Sara',
+                role: { ar: 'بناء', en: 'Builder', fr: 'Bâtisseur' },
+                rankLevel: 2,
+                phase: 'Foundation',
+                title: { ar: 'يوميات البدايات', en: 'Early Days Diary', fr: '' },
+                content: { ar: 'في البداية ظننت أنني لن أستطيع النوم مبكراً. الآن لا أستطيع السهر.', en: 'At first I thought I could not sleep early. Now I cannot stay up late.', fr: '' },
+                endorsements: 120,
+                reviews: [],
+                tags: ['Sleep', 'Foundation'],
+                timestamp: '2 years ago'
+              }
+          ];
+          setPosts([...posts, ...archived]);
+          setLoadingArchive(false);
+          setArchiveLoaded(true);
+      }, 1500);
   };
 
   const handleSubmitPost = (e: React.FormEvent) => {
@@ -162,7 +205,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
   const filteredPosts = activeFilter === 'All' 
     ? posts 
     : posts.filter(p => p.tags?.includes(activeFilter) || PILLARS.find(pil => pil.channelId === activeFilter)?.id === p.id); 
-    // Note: Simple mock filtering logic based on tags/channelId mapping
 
   return (
     <motion.div 
@@ -229,7 +271,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                                 <>
                                     <div className="w-20 h-20 bg-slate/20 text-slate rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-dashed border-slate/30">?</div>
                                     <h3 className={`text-lg font-bold text-slate ${headingFont}`}>{isAr ? 'زائر' : 'Guest Visitor'}</h3>
-                                    <button onClick={handleNewPostClick} className="text-[0.6rem] uppercase tracking-widest text-bronze underline block mt-2 hover:text-charcoal dark:hover:text-white">
+                                    <button onClick={() => setShowRegisterModal(true)} className="text-[0.6rem] uppercase tracking-widest text-bronze underline block mt-2 hover:text-charcoal dark:hover:text-white">
                                         {isAr ? 'تفعيل الهوية' : 'Activate ID'}
                                     </button>
                                 </>
@@ -387,11 +429,18 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                   </div>
               )}
               
-              {filteredPosts.length > 0 && (
+              {!archiveLoaded && (
                 <div className="py-8 text-center border-t border-dashed border-slate/20">
-                    <button className="text-xs text-slate hover:text-bronze uppercase tracking-widest flex items-center justify-center gap-2 mx-auto">
-                        <Activity size={14} />
-                        {isAr ? 'تحميل سجلات أقدم' : 'Load Archived Logs'}
+                    <button 
+                        onClick={loadArchivedLogs}
+                        disabled={loadingArchive}
+                        className="text-xs text-slate hover:text-bronze uppercase tracking-widest flex items-center justify-center gap-2 mx-auto disabled:opacity-50"
+                    >
+                        {loadingArchive ? <Loader2 size={14} className="animate-spin" /> : <Activity size={14} />}
+                        {loadingArchive 
+                            ? (isAr ? 'جاري استرجاع الأرشيف...' : 'Retrieving Archive...') 
+                            : (isAr ? 'تحميل سجلات أقدم' : 'Load Archived Logs')
+                        }
                     </button>
                 </div>
               )}
@@ -485,73 +534,54 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                                     <div className="text-xs text-slate uppercase tracking-widest">{typeof selectedPost.role === 'string' ? selectedPost.role : selectedPost.role[lang]}</div>
                                 </div>
                             </div>
-                            <p className={`text-lg text-charcoal dark:text-concrete leading-relaxed mb-8 ${bodyFont}`}>
+                            <div className={`prose dark:prose-invert max-w-none text-lg leading-relaxed ${bodyFont}`}>
                                 {typeof selectedPost.content === 'string' ? selectedPost.content : selectedPost.content[lang]}
-                            </p>
-                            
-                            <div className="flex gap-4">
-                                <button 
-                                    onClick={(e) => handleEndorse(e, selectedPost.id)}
-                                    className="px-6 py-3 bg-bronze/10 text-bronze hover:bg-bronze hover:text-white transition-colors text-xs font-bold uppercase tracking-widest flex items-center gap-2"
-                                >
-                                    <Award size={16} /> {t.actions.endorse[lang]} ({selectedPost.endorsements})
-                                </button>
                             </div>
                         </div>
 
                         {/* Reviews Section */}
                         <div className="bg-white dark:bg-white/5 border border-slate/10 p-8">
-                            <h3 className={`text-sm uppercase tracking-widest text-slate mb-8 flex items-center gap-2 font-bold`}>
-                                <MessageCircle size={16} /> {isAr ? 'مراجعات الأقران (التعليقات)' : 'Peer Reviews'} ({selectedPost.reviews.length})
+                            <h3 className={`text-xl mb-6 flex items-center gap-2 ${headingFont}`}>
+                                <MessageCircle size={20} className="text-bronze" />
+                                {isAr ? 'مراجعات الأقران' : 'Peer Reviews'}
                             </h3>
                             
-                            {selectedPost.reviews.length > 0 ? (
-                                <div className="space-y-8">
-                                    {selectedPost.reviews.map(review => (
-                                        <div key={review.id} className="flex gap-4">
-                                            <div className="w-8 h-8 bg-slate/10 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-serif border border-slate/20 text-slate">
-                                                {review.author.charAt(0)}
+                            <div className="space-y-6 mb-8">
+                                {selectedPost.reviews.length > 0 ? (
+                                    selectedPost.reviews.map(review => (
+                                        <div key={review.id} className="border-l-2 border-slate/20 pl-4 py-1">
+                                            <div className="flex justify-between items-center mb-2">
+                                                <span className="text-sm font-bold text-charcoal dark:text-concrete">{review.author}</span>
+                                                <span className="text-[0.6rem] text-slate">{review.timestamp}</span>
                                             </div>
-                                            <div className="flex-1">
-                                                <div className="flex justify-between items-start mb-2">
-                                                    <span className={`text-sm font-bold ${headingFont} text-charcoal dark:text-concrete`}>{review.author}</span>
-                                                    <span className="text-[0.6rem] text-slate uppercase tracking-widest">{review.timestamp}</span>
-                                                </div>
-                                                <p className={`text-sm text-slate dark:text-slate/80 leading-relaxed mb-2 ${bodyFont}`}>
-                                                    {typeof review.content === 'string' ? review.content : review.content[lang]}
-                                                </p>
-                                                <button className="text-[0.6rem] text-bronze hover:underline flex items-center gap-1">
-                                                    <Check size={10} /> Helpful ({review.isHelpful})
-                                                </button>
-                                            </div>
+                                            <p className="text-sm text-slate">{typeof review.content === 'string' ? review.content : review.content[lang]}</p>
                                         </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="text-center py-8 text-slate/40 text-sm italic bg-slate/5 border border-dashed border-slate/10">
-                                    {isAr ? 'لا توجد مراجعات بعد. كن أول من يقدم النصيحة الهندسية.' : 'No peer reviews yet. Be the first to offer structural advice.'}
-                                </div>
-                            )}
+                                    ))
+                                ) : (
+                                    <div className="text-center py-4 text-slate/40 text-sm italic">
+                                        {isAr ? 'لا توجد مراجعات بعد. كن أول من يصحح.' : 'No reviews yet. Be the first to audit.'}
+                                    </div>
+                                )}
+                            </div>
 
-                            {/* Comment Input */}
-                            <div className="mt-8 pt-8 border-t border-slate/10 flex gap-4">
-                                <div className="w-8 h-8 bg-charcoal text-white rounded-full flex-shrink-0 flex items-center justify-center text-xs font-serif">
+                            {/* Add Review Box */}
+                            <div className="flex gap-4 items-start">
+                                <div className="w-8 h-8 bg-bronze text-white rounded-full flex items-center justify-center flex-shrink-0 text-xs">
                                     {user ? user.avatarChar : '?'}
                                 </div>
                                 <div className="flex-1">
                                     <textarea 
                                         value={reviewContent}
                                         onChange={(e) => setReviewContent(e.target.value)}
-                                        placeholder={user ? (isAr ? 'اكتب ملاحظاتك الفنية هنا...' : 'Submit your technical review here...') : (isAr ? 'سجل الدخول للمشاركة...' : 'Sign in to participate...')}
-                                        rows={3}
+                                        placeholder={user ? (isAr ? "أضف ملاحظتك الهندسية..." : "Add your structural note...") : (isAr ? "سجل الدخول للمشاركة..." : "Log in to review...")}
                                         disabled={!user}
-                                        className="w-full bg-transparent border border-slate/20 p-3 text-sm focus:border-bronze outline-none transition-colors resize-none mb-2 text-charcoal dark:text-concrete"
+                                        className="w-full bg-transparent border-b border-slate/20 focus:border-bronze outline-none min-h-[80px] text-sm py-2 resize-none"
                                     ></textarea>
-                                    <div className="flex justify-between items-center">
-                                        {!user && <span className="text-xs text-slate italic">{isAr ? 'التسجيل مطلوب' : 'Registration required'}</span>}
+                                    <div className="flex justify-end mt-2">
                                         <button 
-                                            onClick={user ? handleSubmitReview : handleNewPostClick}
-                                            className="ml-auto px-6 py-2 bg-charcoal dark:bg-concrete text-white dark:text-charcoal text-xs uppercase tracking-widest font-bold hover:opacity-80 disabled:opacity-50"
+                                            onClick={handleSubmitReview}
+                                            disabled={!user || !reviewContent.trim()}
+                                            className="px-6 py-2 bg-charcoal text-white text-xs uppercase tracking-widest hover:bg-bronze disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                         >
                                             {isAr ? 'إرسال المراجعة' : 'Submit Review'}
                                         </button>
@@ -564,139 +594,108 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
             </motion.div>
         )}
 
-        {/* Registration Modal */}
+        {/* REGISTER MODAL */}
         {showRegisterModal && (
             <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-darkBg/90 backdrop-blur-sm flex items-center justify-center p-4"
+                className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4"
+                onClick={() => setShowRegisterModal(false)}
             >
                 <motion.div 
-                    initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}
-                    className="bg-alabaster dark:bg-[#1A1A1A] w-full max-w-lg border border-bronze/50 shadow-2xl relative"
+                    initial={{ scale: 0.9 }} animate={{ scale: 1 }}
+                    className="bg-alabaster dark:bg-[#1a1a1a] p-8 max-w-md w-full border border-bronze shadow-2xl relative"
+                    onClick={(e) => e.stopPropagation()}
                 >
-                    <button onClick={() => setShowRegisterModal(false)} className="absolute top-4 right-4 text-slate hover:text-bronze"><X /></button>
-                    
-                    <div className="p-8 md:p-12">
-                        <div className="text-center mb-8">
-                            <span className="text-bronze text-[0.6rem] uppercase tracking-[0.3em] block mb-2">Guild Protocol 1.0</span>
-                            <h2 className={`text-3xl ${headingFont} text-charcoal dark:text-concrete`}>{isAr ? 'طلب عضوية' : 'Membership Application'}</h2>
-                        </div>
-
-                        <form className="space-y-6" onSubmit={handleRegister}>
-                            <div>
-                                <label className={`block text-xs uppercase tracking-widest text-slate mb-2 ${bodyFont}`}>{isAr ? 'الاسم الهندسي' : 'Codename / Name'}</label>
-                                <input 
-                                    required 
-                                    type="text" 
-                                    value={regName}
-                                    onChange={(e) => setRegName(e.target.value)}
-                                    className="w-full bg-transparent border-b border-slate/30 py-2 text-charcoal dark:text-concrete focus:border-bronze outline-none transition-colors" 
-                                />
-                            </div>
-                            <div>
-                                <label className={`block text-xs uppercase tracking-widest text-slate mb-2 ${bodyFont}`}>{isAr ? 'البريد الإلكتروني' : 'Secure Frequency (Email)'}</label>
-                                <input 
-                                    required 
-                                    type="email" 
-                                    value={regEmail}
-                                    onChange={(e) => setRegEmail(e.target.value)}
-                                    className="w-full bg-transparent border-b border-slate/30 py-2 text-charcoal dark:text-concrete focus:border-bronze outline-none transition-colors" 
-                                />
-                            </div>
-                            <div>
-                                <label className={`block text-xs uppercase tracking-widest text-slate mb-2 ${bodyFont}`}>{isAr ? 'الرتبة الحالية' : 'Current Status'}</label>
-                                <select className="w-full bg-transparent border-b border-slate/30 py-2 text-charcoal dark:text-concrete focus:border-bronze outline-none transition-colors appearance-none rounded-none">
-                                    <option className="bg-alabaster dark:bg-darkBg">{isAr ? 'مبتدئ (مرحلة الحفر)' : 'Novice (Excavation Phase)'}</option>
-                                    <option className="bg-alabaster dark:bg-darkBg">{isAr ? 'بناء (مرحلة الهيكل)' : 'Builder (Structure Phase)'}</option>
-                                    <option className="bg-alabaster dark:bg-darkBg">{isAr ? 'معماري (مرحلة التصميم)' : 'Architect (Design Phase)'}</option>
-                                </select>
-                            </div>
-                            <div className="flex items-start gap-3 pt-4">
-                                <input type="checkbox" required id="oath" className="mt-1 accent-bronze" />
-                                <label htmlFor="oath" className={`text-xs text-slate leading-relaxed ${bodyFont}`}>
-                                    {isAr 
-                                     ? 'أقر بأنني سأحترم قوانين البناء، وأنني أسعى لترميم ذاتي ومساعدة الآخرين بصدق.'
-                                     : 'I solemnly swear to uphold the laws of construction, to seek self-restoration, and to assist others with integrity.'}
-                                </label>
-                            </div>
-                            <button type="submit" className="w-full py-4 bg-charcoal dark:bg-bronze text-white uppercase tracking-widest text-sm hover:bg-black dark:hover:bg-bronze/80 transition-colors mt-4">
-                                {isAr ? 'تقديم الطلب' : 'Submit Application'}
-                            </button>
-                        </form>
+                    <button onClick={() => setShowRegisterModal(false)} className="absolute top-4 right-4 text-slate hover:text-charcoal"><X size={20}/></button>
+                    <div className="text-center mb-8">
+                        <Shield size={40} className="mx-auto text-bronze mb-4" />
+                        <h2 className={`text-2xl ${headingFont}`}>{isAr ? 'الانضمام للنقابة' : 'Join The Guild'}</h2>
+                        <p className="text-xs text-slate mt-2 uppercase tracking-widest">{isAr ? 'اصدر هويتك الهندسية' : 'Issue Your Architectural ID'}</p>
                     </div>
+                    
+                    <form onSubmit={handleRegister} className="space-y-6">
+                        <div>
+                            <label className="text-[0.6rem] uppercase tracking-widest text-slate block mb-1">Name / Alias</label>
+                            <input 
+                                type="text" 
+                                required
+                                value={regName}
+                                onChange={(e) => setRegName(e.target.value)}
+                                className="w-full bg-transparent border-b border-slate/30 py-2 focus:border-bronze outline-none"
+                                placeholder="Architect Name"
+                            />
+                        </div>
+                        <div>
+                            <label className="text-[0.6rem] uppercase tracking-widest text-slate block mb-1">Email (For ID Recovery)</label>
+                            <input 
+                                type="email" 
+                                required
+                                value={regEmail}
+                                onChange={(e) => setRegEmail(e.target.value)}
+                                className="w-full bg-transparent border-b border-slate/30 py-2 focus:border-bronze outline-none"
+                                placeholder="arch@example.com"
+                            />
+                        </div>
+                        <button type="submit" className="w-full py-4 bg-bronze text-white uppercase tracking-widest text-xs font-bold hover:bg-charcoal transition-colors">
+                            {isAr ? 'توقيع العقد' : 'Sign Contract'}
+                        </button>
+                    </form>
                 </motion.div>
             </motion.div>
         )}
 
-        {/* New Post Modal */}
+        {/* NEW POST MODAL */}
         {showPostModal && (
-             <motion.div 
+            <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-darkBg/90 backdrop-blur-sm flex items-center justify-center p-4"
+                className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4"
+                onClick={() => setShowPostModal(false)}
             >
                 <motion.div 
-                    initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}
-                    className="bg-alabaster dark:bg-[#1A1A1A] w-full max-w-2xl border border-bronze/50 shadow-2xl relative"
+                    initial={{ y: 50 }} animate={{ y: 0 }}
+                    className="bg-alabaster dark:bg-[#1a1a1a] p-8 max-w-lg w-full border-t-4 border-bronze shadow-2xl relative"
+                    onClick={(e) => e.stopPropagation()}
                 >
-                    <button onClick={() => setShowPostModal(false)} className="absolute top-4 right-4 text-slate hover:text-bronze"><X /></button>
-                    
-                    <div className="p-8 md:p-12">
-                        <div className="text-center mb-8">
-                            <span className="text-bronze text-[0.6rem] uppercase tracking-[0.3em] block mb-2">Schematic Submission</span>
-                            <h2 className={`text-3xl ${headingFont} text-charcoal dark:text-concrete`}>{isAr ? 'طرح مخطط جديد' : 'New Blueprint'}</h2>
+                     <button onClick={() => setShowPostModal(false)} className="absolute top-4 right-4 text-slate hover:text-charcoal"><X size={20}/></button>
+                     <h2 className={`text-xl mb-6 ${headingFont}`}>{isAr ? 'طرح مخطط جديد' : 'Submit New Blueprint'}</h2>
+                     
+                     <form onSubmit={handleSubmitPost} className="space-y-6">
+                        <div>
+                            <label className="text-[0.6rem] uppercase tracking-widest text-slate block mb-1">Sector (Channel)</label>
+                            <select 
+                                value={newPostCategory}
+                                onChange={(e) => setNewPostCategory(e.target.value)}
+                                className="w-full bg-transparent border-b border-slate/30 py-2 focus:border-bronze outline-none text-sm"
+                            >
+                                {PILLARS.map(p => <option key={p.id} value={p.channelId} className="dark:bg-[#1a1a1a]">{p.channelId}</option>)}
+                            </select>
                         </div>
-
-                        <form className="space-y-6" onSubmit={handleSubmitPost}>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label className={`block text-xs uppercase tracking-widest text-slate mb-2 ${bodyFont}`}>{isAr ? 'القسم' : 'Sector'}</label>
-                                    <select 
-                                        value={newPostCategory}
-                                        onChange={(e) => setNewPostCategory(e.target.value)}
-                                        className="w-full bg-transparent border-b border-slate/30 py-2 text-charcoal dark:text-concrete focus:border-bronze outline-none transition-colors appearance-none rounded-none"
-                                    >
-                                        {PILLARS.map(p => <option key={p.id} value={p.channelId} className="bg-alabaster dark:bg-darkBg">{p.channelId}</option>)}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className={`block text-xs uppercase tracking-widest text-slate mb-2 ${bodyFont}`}>{isAr ? 'نوع المخطط' : 'Blueprint Type'}</label>
-                                    <select className="w-full bg-transparent border-b border-slate/30 py-2 text-charcoal dark:text-concrete focus:border-bronze outline-none transition-colors appearance-none rounded-none">
-                                        <option className="bg-alabaster dark:bg-darkBg">{isAr ? 'طلب استشارة' : 'Consultation Request'}</option>
-                                        <option className="bg-alabaster dark:bg-darkBg">{isAr ? 'مشاركة تجربة' : 'Experience Share'}</option>
-                                        <option className="bg-alabaster dark:bg-darkBg">{isAr ? 'تقرير تقدم' : 'Progress Report'}</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className={`block text-xs uppercase tracking-widest text-slate mb-2 ${bodyFont}`}>{isAr ? 'عنوان المخطط' : 'Subject'}</label>
-                                <input 
-                                    required 
-                                    type="text" 
-                                    value={newPostTitle}
-                                    onChange={(e) => setNewPostTitle(e.target.value)}
-                                    placeholder={isAr ? 'مثال: تصدعات في جدار الثقة...' : 'Ex: Cracks in confidence wall...'} 
-                                    className="w-full bg-transparent border-b border-slate/30 py-2 text-charcoal dark:text-concrete focus:border-bronze outline-none transition-colors" 
-                                />
-                            </div>
-                            
-                            <div>
-                                <label className={`block text-xs uppercase tracking-widest text-slate mb-2 ${bodyFont}`}>{isAr ? 'تفاصيل الحالة' : 'Technical Details'}</label>
-                                <textarea 
-                                    required 
-                                    rows={5} 
-                                    value={newPostContent}
-                                    onChange={(e) => setNewPostContent(e.target.value)}
-                                    className="w-full bg-slate/5 dark:bg-white/5 p-4 text-charcoal dark:text-concrete focus:border focus:border-bronze outline-none transition-colors resize-none" 
-                                    placeholder={isAr ? 'اشرح المشكلة الهندسية التي تواجهها...' : 'Describe the architectural issue you are facing...'}
-                                ></textarea>
-                            </div>
-
-                            <button type="submit" className="w-full py-4 bg-charcoal dark:bg-bronze text-white uppercase tracking-widest text-sm hover:bg-black dark:hover:bg-bronze/80 transition-colors mt-4">
-                                {isAr ? 'نشر المخطط' : 'Publish Blueprint'}
-                            </button>
-                        </form>
-                    </div>
+                        <div>
+                            <label className="text-[0.6rem] uppercase tracking-widest text-slate block mb-1">Title</label>
+                            <input 
+                                type="text" 
+                                required
+                                value={newPostTitle}
+                                onChange={(e) => setNewPostTitle(e.target.value)}
+                                className="w-full bg-transparent border-b border-slate/30 py-2 focus:border-bronze outline-none font-bold"
+                                placeholder="e.g., Structural Failure in Sleep Routine"
+                            />
+                        </div>
+                         <div>
+                            <label className="text-[0.6rem] uppercase tracking-widest text-slate block mb-1">Report Details</label>
+                            <textarea 
+                                required
+                                rows={4}
+                                value={newPostContent}
+                                onChange={(e) => setNewPostContent(e.target.value)}
+                                className="w-full bg-transparent border-b border-slate/30 py-2 focus:border-bronze outline-none text-sm resize-none"
+                                placeholder="Describe the architectural issue..."
+                            />
+                        </div>
+                        <button type="submit" className="w-full py-4 bg-charcoal text-white uppercase tracking-widest text-xs font-bold hover:bg-bronze transition-colors">
+                            {isAr ? 'نشر في السجل' : 'Publish to Log'}
+                        </button>
+                     </form>
                 </motion.div>
             </motion.div>
         )}

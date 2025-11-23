@@ -38,7 +38,14 @@ import {
   Award,
   AlertTriangle,
   ChevronDown,
-  Lock
+  Lock,
+  Bell,
+  Wifi,
+  Grid,
+  Maximize2,
+  MousePointer,
+  Battery,
+  CreditCard
 } from 'lucide-react';
 
 export { 
@@ -79,5 +86,12 @@ export {
   Award,
   AlertTriangle,
   ChevronDown,
-  Lock
+  Lock,
+  Bell,
+  Wifi,
+  Grid,
+  Maximize2,
+  MousePointer,
+  Battery,
+  CreditCard
 };

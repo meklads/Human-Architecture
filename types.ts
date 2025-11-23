@@ -1,8 +1,7 @@
 
-
 export type Language = 'ar' | 'en' | 'fr';
 
-export type View = 'home' | 'philosophy' | 'journal' | 'library' | 'contact' | 'community' | 'landing';
+export type View = 'home' | 'philosophy' | 'journal' | 'library' | 'contact' | 'community' | 'landing' | 'checkout';
 
 export interface ContentText {
   ar: string;
