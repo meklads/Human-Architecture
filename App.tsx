@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Language, View, Product } from './types';
 import { TRANSLATIONS } from './constants';
-import { Menu, X, Moon, Sun, Grid, ScanLine, Activity, Wifi, Battery, Layers } from './components/Icons';
+import { Menu, X, Moon, Sun, Grid, ScanLine, Activity, Wifi, Battery, Layers, ShoppingBag } from './components/Icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HomePage } from './components/HomePage';
 import { PhilosophyPage } from './components/PhilosophyPage';
@@ -27,9 +27,20 @@ function App() {
   // NEW: Cart State for Checkout
   const [checkoutItems, setCheckoutItems] = useState<Product[]>([]);
 
-  // Initial Load Simulation
+  // Initial Load Simulation & Deep Link Handler
   useEffect(() => {
+    // 1. Simulate Boot Sequence
     setTimeout(() => setLoading(false), 2500);
+
+    // 2. Handle Incoming QR Links (Query Params)
+    const params = new URLSearchParams(window.location.search);
+    const targetView = params.get('view') as View;
+    
+    // Validate view before switching
+    if (targetView && ['home', 'philosophy', 'journal', 'library', 'contact', 'community', 'landing'].includes(targetView)) {
+        setCurrentView(targetView);
+    }
+
   }, []);
 
   // Effect to toggle body classes
@@ -69,7 +80,7 @@ function App() {
             <span className={`text-xs tracking-[0.5em] uppercase text-bronze ${lang === 'ar' ? 'font-ibm' : 'font-montserrat'}`}>
                 {lang === 'ar' ? 'تهيئة الموقع' : 'INITIALIZING SITE'}
             </span>
-            <span className="text-[0.5rem] font-mono text-slate/50">V.2.0.4 // SECURE CONNECTION</span>
+            <span className="text-[0.5rem] font-mono text-slate/50">V.2.0.5 // SYSTEM SECURE</span>
         </div>
       </div>
     );
@@ -109,7 +120,7 @@ function App() {
             </button>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-6">
               {['philosophy', 'journal', 'library', 'community'].map((view) => (
                   <button 
                     key={view}
@@ -121,43 +132,65 @@ function App() {
                   </button>
               ))}
 
-              <div className="h-6 w-px bg-slate/20 mx-2"></div>
-
-              {/* BLUEPRINT TOGGLE (The Magic Switch) */}
+              {/* PRIMARY ACTION: BUY BLUEPRINT */}
               <button 
-                onClick={() => setBlueprintMode(!blueprintMode)}
-                className={`flex items-center gap-2 px-3 py-1 border text-[0.6rem] uppercase tracking-widest transition-all ${blueprintMode ? 'border-[#64ffda] text-[#64ffda] bg-[#64ffda]/10 shadow-[0_0_10px_#64ffda]' : 'border-slate/20 text-slate hover:border-bronze hover:text-bronze'}`}
+                onClick={() => setCurrentView('landing')} 
+                className={`ml-4 text-xs font-bold border px-5 py-2 uppercase tracking-widest transition-all flex items-center gap-2 ${blueprintMode ? 'border-[#64ffda] text-[#64ffda] hover:bg-[#64ffda]/10' : 'border-bronze text-bronze hover:bg-bronze hover:text-white'}`}
               >
-                  <Layers size={12} />
-                  {blueprintMode ? 'CAD: ON' : 'CAD: OFF'}
-              </button>
-
-              <button onClick={() => setCurrentView('landing')} className={`text-xs font-bold border px-4 py-2 uppercase tracking-widest hover:bg-bronze hover:text-white transition-all ${blueprintMode ? 'border-[#64ffda] text-[#64ffda]' : 'border-bronze text-bronze'}`}>
+                 <ShoppingBag size={14} />
                  {lang === 'ar' ? 'المخطط' : 'Blueprint'}
               </button>
 
-              {/* Theme Toggle */}
-              <button 
-                onClick={() => setDarkMode(!darkMode)}
-                className={`text-slate hover:text-bronze transition-colors ${blueprintMode ? 'text-[#64ffda]' : ''}`}
-                title={darkMode ? (lang === 'ar' ? 'الوضع المضيء' : 'Light Mode') : (lang === 'ar' ? 'الوضع الليلي' : 'Dark Mode')}
-              >
-                {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-              </button>
+              <div className="h-8 w-px bg-slate/20 mx-2"></div>
 
-              {/* Lang Toggle */}
-              <button 
-                onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-                className="text-xs font-mono text-slate hover:text-bronze w-8"
-              >
-                {lang === 'en' ? 'AR' : 'EN'}
-              </button>
+              {/* SETTINGS CLUSTER: CAD | THEME | LANG */}
+              <div className="flex items-center gap-3 bg-slate/5 px-3 py-1 rounded-full border border-slate/10">
+                  {/* BLUEPRINT TOGGLE */}
+                  <button 
+                    onClick={() => setBlueprintMode(!blueprintMode)}
+                    className={`p-2 rounded-full transition-all ${blueprintMode ? 'text-[#64ffda] bg-[#64ffda]/10' : 'text-slate hover:text-bronze'}`}
+                    title="CAD Mode"
+                  >
+                      <Layers size={16} />
+                  </button>
+
+                  {/* THEME TOGGLE - RESTORED & EMPHASIZED */}
+                  <button 
+                    onClick={() => setDarkMode(!darkMode)}
+                    className={`p-2 rounded-full transition-all ${darkMode ? 'text-white' : 'text-charcoal'} hover:text-bronze`}
+                    title={darkMode ? (lang === 'ar' ? 'الوضع المضيء' : 'Light Mode') : (lang === 'ar' ? 'الوضع الليلي' : 'Dark Mode')}
+                    aria-label="Toggle Dark Mode"
+                  >
+                    {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+                  </button>
+
+                  <div className="w-px h-4 bg-slate/20"></div>
+
+                  {/* LANG TOGGLE */}
+                  <button 
+                    onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
+                    className="text-xs font-mono text-slate hover:text-bronze px-2"
+                  >
+                    {lang === 'en' ? 'AR' : 'EN'}
+                  </button>
+              </div>
+
             </div>
 
             {/* Mobile Toggle */}
-            <button className={`${blueprintMode ? 'text-[#64ffda]' : 'text-charcoal dark:text-concrete'} md:hidden`} onClick={() => setMenuOpen(true)}>
-              <Menu size={24} strokeWidth={1} />
-            </button>
+            <div className="flex items-center gap-4 md:hidden">
+                 {/* Mobile Theme Toggle (Always visible for easy access) */}
+                 <button 
+                    onClick={() => setDarkMode(!darkMode)}
+                    className={`${blueprintMode ? 'text-[#64ffda]' : 'text-charcoal dark:text-concrete'} p-2`}
+                  >
+                    {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+                  </button>
+
+                <button className={`${blueprintMode ? 'text-[#64ffda]' : 'text-charcoal dark:text-concrete'}`} onClick={() => setMenuOpen(true)}>
+                  <Menu size={24} strokeWidth={1} />
+                </button>
+            </div>
           </div>
         </nav>
       )}
@@ -180,20 +213,17 @@ function App() {
                <button onClick={() => { setCurrentView('landing'); setMenuOpen(false); }} className={`text-bronze ${headingFont} text-2xl`}>{lang === 'ar' ? 'شراء الكتاب' : 'Buy The Book'}</button>
                <button onClick={() => { setCurrentView('philosophy'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.philosophy[lang]}</button>
                <button onClick={() => { setCurrentView('library'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.library[lang]}</button>
+               <button onClick={() => { setCurrentView('community'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.community[lang]}</button>
                
-               <div className="flex flex-col items-center gap-4 mt-8">
-                 <button onClick={() => setBlueprintMode(!blueprintMode)} className="flex items-center gap-2 text-sm uppercase tracking-widest border border-current px-4 py-2">
+               <div className="flex flex-col items-center gap-6 mt-8 pt-8 border-t border-current/10 w-48 mx-auto">
+                 <button onClick={() => setBlueprintMode(!blueprintMode)} className="flex items-center gap-2 text-sm uppercase tracking-widest px-4 py-2">
                     <Layers size={14} /> {blueprintMode ? 'Disable CAD' : 'Enable CAD'}
                  </button>
                  
-                 <button onClick={() => setDarkMode(!darkMode)} className="flex items-center gap-2 text-sm uppercase tracking-widest border border-current px-4 py-2">
-                    {darkMode ? <Sun size={14} /> : <Moon size={14} />} {darkMode ? (lang === 'ar' ? 'الوضع المضيء' : 'Light Mode') : (lang === 'ar' ? 'الوضع الليلي' : 'Dark Mode')}
+                 <button onClick={() => { setLang(lang === 'en' ? 'ar' : 'en'); setMenuOpen(false); }} className="uppercase text-sm tracking-widest opacity-50">
+                   Change Language ({lang === 'en' ? 'AR' : 'EN'})
                  </button>
                </div>
-               
-               <button onClick={() => { setLang(lang === 'en' ? 'ar' : 'en'); setMenuOpen(false); }} className="uppercase text-sm tracking-widest opacity-50 mt-4">
-                 Switch Language ({lang === 'en' ? 'AR' : 'EN'})
-               </button>
             </div>
           </motion.div>
         )}
