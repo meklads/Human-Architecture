@@ -38,7 +38,6 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
   // Flatten the week plan into a single array of days for the deck viewer
   const thirtyDayDeck: DayPlan[] = THIRTY_DAY_PROGRAM.flatMap(week => week.days);
 
-  // Open Deck Handler
   const openDeck = (productId: string) => {
       if (productId === 'kit_cards_30') {
           setActiveDeck(thirtyDayDeck);
@@ -51,9 +50,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
       setShowDeck(true);
   };
 
-  // Handle Purchase -> Redirect to Checkout
   const handlePurchase = (product: Product) => {
-    // Modify product based on selected format if it's the book
     let finalProduct = { ...product };
     if (product.id === 'book_1') {
        if (bookFormat === 'digital') finalProduct = { ...product, price: 25, name: { ...product.name, en: `${product.name['en']} (Digital)`, ar: `${product.name['ar']} (رقمي)` } };
@@ -63,7 +60,6 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
     if (onCheckout) {
         onCheckout([finalProduct]);
     } else {
-        // Fallback for demo
         setCartNotification(product.name[lang]);
         setTimeout(() => setCartNotification(null), 3500);
     }
@@ -73,7 +69,6 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
     return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(data)}&color=2B2B2B&bgcolor=F2F0EB`;
   };
 
-  // Navigation for Deck
   const nextCard = () => setCurrentCardIndex(prev => (prev + 1) % activeDeck.length);
   const prevCard = () => setCurrentCardIndex(prev => (prev - 1 + activeDeck.length) % activeDeck.length);
 
@@ -108,13 +103,9 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                         onClick={() => setSelectedArt(bookProduct)}
                     >
                         <BookCover className="w-full shadow-2xl transform group-hover:scale-105 transition-transform duration-700" />
-                        
-                        {/* Book Badge */}
                          <div className="absolute top-4 right-4 bg-bronze text-white text-xs px-3 py-1 tracking-widest font-bold shadow-lg z-20">
                             BESTSELLER
                         </div>
-                        
-                        {/* Zoom Hint */}
                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[1px] z-30">
                              <div className="bg-alabaster text-charcoal rounded-full w-12 h-12 flex items-center justify-center shadow-xl">
                                  <Eye size={20} />
@@ -129,7 +120,6 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                         {bookProduct.description?.[lang]}
                     </p>
                     
-                    {/* Format Selection */}
                     <div className="flex flex-wrap gap-4 mb-8 border-b border-slate/10 pb-8">
                         <button 
                             onClick={() => setBookFormat('hardcover')}
@@ -163,7 +153,6 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                         </button>
                     </div>
 
-                    {/* Chapter Preview */}
                     <div>
                         <h4 className={`text-xl mb-6 border-b border-slate/10 pb-2 ${headingFont} flex items-center gap-2`}>
                             <Compass size={20} className="text-bronze" />
@@ -226,7 +215,6 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                     <div key={art.id} className="group flex flex-col h-full bg-white dark:bg-[#1a1a1a] border border-slate/5 hover:border-bronze/40 shadow-lg hover:shadow-[0_0_30px_rgba(197,160,101,0.15)] transition-all duration-500 relative">
                         <div className="relative mb-6 p-4 border-b border-slate/10">
                             
-                            {/* Render Panels Simulation */}
                             <div 
                                 className={`w-full h-64 flex gap-[2px] bg-[#e5e5e5] dark:bg-[#0a0a0a] shadow-inner relative cursor-pointer overflow-hidden`}
                                 onClick={() => setSelectedArt(art)}
@@ -285,7 +273,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
              </div>
         </div>
 
-        {/* TOOLS & CARDS */}
+        {/* TOOLS */}
         <div className="mb-24 border-t border-slate/10 pt-24">
              <div className="flex flex-col md:flex-row gap-12 items-center max-w-5xl mx-auto">
                  {toolProducts.map((tool) => (
@@ -293,9 +281,6 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                         <div className="bg-charcoal text-alabaster p-8 md:p-12 shadow-2xl relative overflow-hidden group border border-slate/20 hover:border-bronze/50 transition-colors h-full flex flex-col">
                             <div className="absolute right-0 top-0 w-64 h-64 bg-bronze/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
                             
-                            <div className="absolute bottom-0 right-0 w-32 h-40 bg-white/5 rotate-12 translate-y-10 translate-x-10 border border-white/10"></div>
-                            <div className="absolute bottom-0 right-0 w-32 h-40 bg-white/5 rotate-6 translate-y-6 translate-x-6 border border-white/10"></div>
-
                             <span className="text-bronze text-xs tracking-[0.3em] uppercase block mb-4">{isAr ? 'أدوات' : 'Tools'}</span>
                             <h3 className={`text-3xl mb-4 ${headingFont}`}>{tool.name[lang]}</h3>
                             <p className={`text-slate/60 mb-8 ${bodyFont}`}>{tool.description?.[lang]}</p>
@@ -353,7 +338,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                     <button onClick={() => setQrItem(null)} className="absolute top-2 right-2 text-charcoal/50 hover:text-charcoal"><X /></button>
                     <span className="text-charcoal/40 text-[0.6rem] uppercase tracking-[0.3em] font-mono mb-6 block">TAG ID: {qrItem.id.toUpperCase()}</span>
                     <div className="bg-white p-4 border border-charcoal/10 inline-block mb-6 shadow-inner">
-                        <img src={generateQrUrl(`https://humanarchitecture.com/link/${qrItem.type}/${qrItem.id}`)} alt="QR Code" className="w-48 h-48 mix-blend-multiply" />
+                        <img src={generateQrUrl(`https://thehumanarchitecture.com/?view=library&id=${qrItem.id}`)} alt="QR Code" className="w-48 h-48 mix-blend-multiply" />
                     </div>
                     <h3 className={`text-xl mb-2 text-charcoal ${headingFont}`}>{qrItem.title}</h3>
                     <div className="flex justify-center gap-4 border-t border-charcoal/10 pt-4">
@@ -364,7 +349,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
         )}
       </AnimatePresence>
 
-      {/* ROOM MOCKUP MODAL - With Native BookCover */}
+      {/* ROOM MOCKUP MODAL */}
       <AnimatePresence>
         {selectedArt && (
             <motion.div 

@@ -136,18 +136,19 @@
   <script type="importmap">
 {
   "imports": {
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
-    "recharts": "https://aistudiocdn.com/recharts@^3.4.1",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "react": "https://aistudiocdn.com/react@^19.2.0",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.0"
   }
 }
 </script>
 </head>
   <body class="bg-darkBg text-concrete antialiased transition-colors duration-700 overflow-x-hidden">
     <div id="root"></div>
+    <!-- CRITICAL: This connects your index.tsx to the HTML -->
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>

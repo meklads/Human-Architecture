@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Language, View, Product } from './types';
 import { TRANSLATIONS } from './constants';
-import { Menu, X, Moon, Sun, Grid, ScanLine, Activity, Wifi, Battery, Layers } from './components/Icons';
+import { Menu, X, Moon, Sun, Grid, ScanLine, Activity, Wifi, Battery, Layers, ShoppingBag } from './components/Icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HomePage } from './components/HomePage';
 import { PhilosophyPage } from './components/PhilosophyPage';
@@ -15,11 +15,15 @@ import { CheckoutPage } from './components/CheckoutPage';
 import { CustomCursor } from './components/CustomCursor';
 
 function App() {
-  const [lang, setLang] = useState<Language>('en');
+  // Changed default to 'ar' to match the depth of content
+  const [lang, setLang] = useState<Language>('ar');
   const [currentView, setCurrentView] = useState<View>('home');
   const [darkMode, setDarkMode] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  
+  // Architectural Loading State
+  const [loadingPhase, setLoadingPhase] = useState(0);
   
   // NEW: Blueprint Mode State
   const [blueprintMode, setBlueprintMode] = useState(false);
@@ -27,9 +31,44 @@ function App() {
   // NEW: Cart State for Checkout
   const [checkoutItems, setCheckoutItems] = useState<Product[]>([]);
 
-  // Initial Load Simulation
+  // Construction Phases for Loader
+  const LOAD_PHASES = [
+    { ar: 'جاري فحص التربة والأساسات...', en: 'ANALYZING SOIL CONDITIONS...' },
+    { ar: 'صب الخرسانة المسلحة...', en: 'POURING REINFORCED CONCRETE...' },
+    { ar: 'رفع الأعمدة الإنشائية...', en: 'ERECTING STRUCTURAL PILLARS...' },
+    { ar: 'تركيب الأنظمة الداخلية...', en: 'INSTALLING INTERNAL SYSTEMS...' },
+    { ar: 'طلاء الواجهة الخارجية...', en: 'FINISHING EXTERIOR FACADE...' },
+    { ar: 'المبنى جاهز للإشغال.', en: 'STRUCTURE READY FOR OCCUPANCY.' }
+  ];
+
+  // Initial Load Simulation & Deep Link Handler
   useEffect(() => {
-    setTimeout(() => setLoading(false), 2500);
+    // 1. Architectural Boot Sequence
+    const phaseInterval = setInterval(() => {
+      setLoadingPhase(prev => {
+        if (prev < LOAD_PHASES.length - 1) return prev + 1;
+        return prev;
+      });
+    }, 400); // Cycle through phases
+
+    const bootTimeout = setTimeout(() => {
+      setLoading(false);
+      clearInterval(phaseInterval);
+    }, 2800);
+
+    // 2. Handle Incoming QR Links (Query Params)
+    const params = new URLSearchParams(window.location.search);
+    const targetView = params.get('view') as View;
+    
+    // Validate view before switching
+    if (targetView && ['home', 'philosophy', 'journal', 'library', 'contact', 'community', 'landing'].includes(targetView)) {
+        setCurrentView(targetView);
+    }
+
+    return () => {
+      clearTimeout(bootTimeout);
+      clearInterval(phaseInterval);
+    };
   }, []);
 
   // Effect to toggle body classes
@@ -57,20 +96,38 @@ function App() {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 bg-[#050505] flex flex-col items-center justify-center z-50">
-        <div className="w-64 h-[2px] bg-white/10 mb-6 relative overflow-hidden">
+      <div className="fixed inset-0 bg-[#050505] flex flex-col items-center justify-center z-50 text-bronze">
+        <div className="w-64 h-[1px] bg-white/10 mb-8 relative overflow-hidden">
           <motion.div 
             animate={{ x: ['-100%', '100%'] }} 
-            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            className="absolute top-0 left-0 w-full h-full bg-bronze"
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-0 left-0 w-1/2 h-full bg-bronze blur-[2px]"
           />
         </div>
-        <div className="flex flex-col items-center gap-2">
-            <span className={`text-xs tracking-[0.5em] uppercase text-bronze ${lang === 'ar' ? 'font-ibm' : 'font-montserrat'}`}>
-                {lang === 'ar' ? 'تهيئة الموقع' : 'INITIALIZING SITE'}
-            </span>
-            <span className="text-[0.5rem] font-mono text-slate/50">V.2.0.4 // SECURE CONNECTION</span>
+        
+        {/* Architectural Loader Text */}
+        <div className="flex flex-col items-center gap-4 h-16">
+            <motion.span 
+              key={loadingPhase}
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              className={`text-sm tracking-[0.2em] uppercase ${lang === 'ar' ? 'font-ibm' : 'font-mono'}`}
+            >
+                {lang === 'ar' ? LOAD_PHASES[loadingPhase].ar : LOAD_PHASES[loadingPhase].en}
+            </motion.span>
+            
+            <div className="flex gap-1">
+              {[...Array(5)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className={`w-1 h-1 rounded-full transition-colors duration-300 ${i <= loadingPhase ? 'bg-bronze' : 'bg-white/10'}`} 
+                />
+              ))}
+            </div>
         </div>
+        
+        <span className="absolute bottom-10 text-[0.5rem] font-mono text-slate/50">V.2.0.5 // SYSTEM INTEGRITY CHECK</span>
       </div>
     );
   }
@@ -109,7 +166,7 @@ function App() {
             </button>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-6">
               {['philosophy', 'journal', 'library', 'community'].map((view) => (
                   <button 
                     key={view}
@@ -121,43 +178,65 @@ function App() {
                   </button>
               ))}
 
-              <div className="h-6 w-px bg-slate/20 mx-2"></div>
-
-              {/* BLUEPRINT TOGGLE (The Magic Switch) */}
+              {/* PRIMARY ACTION: BUY BLUEPRINT */}
               <button 
-                onClick={() => setBlueprintMode(!blueprintMode)}
-                className={`flex items-center gap-2 px-3 py-1 border text-[0.6rem] uppercase tracking-widest transition-all ${blueprintMode ? 'border-[#64ffda] text-[#64ffda] bg-[#64ffda]/10 shadow-[0_0_10px_#64ffda]' : 'border-slate/20 text-slate hover:border-bronze hover:text-bronze'}`}
+                onClick={() => setCurrentView('landing')} 
+                className={`ml-4 text-xs font-bold border px-5 py-2 uppercase tracking-widest transition-all flex items-center gap-2 ${blueprintMode ? 'border-[#64ffda] text-[#64ffda] hover:bg-[#64ffda]/10' : 'border-bronze text-bronze hover:bg-bronze hover:text-white'}`}
               >
-                  <Layers size={12} />
-                  {blueprintMode ? 'CAD: ON' : 'CAD: OFF'}
-              </button>
-
-              <button onClick={() => setCurrentView('landing')} className={`text-xs font-bold border px-4 py-2 uppercase tracking-widest hover:bg-bronze hover:text-white transition-all ${blueprintMode ? 'border-[#64ffda] text-[#64ffda]' : 'border-bronze text-bronze'}`}>
+                 <ShoppingBag size={14} />
                  {lang === 'ar' ? 'المخطط' : 'Blueprint'}
               </button>
 
-              {/* Theme Toggle */}
-              <button 
-                onClick={() => setDarkMode(!darkMode)}
-                className={`text-slate hover:text-bronze transition-colors ${blueprintMode ? 'text-[#64ffda]' : ''}`}
-                title={darkMode ? (lang === 'ar' ? 'الوضع المضيء' : 'Light Mode') : (lang === 'ar' ? 'الوضع الليلي' : 'Dark Mode')}
-              >
-                {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-              </button>
+              <div className="h-8 w-px bg-slate/20 mx-2"></div>
 
-              {/* Lang Toggle */}
-              <button 
-                onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-                className="text-xs font-mono text-slate hover:text-bronze w-8"
-              >
-                {lang === 'en' ? 'AR' : 'EN'}
-              </button>
+              {/* SETTINGS CLUSTER: CAD | THEME | LANG */}
+              <div className="flex items-center gap-3 bg-slate/5 px-3 py-1 rounded-full border border-slate/10">
+                  {/* BLUEPRINT TOGGLE */}
+                  <button 
+                    onClick={() => setBlueprintMode(!blueprintMode)}
+                    className={`p-2 rounded-full transition-all ${blueprintMode ? 'text-[#64ffda] bg-[#64ffda]/10' : 'text-slate hover:text-bronze'}`}
+                    title="CAD Mode"
+                  >
+                      <Layers size={16} />
+                  </button>
+
+                  {/* THEME TOGGLE - RESTORED & EMPHASIZED */}
+                  <button 
+                    onClick={() => setDarkMode(!darkMode)}
+                    className={`p-2 rounded-full transition-all ${darkMode ? 'text-white' : 'text-charcoal'} hover:text-bronze`}
+                    title={darkMode ? (lang === 'ar' ? 'الوضع المضيء' : 'Light Mode') : (lang === 'ar' ? 'الوضع الليلي' : 'Dark Mode')}
+                    aria-label="Toggle Dark Mode"
+                  >
+                    {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+                  </button>
+
+                  <div className="w-px h-4 bg-slate/20"></div>
+
+                  {/* LANG TOGGLE */}
+                  <button 
+                    onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
+                    className="text-xs font-mono text-slate hover:text-bronze px-2"
+                  >
+                    {lang === 'en' ? 'AR' : 'EN'}
+                  </button>
+              </div>
+
             </div>
 
             {/* Mobile Toggle */}
-            <button className={`${blueprintMode ? 'text-[#64ffda]' : 'text-charcoal dark:text-concrete'} md:hidden`} onClick={() => setMenuOpen(true)}>
-              <Menu size={24} strokeWidth={1} />
-            </button>
+            <div className="flex items-center gap-4 md:hidden">
+                 {/* Mobile Theme Toggle (Always visible for easy access) */}
+                 <button 
+                    onClick={() => setDarkMode(!darkMode)}
+                    className={`${blueprintMode ? 'text-[#64ffda]' : 'text-charcoal dark:text-concrete'} p-2`}
+                  >
+                    {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+                  </button>
+
+                <button className={`${blueprintMode ? 'text-[#64ffda]' : 'text-charcoal dark:text-concrete'}`} onClick={() => setMenuOpen(true)}>
+                  <Menu size={24} strokeWidth={1} />
+                </button>
+            </div>
           </div>
         </nav>
       )}
@@ -180,20 +259,17 @@ function App() {
                <button onClick={() => { setCurrentView('landing'); setMenuOpen(false); }} className={`text-bronze ${headingFont} text-2xl`}>{lang === 'ar' ? 'شراء الكتاب' : 'Buy The Book'}</button>
                <button onClick={() => { setCurrentView('philosophy'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.philosophy[lang]}</button>
                <button onClick={() => { setCurrentView('library'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.library[lang]}</button>
+               <button onClick={() => { setCurrentView('community'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.community[lang]}</button>
                
-               <div className="flex flex-col items-center gap-4 mt-8">
-                 <button onClick={() => setBlueprintMode(!blueprintMode)} className="flex items-center gap-2 text-sm uppercase tracking-widest border border-current px-4 py-2">
+               <div className="flex flex-col items-center gap-6 mt-8 pt-8 border-t border-current/10 w-48 mx-auto">
+                 <button onClick={() => setBlueprintMode(!blueprintMode)} className="flex items-center gap-2 text-sm uppercase tracking-widest px-4 py-2">
                     <Layers size={14} /> {blueprintMode ? 'Disable CAD' : 'Enable CAD'}
                  </button>
                  
-                 <button onClick={() => setDarkMode(!darkMode)} className="flex items-center gap-2 text-sm uppercase tracking-widest border border-current px-4 py-2">
-                    {darkMode ? <Sun size={14} /> : <Moon size={14} />} {darkMode ? (lang === 'ar' ? 'الوضع المضيء' : 'Light Mode') : (lang === 'ar' ? 'الوضع الليلي' : 'Dark Mode')}
+                 <button onClick={() => { setLang(lang === 'en' ? 'ar' : 'en'); setMenuOpen(false); }} className="uppercase text-sm tracking-widest opacity-50">
+                   Change Language ({lang === 'en' ? 'AR' : 'EN'})
                  </button>
                </div>
-               
-               <button onClick={() => { setLang(lang === 'en' ? 'ar' : 'en'); setMenuOpen(false); }} className="uppercase text-sm tracking-widest opacity-50 mt-4">
-                 Switch Language ({lang === 'en' ? 'AR' : 'EN'})
-               </button>
             </div>
           </motion.div>
         )}
