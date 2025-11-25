@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, View } from '../types';
@@ -19,25 +18,33 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
   const headingFont = isAr ? 'font-amiri' : 'font-playfair';
   const bodyFont = isAr ? 'font-ibm' : 'font-montserrat';
 
-  // Use Query Params for Bulletproof SPA Linking
-  const generateQrUrl = (data: string) => {
-    return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(data)}&color=2B2B2B&bgcolor=F2F0EB`;
+  // Robust QR generation for Hash Routing
+  const generateQrUrl = (view: string, id: string) => {
+    // Generates link like: https://site.com/#philosophy?id=mind
+    const url = `${window.location.protocol}//${window.location.host}/#${view}?id=${id}`;
+    return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(url)}&color=2B2B2B&bgcolor=F2F0EB`;
   };
   
-  // Handle Incoming Scroll Requests
   useEffect(() => {
-      const hash = window.location.hash;
-      if (hash === '#assessment') {
-           setTimeout(() => {
-              document.getElementById('assessment-section')?.scrollIntoView({ behavior: 'smooth' });
-              // Clear hash to allow re-triggering later
-              try {
-                history.replaceState(null, '', window.location.pathname + window.location.search); 
-              } catch (e) {
-                console.debug('Hash clear skipped', e);
-              }
-           }, 500);
-      }
+      // Logic to handle auto-scroll if hash contains 'assessment'
+      const checkHashForScroll = () => {
+          const hash = window.location.hash;
+          if (hash.includes('assessment')) {
+               setTimeout(() => {
+                  const element = document.getElementById('assessment-section');
+                  if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                  }
+               }, 500); // Slight delay to ensure render
+          }
+      };
+
+      // Check on mount
+      checkHashForScroll();
+
+      // Listen for hash changes (e.g. clicking "Run Diagnostics" from Hero while already on home)
+      window.addEventListener('hashchange', checkHashForScroll);
+      return () => window.removeEventListener('hashchange', checkHashForScroll);
   }, []); 
 
   return (
@@ -46,14 +53,11 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
     >
       <Hero lang={lang} setView={setView} />
       
-      {/* Added ID for linking */}
       <div id="assessment-section">
         <Assessment lang={lang} setView={setView} />
       </div>
 
-      {/* Pillars Preview - Architectural Gallery */}
       <section className="py-24 bg-concrete/30 dark:bg-white/5 relative overflow-hidden">
-         {/* Background Watermark */}
          <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 text-[10rem] md:text-[15rem] text-slate/5 pointer-events-none whitespace-nowrap ${headingFont} z-0`}>
             PILLARS
          </div>
@@ -75,7 +79,6 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                 onClick={() => setView('philosophy')}
                 className="group relative h-[500px] lg:h-[650px] overflow-hidden cursor-pointer"
               >
-                {/* 1. Image Layer */}
                 <div className="absolute inset-0 bg-charcoal">
                    <img 
                     src={pillar.image} 
@@ -84,28 +87,21 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                    />
                 </div>
 
-                {/* 2. Darkness Overlay */}
                 <div className="absolute inset-0 bg-charcoal/80 group-hover:bg-charcoal/10 transition-colors duration-[800ms]"></div>
                 
-                {/* 3. Illumination Layer */}
                 <div className="absolute inset-0 bg-gradient-to-b from-bronze/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-[800ms] mix-blend-overlay pointer-events-none"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-[800ms] pointer-events-none"></div>
 
-                {/* 4. Architectural Grid Pattern */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-10 pointer-events-none transition-opacity duration-[1000ms] architectural-grid mix-blend-soft-light"></div>
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-1 pointer-events-none transition-opacity duration-[1000ms] architectural-grid mix-blend-soft-light"></div>
                 
-                {/* 5. Inner Border */}
                 <div className="absolute inset-0 border-[0px] group-hover:border-[1px] border-bronze/30 transition-all duration-[800ms] m-4 pointer-events-none"></div>
 
-                {/* 6. Content Layer */}
                 <div className="absolute inset-0 p-8 flex flex-col justify-between z-20">
-                   {/* Top: Number & QR Code */}
                    <div className="flex justify-between items-start">
                       <span className="text-xs text-bronze uppercase tracking-widest border border-bronze/30 px-2 py-1 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-[-10px] group-hover:translate-y-0">
                          {isAr ? 'عمود' : 'Pillar'} {pillar.id}
                       </span>
 
-                      {/* Interactive QR Code */}
                       <button 
                         onClick={(e) => {
                             e.stopPropagation();
@@ -128,7 +124,6 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                       </span>
                    </div>
 
-                   {/* Bottom: Title & Description Slide-up */}
                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-[800ms] ease-out">
                       <h3 className={`text-3xl text-slate/50 group-hover:text-white mb-2 ${headingFont} transition-colors duration-500 relative inline-block`}>
                          {pillar.title[lang]}
@@ -163,7 +158,6 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
         </div>
       </section>
 
-      {/* Case Studies */}
       <section className="py-24 bg-alabaster dark:bg-darkBg border-t border-slate/10">
           <div className="container mx-auto px-6">
               <div className="flex flex-col items-center mb-16">
@@ -208,7 +202,6 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
           </div>
       </section>
 
-      {/* Journal Preview */}
       <section className="py-32">
         <div className="container mx-auto px-6">
            <div className="flex items-end justify-between mb-16 border-b border-charcoal dark:border-concrete pb-6">
@@ -239,7 +232,6 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
         </div>
       </section>
 
-      {/* QR MODAL */}
       <AnimatePresence>
         {qrItem && (
             <motion.div 
@@ -260,9 +252,8 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                     </span>
 
                     <div className="bg-white p-4 border border-charcoal/10 inline-block mb-6 shadow-inner">
-                        {/* Generate Dynamic Safe URL */}
                         <img 
-                            src={generateQrUrl(`https://thehumanarchitecture.com/?view=philosophy&id=${qrItem.id}`)} 
+                            src={generateQrUrl('philosophy', qrItem.id)} 
                             alt="QR Code" 
                             className="w-48 h-48 mix-blend-multiply"
                         />
