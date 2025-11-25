@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, View } from '../types';
@@ -18,10 +19,12 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
   const headingFont = isAr ? 'font-amiri' : 'font-playfair';
   const bodyFont = isAr ? 'font-ibm' : 'font-montserrat';
 
-  // Robust QR generation for Hash Routing
+  // Robust QR generation for Hash Routing that works on GitHub/Netlify/Local
   const generateQrUrl = (view: string, id: string) => {
-    // Generates link like: https://site.com/#philosophy?id=mind
-    const url = `${window.location.protocol}//${window.location.host}/#${view}?id=${id}`;
+    // Determine the base URL dynamically
+    const baseUrl = window.location.origin + window.location.pathname;
+    const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+    const url = `${cleanBaseUrl}/#${view}?id=${id}`;
     return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(url)}&color=2B2B2B&bgcolor=F2F0EB`;
   };
   

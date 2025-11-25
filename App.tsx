@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Language, View, Product } from './types';
 import { TRANSLATIONS } from './constants';
@@ -75,18 +76,21 @@ function App() {
   // -----------------------------------------------------
 
   useEffect(() => {
-    // Boot Sequence Simulation
+    // Only show full boot sequence if we are on the 'home' view initially to make inner pages feel faster
+    const isInitialHome = !window.location.hash || window.location.hash === '#home';
+    const duration = isInitialHome ? 2800 : 800; // Faster load for deep links
+
     const phaseInterval = setInterval(() => {
       setLoadingPhase(prev => {
         if (prev < LOAD_PHASES.length - 1) return prev + 1;
         return prev;
       });
-    }, 400);
+    }, duration / 7);
 
     const bootTimeout = setTimeout(() => {
       setLoading(false);
       clearInterval(phaseInterval);
-    }, 2800);
+    }, duration);
 
     return () => {
       clearTimeout(bootTimeout);

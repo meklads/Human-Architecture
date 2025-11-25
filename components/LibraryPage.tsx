@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, Product, DayPlan } from '../types';
@@ -86,8 +87,12 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
   };
 
   const generateQrUrl = (id: string) => {
-    // Robust URL construction for Hash Routing
-    const url = `${window.location.protocol}//${window.location.host}/#library?id=${id}`;
+    // Robust URL construction that works on GitHub Pages, Netlify, or Custom Domain
+    // It grabs the current base URL automatically.
+    const baseUrl = window.location.origin + window.location.pathname;
+    // Ensure we don't have double slashes if pathname is just '/'
+    const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+    const url = `${cleanBaseUrl}/#library?id=${id}`;
     return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(url)}&color=2B2B2B&bgcolor=F2F0EB`;
   };
 
