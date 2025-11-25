@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, Product, DayPlan } from '../types';
 import { PRODUCTS, TRANSLATIONS, THIRTY_DAY_PROGRAM, BOOK_CHAPTERS, THEORY_CARDS } from '../constants';
@@ -14,8 +14,14 @@ interface LibraryPageProps {
 export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) => {
   const [selectedArt, setSelectedArt] = useState<Product | null>(null);
   const [bookFormat, setBookFormat] = useState<'hardcover' | 'digital' | 'audio'>('hardcover');
+  
+  // Cart State - Now used to trigger Checkout
   const [cartNotification, setCartNotification] = useState<string | null>(null);
+
+  // QR Modal State
   const [qrItem, setQrItem] = useState<{id: string, title: string, type: 'chapter' | 'art', desc: string} | null>(null);
+
+  // Card Deck Modal State
   const [showDeck, setShowDeck] = useState(false);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [activeDeck, setActiveDeck] = useState<DayPlan[]>([]);
@@ -29,36 +35,10 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
   const bookProduct = PRODUCTS.find(p => p.category === 'book');
   const toolProducts = PRODUCTS.filter(p => p.category === 'tool');
 
+  // Flatten the week plan into a single array of days for the deck viewer
   const thirtyDayDeck: DayPlan[] = THIRTY_DAY_PROGRAM.flatMap(week => week.days);
 
-  // --- DEEP LINKING CHECK & LISTENER ---
-  useEffect(() => {
-    const handleDeepLink = () => {
-      const hash = window.location.hash;
-      if (hash.includes('?id=')) {
-          const id = hash.split('?id=')[1];
-          
-          // Check products
-          const product = PRODUCTS.find(p => p.id === id);
-          if (product) {
-              setSelectedArt(product);
-          } else if (id === 'kit_cards_30') {
-              openDeck('kit_cards_30');
-          } else if (id === 'kit_cards_theory') {
-              openDeck('kit_cards_theory');
-          }
-      }
-    };
-
-    // Check on mount
-    handleDeepLink();
-
-    // Listen for hash changes while on the page (for QR scanning without reload)
-    window.addEventListener('hashchange', handleDeepLink);
-    return () => window.removeEventListener('hashchange', handleDeepLink);
-  }, []);
-  // --------------------------
-
+  // Open Deck Handler
   const openDeck = (productId: string) => {
       if (productId === 'kit_cards_30') {
           setActiveDeck(thirtyDayDeck);
@@ -71,7 +51,9 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
       setShowDeck(true);
   };
 
+  // Handle Purchase -> Redirect to Checkout
   const handlePurchase = (product: Product) => {
+    // Modify product based on selected format if it's the book
     let finalProduct = { ...product };
     if (product.id === 'book_1') {
        if (bookFormat === 'digital') finalProduct = { ...product, price: 25, name: { ...product.name, en: `${product.name['en']} (Digital)`, ar: `${product.name['ar']} (رقمي)` } };
@@ -81,21 +63,17 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
     if (onCheckout) {
         onCheckout([finalProduct]);
     } else {
+        // Fallback for demo
         setCartNotification(product.name[lang]);
         setTimeout(() => setCartNotification(null), 3500);
     }
   };
 
-  const generateQrUrl = (id: string) => {
-    // Robust URL construction that works on GitHub Pages, Netlify, or Custom Domain
-    // It grabs the current base URL automatically.
-    const baseUrl = window.location.origin + window.location.pathname;
-    // Ensure we don't have double slashes if pathname is just '/'
-    const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-    const url = `${cleanBaseUrl}/#library?id=${id}`;
-    return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(url)}&color=2B2B2B&bgcolor=F2F0EB`;
+  const generateQrUrl = (data: string) => {
+    return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(data)}&color=2B2B2B&bgcolor=F2F0EB`;
   };
 
+  // Navigation for Deck
   const nextCard = () => setCurrentCardIndex(prev => (prev + 1) % activeDeck.length);
   const prevCard = () => setCurrentCardIndex(prev => (prev - 1 + activeDeck.length) % activeDeck.length);
 
@@ -106,6 +84,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
     >
       <div className="container mx-auto px-6">
         
+        {/* Store Header */}
         <div className="text-center mb-20 max-w-4xl mx-auto border-b border-slate/10 pb-12">
           <span className="text-bronze text-xs tracking-[0.5em] uppercase block mb-4">The Human Architecture Archive™</span>
           <h1 className={`text-5xl md:text-7xl mb-6 ${headingFont}`}>
@@ -118,6 +97,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
           </p>
         </div>
 
+        {/* FEATURED: THE BOOK */}
         {bookProduct && (
         <div className="mb-32 bg-white dark:bg-white/5 border border-slate/10 hover:border-bronze/40 p-8 md:p-12 relative overflow-hidden shadow-lg hover:shadow-[0_0_40px_rgba(197,160,101,0.15)] transition-all duration-700">
             <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none architectural-grid"></div>
@@ -128,9 +108,13 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                         onClick={() => setSelectedArt(bookProduct)}
                     >
                         <BookCover className="w-full shadow-2xl transform group-hover:scale-105 transition-transform duration-700" />
+                        
+                        {/* Book Badge */}
                          <div className="absolute top-4 right-4 bg-bronze text-white text-xs px-3 py-1 tracking-widest font-bold shadow-lg z-20">
                             BESTSELLER
                         </div>
+                        
+                        {/* Zoom Hint */}
                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[1px] z-30">
                              <div className="bg-alabaster text-charcoal rounded-full w-12 h-12 flex items-center justify-center shadow-xl">
                                  <Eye size={20} />
@@ -145,6 +129,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                         {bookProduct.description?.[lang]}
                     </p>
                     
+                    {/* Format Selection */}
                     <div className="flex flex-wrap gap-4 mb-8 border-b border-slate/10 pb-8">
                         <button 
                             onClick={() => setBookFormat('hardcover')}
@@ -178,6 +163,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                         </button>
                     </div>
 
+                    {/* Chapter Preview */}
                     <div>
                         <h4 className={`text-xl mb-6 border-b border-slate/10 pb-2 ${headingFont} flex items-center gap-2`}>
                             <Compass size={20} className="text-bronze" />
@@ -219,6 +205,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
         </div>
         )}
 
+        {/* ART GALLERY */}
         <div className="mb-32">
              <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-slate/10 pb-6">
                  <div>
@@ -239,6 +226,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                     <div key={art.id} className="group flex flex-col h-full bg-white dark:bg-[#1a1a1a] border border-slate/5 hover:border-bronze/40 shadow-lg hover:shadow-[0_0_30px_rgba(197,160,101,0.15)] transition-all duration-500 relative">
                         <div className="relative mb-6 p-4 border-b border-slate/10">
                             
+                            {/* Render Panels Simulation */}
                             <div 
                                 className={`w-full h-64 flex gap-[2px] bg-[#e5e5e5] dark:bg-[#0a0a0a] shadow-inner relative cursor-pointer overflow-hidden`}
                                 onClick={() => setSelectedArt(art)}
@@ -297,6 +285,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
              </div>
         </div>
 
+        {/* TOOLS & CARDS */}
         <div className="mb-24 border-t border-slate/10 pt-24">
              <div className="flex flex-col md:flex-row gap-12 items-center max-w-5xl mx-auto">
                  {toolProducts.map((tool) => (
@@ -304,6 +293,9 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                         <div className="bg-charcoal text-alabaster p-8 md:p-12 shadow-2xl relative overflow-hidden group border border-slate/20 hover:border-bronze/50 transition-colors h-full flex flex-col">
                             <div className="absolute right-0 top-0 w-64 h-64 bg-bronze/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
                             
+                            <div className="absolute bottom-0 right-0 w-32 h-40 bg-white/5 rotate-12 translate-y-10 translate-x-10 border border-white/10"></div>
+                            <div className="absolute bottom-0 right-0 w-32 h-40 bg-white/5 rotate-6 translate-y-6 translate-x-6 border border-white/10"></div>
+
                             <span className="text-bronze text-xs tracking-[0.3em] uppercase block mb-4">{isAr ? 'أدوات' : 'Tools'}</span>
                             <h3 className={`text-3xl mb-4 ${headingFont}`}>{tool.name[lang]}</h3>
                             <p className={`text-slate/60 mb-8 ${bodyFont}`}>{tool.description?.[lang]}</p>
@@ -328,6 +320,8 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
         </div>
 
       </div>
+
+      {/* --- MODALS --- */}
       
       <AnimatePresence>
         {cartNotification && (
@@ -359,20 +353,18 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                     <button onClick={() => setQrItem(null)} className="absolute top-2 right-2 text-charcoal/50 hover:text-charcoal"><X /></button>
                     <span className="text-charcoal/40 text-[0.6rem] uppercase tracking-[0.3em] font-mono mb-6 block">TAG ID: {qrItem.id.toUpperCase()}</span>
                     <div className="bg-white p-4 border border-charcoal/10 inline-block mb-6 shadow-inner">
-                        <img src={generateQrUrl(qrItem.id)} alt="QR Code" className="w-48 h-48 mix-blend-multiply" />
+                        <img src={generateQrUrl(`https://humanarchitecture.com/link/${qrItem.type}/${qrItem.id}`)} alt="QR Code" className="w-48 h-48 mix-blend-multiply" />
                     </div>
                     <h3 className={`text-xl mb-2 text-charcoal ${headingFont}`}>{qrItem.title}</h3>
                     <div className="flex justify-center gap-4 border-t border-charcoal/10 pt-4">
-                         <button onClick={() => {
-                            setQrItem(null);
-                            setSelectedArt(PRODUCTS.find(p=>p.id === qrItem.id) || null);
-                         }} className="text-xs text-bronze uppercase tracking-widest font-bold hover:underline">{isAr ? 'فتح' : 'Open'}</button>
+                         <button className="text-xs text-bronze uppercase tracking-widest font-bold">{isAr ? 'فتح' : 'Open'}</button>
                     </div>
                 </motion.div>
             </motion.div>
         )}
       </AnimatePresence>
 
+      {/* ROOM MOCKUP MODAL - With Native BookCover */}
       <AnimatePresence>
         {selectedArt && (
             <motion.div 
@@ -403,6 +395,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
         )}
       </AnimatePresence>
 
+      {/* CARD DECK VIEWER MODAL */}
       <AnimatePresence>
           {showDeck && activeDeck.length > 0 && (
               <motion.div 
@@ -442,6 +435,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                           </motion.div>
                       </AnimatePresence>
                       
+                      {/* Navigation Arrows */}
                       <button onClick={prevCard} className="absolute left-[-60px] top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-colors"><ArrowLeft size={40} /></button>
                       <button onClick={nextCard} className="absolute right-[-60px] top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-colors"><ArrowRight size={40} /></button>
                   </div>

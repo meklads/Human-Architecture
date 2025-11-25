@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Language, View } from '../types';
@@ -19,9 +20,17 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
   const { scrollYProgress } = useScroll({ target: containerRef });
   const yParallax = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
-  // Enhanced Navigation Handler with Hash Support
-  const handleNavigate = (target: View, hashSuffix?: string) => {
-     window.location.hash = `#${target}${hashSuffix ? hashSuffix : ''}`;
+  // Enhanced Navigation Handler with Scroll Support
+  const handleNavigate = (target: View, hash?: string) => {
+    if (setView) {
+        setView(target);
+        if (hash) {
+            // Using window.location.hash to trigger the effect in the target component
+            window.location.hash = hash;
+        } else {
+            window.scrollTo(0, 0);
+        }
+    }
   };
 
   return (
@@ -73,7 +82,7 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
         </div>
       </section>
 
-      {/* 2. THE THEORY ROOM - ARCHIVE GRID */}
+      {/* 2. THE THEORY ROOM - ARCHIVE GRID (Redesigned for better UX) */}
       <section className="py-24 bg-white dark:bg-[#151515] border-t border-b border-slate/10 relative">
          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-bronze/30 to-transparent opacity-50"></div>
          
@@ -89,7 +98,7 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
              </p>
          </div>
 
-         {/* The Archive Grid */}
+         {/* The Archive Grid - No Scroll, Full Visibility */}
          <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
              {THEORY_CARDS.map((card, idx) => (
                  <motion.div 
@@ -224,7 +233,7 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
                                  >
                                      
                                      {/* Hover Effect: CAD Lines */}
-                                     <div className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-1 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/graphy.png')] transition-opacity"></div>
+                                     <div className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/graphy.png')] transition-opacity"></div>
                                      
                                      <div className="flex justify-between items-start mb-4 relative z-10">
                                          <span className="text-[0.6rem] font-mono uppercase text-slate/60 bg-slate/10 px-2 py-0.5 rounded-sm">Day {day.day < 10 ? `0${day.day}` : day.day}</span>
@@ -327,7 +336,7 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
                         </span>
                         <div className="flex gap-4 transform translate-y-4 group-hover:translate-y-0 transition-transform delay-200">
                             <button 
-                                onClick={() => handleNavigate('library', `?id=${pillar.id}`)} 
+                                onClick={() => handleNavigate('library')} 
                                 className="flex-1 py-4 bg-white text-charcoal text-xs uppercase tracking-[0.2em] font-bold hover:bg-bronze hover:text-white transition-colors flex items-center justify-center gap-2 shadow-lg"
                             >
                                 <ShoppingBag size={16} /> {isAr ? 'شراء اللوحة' : 'Buy Art'}
@@ -374,13 +383,13 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
         </div>
       </section>
 
-      {/* 6. NEXT STEPS NAV */}
+      {/* 6. NEXT STEPS NAV (Fixed Links) */}
       <section className="py-24 bg-white dark:bg-[#0a0a0a] border-t border-slate/10">
           <div className="container mx-auto px-6">
               <div className="flex flex-col md:flex-row gap-8 max-w-4xl mx-auto">
                   {/* Option 1: Start Audit - Links to Home Assessment */}
                   <div 
-                    onClick={() => handleNavigate('home', '?section=assessment')}
+                    onClick={() => handleNavigate('home', '#assessment')}
                     className="flex-1 border border-slate/10 p-10 hover:border-bronze transition-colors group text-center md:text-start cursor-pointer hover:shadow-lg"
                   >
                       <div className="mb-6 text-slate group-hover:text-bronze transition-colors">
