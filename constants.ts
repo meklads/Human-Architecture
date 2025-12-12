@@ -1,5 +1,5 @@
 
-import { PillarData, BlogPost, Product, CommunityPost, WeekPlan, BookChapterPreview, DayPlan, GuildMember, AssessmentCategory } from './types';
+import { PillarData, BlogPost, Product, WeekPlan, BookChapterPreview, DayPlan, AssessmentCategory, CommunityPost } from './types';
 
 export const TRANSLATIONS = {
   nav: {
@@ -7,9 +7,9 @@ export const TRANSLATIONS = {
     philosophy: { ar: 'فلسفة البناء', en: 'The Philosophy', fr: 'La Philosophie' },
     library: { ar: 'المتجر والمعرض', en: 'The Gallery', fr: 'La Galerie' },
     journal: { ar: 'صحيفة الأحوال', en: 'Journal', fr: 'Journal' },
-    community: { ar: 'نقابة البنائين', en: 'The Guild', fr: 'La Guilde' },
     architect: { ar: 'عن المعماري', en: 'The Architect', fr: "L'Architecte" },
     contact: { ar: 'ابدأ الترميم', en: 'Start Reconstruction', fr: 'Commencer la Reconstruction' },
+    community: { ar: 'مجتمع البنائين', en: 'Community', fr: 'Communauté' }
   },
   hero: {
     line1: { ar: 'هل هذه هي الحياة...', en: 'Is this the life...', fr: 'Est-ce la vie...' },
@@ -35,17 +35,6 @@ export const TRANSLATIONS = {
       submit: { ar: 'إرسال المخطط', en: 'Submit Blueprint', fr: 'Soumettre le plan' }
     }
   },
-  community: {
-    title: { ar: 'نقابة البنائين', en: 'The Builders Guild', fr: 'La Guilde des Bâtisseurs' },
-    subtitle: { ar: 'المقر الرئيسي لعمليات الترميم وإعادة البناء', en: 'Headquarters for Restoration and Reconstruction Operations', fr: 'Siège des opérations de restauration' },
-    channels: { ar: 'قنوات العمل', en: 'Work Channels', fr: 'Canaux de travail' },
-    feed: { ar: 'سجل الموقع', en: 'Site Log', fr: 'Journal du site' },
-    newPost: { ar: 'طرح مخطط جديد', en: 'Submit New Blueprint', fr: 'Soumettre un nouveau plan' },
-    actions: {
-      endorse: { ar: 'اعتماد المخطط', en: 'Endorse Plan', fr: 'Approuver' },
-      review: { ar: 'مراجعة الأقران', en: 'Peer Review', fr: 'Revoir' }
-    }
-  },
   checkout: {
       title: { ar: 'عقد الاستحواذ', en: 'Acquisition Contract', fr: 'Contrat d\'Acquisition' },
       summary: { ar: 'ملخص المواد', en: 'Material Summary', fr: 'Résumé du Matériel' },
@@ -55,6 +44,15 @@ export const TRANSLATIONS = {
       secure: { ar: 'بوابة دفع آمنة (PayPal)', en: 'Secure Gateway (PayPal)', fr: 'Paiement Sécurisé' },
       success: { ar: 'تم إصدار التصريح', en: 'Permit Issued', fr: 'Permis Délivré' },
       redirect: { ar: 'جاري تحويلك للمخطط...', en: 'Redirecting to Blueprint...', fr: 'Redirection...' }
+  },
+  community: {
+      channels: { ar: 'القنوات', en: 'Channels', fr: 'Chaînes' },
+      feed: { ar: 'السجل العام', en: 'Site Log', fr: 'Journal' },
+      newPost: { ar: 'إضافة سجل', en: 'Log Entry', fr: 'Ajouter' },
+      actions: {
+          endorse: { ar: 'تصديق', en: 'Endorse', fr: 'Approuver' },
+          review: { ar: 'مراجعة', en: 'Review', fr: 'Revue' }
+      }
   }
 };
 
@@ -360,71 +358,6 @@ export const BOOK_CHAPTERS: BookChapterPreview[] = [
     },
 ];
 
-export const TOP_BUILDERS: GuildMember[] = [
-    { id: 'm1', name: 'Arch. Abraham Meklad', avatarChar: 'A', rank: { ar: 'كبير البنائين', en: 'Master Builder', fr: 'Maître' }, projectsCompleted: 420, joinedDate: '2022' },
-    { id: 'm2', name: 'Layla D.', avatarChar: 'L', rank: { ar: 'مهندس إنشائي', en: 'Structural Eng.', fr: 'Ingénieur' }, projectsCompleted: 85, joinedDate: '2023' },
-    { id: 'm3', name: 'Sarah M.', avatarChar: 'S', rank: { ar: 'مراقب جودة', en: 'Site Inspector', fr: 'Inspecteur' }, projectsCompleted: 42, joinedDate: '2023' },
-    { id: 'm4', name: 'Omar X.', avatarChar: 'O', rank: { ar: 'بناء متدرب', en: 'Apprentice', fr: 'Apprenti' }, projectsCompleted: 12, joinedDate: '2024' },
-];
-
-export const COMMUNITY_POSTS: CommunityPost[] = [
-  {
-    id: 'cp1',
-    author: 'Arch. Abraham Meklad',
-    role: { ar: 'كبير البنائين', en: 'Master Builder', fr: 'Maître Bâtisseur' },
-    rankLevel: 3,
-    phase: 'Structure',
-    title: { ar: 'سؤال بخصوص تسليح الإرادة', en: 'RFI: Reinforcing Willpower Columns', fr: 'Question sur le renforcement de la volonté' },
-    content: { 
-      ar: 'أواجه مشكلة في استدامة التحفيز (Live Loads). هل تقترحون استخدام دعامات خارجية (Routine) أم تقوية القلب الخرساني (Discipline)؟',
-      en: 'I face issues with sustaining motivation (Live Loads). Do you suggest using external supports (Routine) or strengthening the concrete core (Discipline)?',
-      fr: 'Je rencontre des problèmes pour maintenir la motivation.'
-    },
-    endorsements: 24,
-    tags: ['Discipline', 'Routine', 'Structure'],
-    reviews: [
-        { id: 'r1', author: 'Sarah M.', role: { ar: 'مهندس', en: 'Architect', fr: 'Arch' }, content: { ar: 'الدعامات الخارجية جيدة في البداية (Scaffolding)، لكن لا بد من إزالتها لاحقاً.', en: 'External scaffolding is good for the start, but must be removed later.', fr: '' }, timestamp: '1h ago', isHelpful: 5 }
-    ],
-    timestamp: '2h ago'
-  },
-  {
-    id: 'cp2',
-    author: 'Layla D.',
-    role: { ar: 'مهندس متدرب', en: 'Apprentice', fr: 'Apprenti' },
-    rankLevel: 1,
-    phase: 'Foundation',
-    title: { ar: 'اكتشاف رطوبة في الأساسات', en: 'Site Report: Moisture in Foundations', fr: 'Humidité détectée dans les fondations' },
-    content: {
-      ar: 'بعد تطبيق مقياس الانهيار، اكتشفت أن عادات النوم السيئة تسبب تآكل في القواعد. بدأت اليوم خطة عزل مائي (No Screen Policy).',
-      en: 'After applying the Collapse Scale, I discovered poor sleep habits are corroding the base. Started waterproofing plan (No Screen Policy) today.',
-      fr: 'Après avoir appliqué l\'échelle d\'effondrement, j\'ai découvert...'
-    },
-    endorsements: 42,
-    tags: ['Sleep', 'Foundation', 'Recovery'],
-    reviews: [],
-    timestamp: '5h ago'
-  },
-  {
-    id: 'cp3',
-    author: 'Karim A.',
-    role: { ar: 'بناء', en: 'Builder', fr: 'Bâtisseur' },
-    rankLevel: 2,
-    phase: 'Interior',
-    title: { ar: 'تحديث: تركيب نوافذ الامتنان', en: 'Update: Installing Gratitude Windows', fr: 'Mise à jour : Installation des fenêtres de gratitude' },
-    content: {
-      ar: 'كنت أعيش في غرفة مظلمة (السخط). بدأت بفتح نوافذ صغيرة للامتنان يومياً. الضوء الذي يدخل غيّر ملامح الغرفة بالكامل.',
-      en: 'I was living in a dark room (Resentment). Started installing small gratitude windows daily. The light entering has completely changed the room interior.',
-      fr: 'Je vivais dans une chambre noire.'
-    },
-    endorsements: 156,
-    tags: ['Gratitude', 'Light', 'Spirit'],
-    reviews: [
-         { id: 'r2', author: 'Arch. Abraham Meklad', role: { ar: 'كبير البنائين', en: 'Master Builder', fr: 'Maître' }, content: { ar: 'عمل ممتاز. تأكد من تنظيف النوافذ يومياً.', en: 'Excellent work. Ensure daily cleaning.', fr: '' }, timestamp: '10m ago', isHelpful: 12 }
-    ],
-    timestamp: '1d ago'
-  }
-];
-
 export const BLOG_POSTS: BlogPost[] = [
   {
     id: 'b1',
@@ -493,119 +426,6 @@ export const PRODUCTS: Product[] = [
     type: 'physical',
     image: 'https://picsum.photos/seed/bookcover/600/800?grayscale',
     status: 'available'
-  },
-  {
-    id: 'art_crumbling',
-    category: 'art',
-    name: { ar: 'انهيار الجميل', en: 'Beautiful Collapse', fr: 'Bel Effondrement' },
-    description: { ar: 'تمثيل فني للحظة الانهيار كبداية للبناء.', en: 'Artistic representation of collapse as a start for construction.', fr: 'Représentation artistique.' },
-    price: 120,
-    type: 'physical',
-    image: 'https://picsum.photos/seed/art1/600/800?grayscale',
-    panels: 1,
-    aiPrompt: 'Surreal architectural photography, a classic greek column crumbling into gold dust, black background, dramatic lighting.'
-  },
-  {
-    id: 'art_complete_arch',
-    category: 'art',
-    name: { ar: 'الهيكل المكتمل', en: 'The Completed Structure', fr: 'La Structure Complète' },
-    description: { ar: 'المسقط الأفقي للنفس البشرية المتزنة.', en: 'Floor plan of the balanced human soul.', fr: 'Plan de l\'âme.' },
-    price: 250,
-    type: 'physical',
-    image: 'https://picsum.photos/seed/art2/800/400?grayscale',
-    panels: 3,
-    aiPrompt: 'Architectural floor plan glowing in gold on black paper, intricate details of a temple layout, triptych split.'
-  },
-    {
-    id: 'art_1_foundation',
-    category: 'art',
-    name: { ar: 'الأساسات', en: 'Foundations', fr: 'Fondations' },
-    description: { ar: 'تمثيل بصري لأساسات الجسد القوية.', en: 'Visual representation of strong body foundations.', fr: 'Représentation visuelle.' },
-    price: 150,
-    type: 'physical',
-    image: 'https://picsum.photos/seed/art_found/600/800?grayscale',
-    panels: 1,
-    aiPrompt: 'Minimalist concrete foundation blocks with gold veins, strong shadows, architectural drawing style.'
-  },
-  {
-    id: 'art_4_mind',
-    category: 'art',
-    name: { ar: 'هيكل العقل', en: 'Mind Structure', fr: 'Structure de l\'Esprit' },
-    description: { ar: 'الأعمدة التي تحمل سقف الإدراك.', en: 'The pillars holding the roof of perception.', fr: 'Les piliers.' },
-    price: 150,
-    type: 'physical',
-    image: 'https://picsum.photos/seed/art_mind/600/800?grayscale',
-    panels: 1
-  },
-  {
-    id: 'art_5_emotional',
-    category: 'art',
-    name: { ar: 'أنظمة الشعور', en: 'Emotional Systems', fr: 'Systèmes Émotionnels' },
-    description: { ar: 'تدفق المياه عبر القنوات.', en: 'Water flowing through channels.', fr: 'L\'eau coulant.' },
-    price: 180,
-    type: 'physical',
-    image: 'https://picsum.photos/seed/art_emo/600/800?grayscale',
-    panels: 1
-  },
-    {
-    id: 'art_11_atrium',
-    category: 'art',
-    name: { ar: 'الأذين الروحي', en: 'Spiritual Atrium', fr: 'Atrium Spirituel' },
-    description: { ar: 'النور يدخل من الأعلى.', en: 'Light entering from above.', fr: 'Lumière entrant.' },
-    price: 200,
-    type: 'physical',
-    image: 'https://picsum.photos/seed/art_atrium/600/800?grayscale',
-    panels: 1
-  },
-      {
-    id: 'art_facade',
-    category: 'art',
-    name: { ar: 'الواجهة', en: 'The Facade', fr: 'La Façade' },
-    description: { ar: 'الجدار الخارجي الصلب.', en: 'The solid outer wall.', fr: 'Le mur extérieur.' },
-    price: 140,
-    type: 'physical',
-    image: 'https://picsum.photos/seed/art_facade/600/800?grayscale',
-    panels: 1
-  },
-   {
-    id: 'art_16_glass',
-    category: 'art',
-    name: { ar: 'الزجاج الداخلي', en: 'Interior Glass', fr: 'Verre Intérieur' },
-    description: { ar: 'الشفافية والوضوح.', en: 'Transparency and clarity.', fr: 'Transparence.' },
-    price: 160,
-    type: 'physical',
-    image: 'https://picsum.photos/seed/art_glass/600/800?grayscale',
-    panels: 1
-  },
-    {
-    id: 'art_13_heart',
-    category: 'art',
-    name: { ar: 'قلب المنزل', en: 'Heart of the Home', fr: 'Cœur de la Maison' },
-    description: { ar: 'غرفة المعيشة.', en: 'Living room.', fr: 'Salon.' },
-    price: 170,
-    type: 'physical',
-    image: 'https://picsum.photos/seed/art_heart/600/800?grayscale',
-    panels: 1
-  },
-  {
-    id: 'art_17_arch',
-    category: 'art',
-    name: { ar: 'القوس', en: 'The Arch', fr: 'L\'Arche' },
-    description: { ar: 'القوة في الانحناء.', en: 'Strength in curvature.', fr: 'Force dans la courbure.' },
-    price: 190,
-    type: 'physical',
-    image: 'https://picsum.photos/seed/art_arch/600/800?grayscale',
-    panels: 1
-  },
-    {
-    id: 'art_7_blueprint',
-    category: 'art',
-    name: { ar: 'المخطط الرئيسي', en: 'Master Blueprint', fr: 'Plan Directeur' },
-    description: { ar: 'الخريطة الكاملة.', en: 'The complete map.', fr: 'La carte complète.' },
-    price: 300,
-    type: 'physical',
-    image: 'https://picsum.photos/seed/art_blue/600/800?grayscale',
-    panels: 4
   },
   {
       id: 'kit_cards_30',
@@ -990,5 +810,48 @@ export const THEORY_CARDS: DayPlan[] = [
         visualConcept: { ar: 'مخطط ملفوف بانتظار الفتح', en: 'Rolled blueprint waiting', fr: 'Plan roulé' },
         aiPrompt: 'A pristine rolled architectural blueprint with a golden seal, resting on a rough wooden table, shaft of light hitting it, anticipation, dust motes.',
         isLocked: false
+    }
+];
+
+export const TOP_BUILDERS = [
+    { id: 'u1', name: 'Arch. Sarah', avatarChar: 'S', projectsCompleted: 1250, rank: { ar: 'كبير المهندسين', en: 'Senior Architect', fr: 'Architecte Senior' } },
+    { id: 'u2', name: 'Karim M.', avatarChar: 'K', projectsCompleted: 980, rank: { ar: 'مهندس هيكلي', en: 'Structural Eng.', fr: 'Ingénieur' } },
+    { id: 'u3', name: 'Layla O.', avatarChar: 'L', projectsCompleted: 750, rank: { ar: 'مشرف موقع', en: 'Site Supervisor', fr: 'Superviseur' } },
+];
+
+export const COMMUNITY_POSTS: CommunityPost[] = [
+    {
+        id: 'cp-1',
+        author: 'Ahmed S.',
+        role: { ar: 'مستكشف', en: 'Explorer', fr: 'Explorateur' },
+        rankLevel: 1,
+        phase: 'Foundation',
+        title: { ar: 'تحدي الاستيقاظ مبكراً', en: 'Early Rising Challenge', fr: 'Défi du réveil' },
+        content: { ar: 'اليوم الثالث من تطبيق بروتوكول النوم. أشعر بفرق كبير في مستويات الطاقة.', en: 'Day 3 of applying the Sleep Protocol. I feel a massive difference in energy levels.', fr: 'Jour 3 du protocole de sommeil.' },
+        endorsements: 12,
+        reviews: [
+            {
+                id: 'r-1',
+                author: 'Arch. Sarah',
+                role: 'Senior Architect',
+                content: { ar: 'استمر، الأسبوع الأول هو الأصعب.', en: 'Keep going, the first week is the hardest.', fr: 'Continuez.' },
+                timestamp: '2h ago'
+            }
+        ],
+        tags: ['Body', 'Sleep'],
+        timestamp: '5h ago'
+    },
+    {
+        id: 'cp-2',
+        author: 'John Doe',
+        role: { ar: 'بناء متدرب', en: 'Apprentice', fr: 'Apprenti' },
+        rankLevel: 2,
+        phase: 'Structure',
+        title: { ar: 'كيف تتعاملون مع التشتت؟', en: 'How do you handle distraction?', fr: 'Distraction?' },
+        content: { ar: 'أجد صعوبة في الحفاظ على التركيز العميق لمدة تزيد عن 20 دقيقة.', en: 'I find it hard to maintain deep focus for more than 20 minutes.', fr: 'Difficile de rester concentré.' },
+        endorsements: 8,
+        reviews: [],
+        tags: ['Mind', 'Focus'],
+        timestamp: '1d ago'
     }
 ];

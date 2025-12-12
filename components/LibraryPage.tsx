@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, Product, DayPlan } from '../types';
-import { PRODUCTS, TRANSLATIONS, THIRTY_DAY_PROGRAM, BOOK_CHAPTERS, THEORY_CARDS } from '../constants';
-import { ShoppingBag, Shield, Box, X, Compass, ScanLine, QrCode, ArrowLeft, ArrowRight, Check, Eye, ChevronDown } from './Icons';
+import { PRODUCTS, BOOK_CHAPTERS, THEORY_CARDS, THIRTY_DAY_PROGRAM } from '../constants';
+import { ShoppingBag, Shield, X, Compass, QrCode, ArrowLeft, ArrowRight, Check, Eye } from './Icons';
 import { BookCover } from './BookCover';
 
 interface LibraryPageProps {
@@ -31,7 +31,6 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
   const headingFont = isAr ? 'font-amiri' : 'font-playfair';
   const bodyFont = isAr ? 'font-ibm' : 'font-montserrat';
 
-  const artProducts = PRODUCTS.filter(p => p.category === 'art');
   const bookProduct = PRODUCTS.find(p => p.category === 'book');
   const toolProducts = PRODUCTS.filter(p => p.category === 'tool');
 
@@ -87,8 +86,8 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
           </h1>
           <p className={`text-slate ${bodyFont} text-lg`}>
             {isAr 
-             ? 'أعمال فنية معمارية مستوحاة من الأعمدة الأربعة. صممت لتكون تذكيراً دائماً في مساحتك الخاصة.' 
-             : 'Premium wall-art printables inspired by the Four Pillars. Designed to elevate your space and strengthen your inner architecture.'}
+             ? 'مكتبة الأدوات والمخططات اللازمة لإعادة بناء الذات.' 
+             : 'The archive of tools and blueprints required for self-reconstruction.'}
           </p>
         </div>
 
@@ -194,85 +193,6 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
         </div>
         )}
 
-        {/* ART GALLERY */}
-        <div className="mb-32">
-             <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-slate/10 pb-6">
-                 <div>
-                    <span className="text-bronze text-xs tracking-[0.3em] uppercase block mb-4">
-                        {isAr ? 'المجموعة الفنية' : 'The Art Collection'}
-                    </span>
-                    <h3 className={`text-4xl ${headingFont}`}>
-                        {isAr ? 'لوحات الحائط المعمارية' : 'Architectural Wall Art'}
-                    </h3>
-                 </div>
-                 <div className="text-slate text-sm max-w-md text-right mt-4 md:mt-0 italic opacity-60">
-                    {isAr ? 'لوحات مجزّأة (Triptych/Quadriptych) بجودة متاحف.' : 'Museum-grade split-panel sets (Triptych/Quadriptych).'}
-                 </div>
-             </div>
-
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
-                {artProducts.map((art) => (
-                    <div key={art.id} className="group flex flex-col h-full bg-white dark:bg-[#1a1a1a] border border-slate/5 hover:border-bronze/40 shadow-lg hover:shadow-[0_0_30px_rgba(197,160,101,0.15)] transition-all duration-500 relative">
-                        <div className="relative mb-6 p-4 border-b border-slate/10">
-                            
-                            <div 
-                                className={`w-full h-64 flex gap-[2px] bg-[#e5e5e5] dark:bg-[#0a0a0a] shadow-inner relative cursor-pointer overflow-hidden`}
-                                onClick={() => setSelectedArt(art)}
-                            >
-                                {Array.from({ length: art.panels || 1 }).map((_, idx) => (
-                                    <div key={idx} className="flex-1 h-full relative overflow-hidden bg-white dark:bg-black shadow-sm first:ml-0 last:mr-0">
-                                        <img 
-                                            src={art.image} 
-                                            alt={`${art.name[lang]} panel ${idx+1}`} 
-                                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-[1.1] group-hover:scale-100" 
-                                            style={{ objectPosition: art.panels && art.panels > 1 ? `${(idx / (art.panels - 1)) * 100}% center` : 'center' }}
-                                        />
-                                        <div className="absolute inset-0 shadow-[inset_0_0_10px_rgba(0,0,0,0.2)] pointer-events-none"></div>
-                                    </div>
-                                ))}
-                                
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-[2px]">
-                                    <button 
-                                        onClick={(e) => { e.stopPropagation(); setQrItem({
-                                            id: art.id,
-                                            title: art.name['en'],
-                                            type: 'art',
-                                            desc: isAr ? 'امسح للاستماع لقصة اللوحة.' : 'Scan to hear the story of this structure.'
-                                        })}}
-                                        className="w-10 h-10 rounded-full bg-alabaster text-charcoal flex items-center justify-center hover:bg-bronze hover:text-white transition-colors transform scale-0 group-hover:scale-100 delay-100 duration-300"
-                                    >
-                                        <QrCode size={18} />
-                                    </button>
-                                    <button 
-                                        onClick={(e) => { e.stopPropagation(); setSelectedArt(art); }}
-                                        className="w-10 h-10 rounded-full bg-alabaster text-charcoal flex items-center justify-center hover:bg-bronze hover:text-white transition-colors transform scale-0 group-hover:scale-100 duration-300"
-                                    >
-                                        <Eye size={18} />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="px-6 pb-6 flex flex-col flex-1">
-                            <div className="flex justify-between items-start mb-2">
-                                <h4 className={`text-xl ${headingFont} group-hover:text-bronze transition-colors cursor-pointer`} onClick={() => setSelectedArt(art)}>{art.name[lang]}</h4>
-                                <span className="text-bronze font-serif text-xl">${art.price}</span>
-                            </div>
-                            <p className={`text-sm text-slate mb-8 line-clamp-2 ${bodyFont}`}>{art.description?.[lang]}</p>
-                            
-                            <button 
-                                onClick={() => handlePurchase(art)}
-                                className="w-full py-4 mt-auto bg-charcoal text-white hover:bg-bronze transition-colors duration-300 uppercase text-xs tracking-[0.2em] font-bold flex items-center justify-center gap-3 shadow-md"
-                            >
-                                <ShoppingBag size={16} />
-                                {isAr ? 'اقتناء اللوحة' : 'Acquire'}
-                            </button>
-                        </div>
-                    </div>
-                ))}
-             </div>
-        </div>
-
         {/* TOOLS */}
         <div className="mb-24 border-t border-slate/10 pt-24">
              <div className="flex flex-col md:flex-row gap-12 items-center max-w-5xl mx-auto">
@@ -349,7 +269,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
         )}
       </AnimatePresence>
 
-      {/* ROOM MOCKUP MODAL */}
+      {/* ROOM MOCKUP MODAL (Only for Books now) */}
       <AnimatePresence>
         {selectedArt && (
             <motion.div 
@@ -366,13 +286,9 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                             animate={{ scale: 1, opacity: 1 }} 
                             className="relative z-10 max-w-[90%] md:max-w-[80%] max-h-[60%] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.7)]"
                         >
-                            {selectedArt.category === 'book' ? (
-                                <div className="bg-transparent p-1 md:p-2 shadow-2xl h-[50vh] aspect-[2/3]">
-                                    <BookCover className="w-full h-full transform scale-110" />
-                                </div>
-                            ) : (
-                                <img src={selectedArt.image} className="h-[25vh] md:h-[50vh] object-cover" />
-                            )}
+                             <div className="bg-transparent p-1 md:p-2 shadow-2xl h-[50vh] aspect-[2/3]">
+                                <BookCover className="w-full h-full transform scale-110" />
+                            </div>
                         </motion.div>
                     </div>
                 </div>

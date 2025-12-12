@@ -179,8 +179,7 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                   {RESTORATION_LOGS.map((log) => (
                       <div 
                         key={log.id} 
-                        onClick={() => setView('community')}
-                        className="bg-white dark:bg-white/5 p-8 border border-slate/10 shadow-sm hover:shadow-md transition-shadow relative group cursor-pointer"
+                        className="bg-white dark:bg-white/5 p-8 border border-slate/10 shadow-sm transition-shadow relative group"
                       >
                           <div className="absolute top-4 right-4 text-slate/10">
                               <Quote size={48} />

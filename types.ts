@@ -1,7 +1,8 @@
 
+
 export type Language = 'ar' | 'en' | 'fr';
 
-export type View = 'home' | 'philosophy' | 'journal' | 'library' | 'contact' | 'community' | 'landing' | 'checkout';
+export type View = 'home' | 'philosophy' | 'journal' | 'library' | 'contact' | 'landing' | 'checkout' | 'community';
 
 export interface ContentText {
   ar: string;
@@ -42,38 +43,6 @@ export interface Product {
   aiPrompt?: string; // For Art/Tools generative reproduction
 }
 
-export interface PeerReview {
-    id: string;
-    author: string;
-    role: ContentText;
-    content: ContentText;
-    timestamp: string;
-    isHelpful: number;
-}
-
-export interface CommunityPost {
-  id: string;
-  author: string;
-  role: ContentText;
-  rankLevel: 1 | 2 | 3; // 1: Apprentice, 2: Builder, 3: Master
-  phase: string; // e.g., 'Foundation', 'Structure'
-  title: ContentText;
-  content: ContentText;
-  endorsements: number;
-  reviews: PeerReview[];
-  timestamp: string;
-  tags?: string[];
-}
-
-export interface GuildMember {
-    id: string;
-    name: string;
-    rank: ContentText;
-    projectsCompleted: number;
-    joinedDate: string;
-    avatarChar: string;
-}
-
 export enum AssessmentCategory {
   FOUNDATION = 'Foundation', // Basics/Body
   STRUCTURE = 'Structure', // Mind/Mental
@@ -105,4 +74,27 @@ export interface BookChapterPreview {
     isLocked: boolean;
     relatedArtId?: string;
     relatedBlogId?: string;
+}
+
+export interface PeerReview {
+  id: string;
+  author: string;
+  role: ContentText | string;
+  content: ContentText | string;
+  timestamp: string;
+  isHelpful?: number;
+}
+
+export interface CommunityPost {
+  id: string;
+  author: string;
+  role: ContentText | string;
+  rankLevel: number;
+  phase: string;
+  title: ContentText | string;
+  content: ContentText | string;
+  endorsements: number;
+  reviews: PeerReview[];
+  tags?: string[];
+  timestamp: string;
 }

@@ -2,21 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import { Language, View, Product } from './types';
 import { TRANSLATIONS } from './constants';
-import { Menu, X, Moon, Sun, Grid, ScanLine, Activity, Wifi, Battery, Layers, ShoppingBag } from './components/Icons';
+import { Menu, X, Moon, Sun, Grid, Activity, Wifi, Battery, Layers, ShoppingBag } from './components/Icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HomePage } from './components/HomePage';
 import { PhilosophyPage } from './components/PhilosophyPage';
 import { JournalPage } from './components/JournalPage';
 import { LibraryPage } from './components/LibraryPage';
 import { ContactPage } from './components/ContactPage';
-import { CommunityPage } from './components/CommunityPage';
 import { LandingPage } from './components/LandingPage';
 import { CheckoutPage } from './components/CheckoutPage';
 import { CustomCursor } from './components/CustomCursor';
 
 function App() {
-  // Changed default to 'ar' to match the depth of content
-  const [lang, setLang] = useState<Language>('ar');
+  // Changed default to 'en'
+  const [lang, setLang] = useState<Language>('en');
   const [currentView, setCurrentView] = useState<View>('home');
   const [darkMode, setDarkMode] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -61,7 +60,7 @@ function App() {
     const targetView = params.get('view') as View;
     
     // Validate view before switching
-    if (targetView && ['home', 'philosophy', 'journal', 'library', 'contact', 'community', 'landing'].includes(targetView)) {
+    if (targetView && ['home', 'philosophy', 'journal', 'library', 'contact', 'landing'].includes(targetView)) {
         setCurrentView(targetView);
     }
 
@@ -167,7 +166,7 @@ function App() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-6">
-              {['philosophy', 'journal', 'library', 'community'].map((view) => (
+              {['philosophy', 'journal', 'library'].map((view) => (
                   <button 
                     key={view}
                     onClick={() => setCurrentView(view as View)} 
@@ -259,7 +258,6 @@ function App() {
                <button onClick={() => { setCurrentView('landing'); setMenuOpen(false); }} className={`text-bronze ${headingFont} text-2xl`}>{lang === 'ar' ? 'شراء الكتاب' : 'Buy The Book'}</button>
                <button onClick={() => { setCurrentView('philosophy'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.philosophy[lang]}</button>
                <button onClick={() => { setCurrentView('library'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.library[lang]}</button>
-               <button onClick={() => { setCurrentView('community'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.community[lang]}</button>
                
                <div className="flex flex-col items-center gap-6 mt-8 pt-8 border-t border-current/10 w-48 mx-auto">
                  <button onClick={() => setBlueprintMode(!blueprintMode)} className="flex items-center gap-2 text-sm uppercase tracking-widest px-4 py-2">
@@ -289,7 +287,6 @@ function App() {
           {currentView === 'philosophy' && <PhilosophyPage lang={lang} setView={setCurrentView} />}
           {currentView === 'journal' && <JournalPage lang={lang} />}
           {currentView === 'library' && <LibraryPage lang={lang} onCheckout={handleAddToCart} />}
-          {currentView === 'community' && <CommunityPage lang={lang} />}
           {currentView === 'contact' && <ContactPage lang={lang} />}
           {currentView === 'landing' && <LandingPage lang={lang} setView={setCurrentView} onCheckout={handleAddToCart} />}
           {currentView === 'checkout' && (
