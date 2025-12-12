@@ -80,12 +80,12 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                    <img 
                     src={pillar.image} 
                     alt={pillar.title[lang]} 
-                    className="w-full h-full object-cover opacity-10 group-hover:opacity-80 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-[800ms] ease-out"
+                    className="w-full h-full object-cover opacity-20 group-hover:opacity-100 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-[800ms] ease-out"
                    />
                 </div>
 
                 {/* 2. Darkness Overlay */}
-                <div className="absolute inset-0 bg-charcoal/80 group-hover:bg-charcoal/10 transition-colors duration-[800ms]"></div>
+                <div className="absolute inset-0 bg-charcoal/80 group-hover:bg-transparent transition-colors duration-[800ms]"></div>
                 
                 {/* 3. Illumination Layer */}
                 <div className="absolute inset-0 bg-gradient-to-b from-bronze/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-[800ms] mix-blend-overlay pointer-events-none"></div>
