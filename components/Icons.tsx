@@ -45,7 +45,10 @@ import {
   Maximize2,
   MousePointer,
   Battery,
-  CreditCard
+  CreditCard,
+  Layout,
+  PenTool,
+  Database
 } from 'lucide-react';
 
 export { 
@@ -93,5 +96,8 @@ export {
   Maximize2,
   MousePointer,
   Battery,
-  CreditCard
+  CreditCard,
+  Layout,
+  PenTool,
+  Database
 };

@@ -11,10 +11,11 @@ import { LibraryPage } from './components/LibraryPage';
 import { ContactPage } from './components/ContactPage';
 import { LandingPage } from './components/LandingPage';
 import { CheckoutPage } from './components/CheckoutPage';
+import { CommunityPage } from './components/CommunityPage';
 import { CustomCursor } from './components/CustomCursor';
 
 function App() {
-  // Changed default to 'en'
+  // CHANGED: Default language is English as per strategy
   const [lang, setLang] = useState<Language>('en');
   const [currentView, setCurrentView] = useState<View>('home');
   const [darkMode, setDarkMode] = useState(true);
@@ -24,10 +25,10 @@ function App() {
   // Architectural Loading State
   const [loadingPhase, setLoadingPhase] = useState(0);
   
-  // NEW: Blueprint Mode State
+  // Blueprint Mode State
   const [blueprintMode, setBlueprintMode] = useState(false);
 
-  // NEW: Cart State for Checkout
+  // Cart State for Checkout
   const [checkoutItems, setCheckoutItems] = useState<Product[]>([]);
 
   // Construction Phases for Loader
@@ -60,7 +61,7 @@ function App() {
     const targetView = params.get('view') as View;
     
     // Validate view before switching
-    if (targetView && ['home', 'philosophy', 'journal', 'library', 'contact', 'landing'].includes(targetView)) {
+    if (targetView && ['home', 'philosophy', 'journal', 'library', 'contact', 'landing', 'community'].includes(targetView)) {
         setCurrentView(targetView);
     }
 
@@ -166,11 +167,11 @@ function App() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-6">
-              {['philosophy', 'journal', 'library'].map((view) => (
+              {['philosophy', 'journal', 'library', 'community'].map((view) => (
                   <button 
                     key={view}
                     onClick={() => setCurrentView(view as View)} 
-                    className={`text-[0.7rem] uppercase tracking-[0.15em] hover:text-bronze transition-all cursor-pointer relative group ${currentView === view ? 'text-bronze font-bold' : 'text-slate'}`}
+                    className={`text-[0.6rem] uppercase tracking-[0.15em] hover:text-bronze transition-all cursor-pointer relative group ${currentView === view ? 'text-bronze font-bold' : 'text-slate'}`}
                   >
                       {TRANSLATIONS.nav[view as keyof typeof TRANSLATIONS.nav][lang]}
                       <span className={`absolute -bottom-6 left-0 w-full h-[2px] bg-bronze transform scale-x-0 group-hover:scale-x-100 transition-transform ${currentView === view ? 'scale-x-100' : ''}`}></span>
@@ -199,12 +200,11 @@ function App() {
                       <Layers size={16} />
                   </button>
 
-                  {/* THEME TOGGLE - RESTORED & EMPHASIZED */}
+                  {/* THEME TOGGLE */}
                   <button 
                     onClick={() => setDarkMode(!darkMode)}
                     className={`p-2 rounded-full transition-all ${darkMode ? 'text-white' : 'text-charcoal'} hover:text-bronze`}
-                    title={darkMode ? (lang === 'ar' ? 'الوضع المضيء' : 'Light Mode') : (lang === 'ar' ? 'الوضع الليلي' : 'Dark Mode')}
-                    aria-label="Toggle Dark Mode"
+                    title={darkMode ? 'Light Mode' : 'Dark Mode'}
                   >
                     {darkMode ? <Sun size={16} /> : <Moon size={16} />}
                   </button>
@@ -224,7 +224,6 @@ function App() {
 
             {/* Mobile Toggle */}
             <div className="flex items-center gap-4 md:hidden">
-                 {/* Mobile Theme Toggle (Always visible for easy access) */}
                  <button 
                     onClick={() => setDarkMode(!darkMode)}
                     className={`${blueprintMode ? 'text-[#64ffda]' : 'text-charcoal dark:text-concrete'} p-2`}
@@ -255,9 +254,10 @@ function App() {
             </button>
             <div className="flex flex-col gap-8 text-center text-xl">
                <button onClick={() => { setCurrentView('home'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.home[lang]}</button>
-               <button onClick={() => { setCurrentView('landing'); setMenuOpen(false); }} className={`text-bronze ${headingFont} text-2xl`}>{lang === 'ar' ? 'شراء الكتاب' : 'Buy The Book'}</button>
+               <button onClick={() => { setCurrentView('landing'); setMenuOpen(false); }} className={`text-bronze ${headingFont} text-2xl`}>{lang === 'ar' ? 'استلام المخطط' : 'Get Blueprint'}</button>
                <button onClick={() => { setCurrentView('philosophy'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.philosophy[lang]}</button>
                <button onClick={() => { setCurrentView('library'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.library[lang]}</button>
+               <button onClick={() => { setCurrentView('community'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.community[lang]}</button>
                
                <div className="flex flex-col items-center gap-6 mt-8 pt-8 border-t border-current/10 w-48 mx-auto">
                  <button onClick={() => setBlueprintMode(!blueprintMode)} className="flex items-center gap-2 text-sm uppercase tracking-widest px-4 py-2">
@@ -288,13 +288,14 @@ function App() {
           {currentView === 'journal' && <JournalPage lang={lang} />}
           {currentView === 'library' && <LibraryPage lang={lang} onCheckout={handleAddToCart} />}
           {currentView === 'contact' && <ContactPage lang={lang} />}
+          {currentView === 'community' && <CommunityPage lang={lang} />}
           {currentView === 'landing' && <LandingPage lang={lang} setView={setCurrentView} onCheckout={handleAddToCart} />}
           {currentView === 'checkout' && (
               <CheckoutPage 
                 lang={lang} 
                 items={checkoutItems} 
                 onBack={() => setCurrentView('library')}
-                onComplete={() => setCurrentView('home')} // Reset to home after purchase
+                onComplete={() => setCurrentView('home')} 
               />
           )}
         </motion.div>

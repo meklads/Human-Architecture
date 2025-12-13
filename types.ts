@@ -1,5 +1,4 @@
 
-
 export type Language = 'ar' | 'en' | 'fr';
 
 export type View = 'home' | 'philosophy' | 'journal' | 'library' | 'contact' | 'landing' | 'checkout' | 'community';
@@ -31,16 +30,19 @@ export interface BlogPost {
 
 export interface Product {
   id: string;
-  category: 'book' | 'art' | 'tool' | 'course';
+  category: 'book' | 'art' | 'tool' | 'course' | 'bundle';
   name: ContentText;
   description?: ContentText;
   price: number;
-  type: 'physical' | 'digital';
+  originalPrice?: number; // For discount display
+  type: 'physical' | 'digital' | 'hybrid';
   image: string;
   specs?: { label: ContentText; value: ContentText }[];
   status?: 'available' | 'coming_soon' | 'in_dev';
   panels?: number; // 1 = single, 3 = triptych, 4 = quadriptych
   aiPrompt?: string; // For Art/Tools generative reproduction
+  features?: ContentText[]; // List of what's inside
+  isBestSeller?: boolean;
 }
 
 export enum AssessmentCategory {
