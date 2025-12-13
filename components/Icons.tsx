@@ -56,7 +56,9 @@ import {
   Mic,
   Save,
   RotateCcw,
-  Gauge
+  Gauge,
+  Zap,
+  Brain
 } from 'lucide-react';
 
 export { 
@@ -115,5 +117,7 @@ export {
   Mic,
   Save,
   RotateCcw,
-  Gauge
+  Gauge,
+  Zap,
+  Brain
 };

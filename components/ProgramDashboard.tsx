@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, DayPlan, WeekPlan } from '../types';
 import { THIRTY_DAY_PROGRAM, TRANSLATIONS } from '../constants';
-import { Check, Lock, Play, FileText, Activity, Shield, Layers, Box, ArrowRight, X, Save, RotateCcw, PenTool } from './Icons';
+import { Check, Lock, Play, FileText, Activity, Shield, Layers, Box, ArrowRight, X, Save, RotateCcw, PenTool, Battery, Zap, Brain, Moon } from './Icons';
 import { AudioBrief } from './AudioBrief';
+import { DigitalTwin } from './DigitalTwin';
 
 interface DashboardProps {
   lang: Language;
@@ -16,6 +17,13 @@ export const ProgramDashboard: React.FC<DashboardProps> = ({ lang }) => {
   const [journalEntries, setJournalEntries] = useState<Record<number, string>>({});
   const [currentEntry, setCurrentEntry] = useState('');
   
+  // DIGITAL TWIN STATE (Simulated Health Stats)
+  const [twinStats, setTwinStats] = useState({
+      foundation: 45, // Starts low/damaged
+      structure: 60,  // Moderate stress
+      energy: 30      // Low spiritual energy
+  });
+
   const isAr = lang === 'ar';
   const headingFont = isAr ? 'font-amiri' : 'font-playfair';
   const bodyFont = isAr ? 'font-ibm' : 'font-montserrat';
@@ -27,6 +35,14 @@ export const ProgramDashboard: React.FC<DashboardProps> = ({ lang }) => {
     
     if (savedCompleted) {
         setCompletedDays(JSON.parse(savedCompleted));
+        // Improve stats based on progress
+        const completedCount = JSON.parse(savedCompleted).length;
+        setTwinStats(prev => ({
+            ...prev,
+            foundation: Math.min(100, 45 + (completedCount * 2)),
+            structure: Math.min(100, 60 + completedCount),
+            energy: Math.min(100, 30 + (completedCount * 1.5))
+        }));
     } else {
         setCompletedDays([1]); // Default to day 1 done mock
     }
@@ -43,10 +59,6 @@ export const ProgramDashboard: React.FC<DashboardProps> = ({ lang }) => {
       }
   }, [activeDay, journalEntries]);
 
-  // Calculate Progress
-  const totalDays = 30;
-  const progress = (completedDays.length / totalDays) * 100;
-
   const toggleDayCompletion = (dayNum: number) => {
     let newCompleted;
     if (completedDays.includes(dayNum)) {
@@ -56,6 +68,13 @@ export const ProgramDashboard: React.FC<DashboardProps> = ({ lang }) => {
     }
     setCompletedDays(newCompleted);
     localStorage.setItem('iham_completed_days', JSON.stringify(newCompleted));
+    
+    // Simulate Building Repair
+    setTwinStats(prev => ({
+        foundation: Math.min(100, prev.foundation + 5),
+        structure: Math.min(100, prev.structure + 3),
+        energy: Math.min(100, prev.energy + 3)
+    }));
   };
 
   const saveJournalEntry = (dayNum: number) => {
@@ -64,34 +83,113 @@ export const ProgramDashboard: React.FC<DashboardProps> = ({ lang }) => {
       localStorage.setItem('iham_journal', JSON.stringify(updatedEntries));
   };
 
+  // Maintenance Actions (Simulate Interactions)
+  const performMaintenance = (type: 'sleep' | 'mind' | 'spirit') => {
+      setTwinStats(prev => {
+          if (type === 'sleep') return { ...prev, foundation: Math.min(100, prev.foundation + 15) };
+          if (type === 'mind') return { ...prev, structure: Math.min(100, prev.structure + 15) };
+          if (type === 'spirit') return { ...prev, energy: Math.min(100, prev.energy + 20) };
+          return prev;
+      });
+  };
+
   return (
     <div className="pt-24 min-h-screen bg-[#050505] text-alabaster pb-20">
       
-      {/* 1. DASHBOARD HEADER (HUD) */}
-      <div className="border-b border-white/10 bg-[#111] sticky top-16 z-30 shadow-2xl">
-          <div className="container mx-auto px-6 py-6">
-              <div className="flex flex-col md:flex-row justify-between items-end gap-6">
-                  <div>
-                      <span className="text-bronze text-[0.6rem] uppercase tracking-[0.3em] flex items-center gap-2 mb-2">
-                          <Activity size={12} /> {isAr ? 'حالة المشروع' : 'PROJECT STATUS'}
-                      </span>
-                      <h1 className={`text-3xl md:text-4xl ${headingFont}`}>
-                          {isAr ? 'غرفة العمليات: إعادة البناء' : 'Ops Room: Reconstruction'}
-                      </h1>
+      {/* 1. DIGITAL TWIN DASHBOARD (Replaces simple header) */}
+      <div className="container mx-auto px-6 mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border border-white/10 bg-[#111] p-1">
+              
+              {/* Left: The Visual Twin */}
+              <div className="lg:col-span-4 relative">
+                  <div className="absolute top-0 left-0 bg-bronze text-black text-[0.6rem] uppercase tracking-widest px-2 py-1 z-20 font-bold">
+                      {isAr ? 'محاكاة حية' : 'LIVE TWIN'}
                   </div>
-                  
-                  <div className="w-full md:w-1/3">
-                      <div className="flex justify-between text-[0.6rem] uppercase tracking-widest mb-2 text-slate">
-                          <span>{isAr ? 'اكتمال الهيكل' : 'Structure Completion'}</span>
-                          <span className="text-white font-mono">{Math.round(progress)}%</span>
+                  <DigitalTwin 
+                    foundation={twinStats.foundation}
+                    structure={twinStats.structure}
+                    energy={twinStats.energy}
+                    isAr={isAr}
+                  />
+              </div>
+
+              {/* Right: Controls & Data */}
+              <div className="lg:col-span-8 p-6 md:p-8 flex flex-col justify-between">
+                  <div>
+                      <div className="flex justify-between items-start mb-6 border-b border-white/10 pb-6">
+                          <div>
+                              <h1 className={`text-3xl md:text-4xl mb-2 ${headingFont}`}>
+                                  {isAr ? 'غرفة العمليات المركزية' : 'Central Ops Room'}
+                              </h1>
+                              <p className="text-slate text-sm font-mono">ID: ARCH-8821 // STATUS: {twinStats.foundation < 50 ? 'UNSTABLE' : 'STABLE'}</p>
+                          </div>
+                          <div className="text-right hidden md:block">
+                              <div className="text-[0.6rem] uppercase tracking-widest text-slate mb-1">{isAr ? 'إنجاز المشروع' : 'Project Completion'}</div>
+                              <div className="text-3xl font-bold text-bronze">{Math.round((completedDays.length / 30) * 100)}%</div>
+                          </div>
                       </div>
-                      <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-                          <motion.div 
-                            initial={{ width: 0 }} 
-                            animate={{ width: `${progress}%` }} 
-                            className="h-full bg-gradient-to-r from-bronze to-yellow-600"
-                          ></motion.div>
+
+                      {/* Maintenance Console */}
+                      <div className="mb-8">
+                          <span className="text-[0.6rem] uppercase tracking-widest text-slate block mb-4 flex items-center gap-2">
+                              <RotateCcw size={12} /> {isAr ? 'أوامر الصيانة اليومية' : 'Daily Maintenance Orders'}
+                          </span>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              <button 
+                                onClick={() => performMaintenance('sleep')}
+                                className="group bg-white/5 hover:bg-white/10 border border-white/10 p-4 flex items-center gap-4 transition-all"
+                              >
+                                  <div className="w-10 h-10 rounded-full bg-red-900/20 text-red-500 flex items-center justify-center border border-red-500/30 group-hover:scale-110 transition-transform">
+                                      <Moon size={18} />
+                                  </div>
+                                  <div className="text-start">
+                                      <span className="block text-xs font-bold text-white">{isAr ? 'ترميم الأساسات' : 'Reinforce Base'}</span>
+                                      <span className="block text-[0.5rem] uppercase text-slate tracking-wider">+ SLEEP LOG</span>
+                                  </div>
+                              </button>
+
+                              <button 
+                                onClick={() => performMaintenance('mind')}
+                                className="group bg-white/5 hover:bg-white/10 border border-white/10 p-4 flex items-center gap-4 transition-all"
+                              >
+                                  <div className="w-10 h-10 rounded-full bg-blue-900/20 text-blue-500 flex items-center justify-center border border-blue-500/30 group-hover:scale-110 transition-transform">
+                                      <Brain size={18} />
+                                  </div>
+                                  <div className="text-start">
+                                      <span className="block text-xs font-bold text-white">{isAr ? 'تبريد النظام' : 'Cool System'}</span>
+                                      <span className="block text-[0.5rem] uppercase text-slate tracking-wider">+ MEDITATE</span>
+                                  </div>
+                              </button>
+
+                              <button 
+                                onClick={() => performMaintenance('spirit')}
+                                className="group bg-white/5 hover:bg-white/10 border border-white/10 p-4 flex items-center gap-4 transition-all"
+                              >
+                                  <div className="w-10 h-10 rounded-full bg-yellow-900/20 text-yellow-500 flex items-center justify-center border border-yellow-500/30 group-hover:scale-110 transition-transform">
+                                      <Zap size={18} />
+                                  </div>
+                                  <div className="text-start">
+                                      <span className="block text-xs font-bold text-white">{isAr ? 'شحن الطاقة' : 'Power Up'}</span>
+                                      <span className="block text-[0.5rem] uppercase text-slate tracking-wider">+ PURPOSE</span>
+                                  </div>
+                              </button>
+                          </div>
                       </div>
+                  </div>
+
+                  {/* Footer Stats */}
+                  <div className="grid grid-cols-4 gap-4 border-t border-white/10 pt-6">
+                      {[
+                          { label: 'Sleep', val: '6.5h' },
+                          { label: 'Focus', val: '4h' },
+                          { label: 'Steps', val: '8k' },
+                          { label: 'Mood', val: 'Stable' }
+                      ].map((stat, i) => (
+                          <div key={i}>
+                              <div className="text-[0.6rem] uppercase tracking-widest text-slate mb-1">{stat.label}</div>
+                              <div className="text-sm font-mono text-white">{stat.val}</div>
+                          </div>
+                      ))}
                   </div>
               </div>
           </div>

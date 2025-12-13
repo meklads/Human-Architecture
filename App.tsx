@@ -15,6 +15,7 @@ import { CommunityPage } from './components/CommunityPage';
 import { ProgramDashboard } from './components/ProgramDashboard';
 import { CustomCursor } from './components/CustomCursor';
 import { Magnetic } from './components/Magnetic';
+import { BlueprintOverlay } from './components/BlueprintOverlay';
 
 function App() {
   const [lang, setLang] = useState<Language>('en');
@@ -143,6 +144,20 @@ function App() {
   return (
     <div className={`min-h-screen transition-colors duration-700 ${darkMode ? 'dark' : ''}`} dir={direction}>
       <CustomCursor />
+      
+      {/* GLOBAL BLUEPRINT OVERLAY */}
+      <AnimatePresence>
+        {blueprintMode && (
+           <motion.div
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             exit={{ opacity: 0 }}
+             className="fixed inset-0 z-[40] pointer-events-none"
+           >
+              <BlueprintOverlay />
+           </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* --- NAVIGATION BAR --- */}
       <header className="fixed top-0 w-full z-50 mix-blend-difference text-white">
