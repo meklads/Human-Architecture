@@ -129,10 +129,10 @@ export const PILLARS: PillarData[] = [
       en: 'Reprogramming cognitive operating systems.', 
       fr: 'Reprogrammation cognitive.' 
     },
-    // Standard: Abstract Thought
-    image: 'https://images.unsplash.com/photo-1555554317-a071f38eb3b2?q=80&w=2608&auto=format&fit=crop',
-    // Blueprint: Circuitry/Schematic - Updated URL
-    blueprintImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80'
+    // Updated Image: Futuristic Control Room / Abstract Tech
+    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80',
+    // Blueprint: Circuitry
+    blueprintImage: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80'
   },
   {
     id: 'body',
@@ -143,10 +143,10 @@ export const PILLARS: PillarData[] = [
       en: 'Pouring concrete bases for bio-energy.', 
       fr: 'Coulage des bases.' 
     },
-    // Standard: Human Form / Strength
-    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2670&auto=format&fit=crop',
-    // Blueprint: Construction/Scaffolding - Updated URL
-    blueprintImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80'
+    // Updated Image: Brutalist Concrete Structure
+    image: 'https://images.unsplash.com/photo-1486718448742-1666229e2185?auto=format&fit=crop&q=80',
+    // Blueprint: Construction Site
+    blueprintImage: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80'
   },
   {
     id: 'spirit',
@@ -157,9 +157,9 @@ export const PILLARS: PillarData[] = [
       en: 'Orienting the structure to True North.', 
       fr: 'Orientation vers le Nord.' 
     },
-    // Standard: Light / Space
-    image: 'https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?auto=format&fit=crop&q=80',
-    // Blueprint: Geometric / Compass - Updated URL
+    // Updated Image: Light and Space
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80',
+    // Blueprint: Geometry
     blueprintImage: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80'
   },
   {
@@ -171,9 +171,9 @@ export const PILLARS: PillarData[] = [
       en: 'Protection systems and external interfaces.', 
       fr: 'Systèmes de protection.' 
     },
-    // Standard: Building Exterior / Facade
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop',
-    // Blueprint: Fence / Mesh / Grid - Updated URL
+    // Updated Image: Facade / Glass
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80',
+    // Blueprint: Grid
     blueprintImage: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&q=80'
   }
 ];
@@ -224,7 +224,7 @@ export const PRODUCTS: Product[] = [
     price: 67, 
     originalPrice: 99,
     type: 'hybrid',
-    image: 'https://picsum.photos/seed/bundle/800/600?grayscale',
+    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80',
     status: 'available',
     isBestSeller: true,
     features: [
@@ -246,7 +246,7 @@ export const PRODUCTS: Product[] = [
     price: 35,
     originalPrice: 45,
     type: 'physical',
-    image: 'https://picsum.photos/seed/bookcover/600/800?grayscale',
+    image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80',
     status: 'available',
     features: [
         { ar: 'كتاب "عمارة الإنسان" (غلاف مقوى)', en: 'The Human Architecture Book (Hardcover)', fr: 'Livre relié' },
@@ -264,7 +264,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 15,
     type: 'physical',
-    image: 'https://picsum.photos/seed/cards/600/800?grayscale',
+    image: 'https://images.unsplash.com/photo-1621360841016-0e9f4e245648?auto=format&fit=crop&q=80',
     status: 'available'
   }
 ];
@@ -309,7 +309,7 @@ export const BLOG_POSTS: BlogPost[] = [
         en: '<p>Full content here...</p>',
         fr: '<p>Contenu complet...</p>'
     },
-    image: 'https://picsum.photos/seed/blog1/800/600?grayscale'
+    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80'
   },
   {
     id: '2',
@@ -326,7 +326,7 @@ export const BLOG_POSTS: BlogPost[] = [
         en: '<p>Full content here...</p>',
         fr: '<p>Contenu complet...</p>'
     },
-    image: 'https://picsum.photos/seed/blog2/800/600?grayscale'
+    image: 'https://images.unsplash.com/photo-1517672651691-24622a91b550?auto=format&fit=crop&q=80'
   }
 ];
 

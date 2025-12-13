@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Language, View, Product } from './types';
 import { TRANSLATIONS } from './constants';
-import { Menu, X, Moon, Sun, Grid, Activity, Wifi, Battery, Layers, ShoppingBag } from './components/Icons';
+import { Menu, X, Moon, Sun, Grid, Layers } from './components/Icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HomePage } from './components/HomePage';
 import { PhilosophyPage } from './components/PhilosophyPage';
@@ -12,10 +12,10 @@ import { ContactPage } from './components/ContactPage';
 import { LandingPage } from './components/LandingPage';
 import { CheckoutPage } from './components/CheckoutPage';
 import { CommunityPage } from './components/CommunityPage';
-import { ProgramDashboard } from './components/ProgramDashboard';
 import { CustomCursor } from './components/CustomCursor';
 import { Magnetic } from './components/Magnetic';
 import { BlueprintOverlay } from './components/BlueprintOverlay';
+import { SoundController } from './components/SoundController';
 
 function App() {
   const [lang, setLang] = useState<Language>('en');
@@ -145,6 +145,9 @@ function App() {
     <div className={`min-h-screen transition-colors duration-700 ${darkMode ? 'dark' : ''}`} dir={direction}>
       <CustomCursor />
       
+      {/* GLOBAL AUDIO SYSTEM */}
+      <SoundController />
+      
       {/* GLOBAL BLUEPRINT OVERLAY */}
       <AnimatePresence>
         {blueprintMode && (
@@ -163,32 +166,29 @@ function App() {
       <header className="fixed top-0 w-full z-50 mix-blend-difference text-white">
         <div className="container mx-auto px-6 py-6 flex justify-between items-center">
           
-          {/* Logo Area - ENLARGED */}
+          {/* Logo Area */}
           <div className="flex items-center gap-4 group cursor-pointer" onClick={() => setCurrentView('home')}>
-             <div className={`w-14 h-14 border-2 border-white flex items-center justify-center font-bold text-2xl group-hover:rotate-45 transition-transform duration-500 bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)]`}>
+             <div className={`w-12 h-12 border-2 border-white flex items-center justify-center font-bold text-xl group-hover:rotate-45 transition-transform duration-500 bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)]`}>
                  H
              </div>
-             <div className="hidden md:block">
-                 <span className={`block text-sm uppercase tracking-[0.4em] font-bold ${headingFont}`}>Human</span>
-                 <span className="block text-[0.6rem] uppercase tracking-[0.4em] opacity-80">Architecture</span>
+             <div className="hidden lg:block">
+                 <span className={`block text-xs uppercase tracking-[0.4em] font-bold ${headingFont}`}>Human</span>
+                 <span className="block text-[0.5rem] uppercase tracking-[0.4em] opacity-80">Architecture</span>
              </div>
           </div>
 
-          {/* Center Info (Desktop) */}
-          <div className="hidden md:flex items-center gap-8 text-[0.6rem] uppercase tracking-widest font-mono opacity-60">
-             <div className="flex items-center gap-2">
-                 <Wifi size={10} className="animate-pulse" />
-                 <span>SYSTEM: ONLINE</span>
-             </div>
-             <div className="flex items-center gap-2">
-                 <Battery size={10} />
-                 <span>ENERGY: 100%</span>
-             </div>
-             <div className="flex items-center gap-2">
-                 <Activity size={10} />
-                 <span>STRUCTURAL INTEGRITY: STABLE</span>
-             </div>
-          </div>
+          {/* Center Navigation (Desktop) - Restored */}
+          <nav className="hidden md:flex items-center gap-8">
+             {navItems.map((item) => (
+                 <button
+                    key={item.id}
+                    onClick={() => setCurrentView(item.id)}
+                    className={`text-xs uppercase tracking-widest hover:text-bronze transition-colors ${currentView === item.id ? 'text-bronze font-bold border-b border-bronze pb-1' : 'text-slate'}`}
+                 >
+                     {item.label}
+                 </button>
+             ))}
+          </nav>
 
           {/* Right Actions */}
           <div className="flex items-center gap-6">
@@ -199,18 +199,19 @@ function App() {
                   {lang === 'en' ? 'AR' : 'EN'}
               </button>
               
+              {/* Mobile Menu Button */}
               <button 
                 onClick={() => setMenuOpen(true)}
-                className="group flex items-center gap-2 hover:text-bronze transition-colors"
+                className="md:hidden group flex items-center gap-2 hover:text-bronze transition-colors"
               >
-                  <span className="hidden md:inline text-xs uppercase tracking-widest font-bold">{TRANSLATIONS.nav.home[lang] === 'الرئيسية' ? 'القائمة' : 'MENU'}</span>
-                  <Menu size={28} className="group-hover:scale-110 transition-transform" strokeWidth={1.5} />
+                  <Menu size={24} className="group-hover:scale-110 transition-transform" strokeWidth={1.5} />
               </button>
 
+              {/* Blueprint CTA */}
               <Magnetic strength={0.3}>
                   <button 
                     onClick={() => setCurrentView('landing')}
-                    className="hidden md:flex bg-white text-black px-6 py-3 text-xs uppercase tracking-widest font-bold hover:bg-bronze hover:text-white transition-colors items-center gap-2"
+                    className="hidden lg:flex bg-white text-black px-6 py-3 text-xs uppercase tracking-widest font-bold hover:bg-bronze hover:text-white transition-colors items-center gap-2"
                   >
                       <Layers size={14} />
                       {lang === 'ar' ? 'المخطط' : 'The Blueprint'}
@@ -220,12 +221,12 @@ function App() {
         </div>
       </header>
 
-      {/* --- FULLSCREEN MENU (CENTERED) --- */}
+      {/* --- MOBILE FULLSCREEN MENU --- */}
       <AnimatePresence>
         {menuOpen && (
             <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-[#0a0a0a]/98 backdrop-blur-xl text-alabaster flex flex-col items-center justify-center"
+                className="fixed inset-0 z-[100] bg-[#0a0a0a]/98 backdrop-blur-xl text-alabaster flex flex-col items-center justify-center md:hidden"
             >
                 {/* Close Button */}
                 <button 
@@ -234,10 +235,6 @@ function App() {
                 >
                     {lang === 'ar' ? 'إغلاق' : 'CLOSE'} <X size={32} />
                 </button>
-
-                {/* Decoration Lines */}
-                <div className="absolute top-0 bottom-0 left-12 w-px bg-white/5 hidden md:block"></div>
-                <div className="absolute top-0 bottom-0 right-12 w-px bg-white/5 hidden md:block"></div>
 
                 {/* Navigation Links */}
                 <nav className="space-y-8 text-center">
@@ -250,7 +247,7 @@ function App() {
                         >
                             <button 
                                 onClick={() => { setCurrentView(item.id); setMenuOpen(false); }}
-                                className={`text-4xl md:text-7xl ${headingFont} hover:text-bronze transition-all duration-300 group flex items-center justify-center gap-6 ${currentView === item.id ? 'text-bronze' : 'text-slate'}`}
+                                className={`text-4xl ${headingFont} hover:text-bronze transition-all duration-300 group flex items-center justify-center gap-6 ${currentView === item.id ? 'text-bronze' : 'text-slate'}`}
                             >
                                 <span className="text-xs font-mono opacity-30 group-hover:opacity-100 transition-opacity -mt-4">0{idx+1}</span>
                                 {item.label}
@@ -262,13 +259,13 @@ function App() {
                 {/* Footer Controls */}
                 <div className="mt-20 flex gap-12 text-slate">
                         <button onClick={() => setDarkMode(!darkMode)} className="hover:text-white transition-colors flex items-center gap-2 text-xs uppercase tracking-widest">
-                            {darkMode ? <Sun size={18} /> : <Moon size={18} />} {darkMode ? 'Light Mode' : 'Dark Mode'}
+                            {darkMode ? <Sun size={18} /> : <Moon size={18} />} {darkMode ? 'Light' : 'Dark'}
                         </button>
                         <button 
                         onClick={() => setBlueprintMode(!blueprintMode)} 
                         className={`hover:text-white transition-colors flex items-center gap-2 text-xs uppercase tracking-widest ${blueprintMode ? 'text-cyan-400' : ''}`}
                         >
-                            <Grid size={18} /> {blueprintMode ? 'Blueprint ON' : 'Blueprint Mode'}
+                            <Grid size={18} /> {blueprintMode ? 'Blueprint' : 'Blueprint'}
                         </button>
                 </div>
             </motion.div>
@@ -304,6 +301,20 @@ function App() {
               <div className="text-[0.6rem] uppercase tracking-widest">
                   {TRANSLATIONS.footer.copyright[lang]}
               </div>
+              
+              {/* Desktop Footer Controls - Moved here from Menu */}
+              <div className="hidden md:flex gap-8">
+                   <button onClick={() => setDarkMode(!darkMode)} className="hover:text-white transition-colors flex items-center gap-2 text-[0.6rem] uppercase tracking-widest">
+                        {darkMode ? <Sun size={12} /> : <Moon size={12} />} {darkMode ? 'Light Mode' : 'Dark Mode'}
+                   </button>
+                   <button 
+                        onClick={() => setBlueprintMode(!blueprintMode)} 
+                        className={`hover:text-white transition-colors flex items-center gap-2 text-[0.6rem] uppercase tracking-widest ${blueprintMode ? 'text-cyan-400' : ''}`}
+                   >
+                        <Grid size={12} /> {blueprintMode ? 'Blueprint ON' : 'Blueprint Mode'}
+                   </button>
+              </div>
+
               <div className="flex items-center gap-8">
                   <a href="#" className="hover:text-bronze transition-colors"><span className="sr-only">Instagram</span>IG</a>
                   <a href="#" className="hover:text-bronze transition-colors"><span className="sr-only">Twitter</span>TW</a>

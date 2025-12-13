@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, useSpring, useMotionValue, useTransform, useMotionTemplate } from 'framer-motion';
+import { motion, useSpring, useMotionValue, useTransform, useMotionTemplate, animate } from 'framer-motion';
 import { Typewriter } from './Typewriter';
 import { TRANSLATIONS } from '../constants';
 import { Language, View } from '../types';
@@ -19,8 +19,8 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
 
   // X-Ray Logic
   const containerRef = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  const x = useMotionValue(250); // Default center
+  const y = useMotionValue(300); // Default center
   const [isHovering, setIsHovering] = useState(false);
 
   // Smooth mouse movement for the lens
@@ -33,7 +33,29 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
   const springRadius = useSpring(radius, { damping: 20, stiffness: 150 });
 
   useEffect(() => {
-    radius.set(isHovering ? 250 : 0);
+    // If hovering (mouse usage), show lens.
+    // IF NOT hovering, check if it's likely a touch device to run auto-scan.
+    if (isHovering) {
+        radius.set(250);
+    } else {
+        // MOBILE AUTO-SCAN LOGIC
+        // We set radius to open up on mobile load
+        const isTouch = window.matchMedia("(max-width: 1024px)").matches;
+        if (isTouch) {
+            radius.set(200);
+            
+            // Animate X and Y in a figure-8 or loop pattern
+            const controlsX = animate(x, [100, 300, 100], { duration: 8, repeat: Infinity, ease: "easeInOut" });
+            const controlsY = animate(y, [150, 400, 150], { duration: 5, repeat: Infinity, ease: "easeInOut" });
+            
+            return () => {
+                controlsX.stop();
+                controlsY.stop();
+            };
+        } else {
+            radius.set(0);
+        }
+    }
   }, [isHovering]);
 
   // Dynamic Clip Path
@@ -220,7 +242,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
                     style={{ 
                         x: reticleX, 
                         y: reticleY,
-                        opacity: isHovering ? 1 : 0
+                        opacity: 1 // Always visible, controlled by clipPath validity
                     }}
                 >
                     {/* A. Outer Rotating Rings */}
@@ -262,8 +284,8 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
                     </div>
                 </motion.div>
 
-                {/* HINT */}
-                <div className={`absolute bottom-8 left-0 w-full text-center z-40 transition-opacity duration-500 ${isHovering ? 'opacity-0' : 'opacity-100'}`}>
+                {/* HINT - Hide on Mobile/Touch as it auto scans */}
+                <div className={`absolute bottom-8 left-0 w-full text-center z-40 transition-opacity duration-500 ${isHovering ? 'opacity-0' : 'opacity-100'} hidden lg:block`}>
                     <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm px-4 py-2 border border-white/10 rounded-full animate-pulse">
                         <Layers size={14} className="text-bronze" />
                         <span className="text-[0.6rem] uppercase tracking-[0.2em] text-white/80">
