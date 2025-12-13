@@ -15,7 +15,6 @@ import { CommunityPage } from './components/CommunityPage';
 import { CustomCursor } from './components/CustomCursor';
 import { Magnetic } from './components/Magnetic';
 import { BlueprintOverlay } from './components/BlueprintOverlay';
-import { SoundController } from './components/SoundController';
 
 function App() {
   const [lang, setLang] = useState<Language>('en');
@@ -144,9 +143,6 @@ function App() {
   return (
     <div className={`min-h-screen transition-colors duration-700 ${darkMode ? 'dark' : ''}`} dir={direction}>
       <CustomCursor />
-      
-      {/* GLOBAL AUDIO SYSTEM */}
-      <SoundController />
       
       {/* GLOBAL BLUEPRINT OVERLAY */}
       <AnimatePresence>

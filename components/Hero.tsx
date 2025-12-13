@@ -42,11 +42,13 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
         // We set radius to open up on mobile load
         const isTouch = window.matchMedia("(max-width: 1024px)").matches;
         if (isTouch) {
-            radius.set(200);
+            // Smaller radius for mobile (was 200, now 130)
+            radius.set(130);
             
-            // Animate X and Y in a figure-8 or loop pattern
-            const controlsX = animate(x, [100, 300, 100], { duration: 8, repeat: Infinity, ease: "easeInOut" });
-            const controlsY = animate(y, [150, 400, 150], { duration: 5, repeat: Infinity, ease: "easeInOut" });
+            // Much slower, smoother animation loop
+            // Constrain movement to be more central to avoid jarring edges
+            const controlsX = animate(x, [120, 220, 120], { duration: 12, repeat: Infinity, ease: "easeInOut" });
+            const controlsY = animate(y, [200, 300, 200], { duration: 15, repeat: Infinity, ease: "easeInOut" });
             
             return () => {
                 controlsX.stop();
