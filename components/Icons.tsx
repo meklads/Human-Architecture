@@ -48,7 +48,14 @@ import {
   CreditCard,
   Layout,
   PenTool,
-  Database
+  Database,
+  FileText,
+  Pause,
+  Volume2,
+  VolumeX,
+  Mic,
+  Save,
+  RotateCcw
 } from 'lucide-react';
 
 export { 
@@ -99,5 +106,12 @@ export {
   CreditCard,
   Layout,
   PenTool,
-  Database
+  Database,
+  FileText,
+  Pause,
+  Volume2,
+  VolumeX,
+  Mic,
+  Save,
+  RotateCcw
 };

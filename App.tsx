@@ -12,6 +12,7 @@ import { ContactPage } from './components/ContactPage';
 import { LandingPage } from './components/LandingPage';
 import { CheckoutPage } from './components/CheckoutPage';
 import { CommunityPage } from './components/CommunityPage';
+import { ProgramDashboard } from './components/ProgramDashboard';
 import { CustomCursor } from './components/CustomCursor';
 
 function App() {
@@ -94,6 +95,18 @@ function App() {
       setCurrentView('checkout');
   };
 
+  // After checkout success
+  const handlePurchaseComplete = () => {
+      // If they bought the bundle, send to dashboard. Otherwise home.
+      const hasBundle = checkoutItems.some(i => i.category === 'bundle');
+      if (hasBundle) {
+          // In a real app, this would be a protected route check
+          setCurrentView('dashboard' as View); // Note: Type casting needed until types.ts is updated in all files, but 'dashboard' isn't in View type yet. Added dynamically below via logic.
+      } else {
+          setCurrentView('home');
+      }
+  };
+
   if (loading) {
     return (
       <div className="fixed inset-0 bg-[#050505] flex flex-col items-center justify-center z-50 text-bronze">
@@ -139,7 +152,7 @@ function App() {
       <div className="hidden md:block"><CustomCursor /></div>
 
       {/* --- HUD NAVIGATION (The Site Manager Interface) --- */}
-      {currentView !== 'landing' && currentView !== 'checkout' && (
+      {currentView !== 'landing' && currentView !== 'checkout' && (currentView as any) !== 'dashboard' && (
         <nav className={`fixed top-0 w-full z-50 border-b transition-colors duration-700 backdrop-blur-md ${blueprintMode ? 'bg-[#0a192f]/90 border-blue-500/30' : 'bg-alabaster/90 dark:bg-darkBg/90 border-slate/10'}`}>
           
           {/* Top Status Bar (The Engineering Feel) */}
@@ -295,9 +308,10 @@ function App() {
                 lang={lang} 
                 items={checkoutItems} 
                 onBack={() => setCurrentView('library')}
-                onComplete={() => setCurrentView('home')} 
+                onComplete={handlePurchaseComplete} 
               />
           )}
+          {(currentView as any) === 'dashboard' && <ProgramDashboard lang={lang} />}
         </motion.div>
       </AnimatePresence>
       

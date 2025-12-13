@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { Language, AssessmentCategory, View } from '../types';
@@ -260,8 +261,8 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
                          : 'This report is just a diagnosis. The radical solution lies in acquiring the "Master Blueprint" and starting execution.'}
                     </p>
                     <button 
-                        onClick={() => setView('landing')}
-                        className="w-full py-4 bg-bronze text-white uppercase tracking-[0.2em] font-bold hover:bg-charcoal transition-colors shadow-lg flex items-center justify-center gap-3"
+                        onClick={() => setView('landing')} // DIRECT FUNNEL LINK
+                        className="w-full py-4 bg-bronze text-white uppercase tracking-[0.2em] font-bold hover:bg-charcoal transition-colors shadow-lg flex items-center justify-center gap-3 animate-pulse"
                     >
                          {isAr ? 'استلام خطة العمل (الكتاب)' : 'Get Action Plan (The Book)'} <ArrowRight size={16} />
                     </button>
