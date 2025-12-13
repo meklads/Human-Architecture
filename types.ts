@@ -15,6 +15,7 @@ export interface PillarData {
   description: ContentText;
   fullContent?: ContentText;
   image: string;
+  blueprintImage?: string; // New field for X-Ray effect
   channelId?: string;
 }
 

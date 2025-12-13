@@ -129,7 +129,10 @@ export const PILLARS: PillarData[] = [
       en: 'Reprogramming cognitive operating systems.', 
       fr: 'Reprogrammation cognitive.' 
     },
-    image: 'https://picsum.photos/seed/mindarch/600/800?grayscale'
+    // Standard: Abstract Thought
+    image: 'https://images.unsplash.com/photo-1555554317-a071f38eb3b2?q=80&w=2608&auto=format&fit=crop',
+    // Blueprint: Circuitry/Schematic - Updated URL
+    blueprintImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80'
   },
   {
     id: 'body',
@@ -140,7 +143,10 @@ export const PILLARS: PillarData[] = [
       en: 'Pouring concrete bases for bio-energy.', 
       fr: 'Coulage des bases.' 
     },
-    image: 'https://picsum.photos/seed/bodyarch/600/800?grayscale'
+    // Standard: Human Form / Strength
+    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2670&auto=format&fit=crop',
+    // Blueprint: Construction/Scaffolding - Updated URL
+    blueprintImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80'
   },
   {
     id: 'spirit',
@@ -151,7 +157,10 @@ export const PILLARS: PillarData[] = [
       en: 'Orienting the structure to True North.', 
       fr: 'Orientation vers le Nord.' 
     },
-    image: 'https://picsum.photos/seed/spiritarch/600/800?grayscale'
+    // Standard: Light / Space
+    image: 'https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?auto=format&fit=crop&q=80',
+    // Blueprint: Geometric / Compass - Updated URL
+    blueprintImage: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80'
   },
   {
     id: 'social',
@@ -162,7 +171,10 @@ export const PILLARS: PillarData[] = [
       en: 'Protection systems and external interfaces.', 
       fr: 'Systèmes de protection.' 
     },
-    image: 'https://picsum.photos/seed/socialarch/600/800?grayscale'
+    // Standard: Building Exterior / Facade
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop',
+    // Blueprint: Fence / Mesh / Grid - Updated URL
+    blueprintImage: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&q=80'
   }
 ];
 

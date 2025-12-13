@@ -14,9 +14,9 @@ import { CheckoutPage } from './components/CheckoutPage';
 import { CommunityPage } from './components/CommunityPage';
 import { ProgramDashboard } from './components/ProgramDashboard';
 import { CustomCursor } from './components/CustomCursor';
+import { Magnetic } from './components/Magnetic';
 
 function App() {
-  // CHANGED: Default language is English as per strategy
   const [lang, setLang] = useState<Language>('en');
   const [currentView, setCurrentView] = useState<View>('home');
   const [darkMode, setDarkMode] = useState(true);
@@ -100,235 +100,204 @@ function App() {
       // If they bought the bundle, send to dashboard. Otherwise home.
       const hasBundle = checkoutItems.some(i => i.category === 'bundle');
       if (hasBundle) {
-          // In a real app, this would be a protected route check
-          setCurrentView('dashboard' as View); // Note: Type casting needed until types.ts is updated in all files, but 'dashboard' isn't in View type yet. Added dynamically below via logic.
+          // Note: In a real app we would unlock content here
+          setCurrentView('community'); // Assuming community/dashboard access
       } else {
           setCurrentView('home');
       }
+      setCheckoutItems([]);
   };
+
+  const navItems: { id: View; label: string }[] = [
+    { id: 'home', label: TRANSLATIONS.nav.home[lang] },
+    { id: 'philosophy', label: TRANSLATIONS.nav.philosophy[lang] },
+    { id: 'library', label: TRANSLATIONS.nav.library[lang] },
+    { id: 'journal', label: TRANSLATIONS.nav.journal[lang] },
+    { id: 'community', label: TRANSLATIONS.nav.community[lang] },
+    { id: 'contact', label: TRANSLATIONS.nav.contact[lang] },
+  ];
 
   if (loading) {
     return (
-      <div className="fixed inset-0 bg-[#050505] flex flex-col items-center justify-center z-50 text-bronze">
-        <div className="w-64 h-[1px] bg-white/10 mb-8 relative overflow-hidden">
-          <motion.div 
-            animate={{ x: ['-100%', '100%'] }} 
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-0 left-0 w-1/2 h-full bg-bronze blur-[2px]"
-          />
-        </div>
-        
-        {/* Architectural Loader Text */}
-        <div className="flex flex-col items-center gap-4 h-16">
-            <motion.span 
-              key={loadingPhase}
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              className={`text-sm tracking-[0.2em] uppercase ${lang === 'ar' ? 'font-ibm' : 'font-mono'}`}
-            >
-                {lang === 'ar' ? LOAD_PHASES[loadingPhase].ar : LOAD_PHASES[loadingPhase].en}
-            </motion.span>
-            
-            <div className="flex gap-1">
-              {[...Array(5)].map((_, i) => (
-                <div 
-                  key={i} 
-                  className={`w-1 h-1 rounded-full transition-colors duration-300 ${i <= loadingPhase ? 'bg-bronze' : 'bg-white/10'}`} 
-                />
-              ))}
-            </div>
-        </div>
-        
-        <span className="absolute bottom-10 text-[0.5rem] font-mono text-slate/50">V.2.0.5 // SYSTEM INTEGRITY CHECK</span>
+      <div className="fixed inset-0 bg-[#050505] text-bronze flex flex-col items-center justify-center z-[9999]">
+         <div className="w-64 h-1 bg-white/10 mb-8 rounded-full overflow-hidden relative">
+             <motion.div 
+               className="absolute top-0 left-0 h-full bg-bronze"
+               initial={{ width: 0 }}
+               animate={{ width: '100%' }}
+               transition={{ duration: 2.5, ease: "easeInOut" }}
+             ></motion.div>
+         </div>
+         <div className="font-mono text-xs uppercase tracking-[0.2em] animate-pulse">
+             {LOAD_PHASES[loadingPhase][lang]}
+         </div>
+         <div className="mt-4 flex gap-2">
+             <span className="w-1 h-1 bg-bronze rounded-full animate-bounce" style={{ animationDelay: '0s'}}></span>
+             <span className="w-1 h-1 bg-bronze rounded-full animate-bounce" style={{ animationDelay: '0.1s'}}></span>
+             <span className="w-1 h-1 bg-bronze rounded-full animate-bounce" style={{ animationDelay: '0.2s'}}></span>
+         </div>
       </div>
     );
   }
 
   return (
-    <div dir={direction} className={`min-h-screen selection:bg-bronze selection:text-white architectural-grid transition-colors duration-700 ${blueprintMode ? '' : 'bg-alabaster dark:bg-darkBg'}`}>
+    <div className={`min-h-screen transition-colors duration-700 ${darkMode ? 'dark' : ''}`} dir={direction}>
+      <CustomCursor />
       
-      <div className="noise-overlay"></div>
-      <div className="hidden md:block"><CustomCursor /></div>
-
-      {/* --- HUD NAVIGATION (The Site Manager Interface) --- */}
-      {currentView !== 'landing' && currentView !== 'checkout' && (currentView as any) !== 'dashboard' && (
-        <nav className={`fixed top-0 w-full z-50 border-b transition-colors duration-700 backdrop-blur-md ${blueprintMode ? 'bg-[#0a192f]/90 border-blue-500/30' : 'bg-alabaster/90 dark:bg-darkBg/90 border-slate/10'}`}>
+      {/* --- NAVIGATION BAR --- */}
+      <header className="fixed top-0 w-full z-50 mix-blend-difference text-white">
+        <div className="container mx-auto px-6 py-6 flex justify-between items-center">
           
-          {/* Top Status Bar (The Engineering Feel) */}
-          <div className="h-8 border-b border-white/5 flex items-center justify-between px-6 text-[0.6rem] font-mono uppercase tracking-widest text-slate/60">
-             <div className="flex gap-4">
-                <span className="flex items-center gap-1"><Wifi size={10} /> {lang === 'ar' ? 'متصل' : 'ONLINE'}</span>
-                <span className="flex items-center gap-1"><Activity size={10} /> {lang === 'ar' ? 'النظام مستقر' : 'SYSTEM STABLE'}</span>
+          {/* Logo Area - ENLARGED */}
+          <div className="flex items-center gap-4 group cursor-pointer" onClick={() => setCurrentView('home')}>
+             <div className={`w-14 h-14 border-2 border-white flex items-center justify-center font-bold text-2xl group-hover:rotate-45 transition-transform duration-500 bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)]`}>
+                 H
              </div>
-             <div className="flex gap-4">
-                 <span>LOC: 30.0444° N, 31.2357° E</span>
-                 <span className="flex items-center gap-1"><Battery size={10} /> 100%</span>
+             <div className="hidden md:block">
+                 <span className={`block text-sm uppercase tracking-[0.4em] font-bold ${headingFont}`}>Human</span>
+                 <span className="block text-[0.6rem] uppercase tracking-[0.4em] opacity-80">Architecture</span>
              </div>
           </div>
 
-          <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-            
-            {/* Logo / Home */}
-            <button 
-              onClick={() => setCurrentView('home')} 
-              className={`text-xl md:text-2xl font-bold tracking-wider hover:text-bronze transition-colors cursor-pointer flex items-center gap-2 ${blueprintMode ? 'text-[#64ffda]' : 'text-charcoal dark:text-concrete'} ${headingFont}`}
-            >
-              <Grid size={20} className={blueprintMode ? 'text-[#64ffda]' : 'text-bronze'} />
-              {lang === 'ar' ? 'عمارة الإنسان' : 'HUMAN ARCH.'}
-            </button>
+          {/* Center Info (Desktop) */}
+          <div className="hidden md:flex items-center gap-8 text-[0.6rem] uppercase tracking-widest font-mono opacity-60">
+             <div className="flex items-center gap-2">
+                 <Wifi size={10} className="animate-pulse" />
+                 <span>SYSTEM: ONLINE</span>
+             </div>
+             <div className="flex items-center gap-2">
+                 <Battery size={10} />
+                 <span>ENERGY: 100%</span>
+             </div>
+             <div className="flex items-center gap-2">
+                 <Activity size={10} />
+                 <span>STRUCTURAL INTEGRITY: STABLE</span>
+             </div>
+          </div>
 
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center gap-6">
-              {['philosophy', 'journal', 'library', 'community'].map((view) => (
-                  <button 
-                    key={view}
-                    onClick={() => setCurrentView(view as View)} 
-                    className={`text-[0.6rem] uppercase tracking-[0.15em] hover:text-bronze transition-all cursor-pointer relative group ${currentView === view ? 'text-bronze font-bold' : 'text-slate'}`}
-                  >
-                      {TRANSLATIONS.nav[view as keyof typeof TRANSLATIONS.nav][lang]}
-                      <span className={`absolute -bottom-6 left-0 w-full h-[2px] bg-bronze transform scale-x-0 group-hover:scale-x-100 transition-transform ${currentView === view ? 'scale-x-100' : ''}`}></span>
-                  </button>
-              ))}
-
-              {/* PRIMARY ACTION: BUY BLUEPRINT */}
+          {/* Right Actions */}
+          <div className="flex items-center gap-6">
               <button 
-                onClick={() => setCurrentView('landing')} 
-                className={`ml-4 text-xs font-bold border px-5 py-2 uppercase tracking-widest transition-all flex items-center gap-2 ${blueprintMode ? 'border-[#64ffda] text-[#64ffda] hover:bg-[#64ffda]/10' : 'border-bronze text-bronze hover:bg-bronze hover:text-white'}`}
+                onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
+                className="text-xs font-bold hover:text-bronze transition-colors uppercase"
               >
-                 <ShoppingBag size={14} />
-                 {lang === 'ar' ? 'المخطط' : 'Blueprint'}
+                  {lang === 'en' ? 'AR' : 'EN'}
+              </button>
+              
+              <button 
+                onClick={() => setMenuOpen(true)}
+                className="group flex items-center gap-2 hover:text-bronze transition-colors"
+              >
+                  <span className="hidden md:inline text-xs uppercase tracking-widest font-bold">{TRANSLATIONS.nav.home[lang] === 'الرئيسية' ? 'القائمة' : 'MENU'}</span>
+                  <Menu size={28} className="group-hover:scale-110 transition-transform" strokeWidth={1.5} />
               </button>
 
-              <div className="h-8 w-px bg-slate/20 mx-2"></div>
-
-              {/* SETTINGS CLUSTER: CAD | THEME | LANG */}
-              <div className="flex items-center gap-3 bg-slate/5 px-3 py-1 rounded-full border border-slate/10">
-                  {/* BLUEPRINT TOGGLE */}
+              <Magnetic strength={0.3}>
                   <button 
-                    onClick={() => setBlueprintMode(!blueprintMode)}
-                    className={`p-2 rounded-full transition-all ${blueprintMode ? 'text-[#64ffda] bg-[#64ffda]/10' : 'text-slate hover:text-bronze'}`}
-                    title="CAD Mode"
+                    onClick={() => setCurrentView('landing')}
+                    className="hidden md:flex bg-white text-black px-6 py-3 text-xs uppercase tracking-widest font-bold hover:bg-bronze hover:text-white transition-colors items-center gap-2"
                   >
-                      <Layers size={16} />
+                      <Layers size={14} />
+                      {lang === 'ar' ? 'المخطط' : 'The Blueprint'}
                   </button>
-
-                  {/* THEME TOGGLE */}
-                  <button 
-                    onClick={() => setDarkMode(!darkMode)}
-                    className={`p-2 rounded-full transition-all ${darkMode ? 'text-white' : 'text-charcoal'} hover:text-bronze`}
-                    title={darkMode ? 'Light Mode' : 'Dark Mode'}
-                  >
-                    {darkMode ? <Sun size={16} /> : <Moon size={16} />}
-                  </button>
-
-                  <div className="w-px h-4 bg-slate/20"></div>
-
-                  {/* LANG TOGGLE */}
-                  <button 
-                    onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-                    className="text-xs font-mono text-slate hover:text-bronze px-2"
-                  >
-                    {lang === 'en' ? 'AR' : 'EN'}
-                  </button>
-              </div>
-
-            </div>
-
-            {/* Mobile Toggle */}
-            <div className="flex items-center gap-4 md:hidden">
-                 <button 
-                    onClick={() => setDarkMode(!darkMode)}
-                    className={`${blueprintMode ? 'text-[#64ffda]' : 'text-charcoal dark:text-concrete'} p-2`}
-                  >
-                    {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-                  </button>
-
-                <button className={`${blueprintMode ? 'text-[#64ffda]' : 'text-charcoal dark:text-concrete'}`} onClick={() => setMenuOpen(true)}>
-                  <Menu size={24} strokeWidth={1} />
-                </button>
-            </div>
+              </Magnetic>
           </div>
-        </nav>
-      )}
+        </div>
+      </header>
 
-      {/* Mobile Menu Overlay */}
+      {/* --- FULLSCREEN MENU (CENTERED) --- */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, x: direction === 'rtl' ? '100%' : '-100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: direction === 'rtl' ? '100%' : '-100%' }}
-            transition={{ type: 'tween', ease: 'anticipate', duration: 0.5 }}
-            className={`fixed inset-0 z-[60] flex flex-col items-center justify-center ${blueprintMode ? 'bg-[#0a192f] text-[#64ffda]' : 'bg-alabaster dark:bg-darkBg'}`}
-          >
-            <button onClick={() => setMenuOpen(false)} className="absolute top-6 right-6 opacity-70">
-              <X size={32} strokeWidth={1} />
-            </button>
-            <div className="flex flex-col gap-8 text-center text-xl">
-               <button onClick={() => { setCurrentView('home'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.home[lang]}</button>
-               <button onClick={() => { setCurrentView('landing'); setMenuOpen(false); }} className={`text-bronze ${headingFont} text-2xl`}>{lang === 'ar' ? 'استلام المخطط' : 'Get Blueprint'}</button>
-               <button onClick={() => { setCurrentView('philosophy'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.philosophy[lang]}</button>
-               <button onClick={() => { setCurrentView('library'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.library[lang]}</button>
-               <button onClick={() => { setCurrentView('community'); setMenuOpen(false); }} className={headingFont}>{TRANSLATIONS.nav.community[lang]}</button>
-               
-               <div className="flex flex-col items-center gap-6 mt-8 pt-8 border-t border-current/10 w-48 mx-auto">
-                 <button onClick={() => setBlueprintMode(!blueprintMode)} className="flex items-center gap-2 text-sm uppercase tracking-widest px-4 py-2">
-                    <Layers size={14} /> {blueprintMode ? 'Disable CAD' : 'Enable CAD'}
-                 </button>
-                 
-                 <button onClick={() => { setLang(lang === 'en' ? 'ar' : 'en'); setMenuOpen(false); }} className="uppercase text-sm tracking-widest opacity-50">
-                   Change Language ({lang === 'en' ? 'AR' : 'EN'})
-                 </button>
-               </div>
-            </div>
-          </motion.div>
+            <motion.div 
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[100] bg-[#0a0a0a]/98 backdrop-blur-xl text-alabaster flex flex-col items-center justify-center"
+            >
+                {/* Close Button */}
+                <button 
+                    onClick={() => setMenuOpen(false)}
+                    className="absolute top-8 right-8 text-slate hover:text-white transition-colors flex items-center gap-2 text-xs uppercase tracking-widest"
+                >
+                    {lang === 'ar' ? 'إغلاق' : 'CLOSE'} <X size={32} />
+                </button>
+
+                {/* Decoration Lines */}
+                <div className="absolute top-0 bottom-0 left-12 w-px bg-white/5 hidden md:block"></div>
+                <div className="absolute top-0 bottom-0 right-12 w-px bg-white/5 hidden md:block"></div>
+
+                {/* Navigation Links */}
+                <nav className="space-y-8 text-center">
+                    {navItems.map((item, idx) => (
+                        <motion.div
+                            key={item.id}
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: idx * 0.1 }}
+                        >
+                            <button 
+                                onClick={() => { setCurrentView(item.id); setMenuOpen(false); }}
+                                className={`text-4xl md:text-7xl ${headingFont} hover:text-bronze transition-all duration-300 group flex items-center justify-center gap-6 ${currentView === item.id ? 'text-bronze' : 'text-slate'}`}
+                            >
+                                <span className="text-xs font-mono opacity-30 group-hover:opacity-100 transition-opacity -mt-4">0{idx+1}</span>
+                                {item.label}
+                            </button>
+                        </motion.div>
+                    ))}
+                </nav>
+
+                {/* Footer Controls */}
+                <div className="mt-20 flex gap-12 text-slate">
+                        <button onClick={() => setDarkMode(!darkMode)} className="hover:text-white transition-colors flex items-center gap-2 text-xs uppercase tracking-widest">
+                            {darkMode ? <Sun size={18} /> : <Moon size={18} />} {darkMode ? 'Light Mode' : 'Dark Mode'}
+                        </button>
+                        <button 
+                        onClick={() => setBlueprintMode(!blueprintMode)} 
+                        className={`hover:text-white transition-colors flex items-center gap-2 text-xs uppercase tracking-widest ${blueprintMode ? 'text-cyan-400' : ''}`}
+                        >
+                            <Grid size={18} /> {blueprintMode ? 'Blueprint ON' : 'Blueprint Mode'}
+                        </button>
+                </div>
+            </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Main Content Routing */}
-      <AnimatePresence mode="wait">
-        <motion.div 
-            key={currentView} 
-            className="w-full"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-        >
-          {currentView === 'home' && <HomePage lang={lang} setView={setCurrentView} />}
-          {currentView === 'philosophy' && <PhilosophyPage lang={lang} setView={setCurrentView} />}
-          {currentView === 'journal' && <JournalPage lang={lang} />}
-          {currentView === 'library' && <LibraryPage lang={lang} onCheckout={handleAddToCart} />}
-          {currentView === 'contact' && <ContactPage lang={lang} />}
-          {currentView === 'community' && <CommunityPage lang={lang} />}
-          {currentView === 'landing' && <LandingPage lang={lang} setView={setCurrentView} onCheckout={handleAddToCart} />}
-          {currentView === 'checkout' && (
-              <CheckoutPage 
-                lang={lang} 
-                items={checkoutItems} 
-                onBack={() => setCurrentView('library')}
-                onComplete={handlePurchaseComplete} 
-              />
-          )}
-          {(currentView as any) === 'dashboard' && <ProgramDashboard lang={lang} />}
-        </motion.div>
-      </AnimatePresence>
-      
-      {/* Dynamic Grid Overlay in Blueprint Mode */}
-      {blueprintMode && (
-          <div className="fixed inset-0 pointer-events-none z-[9999] border-[20px] border-[#64ffda]/10 flex items-center justify-center">
-              <div className="absolute top-4 left-4 text-[#64ffda] text-[0.6rem] font-mono">CAM_01 [REC]</div>
-              <div className="absolute bottom-4 right-4 text-[#64ffda] text-[0.6rem] font-mono">ARCH_MODE: ACTIVE</div>
-              <div className="w-8 h-8 border-l border-t border-[#64ffda] absolute top-4 left-4"></div>
-              <div className="w-8 h-8 border-r border-t border-[#64ffda] absolute top-4 right-4"></div>
-              <div className="w-8 h-8 border-l border-b border-[#64ffda] absolute bottom-4 left-4"></div>
-              <div className="w-8 h-8 border-r border-b border-[#64ffda] absolute bottom-4 right-4"></div>
-              <div className="w-[1px] h-10 bg-[#64ffda]/50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-              <div className="h-[1px] w-10 bg-[#64ffda]/50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-          </div>
-      )}
+      {/* --- MAIN CONTENT AREA --- */}
+      <main className="relative z-10">
+        <AnimatePresence mode='wait'>
+            {currentView === 'home' && <HomePage key="home" lang={lang} setView={setCurrentView} />}
+            {currentView === 'philosophy' && <PhilosophyPage key="philosophy" lang={lang} setView={setCurrentView} />}
+            {currentView === 'journal' && <JournalPage key="journal" lang={lang} />}
+            {currentView === 'library' && <LibraryPage key="library" lang={lang} onCheckout={handleAddToCart} />}
+            {currentView === 'contact' && <ContactPage key="contact" lang={lang} />}
+            {currentView === 'landing' && <LandingPage key="landing" lang={lang} setView={setCurrentView} onCheckout={handleAddToCart} />}
+            {currentView === 'community' && <CommunityPage key="community" lang={lang} />}
+            {currentView === 'checkout' && (
+                <CheckoutPage 
+                    key="checkout" 
+                    lang={lang} 
+                    items={checkoutItems} 
+                    onBack={() => setCurrentView('library')}
+                    onComplete={handlePurchaseComplete}
+                />
+            )}
+        </AnimatePresence>
+      </main>
 
+      {/* --- FOOTER --- */}
+      {currentView !== 'checkout' && (
+      <footer className="bg-[#050505] text-slate/40 py-12 border-t border-white/5 relative z-10">
+          <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+              <div className="text-[0.6rem] uppercase tracking-widest">
+                  {TRANSLATIONS.footer.copyright[lang]}
+              </div>
+              <div className="flex items-center gap-8">
+                  <a href="#" className="hover:text-bronze transition-colors"><span className="sr-only">Instagram</span>IG</a>
+                  <a href="#" className="hover:text-bronze transition-colors"><span className="sr-only">Twitter</span>TW</a>
+                  <a href="#" className="hover:text-bronze transition-colors"><span className="sr-only">LinkedIn</span>LI</a>
+              </div>
+          </div>
+      </footer>
+      )}
+      
     </div>
   );
 }

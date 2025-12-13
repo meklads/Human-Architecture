@@ -5,7 +5,7 @@ import { Language, View } from '../types';
 import { Hero } from './Hero';
 import { Assessment } from './Assessment';
 import { PILLARS, BLOG_POSTS, RESTORATION_LOGS, TRANSLATIONS } from '../constants';
-import { ArrowLeft, ArrowRight, Quote, Compass, QrCode, X, ScanLine } from './Icons';
+import { ArrowLeft, ArrowRight, Quote, Compass, QrCode, X, ScanLine, Layers, Activity } from './Icons';
 
 interface HomePageProps {
   lang: Language;
@@ -51,61 +51,77 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
         <Assessment lang={lang} setView={setView} />
       </div>
 
-      {/* Pillars Preview - Architectural Gallery */}
-      <section className="py-24 bg-concrete/30 dark:bg-white/5 relative overflow-hidden">
+      {/* Pillars Preview - X-RAY ARCHITECTURE GALLERY */}
+      <section className="py-24 bg-[#080808] relative overflow-hidden">
          {/* Background Watermark */}
-         <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 text-[10rem] md:text-[15rem] text-slate/5 pointer-events-none whitespace-nowrap ${headingFont} z-0`}>
-            PILLARS
+         <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 text-[10rem] md:text-[15rem] text-white/5 pointer-events-none whitespace-nowrap ${headingFont} z-0 opacity-10`}>
+            STRUCTURE
          </div>
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <span className="text-bronze text-xs uppercase tracking-[0.3em] flex items-center justify-center gap-2 mb-4">
-              <Compass size={14} /> {isAr ? 'الهيكل الداخلي' : 'Internal Structure'}
+              <Layers size={14} /> {isAr ? 'الهيكل الداخلي' : 'X-Ray Structural Scan'}
             </span>
-            <h2 className={`text-4xl md:text-5xl text-charcoal dark:text-concrete ${headingFont}`}>
+            <h2 className={`text-4xl md:text-5xl text-alabaster ${headingFont}`}>
                {isAr ? 'الأعمدة الأربعة' : 'The Four Pillars'}
             </h2>
+            <p className="text-slate/50 text-sm mt-4">{isAr ? 'مرر الماوس لكشف المخطط الداخلي' : 'Hover to reveal internal blueprint'}</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 border-t border-b border-slate/20 divide-y lg:divide-y-0 lg:divide-x divide-slate/20 bg-alabaster dark:bg-charcoal/20">
+          <div className="grid grid-cols-1 lg:grid-cols-4 border-t border-b border-white/10 divide-y lg:divide-y-0 lg:divide-x divide-white/10 bg-[#050505]">
             {PILLARS.map((pillar, idx) => (
               <div 
                 key={pillar.id} 
                 onClick={() => setView('philosophy')}
                 className="group relative h-[500px] lg:h-[650px] overflow-hidden cursor-pointer"
               >
-                {/* 1. Image Layer */}
-                <div className="absolute inset-0 bg-charcoal">
+                {/* 1. LAYER A: STANDARD IMAGE (Exterior) */}
+                <div className="absolute inset-0 z-10 transition-all duration-700 group-hover:opacity-0 group-hover:scale-105">
                    <img 
                     src={pillar.image} 
                     alt={pillar.title[lang]} 
-                    className="w-full h-full object-cover opacity-20 group-hover:opacity-100 grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-[800ms] ease-out"
+                    className="w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0"
                    />
+                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
                 </div>
 
-                {/* 2. Darkness Overlay - REMOVED DEFAULT DARKNESS to respect 20% opacity of image */}
-                <div className="absolute inset-0 bg-transparent group-hover:bg-transparent transition-colors duration-[800ms]"></div>
-                
-                {/* 3. Illumination Layer */}
-                <div className="absolute inset-0 bg-gradient-to-b from-bronze/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-[800ms] mix-blend-overlay pointer-events-none"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-[800ms] pointer-events-none"></div>
+                {/* 2. LAYER B: BLUEPRINT IMAGE (Interior / X-Ray) */}
+                <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                    {/* The Blueprint Image with Technical Filters */}
+                    <img 
+                        src={pillar.blueprintImage || pillar.image} 
+                        alt="Blueprint"
+                        className="w-full h-full object-cover filter contrast-125 brightness-75 sepia-[100%] hue-rotate-[190deg] saturate-[300%]"
+                    />
+                    
+                    {/* Technical Grid Overlay */}
+                    <div className="absolute inset-0 architectural-grid opacity-30 mix-blend-overlay"></div>
+                    
+                    {/* Measurement Lines (Decorations) */}
+                    <div className="absolute top-10 left-0 w-full h-[1px] bg-cyan-500/30"></div>
+                    <div className="absolute bottom-10 left-0 w-full h-[1px] bg-cyan-500/30"></div>
+                    <div className="absolute top-0 left-10 h-full w-[1px] bg-cyan-500/30"></div>
+                    <div className="absolute top-0 right-10 h-full w-[1px] bg-cyan-500/30"></div>
+                </div>
 
-                {/* 4. Architectural Grid Pattern */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-10 pointer-events-none transition-opacity duration-[1000ms] architectural-grid mix-blend-soft-light"></div>
-                
-                {/* 5. Inner Border */}
-                <div className="absolute inset-0 border-[0px] group-hover:border-[1px] border-bronze/30 transition-all duration-[800ms] m-4 pointer-events-none"></div>
+                {/* 3. SCANNING LINE EFFECT */}
+                <div className="absolute top-0 left-0 w-full h-[2px] bg-cyan-400 shadow-[0_0_15px_rgba(0,255,255,0.8)] z-20 opacity-0 group-hover:opacity-100 group-hover:animate-scan pointer-events-none"></div>
 
-                {/* 6. Content Layer */}
-                <div className="absolute inset-0 p-8 flex flex-col justify-between z-20">
-                   {/* Top: Number & QR Code */}
+                {/* 4. CONTENT & UI */}
+                <div className="absolute inset-0 p-8 flex flex-col justify-between z-30">
+                   {/* Top: Header */}
                    <div className="flex justify-between items-start">
-                      <span className="text-xs text-bronze uppercase tracking-widest border border-bronze/30 px-2 py-1 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-[-10px] group-hover:translate-y-0">
-                         {isAr ? 'عمود' : 'Pillar'} {pillar.id}
-                      </span>
+                      <div className="flex flex-col">
+                          <span className="text-[0.6rem] text-bronze uppercase tracking-widest border border-bronze/30 px-2 py-1 bg-black/50 backdrop-blur-sm group-hover:text-cyan-400 group-hover:border-cyan-500/50 transition-colors">
+                             SEC-0{idx + 1}
+                          </span>
+                          <span className="text-[0.5rem] font-mono text-cyan-500/80 mt-1 opacity-0 group-hover:opacity-100 transition-opacity delay-200">
+                             SCANNING...
+                          </span>
+                      </div>
 
-                      {/* Interactive QR Code */}
+                      {/* Interactive QR */}
                       <button 
                         onClick={(e) => {
                             e.stopPropagation();
@@ -117,31 +133,30 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                                     : 'Scan to access Audio Commentary & Detailed Schematics for this Pillar.'
                             });
                         }}
-                        className="w-10 h-10 flex items-center justify-center border border-white/20 bg-black/20 backdrop-blur-sm hover:bg-white hover:text-charcoal transition-all duration-500 z-30 opacity-0 group-hover:opacity-100 -translate-y-4 group-hover:translate-y-0 shadow-lg"
-                        title={isAr ? "رابط رقمي" : "Digital Link"}
+                        className="w-8 h-8 flex items-center justify-center border border-white/20 bg-black/20 backdrop-blur-sm hover:bg-white hover:text-black transition-all rounded-sm opacity-0 group-hover:opacity-100 translate-y-[-10px] group-hover:translate-y-0 duration-300"
                       >
-                        <QrCode size={16} />
+                        <QrCode size={14} />
                       </button>
 
-                      <span className={`absolute right-8 top-8 text-6xl md:text-8xl font-serif text-white/5 group-hover:text-bronze/20 transition-colors duration-[800ms] leading-none pointer-events-none`}>
+                      <span className="absolute right-8 top-20 text-8xl font-serif text-white/5 font-bold pointer-events-none group-hover:text-cyan-500/10 transition-colors duration-500">
                          0{idx + 1}
                       </span>
                    </div>
 
-                   {/* Bottom: Title & Description Slide-up */}
-                   <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-[800ms] ease-out">
-                      <h3 className={`text-3xl text-slate/50 group-hover:text-white mb-2 ${headingFont} transition-colors duration-500 relative inline-block`}>
+                   {/* Bottom: Info */}
+                   <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      <h3 className={`text-3xl text-slate/50 group-hover:text-white mb-2 ${headingFont} transition-colors duration-300 relative inline-block`}>
                          {pillar.title[lang]}
-                         <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-bronze group-hover:w-full transition-all duration-[1000ms] ease-in-out delay-100"></span>
                       </h3>
                       
-                      <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-[800ms] ease-in-out">
+                      {/* Description Reveal */}
+                      <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 ease-in-out">
                           <div className="overflow-hidden">
-                              <p className={`text-white/80 text-sm leading-relaxed pt-4 ${bodyFont} opacity-0 group-hover:opacity-100 transition-opacity duration-[1000ms] delay-200`}>
-                                  {pillar.description[lang]}
+                              <p className={`text-cyan-100/70 text-sm leading-relaxed pt-2 ${bodyFont} font-mono text-xs opacity-0 group-hover:opacity-100 transition-opacity delay-150`}>
+                                  [{isAr ? 'حالة النظام' : 'SYSTEM STATUS'}]: {pillar.description[lang]}
                               </p>
-                              <div className="mt-6 flex items-center gap-2 text-bronze text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-[1000ms] delay-300">
-                                  <span>{isAr ? 'اقرأ المخطط' : 'View Blueprint'}</span>
+                              <div className="mt-4 flex items-center gap-2 text-bronze text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity delay-200">
+                                  <span>{isAr ? 'تحليل المخطط' : 'Analyze Blueprint'}</span>
                                   {isAr ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
                               </div>
                           </div>
@@ -153,9 +168,9 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
           </div>
 
           <div className="text-center mt-16">
-             <button onClick={() => setView('philosophy')} className="group relative px-10 py-4 border border-charcoal dark:border-concrete overflow-hidden transition-colors">
-                <span className="absolute inset-0 w-full h-full bg-charcoal dark:bg-concrete transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out"></span>
-                <span className="relative z-10 text-charcoal dark:text-concrete uppercase tracking-widest text-sm group-hover:text-white dark:group-hover:text-charcoal transition-colors font-bold">
+             <button onClick={() => setView('philosophy')} className="group relative px-10 py-4 border border-white/20 overflow-hidden transition-colors">
+                <span className="absolute inset-0 w-full h-full bg-white transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out"></span>
+                <span className="relative z-10 text-slate uppercase tracking-widest text-sm group-hover:text-black transition-colors font-bold">
                     {isAr ? 'استكشاف الفلسفة الكاملة' : 'Explore Full Philosophy'}
                 </span>
              </button>

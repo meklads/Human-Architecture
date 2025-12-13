@@ -55,7 +55,8 @@ import {
   VolumeX,
   Mic,
   Save,
-  RotateCcw
+  RotateCcw,
+  Gauge
 } from 'lucide-react';
 
 export { 
@@ -113,5 +114,6 @@ export {
   VolumeX,
   Mic,
   Save,
-  RotateCcw
+  RotateCcw,
+  Gauge
 };

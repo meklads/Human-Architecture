@@ -5,6 +5,7 @@ import { Typewriter } from './Typewriter';
 import { TRANSLATIONS } from '../constants';
 import { Language, View } from '../types';
 import { ArrowRight, ScanLine, Grid, MousePointer, Layers, Activity } from './Icons';
+import { Magnetic } from './Magnetic';
 
 interface HeroProps {
   lang: Language;
@@ -108,20 +109,24 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
                 transition={{ duration: 0.8 }}
                 className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start"
             >
-                <button 
-                    onClick={() => setView('landing')}
-                    className="px-10 py-5 bg-bronze text-white font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-charcoal transition-all shadow-[0_0_20px_rgba(197,160,101,0.2)]"
-                >
-                   {TRANSLATIONS.hero.cta[lang]}
-                </button>
+                <Magnetic strength={0.4}>
+                    <button 
+                        onClick={() => setView('landing')}
+                        className="px-10 py-5 bg-bronze text-white font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-charcoal transition-all shadow-[0_0_20px_rgba(197,160,101,0.2)]"
+                    >
+                    {TRANSLATIONS.hero.cta[lang]}
+                    </button>
+                </Magnetic>
                 
-                <button 
-                    onClick={() => document.getElementById('assessment-section')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="px-10 py-5 border border-white/10 text-slate hover:text-white hover:border-white/50 transition-colors uppercase tracking-[0.2em] text-xs font-bold flex items-center gap-3"
-                >
-                    <ScanLine size={16} />
-                    {isAr ? 'فحص الحالة' : 'Run Diagnostics'}
-                </button>
+                <Magnetic strength={0.2}>
+                    <button 
+                        onClick={() => document.getElementById('assessment-section')?.scrollIntoView({ behavior: 'smooth' })}
+                        className="px-10 py-5 border border-white/10 text-slate hover:text-white hover:border-white/50 transition-colors uppercase tracking-[0.2em] text-xs font-bold flex items-center gap-3"
+                    >
+                        <ScanLine size={16} />
+                        {isAr ? 'فحص الحالة' : 'Run Diagnostics'}
+                    </button>
+                </Magnetic>
             </motion.div>
         </div>
 

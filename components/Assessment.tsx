@@ -1,10 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { Language, AssessmentCategory, View } from '../types';
 import { TRANSLATIONS, REPAIR_PROTOCOLS } from '../constants';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Activity, Shield, AlertTriangle, Check, RefreshCw } from './Icons';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
+import { ArrowLeft, ArrowRight, Activity, Shield, AlertTriangle, Check, RefreshCw, Layers, Gauge } from './Icons';
+import { Magnetic } from './Magnetic';
 
 interface AssessmentProps {
   lang: Language;
@@ -25,16 +26,36 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
   const [step, setStep] = useState(0); // 0 = intro, 1-N = questions, N+1 = processing, N+2 = result
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [isProcessing, setIsProcessing] = useState(false);
+  const [pressure, setPressure] = useState(0); // 0 to 100
+  
+  const containerControls = useAnimation();
 
   const headingFont = isAr ? 'font-amiri' : 'font-playfair';
   const bodyFont = isAr ? 'font-ibm' : 'font-montserrat';
 
   const handleStart = () => setStep(1);
 
-  const handleAnswer = (value: number) => {
+  const handleAnswer = async (value: number) => {
+    // 1. Shake Effect based on severity (value 1-5)
+    const shakeIntensity = value * 2;
+    containerControls.start({
+        x: [0, -shakeIntensity, shakeIntensity, -shakeIntensity, shakeIntensity, 0],
+        transition: { duration: 0.3 }
+    });
+
+    // 2. Accumulate Pressure (Visual Gauge)
+    // Max possible score for 6 questions * 5 = 30. 
+    // Let's map roughly to 100%
+    const pressureIncrease = (value / 30) * 100;
+    setPressure(prev => Math.min(prev + pressureIncrease, 100));
+
+    // 3. Logic
     const newAnswers = { ...answers, [QUESTIONS[step - 1].id]: value };
     setAnswers(newAnswers);
     
+    // Artificial Delay for "Mechanical Processing" feel
+    await new Promise(r => setTimeout(r, 400));
+
     if (step < QUESTIONS.length) {
       setStep(step + 1);
     } else {
@@ -43,7 +64,7 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
       setTimeout(() => {
         setIsProcessing(false);
         setStep(step + 2); // Show result
-      }, 2000);
+      }, 2500);
     }
   };
 
@@ -56,7 +77,6 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
       [AssessmentCategory.EXTERIOR]: 0,
     };
 
-    // Max score per category
     const maxMap: Record<string, number> = {
       [AssessmentCategory.FOUNDATION]: 0,
       [AssessmentCategory.STRUCTURE]: 0,
@@ -70,8 +90,6 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
       maxMap[q.category] += 5;
     });
 
-    // Convert to "Health" score (Inverse of questions which ask about problems)
-    // High score in questions = High Problems = Low Health
     return Object.keys(dataMap).map(key => ({
       subject: key,
       A: 100 - ((dataMap[key] / maxMap[key]) * 100), // Invert to show Health
@@ -95,28 +113,60 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
           ? 'اختبار هندسي دقيق لقياس متانة بنيانك الإنساني. لن نعطيك مجرد أرقام، بل سنصدر لك "تقرير حالة" يحدد الشروخ بدقة ويصف العلاج.' 
           : 'A precise architectural audit to measure the structural integrity of your self. We won\'t just give you numbers; we will issue a "Condition Report" identifying cracks and prescribing the cure.'}
       </p>
-      <button 
-        onClick={handleStart}
-        className="px-10 py-4 bg-charcoal dark:bg-concrete text-white dark:text-charcoal hover:bg-bronze dark:hover:bg-bronze hover:text-white transition-all duration-300 tracking-[0.2em] uppercase text-sm font-bold shadow-lg"
-      >
-        {TRANSLATIONS.assessment.start[lang]}
-      </button>
+      <Magnetic strength={0.3}>
+        <button 
+            onClick={handleStart}
+            className="px-10 py-4 bg-charcoal dark:bg-concrete text-white dark:text-charcoal hover:bg-bronze dark:hover:bg-bronze hover:text-white transition-all duration-300 tracking-[0.2em] uppercase text-sm font-bold shadow-lg"
+        >
+            {TRANSLATIONS.assessment.start[lang]}
+        </button>
+      </Magnetic>
     </motion.div>
   );
+
+  const PressureGauge = () => {
+      // Rotate -90deg (start) to 90deg (end)
+      const rotation = -90 + (pressure * 1.8);
+      return (
+          <div className="absolute top-8 right-8 w-24 h-24 hidden md:block">
+              <div className="relative w-full h-full">
+                  {/* Gauge Background */}
+                  <div className="absolute inset-0 rounded-full border-4 border-slate/10 border-b-transparent rotate-45"></div>
+                  {/* Ticks */}
+                  <div className="absolute inset-2 rounded-full border border-dashed border-slate/20"></div>
+                  {/* Needle */}
+                  <div 
+                    className="absolute top-1/2 left-1/2 w-1/2 h-1 bg-bronze origin-left transition-transform duration-500 ease-out"
+                    style={{ transform: `rotate(${rotation}deg)` }}
+                  ></div>
+                  <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-charcoal rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                  <div className="absolute bottom-0 w-full text-center text-[0.6rem] font-mono text-bronze uppercase tracking-widest">
+                      System Load
+                  </div>
+              </div>
+          </div>
+      );
+  };
 
   const renderQuestion = () => {
     const q = QUESTIONS[step - 1];
     return (
       <motion.div 
         key={step}
-        initial={{ opacity: 0, x: 20 }} 
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -20 }}
-        className="max-w-3xl mx-auto py-32 px-6 min-h-[60vh] flex flex-col justify-center"
+        animate={containerControls}
+        initial={{ opacity: 0 }} 
+        whileInView={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="max-w-4xl mx-auto py-24 px-6 min-h-[60vh] flex flex-col justify-center relative"
       >
+        <PressureGauge />
+        
+        {/* Step Indicator */}
         <div className="mb-12 flex items-center justify-center gap-4">
              <div className="h-px w-12 bg-bronze/50"></div>
-             <span className="text-bronze text-xs tracking-widest font-mono">Q.{step < 10 ? `0${step}` : step}</span>
+             <span className="text-bronze text-xs tracking-widest font-mono">
+                 TEST {step < 10 ? `0${step}` : step} / {QUESTIONS.length < 10 ? `0${QUESTIONS.length}` : QUESTIONS.length}
+             </span>
              <div className="h-px w-12 bg-bronze/50"></div>
         </div>
         
@@ -124,38 +174,61 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
           {q.text[lang]}
         </h4>
         
-        <div className="flex justify-center gap-4 md:gap-8 flex-wrap">
+        {/* Mechanical Input Buttons */}
+        <div className="grid grid-cols-5 gap-4 md:gap-8 max-w-2xl mx-auto w-full">
           {[1, 2, 3, 4, 5].map((val) => (
             <button
               key={val}
               onClick={() => handleAnswer(val)}
-              className="w-14 h-14 md:w-20 md:h-20 border border-slate/20 rounded-none hover:border-bronze hover:bg-bronze hover:text-white transition-all text-xl md:text-2xl font-serif flex items-center justify-center group"
+              className="group relative flex flex-col items-center gap-4 focus:outline-none"
             >
-              <span className="group-hover:scale-110 transition-transform">{val}</span>
+                {/* The "Switch" */}
+                <div className="w-16 h-24 bg-white/5 border border-slate/20 rounded-sm relative overflow-hidden group-hover:border-bronze transition-colors shadow-inner">
+                    <div className="absolute inset-0 flex flex-col justify-between p-2 pointer-events-none">
+                        <span className="w-full h-px bg-slate/10"></span>
+                        <span className="w-full h-px bg-slate/10"></span>
+                        <span className="w-full h-px bg-slate/10"></span>
+                        <span className="w-full h-px bg-slate/10"></span>
+                    </div>
+                    {/* Active Indicator */}
+                    <div className="absolute bottom-0 left-0 w-full h-1 bg-transparent group-hover:bg-bronze transition-colors"></div>
+                    
+                    {/* Number */}
+                    <div className="absolute inset-0 flex items-center justify-center text-xl font-mono text-slate/50 group-hover:text-white transition-colors">
+                        {val}
+                    </div>
+                </div>
+                
+                {/* Label */}
+                <span className="text-[0.6rem] uppercase tracking-widest text-slate/40 group-hover:text-bronze transition-colors">
+                    {val === 1 ? (isAr ? 'منعدم' : 'None') : val === 5 ? (isAr ? 'شديد' : 'Critical') : ''}
+                </span>
             </button>
           ))}
-        </div>
-        <div className="flex justify-between mt-12 px-4 md:px-12 text-xs text-slate uppercase tracking-widest">
-            <span>{isAr ? 'لا أبداً' : 'Never'}</span>
-            <span>{isAr ? 'دائماً' : 'Always'}</span>
         </div>
       </motion.div>
     );
   };
 
   const renderProcessing = () => (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center">
+      <div className="min-h-[60vh] flex flex-col items-center justify-center relative overflow-hidden">
+          {/* Scanning Line Background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent animate-scan pointer-events-none"></div>
+          
           <motion.div 
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="w-16 h-16 border-4 border-slate/20 border-t-bronze rounded-full mb-8"
-          />
-          <div className="text-center">
-              <h4 className={`text-xl mb-2 ${headingFont}`}>{isAr ? 'جاري تحليل البيانات الإنشائية...' : 'Analyzing Structural Data...'}</h4>
-              <div className="space-y-1 text-xs text-slate uppercase tracking-widest font-mono">
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>Checking Foundation Load...</motion.div>
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}>Scanning Emotional Beams...</motion.div>
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}>Generating Renovation Plan...</motion.div>
+            animate={{ rotate: 360, scale: [1, 1.1, 1] }}
+            transition={{ rotate: { duration: 3, repeat: Infinity, ease: "linear" }, scale: { duration: 1.5, repeat: Infinity } }}
+            className="w-24 h-24 border-t-4 border-l-4 border-bronze rounded-full mb-8 relative"
+          >
+              <div className="absolute inset-2 border-r-4 border-b-4 border-slate/20 rounded-full"></div>
+          </motion.div>
+          
+          <div className="text-center relative z-10 bg-darkBg/80 p-6 backdrop-blur-sm border border-white/5">
+              <h4 className={`text-2xl mb-2 ${headingFont} text-white`}>{isAr ? 'جاري محاكاة الأحمال...' : 'Simulating Structural Loads...'}</h4>
+              <div className="space-y-1 text-xs text-bronze uppercase tracking-widest font-mono">
+                  <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>Calculating stress points...</motion.div>
+                  <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }}>Checking foundation integrity...</motion.div>
+                  <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.4 }}>Finalizing blueprint report...</motion.div>
               </div>
           </div>
       </div>
@@ -268,7 +341,7 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
                     </button>
                     <div className="mt-4 text-center">
                          <button 
-                            onClick={() => setStep(0)}
+                            onClick={() => { setStep(0); setPressure(0); setAnswers({}); }}
                             className="text-slate hover:text-bronze transition-colors underline text-xs uppercase tracking-widest flex items-center justify-center gap-2 mx-auto"
                         >
                             <RefreshCw size={12} /> {isAr ? 'إعادة الفحص' : 'Re-Audit'}
@@ -282,7 +355,7 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
   };
 
   return (
-    <section className="min-h-[80vh] bg-white dark:bg-[#222] transition-colors duration-500 flex flex-col justify-center relative">
+    <section className="min-h-[80vh] bg-white dark:bg-[#222] transition-colors duration-500 flex flex-col justify-center relative border-t border-slate/10">
         <AnimatePresence mode='wait'>
             {step === 0 && renderIntro()}
             {step > 0 && step <= QUESTIONS.length && renderQuestion()}

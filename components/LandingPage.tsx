@@ -5,6 +5,7 @@ import { Language, Product, View } from '../types';
 import { TRANSLATIONS, PRODUCTS, LANDING_CONTENT } from '../constants';
 import { ShoppingBag, Check, X, ArrowRight, Activity, Layers, Shield, Star, Box, Layout, PenTool, Database, Lock } from './Icons';
 import { BookCover } from './BookCover';
+import { Magnetic } from './Magnetic';
 
 interface LandingPageProps {
   lang: Language;
@@ -112,13 +113,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
                         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
                         className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
                      >
-                         <button 
-                            onClick={() => document.getElementById('bundles')?.scrollIntoView({ behavior: 'smooth' })}
-                            className="bg-bronze text-white px-10 py-5 text-xs md:text-sm uppercase tracking-[0.25em] font-bold hover:bg-white hover:text-black transition-all shadow-[0_0_40px_rgba(197,160,101,0.2)] flex items-center justify-center gap-3"
-                         >
-                             <Layers size={18} />
-                             {isAr ? 'استلام العدة الكاملة' : 'ACQUIRE TOOLKIT'}
-                         </button>
+                         <Magnetic strength={0.4}>
+                            <button 
+                                onClick={() => document.getElementById('bundles')?.scrollIntoView({ behavior: 'smooth' })}
+                                className="bg-bronze text-white px-10 py-5 text-xs md:text-sm uppercase tracking-[0.25em] font-bold hover:bg-white hover:text-black transition-all shadow-[0_0_40px_rgba(197,160,101,0.2)] flex items-center justify-center gap-3"
+                            >
+                                <Layers size={18} />
+                                {isAr ? 'استلام العدة الكاملة' : 'ACQUIRE TOOLKIT'}
+                            </button>
+                         </Magnetic>
                          <div className="flex items-center justify-center gap-3 px-8 py-5 border border-white/10 text-slate hover:text-white transition-colors cursor-default">
                              <div className="flex -space-x-2">
                                  {[1,2,3].map(i => <div key={i} className="w-6 h-6 rounded-full bg-slate-700 border border-black"></div>)}
