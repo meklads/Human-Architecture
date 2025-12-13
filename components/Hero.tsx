@@ -43,8 +43,8 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
   const reticleY = useTransform(springY, (val) => val - 250);
   
   // Parallax for the texture inside (Subtle movement for depth)
-  const texX = useTransform(springX, (val) => val / -30);
-  const texY = useTransform(springY, (val) => val / -30);
+  const texX = useTransform(springX, (val) => val / -20);
+  const texY = useTransform(springY, (val) => val / -20);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -125,7 +125,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
             </motion.div>
         </div>
 
-        {/* VISUAL: THE ARCHITECTURAL SCANNER */}
+        {/* VISUAL: THE DOUBLE EXPOSURE SCANNER */}
         <div className="lg:col-span-5 order-1 lg:order-2 flex justify-center perspective-1000">
             <motion.div 
                 ref={containerRef}
@@ -148,67 +148,60 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
                      <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-90"></div>
                 </div>
 
-                {/* 2. REVEAL STATE: The Architectural Hybrid (Inside Lens) */}
+                {/* 2. REVEAL STATE: 50% Double Exposure (Inside Lens) */}
                 <motion.div 
                     className="absolute inset-0 w-full h-full z-20 pointer-events-none bg-black"
                     style={{
                         clipPath: clipPath
                     }}
                 >
-                    {/* A. The Structure Texture (Concrete) - BLENDED */}
-                    <motion.div 
-                        className="absolute inset-[-60px] w-[150%] h-[150%] z-10 opacity-60 mix-blend-overlay"
-                        style={{ x: texX, y: texY }}
-                    >
-                        <img 
-                            src="https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=1931&auto=format&fit=crop"
-                            alt="Concrete Texture"
-                            className="w-full h-full object-cover contrast-150"
-                        />
-                    </motion.div>
-                    
-                    {/* B. The High-Contrast Face (The Blueprint Base) */}
+                    {/* A. Base Face Layer (Inside Lens) - High Contrast */}
                     <div className="absolute inset-0 w-full h-full z-0">
                          <img 
                             src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1287&auto=format&fit=crop" 
                             alt="Structure Base"
-                            className="w-full h-full object-cover grayscale contrast-125 brightness-125 sepia-[0.3]" 
+                            className="w-full h-full object-cover grayscale contrast-125 brightness-110" 
                          />
                     </div>
 
-                    {/* C. Technical Overlay (Blueprint Grid) */}
-                    <div className="absolute inset-0 w-full h-full z-20 opacity-40 mix-blend-screen">
-                        <div className="w-full h-full" 
-                             style={{ 
-                                backgroundImage: 'linear-gradient(cyan 1px, transparent 1px), linear-gradient(90deg, cyan 1px, transparent 1px)', 
-                                backgroundSize: '40px 40px' 
-                             }}>
-                        </div>
-                    </div>
+                    {/* B. The Building Structure - 50% Opacity + Blending */}
+                    <motion.div 
+                        className="absolute inset-[-60px] w-[150%] h-[150%] z-10 opacity-50 mix-blend-hard-light"
+                        style={{ x: texX, y: texY }}
+                    >
+                        <img 
+                            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop"
+                            alt="Building Overlay"
+                            className="w-full h-full object-cover grayscale contrast-150"
+                        />
+                    </motion.div>
+                    
+                    {/* C. Blue Technical Tint */}
+                    <div className="absolute inset-0 bg-cyan-900/20 mix-blend-overlay z-20"></div>
 
                     {/* D. Scanning Laser Line (Animation) */}
                     <motion.div 
                         animate={{ top: ['0%', '100%'] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                        className="absolute left-0 right-0 h-[2px] bg-cyan-400 z-30 shadow-[0_0_20px_rgba(0,255,255,0.8)]"
+                        transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+                        className="absolute left-0 right-0 h-[1px] bg-cyan-400/50 z-30 shadow-[0_0_15px_rgba(0,255,255,0.5)]"
                     ></motion.div>
 
                     {/* E. Vector Graphics (Measurements) */}
-                    <svg className="absolute inset-0 w-full h-full z-30 opacity-80" viewBox="0 0 400 600" preserveAspectRatio="none">
+                    <svg className="absolute inset-0 w-full h-full z-30 opacity-60" viewBox="0 0 400 600" preserveAspectRatio="none">
                         <g stroke="cyan" strokeWidth="0.5" fill="none">
                              {/* Face Geometry */}
                              <path d="M100,200 L120,250 L280,250 L300,200" strokeDasharray="5 5" />
                              <circle cx="200" cy="280" r="80" strokeDasharray="2 2" />
                              
                              {/* Vertical Axis */}
-                             <line x1="200" y1="0" x2="200" y2="600" strokeDasharray="10 5" opacity="0.5" />
+                             <line x1="200" y1="0" x2="200" y2="600" strokeDasharray="10 5" opacity="0.3" />
                              
                              {/* Data Points */}
-                             <circle cx="150" cy="320" r="2" fill="cyan" />
+                             <circle cx="150" cy="320" r="1.5" fill="cyan" />
                              <line x1="150" y1="320" x2="100" y2="350" />
                              <text x="50" y="360" fill="cyan" fontSize="8" fontFamily="monospace" opacity="0.8">LOAD: 85%</text>
 
-                             <circle cx="250" cy="320" r="2" fill="cyan" />
+                             <circle cx="250" cy="320" r="1.5" fill="cyan" />
                              <line x1="250" y1="320" x2="300" y2="350" />
                              <text x="280" y="360" fill="cyan" fontSize="8" fontFamily="monospace" opacity="0.8">INTEGRITY: OK</text>
                         </g>
@@ -216,7 +209,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
 
                 </motion.div>
 
-                {/* 3. THE LENS UI (Ring) */}
+                {/* 3. THE LENS UI (Ring + Geometric Shapes) */}
                 <motion.div 
                     className="absolute z-50 pointer-events-none w-[500px] h-[500px] rounded-full border border-cyan-500/30 flex items-center justify-center shadow-[0_0_30px_rgba(0,255,255,0.1)]"
                     style={{ 
@@ -225,20 +218,42 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
                         opacity: isHovering ? 1 : 0
                     }}
                 >
-                    {/* Rotating Rings */}
+                    {/* A. Outer Rotating Rings */}
                     <motion.div 
                         animate={{ rotate: 360 }}
-                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                        className="absolute inset-4 rounded-full border border-dashed border-cyan-500/20"
-                    ></motion.div>
-                     <motion.div 
-                        animate={{ rotate: -360 }}
-                        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                        className="absolute inset-10 rounded-full border border-dotted border-cyan-500/20"
+                        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-2 rounded-full border border-dashed border-cyan-500/10"
                     ></motion.div>
 
+                    {/* B. Rotating Square HUD (New Addition) */}
+                    <motion.div
+                        animate={{ rotate: -360 }}
+                        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+                        className="absolute w-[240px] h-[240px] border border-cyan-500/10"
+                    >
+                         {/* Corners for Tech Feel */}
+                         <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-cyan-500/50"></div>
+                         <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-cyan-500/50"></div>
+                         <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-cyan-500/50"></div>
+                         <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-cyan-500/50"></div>
+                    </motion.div>
+
+                    {/* C. Pulsing Inner Circle (New Addition) */}
+                    <motion.div
+                         animate={{ scale: [0.8, 1, 0.8], opacity: [0.1, 0.4, 0.1] }}
+                         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                         className="absolute w-[120px] h-[120px] rounded-full border border-cyan-500/30 bg-cyan-500/5"
+                    ></motion.div>
+
+                    {/* D. Center Crosshair (New Addition) */}
+                    <div className="absolute w-6 h-6 flex items-center justify-center">
+                        <div className="w-full h-[1px] bg-cyan-500/80"></div>
+                        <div className="h-full w-[1px] bg-cyan-500/80 absolute"></div>
+                    </div>
+
+                    {/* Label */}
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-black text-cyan-400 border border-cyan-500/50 text-[0.6rem] font-mono px-3 py-1 uppercase tracking-widest shadow-lg">
-                        {isAr ? 'ماسح طبوغرافي' : 'TOPOGRAPHIC SCAN'}
+                        {isAr ? 'دمج: إنسان/بنيان' : 'MERGE: HUMAN/STRUCT'}
                     </div>
                 </motion.div>
 
