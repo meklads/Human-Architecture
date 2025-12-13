@@ -84,8 +84,8 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                    />
                 </div>
 
-                {/* 2. Darkness Overlay */}
-                <div className="absolute inset-0 bg-charcoal/80 group-hover:bg-transparent transition-colors duration-[800ms]"></div>
+                {/* 2. Darkness Overlay - REMOVED DEFAULT DARKNESS to respect 20% opacity of image */}
+                <div className="absolute inset-0 bg-transparent group-hover:bg-transparent transition-colors duration-[800ms]"></div>
                 
                 {/* 3. Illumination Layer */}
                 <div className="absolute inset-0 bg-gradient-to-b from-bronze/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-[800ms] mix-blend-overlay pointer-events-none"></div>
