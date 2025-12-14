@@ -96,12 +96,12 @@ export const AboutPage: React.FC<AboutPageProps> = ({ lang }) => {
                         onMouseLeave={() => setIsHovering(false)}
                         className="relative z-10 aspect-[3/4] bg-[#020202] overflow-hidden cursor-crosshair shadow-2xl border border-white/5"
                     >
-                         {/* 1. IDLE STATE: Zaha Hadid (Dark & Moody) */}
+                         {/* 1. IDLE STATE: Professional Portrait */}
                          <div className="absolute inset-0 w-full h-full z-10 pointer-events-none">
                              <img 
-                                src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80" 
-                                alt="Zaha Hadid Architecture - Surface" 
-                                className="w-full h-full object-cover grayscale-[50%] contrast-[1.1] brightness-[0.6]" 
+                                src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80" 
+                                alt="Abraham Meklad" 
+                                className="w-full h-full object-cover grayscale-[20%] contrast-[1.1] brightness-[0.8]" 
                              />
                              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80"></div>
                              
@@ -119,7 +119,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ lang }) => {
                              {/* Image Base - High Contrast / Inverted / Technical */}
                              <div className="absolute inset-0 w-full h-full z-0">
                                  <img 
-                                    src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80" 
+                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80" 
                                     alt="Structure Blueprint"
                                     className="w-full h-full object-cover filter contrast-[1.5] brightness-125 grayscale sepia-[100%] hue-rotate-[170deg] saturate-[400%]" 
                                  />
@@ -208,7 +208,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ lang }) => {
                         </div>
                         <div>
                             <span className="block text-[0.6rem] uppercase tracking-widest text-slate mb-1">Founder & CEO</span>
-                            <span className="block text-lg font-bold font-playfair tracking-wide group-hover:text-white transition-colors">GRAPHICS HOUSE</span>
+                            <span className="block text-lg font-bold font-playfair tracking-wide group-hover:text-white transition-colors">GRAPHICS HOUSE CO.</span>
                         </div>
                     </a>
                 </motion.div>

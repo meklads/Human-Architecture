@@ -17,16 +17,18 @@
               slate: '#8C9598',
               bronze: '#C5A065',
               charcoal: '#2B2B2B',
-              darkBg: '#0F0F0F',
+              darkBg: '#050505',
               blueprint: '#003366',
               blueprintLine: '#4da6ff',
             },
             fontFamily: {
               amiri: ['Amiri', 'serif'],
               ibm: ['IBM Plex Sans Arabic', 'sans-serif'],
-              serif: ['Lora', 'Playfair Display', 'serif'],
-              sans: ['Inter', 'Montserrat', 'sans-serif'],
+              serif: ['Playfair Display', 'Lora', 'serif'],
+              sans: ['Montserrat', 'Inter', 'sans-serif'],
               mono: ['IBM Plex Mono', 'monospace'],
+              playfair: ['Playfair Display', 'serif'],
+              montserrat: ['Montserrat', 'sans-serif'],
             },
             cursor: {
               none: 'none',
@@ -46,17 +48,17 @@
         },
       }
     </script>
-    <!-- Fonts -->
+    <!-- Fonts: Added Playfair Display & Montserrat for the Brand Identity -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
         width: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: #0F0F0F; 
+        background: #050505; 
       }
       ::-webkit-scrollbar-thumb {
         background: #C5A065; 
@@ -66,6 +68,7 @@
       body {
         cursor: none;
         overflow-x: hidden;
+        background-color: #050505;
       }
 
       /* Luxury Mode Grid */
@@ -145,7 +148,6 @@
 </head>
   <body class="bg-darkBg text-concrete antialiased transition-colors duration-700 overflow-x-hidden">
     <div id="root"></div>
-    <!-- CRITICAL: This connects your index.tsx to the HTML -->
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
