@@ -138,8 +138,10 @@ function App() {
   };
 
   const navItems: { id: View; label: string }[] = [
-    { id: 'about', label: TRANSLATIONS.nav.architect[lang] }, // Added "The Architect" link
+    { id: 'landing', label: TRANSLATIONS.nav.home[lang] },
+    { id: 'library', label: TRANSLATIONS.nav.blueprint[lang] },
     { id: 'philosophy', label: TRANSLATIONS.nav.philosophy[lang] },
+    { id: 'store', label: TRANSLATIONS.nav.library[lang] }, // CHANGED ID to 'store' to separate from 'library'
     { id: 'journal', label: TRANSLATIONS.nav.journal[lang] },
     { id: 'community', label: TRANSLATIONS.nav.community[lang] },
     { id: 'contact', label: TRANSLATIONS.nav.contact[lang] },
@@ -200,7 +202,7 @@ function App() {
           </div>
 
           {/* Center Navigation (Desktop) */}
-          <nav className="hidden xl:flex items-center gap-8">
+          <nav className="hidden xl:flex items-center gap-6">
              {navItems.map((item) => (
                  <button
                     key={item.id} // Added key here for list items
@@ -232,7 +234,7 @@ function App() {
                   </button>
               )}
 
-              {/* BLUEPRINT Button (Luxury Style - Primary CTA) */}
+              {/* BLUEPRINT Button (Luxury Style) */}
               <button 
                 onClick={() => setCurrentView('library')}
                 className="hidden md:flex border border-white/20 text-white px-6 py-2 text-xs uppercase tracking-widest font-bold hover:border-bronze hover:text-bronze transition-colors rounded-sm"
@@ -290,19 +292,6 @@ function App() {
                             </button>
                         </motion.div>
                     ))}
-                    {/* Add Blueprint link to mobile menu since it's removed from navItems */}
-                    <motion.div
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: navItems.length * 0.1 }}
-                        >
-                            <button 
-                                onClick={() => { setCurrentView('library'); setMenuOpen(false); }}
-                                className={`text-2xl ${headingFont} text-bronze font-bold hover:text-white transition-all duration-300 group flex items-center justify-center gap-6`}
-                            >
-                                {lang === 'ar' ? 'المخطط' : 'THE BLUEPRINT'}
-                            </button>
-                    </motion.div>
                 </nav>
             </motion.div>
         )}

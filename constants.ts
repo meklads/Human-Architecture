@@ -66,10 +66,10 @@ export const TRANSLATIONS = {
 export const ABOUT_CONTENT = {
     title: { ar: 'المعماري', en: 'The Architect', fr: 'L\'Architecte' },
     name: { ar: 'أبراهام مقلد', en: 'Abraham Meklad', fr: 'Abraham Meklad' },
-    titles: { ar: 'معماري | فنان | CEO Graphics House', en: 'Architect | Artist | CEO Graphics House', fr: 'Architecte | Artiste | CEO Graphics House' },
+    titles: { ar: 'معماري | فنان بصري | CEO Graphics House', en: 'Architect | Visual Artist | CEO Graphics House', fr: 'Architecte | Artiste | CEO Graphics House' },
     bio: {
-        ar: 'معماري وفنان متعدد التخصصات، ومؤسس شركة "جرافيكس هاوس". بخبرة تزيد عن 17 عاماً في السوق العقاري، الهندسي، والقطاعات الطبية، يجمع أبراهام بين دقة الهندسة وعمق الفن. هو لا يرى العالم كأشكال مجردة، بل كأنظمة وعلاقات إنشائية. يؤمن بأن الإنسان هو أعقد وأقدس بنيان، وأن أدوات العمارة هي الأنسب لإعادة ترميمه.',
-        en: 'Architect, multidisciplinary artist, and CEO of Graphics House. With over 17 years of experience in the Real Estate, Engineering, and Medical sectors, Abraham combines the precision of engineering with the depth of artistic vision. He views the world not as shapes, but as systems and structural relationships, believing that the human being is the most complex and sacred structure to build.',
+        ar: 'مهندس معماري وفنان متعدد التخصصات، يشغل منصب رئيس مجلس إدارة "جرافيكس هاوس". يجمع أبراهام بين دقة الخطوط الهندسية وعمق الرؤية الفنية. لا يرى العالم كمجموعة من الأشكال، بل كنظم وعلاقات إنشائية. قضى سنوات في دراسة كيف يمكن للفلسفة المعمارية أن تُطبق على النفس البشرية، مؤمناً بأن الإنسان هو أعقد وأقدس بنيان على وجه الأرض.',
+        en: 'Architect, multidisciplinary artist, and CEO of Graphics House. Abraham combines the precision of engineering lines with the depth of artistic vision. He does not see the world as shapes, but as systems and structural relationships. He has spent years studying how architectural philosophy applies to the human psyche, believing that the human being is the most complex and sacred structure on earth.',
         fr: 'Architecte et artiste multidisciplinaire, CEO de Graphics House.'
     },
     philosophyTitle: { ar: 'عن المشروع: لماذا "عمارة الإنسان"؟', en: 'The Project: Why Human Architecture?', fr: 'Pourquoi?' },
