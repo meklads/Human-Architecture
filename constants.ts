@@ -3,18 +3,25 @@ import { PillarData, BlogPost, Product, WeekPlan, BookChapterPreview, DayPlan, A
 
 export const TRANSLATIONS = {
   nav: {
-    home: { ar: 'الرئيسية', en: 'Headquarters', fr: 'QG' },
-    philosophy: { ar: 'الكود الهندسي', en: 'The Code', fr: 'Le Code' },
-    library: { ar: 'المتجر', en: 'Supply Store', fr: 'Magasin' },
-    journal: { ar: 'سجل الموقع', en: 'Site Log', fr: 'Journal' },
-    architect: { ar: 'عن المعماري', en: 'The Architect', fr: "L'Architecte" },
-    contact: { ar: 'مكتب الاستشارات', en: 'Consultancy', fr: 'Consultation' },
-    community: { ar: 'نقابة البنائين', en: 'Builders Guild', fr: 'Guilde' }
+    home: { ar: 'الرئيسية', en: 'HEADQUARTERS', fr: 'QG' },
+    blueprint: { ar: 'المخطط', en: 'THE BLUEPRINT', fr: 'LE PLAN' },
+    philosophy: { ar: 'الكود', en: 'THE CODE', fr: 'LE CODE' },
+    library: { ar: 'المتجر', en: 'SUPPLY STORE', fr: 'MAGASIN' },
+    journal: { ar: 'السجل', en: 'SITE LOG', fr: 'JOURNAL' },
+    community: { ar: 'النقابة', en: 'BUILDERS GUILD', fr: 'GUILDE' },
+    contact: { ar: 'استشارات', en: 'CONSULTANCY', fr: 'CONSULTATION' },
+    architect: { ar: 'عن المعماري', en: 'THE ARCHITECT', fr: "L'ARCHITECTE" },
   },
   hero: {
-    line1: { ar: 'أنت لا تعاني من نقص في الإرادة...', en: 'You do not lack willpower...', fr: 'Vous ne manquez pas de volonté...' },
-    line2: { ar: 'أنت تعاني من فشل إنشائي.', en: 'You have a structural failure.', fr: 'Vous avez une défaillance structurelle.' },
-    cta: { ar: 'استلام المخطط التنفيذي', en: 'Acquire The Blueprint', fr: 'Obtenir le Plan' },
+    headline: { ar: 'أنت لست مكسوراً. أنت سيء التصميم.', en: 'You Are Not Broken. You Are Poorly Designed.' },
+    line1: { ar: 'أنت لست مكسوراً.', en: 'You Are Not Broken.' },
+    line2: { ar: 'أنت سيء التصميم.', en: 'You Are Poorly Designed.' },
+    desc: { 
+        ar: 'البشر لا ينهارون عشوائياً، بل إنشائياً. أنت بحاجة لهندسة هيكلية—وليس ديكوراً داخلياً—لإعادة بناء حياتك من الأساس.', 
+        en: 'Human beings don\'t break randomly. They collapse architecturally.\nYou need structural engineering—not interior decoration—to rebuild your life from the foundation up.' 
+    },
+    cta: { ar: 'ابدأ فحص السلامة الإنشائية', en: 'TAKE YOUR STRUCTURAL INTEGRITY AUDIT' },
+    subCta: { ar: 'شاهد قصة سارة', en: "WATCH SARAH'S STORY" }
   },
   assessment: {
     title: { ar: 'اختبار الإجهاد الهيكلي', en: 'Structural Stress Test', fr: 'Test de Stress Structurel' },
@@ -75,25 +82,58 @@ export const ABOUT_CONTENT = {
 
 export const LANDING_CONTENT = {
   hero: {
-    headline: { ar: 'حياتك ليست عشوائية. إنها مشروع هندسي.', en: 'Your Life is Not Random. It is an Engineering Project.', fr: 'Votre vie n\'est pas un hasard.' },
-    subheadline: { 
-      ar: 'أوقف محاولات "إصلاح الذات" العشوائية. ابدأ في تطبيق منهجية (IHAM™) لإعادة البناء من القواعد.', 
-      en: 'Stop random "self-improvement." Start applying the IHAM™ protocol to rebuild from the foundation up.',
-      fr: 'Arrêtez l\'auto-amélioration aléatoire.'
+    headline: { en: 'You Are Not Broken. You Are Poorly Designed.', ar: 'أنت لست مكسوراً. أنت سيء التصميم.' },
+    desc: { en: 'Human beings don\'t break randomly. They collapse architecturally.\nYou need structural engineering—not interior decoration—to rebuild your life from the foundation up.', ar: 'البشر لا ينهارون عشوائياً، بل إنشائياً. أنت بحاجة لهندسة هيكلية—وليس ديكوراً داخلياً—لإعادة بناء حياتك من الأساس.' },
+    cta: { en: 'TAKE YOUR STRUCTURAL INTEGRITY AUDIT', ar: 'ابدأ فحص السلامة الإنشائية' },
+    subCta: { en: "WATCH SARAH'S STORY", ar: 'شاهد قصة سارة' }
+  },
+  collapse: {
+    title: { en: 'You Are Not Broken. You Are Poorly Designed.', ar: 'أنت لست مكسوراً. أنت سيء التصميم.' },
+    quote: { en: 'Human beings don’t break randomly. They collapse architecturally.', ar: 'البشر لا ينكسرون عشوائياً. هم ينهارون معمارياً.' },
+    story: {
+        en: 'Sarah Mitchell—venture capitalist, marathon runner—stood in her kitchen watching her hands shake while pouring coffee. "I have built a life I cannot inhabit," she whispered. She had a pristine facade, but the internal load-bearing walls were rotting.',
+        ar: 'سارة ميتشل—مستثمرة وعداءة—وقفت في مطبخها تشاهد يديها ترتجفان أثناء سكب القهوة. همست: "لقد بنيت حياة لا أستطيع السكن فيها". كانت تملك واجهة مثالية، لكن الجدران الحاملة الداخلية كانت تتآكل.'
     },
-    badge: { ar: 'النظام الهندسي المتكامل', en: 'The Integrated System', fr: 'Le Système Intégré' }
+    cta: { en: 'Take Your Structural Integrity Audit →', ar: 'ابدأ فحص السلامة الإنشائية ←' }
   },
-  problem: {
-    title: { ar: 'لماذا تنهار ناطحات السحاب البشرية؟', en: 'Why Human Skyscrapers Collapse', fr: 'Pourquoi les gratte-ciel humains s\'effondrent' },
-    text: { 
-      ar: 'أنت تحاول بناء ناطحة سحاب (طموحاتك) على أساسات كوخ خشبي (عاداتك). هذا ليس خطأ في الشخصية، إنه خطأ في التصميم.', 
-      en: 'You are trying to build a skyscraper (your ambitions) on the foundation of a wooden shack (your habits). This is not a character flaw. It is a design error.',
-      fr: 'Ce n\'est pas un défaut de caractère. C\'est une erreur de conception.'
-    }
+  system: {
+    title: { en: 'The Complete Rebuild System', ar: 'نظام إعادة البناء الكامل' },
+    subtitle: { en: '58 Days of Structural Transformation', ar: '٥٨ يوماً من التحول الهيكلي' },
+    components: [
+        {
+            title: { en: 'Phase 1: The Blueprint', ar: 'المخطط (نظري)' },
+            desc: { en: 'Digital + Print Book. The Owner’s Manual.', ar: 'كتاب ديجيتال + مطبوع. دليل المالك لفهم الانهيار.' },
+            price: '$14.99'
+        },
+        {
+            title: { en: 'Phase 2: The Workbook', ar: 'الوورك بوك (تطبيقي)' },
+            desc: { en: '28-Day Log. Digital is FREE. Print is paid.', ar: 'سجل ٢٨ يوم. الديجيتال مجاني، المطبوع برسوم.' },
+            price: 'Free / $25'
+        },
+        {
+            title: { en: 'Phase 3: The System', ar: 'النظام (هجين)' },
+            desc: { en: 'Print Book + Digital Book + Online Dashboard.', ar: 'كتاب مطبوع + ديجيتال + لوحة تحكم تفاعلية.' },
+            price: '$397'
+        }
+    ],
+    footer: { en: 'This is not self-help. This is human engineering.', ar: 'هذا ليس تطوير ذات. هذه هندسة بشرية.' }
   },
-  bundles: {
-    title: { ar: 'اختر أدوات البناء', en: 'Select Your Tools', fr: 'Sélectionnez vos outils' },
-    guarantee: { ar: 'ضمان الجودة الهندسية', en: 'Structural Integrity Guarantee', fr: 'Garantie d\'intégrité' }
+  transformation: {
+    title: { en: 'From Collapse to Architecture', ar: 'من الانهيار إلى العمارة' },
+    quote: { en: 'After 28 days: Foundation stable.\nAfter 30 more: Running a half-marathon—not to prove anything, but because her body could finally carry her.', ar: 'بعد ٢٨ يوماً: الأساسات استقرت.\nبعد ٣٠ يوماً أخرى: ركضت نصف ماراثون—ليس لتثبت شيئاً، بل لأن جسدها أصبح قادراً أخيراً على حملها.' },
+    cta: { en: 'Start Your Rebuild →', ar: 'ابدأ إعادة البناء ←' }
+  },
+  pricing: {
+      title: { en: 'Choose Your Level of Reconstruction', ar: 'اختر مستوى إعادة البناء' }
+  },
+  guarantee: {
+      title: { en: 'The Architect’s Guarantee', ar: 'ضمان المعماري' },
+      text: { 
+          en: 'If you complete the 28-Day Protocol and the 30-Day Accelerator with full engagement, and you don’t feel structurally different—in your body, mind, emotion, and purpose—I will refund every dollar. But I’ve never had to.',
+          ar: 'إذا أتممت بروتوكول الـ ٢٨ يوماً وبرنامج التسريع (٣٠ يوماً) بالتزام كامل، ولم تشعر باختلاف هيكلي جذري—في جسدك، عقلك، مشاعرك، وهدفك—سأعيد لك كل دولار. لكنني لم أضطر لذلك أبداً.'
+      },
+      cta: { en: 'Begin Your Reconstruction Today →', ar: 'ابدأ عملية إعادة البناء اليوم ←' },
+      trust: { en: 'Secure Checkout | Lifetime Access | 2,300+ Builders Worldwide', ar: 'دفع آمن | وصول مدى الحياة | ٢٣٠٠+ بناء حول العالم' }
   }
 };
 
@@ -146,7 +186,6 @@ export const PILLARS: PillarData[] = [
       en: 'Reprogramming cognitive operating systems.', 
       fr: 'Reprogrammation cognitive.' 
     },
-    // Abstract Mind/Structure - Tech/Abstract
     image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80',
     blueprintImage: 'https://images.unsplash.com/photo-1516110833967-0b5716ca1387?auto=format&fit=crop&q=80'
   },
@@ -159,7 +198,6 @@ export const PILLARS: PillarData[] = [
       en: 'Pouring concrete bases for bio-energy.', 
       fr: 'Coulage des bases.' 
     },
-    // UPDATED: Sculpture/Torso to represent "Human as Structure" (Replaces Girl)
     image: 'https://images.unsplash.com/photo-1563409257650-77990b793710?auto=format&fit=crop&q=80',
     blueprintImage: 'https://images.unsplash.com/photo-1534970028765-38ce47ef7d8d?auto=format&fit=crop&q=80'
   },
@@ -172,7 +210,6 @@ export const PILLARS: PillarData[] = [
       en: 'Orienting the structure to True North.', 
       fr: 'Orientation vers le Nord.' 
     },
-    // UPDATED: Reliable Interior Light
     image: 'https://images.unsplash.com/photo-1507643179173-617d67456fd3?auto=format&fit=crop&q=80',
     blueprintImage: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80'
   },
@@ -185,7 +222,6 @@ export const PILLARS: PillarData[] = [
       en: 'Protection systems and external interfaces.', 
       fr: 'Systèmes de protection.' 
     },
-    // Facade - Modern Architecture
     image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80',
     blueprintImage: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&q=80'
   }
@@ -224,64 +260,93 @@ export const PHASES = [
     }
 ];
 
+// PRODUCT CATALOG UPDATED TO REFLECT HYBRID NATURE AND INDIVIDUAL ITEMS
 export const PRODUCTS: Product[] = [
+  // --- INDIVIDUAL ITEMS (A LA CARTE) ---
+  {
+    id: 'book_digital',
+    category: 'book',
+    name: { ar: 'الكتاب (PDF)', en: 'The Blueprint (Digital)', fr: 'Livre PDF' },
+    description: { ar: 'نسخة رقمية فورية.', en: 'Instant Digital Download.', fr: 'Téléchargement.' },
+    price: 14.99,
+    type: 'digital',
+    image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80',
+    status: 'available'
+  },
+  {
+    id: 'book_print',
+    category: 'book',
+    name: { ar: 'الكتاب (مطبوع)', en: 'The Blueprint (Print)', fr: 'Livre Imprimé' },
+    description: { ar: 'نسخة ورقية فاخرة تصل لباب بيتك.', en: 'Premium Hardcover shipped to you.', fr: 'Livre relié.' },
+    price: 29.99,
+    type: 'physical',
+    image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80',
+    status: 'available'
+  },
+  {
+    id: 'workbook_print',
+    category: 'tool',
+    name: { ar: 'الوورك بوك (مطبوع)', en: '28-Day Workbook (Print)', fr: 'Cahier Imprimé' },
+    description: { ar: 'دفتر تطبيقات عملي ورقي.', en: 'Physical Construction Log.', fr: 'Journal physique.' },
+    price: 24.99,
+    type: 'physical',
+    image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&q=80',
+    status: 'available'
+  },
+  {
+    id: 'system_hybrid',
+    category: 'course',
+    name: { ar: 'نظام الـ 30 يوم (هجين)', en: '30-Day Hybrid System', fr: 'Système Hybride' },
+    description: { ar: 'كتاب مطبوع + ديجيتال + منصة.', en: 'Print + Digital + Dashboard.', fr: 'Complet.' },
+    price: 197,
+    type: 'hybrid',
+    image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80',
+    status: 'available'
+  },
+
+  // --- BUNDLES ---
   {
     id: 'bundle_master',
     category: 'bundle',
-    name: { ar: 'حزمة المهندس المعماري (شاملة)', en: 'The Master Architect Bundle', fr: 'Le Pack Architecte' },
+    name: { ar: 'إعادة البناء الكامل', en: 'The Complete Rebuild', fr: 'Le Système Complet' },
     description: { 
-      ar: 'النظام المتكامل: الكتاب (النظرية) + الوورك بوك (التنفيذ) + البرنامج الرقمي (التسريع).', 
-      en: 'The Complete System: The Book (Theory) + The Workbook (Execution) + The 30-Day Digital Accelerator.',
+      ar: 'الباقة الشاملة: كل الكتب (مطبوع وديجيتال) + النظام + المجتمع.', 
+      en: 'All-in-One: Print/Digital Books + System + Community.',
       fr: 'Le système complet.' 
     },
-    price: 67, 
-    originalPrice: 99,
+    price: 397, 
+    originalPrice: 550,
     type: 'hybrid',
-    // Updated Image: Books/Plans
     image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80',
     status: 'available',
     isBestSeller: true,
     features: [
-        { ar: 'كتاب "عمارة الإنسان" (غلاف مقوى)', en: 'The Human Architecture Book (Hardcover)', fr: 'Livre relié' },
-        { ar: 'الوورك بوك التنفيذي "سجل الموقع" (نسخة ورقية)', en: 'The "Site Log" Workbook (Physical)', fr: 'Cahier d\'exercices' },
-        { ar: 'دخول حصري لبرنامج الـ 30 يوماً الرقمي', en: 'Exclusive Access to 30-Day Digital Accelerator', fr: 'Accès numérique' },
-        { ar: 'بطاقات المهام اليومية (PDF)', en: 'Daily Task Cards (PDF)', fr: 'Cartes de tâches' }
+        { ar: 'الكتاب (نسخة مطبوعة + PDF)', en: 'The Blueprint Book (Print + PDF)', fr: 'Livre' },
+        { ar: 'الوورك بوك 28 يوم (PDF مجاني)', en: '28-Day Workbook (Free PDF)', fr: 'Cahier PDF' },
+        { ar: 'نظام الـ 30 يوم (كتاب مطبوع + منصة)', en: '30-Day System (Print Book + Dashboard)', fr: 'Système Hybride' },
+        { ar: 'عضوية دائمة في Builders Guild', en: 'Lifetime Access to Builders Guild', fr: 'Accès Guilde' },
+        { ar: 'شهادة إتمام هندسية', en: 'Certificate of Completion', fr: 'Certificat' }
     ]
   },
   {
-    id: 'book_only',
-    category: 'book',
-    name: { ar: 'المخطط فقط (الكتاب)', en: 'The Blueprint Only (Book)', fr: 'Le Livre Seul' },
+    id: 'bundle_coach',
+    category: 'bundle',
+    name: { ar: 'كبير المعماريين', en: 'The Master Architect', fr: 'L\'Architecte Maître' },
     description: { 
-      ar: 'المواصفات الفنية والنظرية الكاملة. (بدون أدوات التنفيذ).', 
-      en: 'Complete technical specifications and theory. (Execution tools not included).',
-      fr: 'Spécifications techniques.' 
+      ar: 'الباقة الكاملة + توجيه فردي.', 
+      en: 'Complete Bundle + 1:1 Coaching.',
+      fr: 'Tout + Coaching.' 
     },
-    price: 35,
-    originalPrice: 45,
-    type: 'physical',
-    // Updated Image: Single Book
-    image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80',
+    price: 997, 
+    originalPrice: 1500,
+    type: 'hybrid',
+    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80',
     status: 'available',
     features: [
-        { ar: 'كتاب "عمارة الإنسان" (غلاف مقوى)', en: 'The Human Architecture Book (Hardcover)', fr: 'Livre relié' },
-        { ar: 'نسخة رقمية (E-Book)', en: 'Digital Copy (E-Book)', fr: 'E-Book' }
+        { ar: 'كل مميزات باقة "إعادة البناء الكامل"', en: 'Everything in Complete Rebuild', fr: 'Tout inclus' },
+        { ar: 'جلسات توجيه فردية (1:1)', en: '1:1 Private Coaching Sessions', fr: 'Coaching 1:1' },
+        { ar: 'مراجعة شخصية للمخطط', en: 'Personal Blueprint Audit', fr: 'Audit Personnel' }
     ]
-  },
-  {
-    id: 'kit_cards_30',
-    category: 'tool',
-    name: { ar: 'مجموعة بطاقات ٣٠ يوماً', en: '30-Day Card Deck', fr: 'Jeu de 30 Jours' },
-    description: {
-        ar: 'مجموعة بطاقات عملية لكل يوم من البرنامج.',
-        en: 'A practical deck of cards for each day of the program.',
-        fr: 'Jeu de cartes pratique.'
-    },
-    price: 15,
-    type: 'physical',
-    // Updated Image: Cards/Hands
-    image: 'https://images.unsplash.com/photo-1621360841016-0e9f4e245648?auto=format&fit=crop&q=80',
-    status: 'available'
   }
 ];
 
@@ -325,7 +390,6 @@ export const BLOG_POSTS: BlogPost[] = [
         en: '<p>Full content here...</p>',
         fr: '<p>Contenu complet...</p>'
     },
-    // Updated Image: Surface/Wall
     image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80'
   },
   {
@@ -343,7 +407,6 @@ export const BLOG_POSTS: BlogPost[] = [
         en: '<p>Full content here...</p>',
         fr: '<p>Contenu complet...</p>'
     },
-    // Updated Image: Rest/Structure
     image: 'https://images.unsplash.com/photo-1517672651691-24622a91b550?auto=format&fit=crop&q=80'
   }
 ];

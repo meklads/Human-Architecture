@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Language, View, Product, UserProfile } from './types';
 import { TRANSLATIONS } from './constants';
-import { Menu, X, Moon, Sun, Grid, Layers, Users, Shield, Layout, LogOut } from './components/Icons';
+import { Menu, X, Moon, Sun, Grid, Layers, Users, Shield, Layout, LogOut, Instagram, Twitter, Linkedin } from './components/Icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HomePage } from './components/HomePage';
 import { PhilosophyPage } from './components/PhilosophyPage';
@@ -21,8 +21,8 @@ import { BlueprintOverlay } from './components/BlueprintOverlay';
 
 function App() {
   const [lang, setLang] = useState<Language>('en');
-  const [currentView, setCurrentView] = useState<View>('home');
-  const [darkMode, setDarkMode] = useState(true);
+  const [currentView, setCurrentView] = useState<View>('landing'); // Default to Landing Page
+  const [darkMode, setDarkMode] = useState(true); // Default to Dark Mode (The Beautiful One)
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   
@@ -68,7 +68,7 @@ function App() {
     const targetView = params.get('view') as View;
     
     // Validate view before switching
-    if (targetView && ['home', 'philosophy', 'journal', 'library', 'contact', 'landing', 'community', 'register', 'dashboard', 'about'].includes(targetView)) {
+    if (targetView && ['home', 'philosophy', 'journal', 'library', 'store', 'contact', 'landing', 'community', 'register', 'dashboard', 'about'].includes(targetView)) {
         setCurrentView(targetView);
     }
 
@@ -103,7 +103,8 @@ function App() {
     window.scrollTo(0, 0);
   }, [currentView]);
 
-  const headingFont = lang === 'ar' ? 'font-amiri' : 'font-playfair';
+  const headingFont = lang === 'ar' ? 'font-amiri' : 'font-serif';
+  const navFont = lang === 'ar' ? 'font-ibm' : 'font-sans';
   const direction = lang === 'ar' ? 'rtl' : 'ltr';
 
   const handleAddToCart = (items: Product[]) => {
@@ -133,16 +134,17 @@ function App() {
   const handleLogout = () => {
       setCurrentUser(null);
       localStorage.removeItem('iham_user_profile');
-      setCurrentView('home');
+      setCurrentView('landing');
   };
 
   const navItems: { id: View; label: string }[] = [
-    { id: 'home', label: TRANSLATIONS.nav.home[lang] },
+    { id: 'landing', label: TRANSLATIONS.nav.home[lang] },
+    { id: 'library', label: TRANSLATIONS.nav.blueprint[lang] },
     { id: 'philosophy', label: TRANSLATIONS.nav.philosophy[lang] },
-    { id: 'about', label: TRANSLATIONS.nav.architect[lang] }, // Added Architect Link
-    { id: 'library', label: TRANSLATIONS.nav.library[lang] },
+    { id: 'store', label: TRANSLATIONS.nav.library[lang] }, // CHANGED ID to 'store' to separate from 'library'
     { id: 'journal', label: TRANSLATIONS.nav.journal[lang] },
     { id: 'community', label: TRANSLATIONS.nav.community[lang] },
+    { id: 'contact', label: TRANSLATIONS.nav.contact[lang] },
   ];
 
   if (loading) {
@@ -169,7 +171,7 @@ function App() {
   }
 
   return (
-    <div className={`min-h-screen transition-colors duration-700 ${darkMode ? 'dark' : ''}`} dir={direction}>
+    <div className={`min-h-screen transition-colors duration-700 bg-darkBg text-concrete`} dir={direction}>
       <CustomCursor />
       
       {/* GLOBAL BLUEPRINT OVERLAY */}
@@ -186,99 +188,74 @@ function App() {
         )}
       </AnimatePresence>
       
-      {/* --- NAVIGATION BAR --- */}
-      {/* Changed from mix-blend-difference to solid background for better click reliability */}
-      <header className="fixed top-0 w-full z-50 bg-[#050505]/90 backdrop-blur-md border-b border-white/5 text-alabaster shadow-lg">
-        <div className="container mx-auto px-6 py-4 md:py-6 flex justify-between items-center">
+      {/* --- STICKY DARK HEADER --- */}
+      <header className="fixed top-0 w-full z-50 bg-[#050505]/90 backdrop-blur-md border-b border-white/5 shadow-2xl">
+        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           
           {/* Logo Area */}
-          <div className="flex items-center gap-4 group cursor-pointer" onClick={() => setCurrentView('home')}>
-             <div className={`w-10 h-10 md:w-12 md:h-12 border-2 border-white flex items-center justify-center font-bold text-xl group-hover:rotate-45 transition-transform duration-500 bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)]`}>
-                 H
+          <div className="flex items-center gap-4 group cursor-pointer" onClick={() => setCurrentView('landing')}>
+             <div className="hidden lg:block text-alabaster group-hover:text-bronze transition-colors">
+                 <span className={`block text-xl font-bold tracking-tight ${headingFont}`}>HUMAN ARCHITECTURE</span>
              </div>
-             <div className="hidden lg:block">
-                 <span className={`block text-xs uppercase tracking-[0.4em] font-bold ${headingFont}`}>Human</span>
-                 <span className="block text-[0.5rem] uppercase tracking-[0.4em] opacity-80">Architecture</span>
-             </div>
+             {/* Mobile Logo Fallback */}
+             <div className="lg:hidden text-white font-bold text-xl">HA</div>
           </div>
 
-          {/* Center Navigation (Desktop) - Restored */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8">
+          {/* Center Navigation (Desktop) */}
+          <nav className="hidden xl:flex items-center gap-6">
              {navItems.map((item) => (
                  <button
-                    key={item.id}
+                    key={item.id} // Added key here for list items
                     onClick={() => setCurrentView(item.id)}
-                    className={`text-xs uppercase tracking-widest hover:text-bronze transition-colors py-2 ${currentView === item.id ? 'text-bronze font-bold border-b border-bronze' : 'text-slate'}`}
+                    className={`text-[0.65rem] uppercase tracking-[0.15em] hover:text-bronze transition-colors py-2 ${currentView === item.id ? 'text-white font-bold border-b border-bronze' : 'text-slate'}`}
                  >
                      {item.label}
                  </button>
              ))}
-             {/* Dashboard Link if Logged In */}
-             {currentUser && (
-                <button
-                    onClick={() => setCurrentView('dashboard')}
-                    className={`text-xs uppercase tracking-widest hover:text-bronze transition-colors py-2 ${currentView === 'dashboard' ? 'text-bronze font-bold border-b border-bronze' : 'text-slate'}`}
-                >
-                    {lang === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
-                </button>
-             )}
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-4 md:gap-6">
-              <button 
-                onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-                className="text-xs font-bold hover:text-bronze transition-colors uppercase"
-              >
-                  {lang === 'en' ? 'AR' : 'EN'}
-              </button>
+          <div className="flex items-center gap-4">
               
-              {/* Join/Register Link or User Profile */}
+              {/* JOIN Button */}
               {currentUser ? (
-                  <div className="flex items-center gap-3">
-                      <button 
-                        onClick={() => setCurrentView('dashboard')}
-                        className="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-bronze hover:text-white transition-colors border border-bronze/30 px-3 py-1 rounded-full"
-                      >
-                          <Layout size={12} />
-                          {currentUser.name.split(' ')[0]}
-                      </button>
-                      <button
-                         onClick={handleLogout}
-                         className="text-slate hover:text-red-400 transition-colors"
-                         title={lang === 'ar' ? 'تسجيل الخروج' : 'Log Out'}
-                      >
-                          <LogOut size={16} />
-                      </button>
-                  </div>
+                  <button 
+                    onClick={() => setCurrentView('dashboard')}
+                    className="bg-bronze text-white px-6 py-2 text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-charcoal transition-colors rounded-sm shadow-[0_0_10px_rgba(197,160,101,0.3)]"
+                  >
+                      {lang === 'ar' ? 'لوحة التحكم' : 'DASHBOARD'}
+                  </button>
               ) : (
                   <button 
                     onClick={() => setCurrentView('register')}
-                    className="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-bronze hover:text-white transition-colors border border-bronze px-4 py-2"
+                    className="bg-bronze text-white px-6 py-2 text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-charcoal transition-colors rounded-sm shadow-[0_0_10px_rgba(197,160,101,0.3)]"
                   >
-                      <Users size={14} />
-                      {lang === 'ar' ? 'انضمام' : 'Join'}
+                      {lang === 'ar' ? 'انضمام' : 'JOIN'}
                   </button>
               )}
+
+              {/* BLUEPRINT Button (Luxury Style) */}
+              <button 
+                onClick={() => setCurrentView('library')}
+                className="hidden md:flex border border-white/20 text-white px-6 py-2 text-xs uppercase tracking-widest font-bold hover:border-bronze hover:text-bronze transition-colors rounded-sm"
+              >
+                  {lang === 'ar' ? 'المخطط' : 'THE BLUEPRINT'}
+              </button>
               
+              <button 
+                onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
+                className="text-xs font-bold hover:text-bronze transition-colors uppercase text-slate"
+              >
+                  {lang === 'en' ? 'AR' : 'EN'}
+              </button>
+
               {/* Mobile Menu Button */}
               <button 
                 onClick={() => setMenuOpen(true)}
-                className="md:hidden group flex items-center gap-2 hover:text-bronze transition-colors"
+                className="xl:hidden group flex items-center gap-2 text-white hover:text-bronze transition-colors"
               >
                   <Menu size={24} className="group-hover:scale-110 transition-transform" strokeWidth={1.5} />
               </button>
-
-              {/* Blueprint CTA */}
-              <Magnetic strength={0.3}>
-                  <button 
-                    onClick={() => setCurrentView('landing')}
-                    className="hidden lg:flex bg-white text-black px-6 py-3 text-xs uppercase tracking-widest font-bold hover:bg-bronze hover:text-white transition-colors items-center gap-2"
-                  >
-                      <Layers size={14} />
-                      {lang === 'ar' ? 'المخطط' : 'The Blueprint'}
-                  </button>
-              </Magnetic>
           </div>
         </div>
       </header>
@@ -288,12 +265,12 @@ function App() {
         {menuOpen && (
             <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-[#0a0a0a]/98 backdrop-blur-xl text-alabaster flex flex-col items-center justify-center md:hidden"
+                className="fixed inset-0 z-[100] bg-[#050505] text-white flex flex-col items-center justify-center xl:hidden"
             >
                 {/* Close Button */}
                 <button 
                     onClick={() => setMenuOpen(false)}
-                    className="absolute top-8 right-8 text-slate hover:text-white transition-colors flex items-center gap-2 text-xs uppercase tracking-widest"
+                    className="absolute top-8 right-8 text-slate hover:text-bronze transition-colors flex items-center gap-2 text-xs uppercase tracking-widest"
                 >
                     {lang === 'ar' ? 'إغلاق' : 'CLOSE'} <X size={32} />
                 </button>
@@ -309,59 +286,13 @@ function App() {
                         >
                             <button 
                                 onClick={() => { setCurrentView(item.id); setMenuOpen(false); }}
-                                className={`text-3xl ${headingFont} hover:text-bronze transition-all duration-300 group flex items-center justify-center gap-6 ${currentView === item.id ? 'text-bronze' : 'text-slate'}`}
+                                className={`text-2xl ${headingFont} hover:text-bronze transition-all duration-300 group flex items-center justify-center gap-6 ${currentView === item.id ? 'text-white' : 'text-slate-600'}`}
                             >
-                                <span className="text-xs font-mono opacity-30 group-hover:opacity-100 transition-opacity -mt-2">0{idx+1}</span>
                                 {item.label}
                             </button>
                         </motion.div>
                     ))}
-                    
-                    {/* Register/Dashboard Link in Mobile Menu */}
-                    <motion.div
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: navItems.length * 0.1 }}
-                        className="pt-6 border-t border-white/10 mt-6"
-                    >
-                        {currentUser ? (
-                             <div className="flex flex-col gap-4">
-                                <button 
-                                    onClick={() => { setCurrentView('dashboard'); setMenuOpen(false); }}
-                                    className={`text-2xl ${headingFont} text-bronze hover:text-white transition-all`}
-                                >
-                                    {lang === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
-                                </button>
-                                <button 
-                                    onClick={() => { handleLogout(); setMenuOpen(false); }}
-                                    className="text-sm text-red-400 uppercase tracking-widest"
-                                >
-                                    {lang === 'ar' ? 'تسجيل الخروج' : 'Log Out'}
-                                </button>
-                             </div>
-                        ) : (
-                             <button 
-                                onClick={() => { setCurrentView('register'); setMenuOpen(false); }}
-                                className={`text-3xl ${headingFont} text-bronze hover:text-white transition-all duration-300 group flex items-center justify-center gap-6`}
-                            >
-                                {lang === 'ar' ? 'الانضمام / دخول' : 'Join / Login'}
-                            </button>
-                        )}
-                    </motion.div>
                 </nav>
-
-                {/* Footer Controls */}
-                <div className="mt-12 flex gap-8 text-slate">
-                        <button onClick={() => setDarkMode(!darkMode)} className="hover:text-white transition-colors flex items-center gap-2 text-xs uppercase tracking-widest">
-                            {darkMode ? <Sun size={18} /> : <Moon size={18} />} {darkMode ? 'Light' : 'Dark'}
-                        </button>
-                        <button 
-                        onClick={() => setBlueprintMode(!blueprintMode)} 
-                        className={`hover:text-white transition-colors flex items-center gap-2 text-xs uppercase tracking-widest ${blueprintMode ? 'text-cyan-400' : ''}`}
-                        >
-                            <Grid size={18} /> {blueprintMode ? 'Blueprint' : 'Blueprint'}
-                        </button>
-                </div>
             </motion.div>
         )}
       </AnimatePresence>
@@ -369,13 +300,15 @@ function App() {
       {/* --- MAIN CONTENT AREA --- */}
       <main className="relative z-10">
         <AnimatePresence mode='wait'>
+            {currentView === 'landing' && <LandingPage key="landing" lang={lang} setView={setCurrentView} onCheckout={handleAddToCart} />}
             {currentView === 'home' && <HomePage key="home" lang={lang} setView={setCurrentView} />}
             {currentView === 'philosophy' && <PhilosophyPage key="philosophy" lang={lang} setView={setCurrentView} />}
             {currentView === 'about' && <AboutPage key="about" lang={lang} />}
             {currentView === 'journal' && <JournalPage key="journal" lang={lang} />}
             {currentView === 'library' && <LibraryPage key="library" lang={lang} onCheckout={handleAddToCart} />}
+            {/* Store renders the LibraryPage but keeps the 'store' ID active in nav */}
+            {currentView === 'store' && <LibraryPage key="store" lang={lang} onCheckout={handleAddToCart} />}
             {currentView === 'contact' && <ContactPage key="contact" lang={lang} />}
-            {currentView === 'landing' && <LandingPage key="landing" lang={lang} setView={setCurrentView} onCheckout={handleAddToCart} />}
             {currentView === 'community' && <CommunityPage key="community" lang={lang} setView={setCurrentView} currentUser={currentUser} />}
             {currentView === 'register' && (
                 <RegisterPage 
@@ -406,29 +339,16 @@ function App() {
 
       {/* --- FOOTER --- */}
       {currentView !== 'checkout' && (
-      <footer className="bg-[#050505] text-slate/40 py-12 border-t border-white/5 relative z-10">
+      <footer className="bg-[#050505] text-slate-400 py-12 border-t border-white/5 relative z-10">
           <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-              <div className="text-[0.6rem] uppercase tracking-widest">
+              <div className="text-[0.6rem] uppercase tracking-widest text-slate">
                   {TRANSLATIONS.footer.copyright[lang]}
               </div>
               
-              {/* Desktop Footer Controls - Moved here from Menu */}
-              <div className="hidden md:flex gap-8">
-                   <button onClick={() => setDarkMode(!darkMode)} className="hover:text-white transition-colors flex items-center gap-2 text-[0.6rem] uppercase tracking-widest">
-                        {darkMode ? <Sun size={12} /> : <Moon size={12} />} {darkMode ? 'Light Mode' : 'Dark Mode'}
-                   </button>
-                   <button 
-                        onClick={() => setBlueprintMode(!blueprintMode)} 
-                        className={`hover:text-white transition-colors flex items-center gap-2 text-[0.6rem] uppercase tracking-widest ${blueprintMode ? 'text-cyan-400' : ''}`}
-                   >
-                        <Grid size={12} /> {blueprintMode ? 'Blueprint ON' : 'Blueprint Mode'}
-                   </button>
-              </div>
-
               <div className="flex items-center gap-8">
-                  <a href="#" className="hover:text-bronze transition-colors"><span className="sr-only">Instagram</span>IG</a>
-                  <a href="#" className="hover:text-bronze transition-colors"><span className="sr-only">Twitter</span>TW</a>
-                  <a href="#" className="hover:text-bronze transition-colors"><span className="sr-only">LinkedIn</span>LI</a>
+                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-bronze transition-colors"><span className="sr-only">Instagram</span><Instagram size={18} /></a>
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-bronze transition-colors"><span className="sr-only">Twitter</span><Twitter size={18} /></a>
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-bronze transition-colors"><span className="sr-only">LinkedIn</span><Linkedin size={18} /></a>
               </div>
           </div>
       </footer>

@@ -66,7 +66,11 @@ import {
   Camera,
   Send,
   Clock,
-  LogOut
+  LogOut,
+  Instagram,
+  Twitter,
+  Linkedin,
+  Facebook
 } from 'lucide-react';
 
 export { 
@@ -135,5 +139,9 @@ export {
   Camera,
   Send,
   Clock,
-  LogOut
+  LogOut,
+  Instagram,
+  Twitter,
+  Linkedin,
+  Facebook
 };
