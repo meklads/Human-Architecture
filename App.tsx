@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { Language, View, Product } from './types';
+import { Language, View, Product, UserProfile } from './types';
 import { TRANSLATIONS } from './constants';
-import { Menu, X, Moon, Sun, Grid, Layers } from './components/Icons';
+import { Menu, X, Moon, Sun, Grid, Layers, Users, Shield } from './components/Icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HomePage } from './components/HomePage';
 import { PhilosophyPage } from './components/PhilosophyPage';
@@ -12,9 +12,11 @@ import { ContactPage } from './components/ContactPage';
 import { LandingPage } from './components/LandingPage';
 import { CheckoutPage } from './components/CheckoutPage';
 import { CommunityPage } from './components/CommunityPage';
+import { RegisterPage } from './components/RegisterPage'; 
 import { CustomCursor } from './components/CustomCursor';
 import { Magnetic } from './components/Magnetic';
 import { BlueprintOverlay } from './components/BlueprintOverlay';
+import { SoundController } from './components/SoundController';
 
 function App() {
   const [lang, setLang] = useState<Language>('en');
@@ -23,6 +25,9 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   
+  // User Authentication State
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+
   // Architectural Loading State
   const [loadingPhase, setLoadingPhase] = useState(0);
   
@@ -42,7 +47,7 @@ function App() {
     { ar: 'المبنى جاهز للإشغال.', en: 'STRUCTURE READY FOR OCCUPANCY.' }
   ];
 
-  // Initial Load Simulation & Deep Link Handler
+  // Initial Load Simulation & Deep Link Handler & User Restore
   useEffect(() => {
     // 1. Architectural Boot Sequence
     const phaseInterval = setInterval(() => {
@@ -62,8 +67,18 @@ function App() {
     const targetView = params.get('view') as View;
     
     // Validate view before switching
-    if (targetView && ['home', 'philosophy', 'journal', 'library', 'contact', 'landing', 'community'].includes(targetView)) {
+    if (targetView && ['home', 'philosophy', 'journal', 'library', 'contact', 'landing', 'community', 'register'].includes(targetView)) {
         setCurrentView(targetView);
+    }
+
+    // 3. Restore User Session
+    const savedUser = localStorage.getItem('iham_user_profile');
+    if (savedUser) {
+        try {
+            setCurrentUser(JSON.parse(savedUser));
+        } catch (e) {
+            console.error('Failed to restore user session');
+        }
     }
 
     return () => {
@@ -108,6 +123,11 @@ function App() {
       setCheckoutItems([]);
   };
 
+  const handleRegisterSuccess = (profile: UserProfile) => {
+      setCurrentUser(profile);
+      localStorage.setItem('iham_user_profile', JSON.stringify(profile));
+  };
+
   const navItems: { id: View; label: string }[] = [
     { id: 'home', label: TRANSLATIONS.nav.home[lang] },
     { id: 'philosophy', label: TRANSLATIONS.nav.philosophy[lang] },
@@ -143,6 +163,9 @@ function App() {
   return (
     <div className={`min-h-screen transition-colors duration-700 ${darkMode ? 'dark' : ''}`} dir={direction}>
       <CustomCursor />
+      
+      {/* GLOBAL AUDIO SYSTEM */}
+      <SoundController />
       
       {/* GLOBAL BLUEPRINT OVERLAY */}
       <AnimatePresence>
@@ -194,6 +217,25 @@ function App() {
               >
                   {lang === 'en' ? 'AR' : 'EN'}
               </button>
+              
+              {/* Join/Register Link or User Profile */}
+              {currentUser ? (
+                  <button 
+                    onClick={() => setCurrentView('community')}
+                    className="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-bronze hover:text-white transition-colors border border-bronze/30 px-3 py-1 rounded-full"
+                  >
+                      <Shield size={12} />
+                      {currentUser.name.split(' ')[0]}
+                  </button>
+              ) : (
+                  <button 
+                    onClick={() => setCurrentView('register')}
+                    className="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:text-bronze transition-colors"
+                  >
+                      <Users size={14} />
+                      {lang === 'ar' ? 'انضمام' : 'Join'}
+                  </button>
+              )}
               
               {/* Mobile Menu Button */}
               <button 
@@ -250,6 +292,20 @@ function App() {
                             </button>
                         </motion.div>
                     ))}
+                    
+                    {/* Register Link in Mobile Menu */}
+                    <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: navItems.length * 0.1 }}
+                    >
+                         <button 
+                            onClick={() => { setCurrentView(currentUser ? 'community' : 'register'); setMenuOpen(false); }}
+                            className={`text-4xl ${headingFont} text-bronze hover:text-white transition-all duration-300 group flex items-center justify-center gap-6`}
+                        >
+                            {currentUser ? (lang === 'ar' ? 'ملفي الشخصي' : 'My Profile') : (lang === 'ar' ? 'الانضمام' : 'Join Guild')}
+                        </button>
+                    </motion.div>
                 </nav>
 
                 {/* Footer Controls */}
@@ -277,7 +333,15 @@ function App() {
             {currentView === 'library' && <LibraryPage key="library" lang={lang} onCheckout={handleAddToCart} />}
             {currentView === 'contact' && <ContactPage key="contact" lang={lang} />}
             {currentView === 'landing' && <LandingPage key="landing" lang={lang} setView={setCurrentView} onCheckout={handleAddToCart} />}
-            {currentView === 'community' && <CommunityPage key="community" lang={lang} />}
+            {currentView === 'community' && <CommunityPage key="community" lang={lang} setView={setCurrentView} currentUser={currentUser} />}
+            {currentView === 'register' && (
+                <RegisterPage 
+                    key="register" 
+                    lang={lang} 
+                    setView={setCurrentView} 
+                    onRegisterSuccess={handleRegisterSuccess} 
+                />
+            )}
             {currentView === 'checkout' && (
                 <CheckoutPage 
                     key="checkout" 

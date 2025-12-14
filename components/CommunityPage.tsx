@@ -1,92 +1,181 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Language, CommunityPost, PeerReview } from '../types';
-import { COMMUNITY_POSTS, TRANSLATIONS, PILLARS, TOP_BUILDERS } from '../constants';
-import { MessageCircle, ThumbsUp, Share2, Plus, Filter, Shield, Compass, X, Check, Users, Star, Activity, Award, Lock, ArrowRight, Quote, Loader2 } from './Icons';
+import { Language, CommunityPost, PeerReview, View, UserProfile } from '../types';
+import { COMMUNITY_POSTS, TRANSLATIONS, PILLARS, TOP_BUILDERS, THIRTY_DAY_PROGRAM } from '../constants';
+import { MessageCircle, ThumbsUp, Share2, Plus, Filter, Shield, Compass, X, Check, Users, Star, Activity, Award, Lock, ArrowRight, Quote, Loader2, Calendar, Radio, Target, Zap, AlertTriangle, FileText } from './Icons';
 
 interface CommunityPageProps {
   lang: Language;
+  setView: (view: View) => void;
+  currentUser: UserProfile | null;
 }
 
-interface UserProfile {
-  name: string;
-  handle: string;
-  email: string;
-  rank: string;
-  level: number;
-  xp: number;
-  projects: number;
-  endorsed: number;
-  joinedDate: string;
-  avatarChar: string;
-}
-
-export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
+export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, currentUser }) => {
   // -- STATE --
   const [posts, setPosts] = useState<CommunityPost[]>(COMMUNITY_POSTS);
   const [activeFilter, setActiveFilter] = useState<string>('All');
+  const [activeTab, setActiveTab] = useState<'log' | 'sos'>('log'); // Standard vs Emergency
   
   // User System
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [user, setUser] = useState<UserProfile | null>(currentUser);
+  
+  useEffect(() => {
+      setUser(currentUser);
+  }, [currentUser]);
+
   const [showPostModal, setShowPostModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showProtocol, setShowProtocol] = useState(true); // Show rules by default on first load
   
   // Interaction State
   const [selectedPost, setSelectedPost] = useState<CommunityPost | null>(null);
   const [reviewContent, setReviewContent] = useState('');
   
-  // Loading State for Archive
+  // Loading State
   const [loadingArchive, setLoadingArchive] = useState(false);
   const [archiveLoaded, setArchiveLoaded] = useState(false);
 
   // Form State
-  const [regName, setRegName] = useState('');
-  const [regEmail, setRegEmail] = useState('');
   const [newPostTitle, setNewPostTitle] = useState('');
   const [newPostContent, setNewPostContent] = useState('');
   const [newPostCategory, setNewPostCategory] = useState(PILLARS[0].channelId || 'General');
+  const [postType, setPostType] = useState<'standard' | 'emergency'>('standard');
 
   const isAr = lang === 'ar';
   const headingFont = isAr ? 'font-amiri' : 'font-playfair';
   const bodyFont = isAr ? 'font-ibm' : 'font-montserrat';
   const t = TRANSLATIONS.community;
 
-  // -- HANDLERS --
+  // -- SUB-COMPONENTS --
 
-  const handleRegister = (e: React.FormEvent) => {
-      e.preventDefault();
-      // Mock Registration
-      const newUser: UserProfile = {
-          name: regName,
-          handle: `@${regName.toLowerCase().replace(/\s/g, '_')}`,
-          email: regEmail,
-          rank: isAr ? 'بناء مبتدئ' : 'Novice Builder',
-          level: 1,
-          xp: 0,
-          projects: 0,
-          endorsed: 0,
-          joinedDate: new Date().toLocaleDateString(),
-          avatarChar: regName.charAt(0).toUpperCase()
-      };
-      setUser(newUser);
-      setShowRegisterModal(false);
+  const LiveTicker = () => {
+      const messages = isAr 
+        ? ['تم ترميم أساس جديد بواسطة أحمد', 'سارة حصلت على رتبة مهندس أول', 'طلب استغاثة جديد في القطاع C']
+        : ['New foundation repaired by Ahmed', 'Sarah promoted to Senior Architect', 'New SOS Request in Sector C'];
+      
+      const [idx, setIdx] = useState(0);
+
+      useEffect(() => {
+          const interval = setInterval(() => {
+              setIdx(prev => (prev + 1) % messages.length);
+          }, 4000);
+          return () => clearInterval(interval);
+      }, []);
+
+      return (
+          <div className="bg-bronze text-white text-[0.6rem] uppercase tracking-widest py-1 px-4 flex items-center gap-4 overflow-hidden">
+              <span className="flex-shrink-0 font-bold flex items-center gap-1"><Activity size={10} /> {isAr ? 'نشاط الموقع' : 'SITE ACTIVITY'}:</span>
+              <AnimatePresence mode='wait'>
+                  <motion.span 
+                    key={idx}
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -10, opacity: 0 }}
+                    className="truncate"
+                  >
+                      {messages[idx]}
+                  </motion.span>
+              </AnimatePresence>
+          </div>
+      );
   };
+
+  const DailyWorkOrder = () => {
+      const currentTask = THIRTY_DAY_PROGRAM[0].days[0]; 
+      return (
+          <div className="bg-[#1a1a1a] border border-bronze/30 p-6 mb-8 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-3 opacity-20">
+                  <Target size={64} className="text-bronze" strokeWidth={1} />
+              </div>
+              <div className="relative z-10">
+                  <div className="flex justify-between items-start mb-4">
+                      <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                          <span className="text-[0.6rem] uppercase tracking-widest text-slate">{isAr ? 'أمر عمل نشط' : 'ACTIVE WORK ORDER'}</span>
+                      </div>
+                      <span className="text-bronze font-mono text-xs border border-bronze px-2 py-1">DAY 01</span>
+                  </div>
+                  <h3 className={`text-xl text-white mb-2 ${headingFont}`}>{currentTask.title[lang]}</h3>
+                  <p className={`text-sm text-slate mb-6 ${bodyFont} line-clamp-2`}>
+                      {currentTask.task[lang]}
+                  </p>
+                  <div className="flex gap-4">
+                      <button className="flex-1 py-3 bg-bronze text-white text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2">
+                          {isAr ? 'تنفيذ المهمة' : 'EXECUTE'} <ArrowRight size={14} />
+                      </button>
+                      <button className="px-4 py-3 border border-white/20 text-slate hover:text-white transition-colors">
+                          <Check size={16} />
+                      </button>
+                  </div>
+              </div>
+          </div>
+      );
+  };
+
+  const GuildProtocolWidget = () => (
+      <div className="bg-[#111] border border-slate/10 p-6 mb-6">
+          <h3 className={`text-xs uppercase tracking-widest text-slate mb-4 flex items-center gap-2 font-bold`}>
+              <Shield size={14} className="text-bronze" /> {isAr ? 'ميثاق الشرف' : 'Guild Protocols'}
+          </h3>
+          <ul className="space-y-3 text-[0.65rem] text-slate/80 uppercase tracking-wide font-mono">
+              <li className="flex gap-2">
+                  <span className="text-bronze">01.</span>
+                  {isAr ? 'نحن نبني هياكل، لا نبني أوهاماً.' : 'We build structures, not illusions.'}
+              </li>
+              <li className="flex gap-2">
+                  <span className="text-bronze">02.</span>
+                  {isAr ? 'النقد البناء هو أساس الترميم.' : 'Constructive critique is the basis of repair.'}
+              </li>
+              <li className="flex gap-2">
+                  <span className="text-bronze">03.</span>
+                  {isAr ? 'لا تترك زميلاً تحت الأنقاض.' : 'Never leave a builder under rubble.'}
+              </li>
+          </ul>
+      </div>
+  );
+
+  const RadarWidget = () => {
+      return (
+          <div className="bg-white dark:bg-white/5 border border-slate/10 p-6 mb-6 relative overflow-hidden">
+              <div className="flex justify-between items-center mb-4">
+                  <h3 className={`text-xs uppercase tracking-widest text-slate flex items-center gap-2 font-bold`}>
+                      <Radio size={14} className="text-bronze" /> {isAr ? 'رادار الموقع' : 'Site Radar'}
+                  </h3>
+                  <span className="text-[0.6rem] text-slate/50 font-mono">LIVE</span>
+              </div>
+              <div className="aspect-square w-full relative bg-[#050505] rounded-full border border-slate/20 overflow-hidden flex items-center justify-center">
+                  <div className="absolute w-1/2 h-1/2 bg-gradient-to-l from-green-500/20 to-transparent top-0 right-0 origin-bottom-left animate-spin-slow" style={{ animationDuration: '4s' }}></div>
+                  <div className="absolute inset-4 rounded-full border border-slate/10 border-dashed"></div>
+                  <div className="absolute inset-12 rounded-full border border-slate/10 border-dashed"></div>
+                  <div className="absolute w-full h-[1px] bg-slate/10"></div>
+                  <div className="absolute h-full w-[1px] bg-slate/10"></div>
+                  <span className="absolute top-1/4 right-1/3 w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.8)]"></span>
+                  <span className="absolute bottom-1/3 left-1/4 w-1.5 h-1.5 bg-green-500/50 rounded-full animate-pulse delay-75"></span>
+                  <span className="absolute top-1/2 left-2/3 w-1 h-1 bg-green-500/80 rounded-full animate-pulse delay-150"></span>
+                  <div className="w-3 h-3 bg-bronze rounded-full border-2 border-black z-10 relative"></div>
+              </div>
+              <div className="mt-4 flex justify-between text-[0.6rem] uppercase tracking-wider text-slate">
+                  <span>{isAr ? 'متصل:' : 'Online:'} 1,242</span>
+                  <span>{isAr ? 'المنطقة:' : 'Sector:'} A-1</span>
+              </div>
+          </div>
+      );
+  };
+
+  // -- HANDLERS --
 
   const handleNewPostClick = () => {
     if (user) {
         setShowPostModal(true);
     } else {
-        setShowRegisterModal(true);
+        setView('register');
     }
   };
   
   const loadArchivedLogs = () => {
       setLoadingArchive(true);
-      // Simulate API call delay
       setTimeout(() => {
-          // Mock Data Append
           const archived: CommunityPost[] = [
               {
                 id: 'arch-001',
@@ -99,20 +188,8 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                 endorsements: 890,
                 reviews: [],
                 tags: ['History', 'Wisdom'],
-                timestamp: '2 years ago'
-              },
-               {
-                id: 'arch-002',
-                author: 'Builder Sara',
-                role: { ar: 'بناء', en: 'Builder', fr: 'Bâtisseur' },
-                rankLevel: 2,
-                phase: 'Foundation',
-                title: { ar: 'يوميات البدايات', en: 'Early Days Diary', fr: '' },
-                content: { ar: 'في البداية ظننت أنني لن أستطيع النوم مبكراً. الآن لا أستطيع السهر.', en: 'At first I thought I could not sleep early. Now I cannot stay up late.', fr: '' },
-                endorsements: 120,
-                reviews: [],
-                tags: ['Sleep', 'Foundation'],
-                timestamp: '2 years ago'
+                timestamp: '2 years ago',
+                type: 'standard'
               }
           ];
           setPosts([...posts, ...archived]);
@@ -128,46 +205,46 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
       const newPost: CommunityPost = {
           id: `cp-${Date.now()}`,
           author: user.name,
-          role: { ar: user.rank, en: user.rank, fr: user.rank }, // simplified
+          role: { ar: user.rank, en: user.rank, fr: user.rank },
           rankLevel: 1,
-          phase: 'Foundation', // Default for novice
+          phase: 'Foundation',
           title: { ar: newPostTitle, en: newPostTitle, fr: newPostTitle },
           content: { ar: newPostContent, en: newPostContent, fr: newPostContent },
           endorsements: 0,
           reviews: [],
           tags: [newPostCategory],
-          timestamp: 'Just now'
+          timestamp: 'Just now',
+          type: postType,
+          isSolved: false
       };
 
       setPosts([newPost, ...posts]);
-      setUser({ ...user, xp: user.xp + 20, projects: user.projects + 1 }); // XP Reward
+      setUser(prev => prev ? ({ ...prev, xp: prev.xp + 20, projects: prev.projects + 1 }) : null);
       setShowPostModal(false);
       setNewPostTitle('');
       setNewPostContent('');
+      setPostType('standard');
+      
+      // Auto switch to relevant tab
+      if (postType === 'emergency') setActiveTab('sos');
+      else setActiveTab('log');
   };
 
   const handleEndorse = (e: React.MouseEvent, postId: string) => {
       e.stopPropagation();
       if (!user) {
-          setShowRegisterModal(true);
+          setView('register');
           return;
       }
-      
-      setPosts(prev => prev.map(p => 
-          p.id === postId ? { ...p, endorsements: p.endorsements + 1 } : p
-      ));
-
+      setPosts(prev => prev.map(p => p.id === postId ? { ...p, endorsements: p.endorsements + 1 } : p));
       if (selectedPost && selectedPost.id === postId) {
           setSelectedPost(prev => prev ? { ...prev, endorsements: prev.endorsements + 1 } : null);
       }
-      
-      // XP Reward for interaction
-      setUser({ ...user, xp: user.xp + 5 });
+      setUser(prev => prev ? ({ ...prev, xp: prev.xp + 5 }) : null);
   };
 
   const handleSubmitReview = () => {
       if (!user || !selectedPost || !reviewContent.trim()) return;
-
       const newReview: PeerReview = {
           id: `r-${Date.now()}`,
           author: user.name,
@@ -176,20 +253,16 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
           timestamp: 'Just now',
           isHelpful: 0
       };
-
-      const updatedPost = {
-          ...selectedPost,
-          reviews: [newReview, ...selectedPost.reviews]
+      
+      const updatedPost = { 
+          ...selectedPost, 
+          reviews: [newReview, ...selectedPost.reviews],
+          // If it was emergency, mark potentially solved if author decides (simulated here)
       };
-
-      // Update local selected post
+      
       setSelectedPost(updatedPost);
-
-      // Update main list
       setPosts(prev => prev.map(p => p.id === selectedPost.id ? updatedPost : p));
-
-      // XP Reward
-      setUser({ ...user, xp: user.xp + 10, endorsed: user.endorsed + 1 });
+      setUser(prev => prev ? ({ ...prev, xp: prev.xp + 10, endorsed: prev.endorsed + 1 }) : null);
       setReviewContent('');
   };
 
@@ -201,10 +274,16 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
       }
   };
 
-  // Filter Logic
-  const filteredPosts = activeFilter === 'All' 
-    ? posts 
-    : posts.filter(p => p.tags?.includes(activeFilter) || PILLARS.find(pil => pil.channelId === activeFilter)?.id === p.id); 
+  // Advanced Filtering
+  const filteredPosts = posts.filter(p => {
+      // 1. Tab Filter
+      if (activeTab === 'sos' && p.type !== 'emergency') return false;
+      if (activeTab === 'log' && p.type === 'emergency') return false;
+
+      // 2. Channel Filter
+      if (activeFilter === 'All') return true;
+      return p.tags?.includes(activeFilter) || PILLARS.find(pil => pil.channelId === activeFilter)?.id === p.id;
+  });
 
   return (
     <motion.div 
@@ -212,11 +291,11 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
       className="pt-28 min-h-screen bg-alabaster dark:bg-darkBg text-charcoal dark:text-concrete"
     >
       {/* Top Stats Bar */}
-      <div className="border-b border-slate/10 bg-white dark:bg-white/5 sticky top-20 z-40 backdrop-blur-sm">
+      <div className="border-b border-slate/10 bg-white dark:bg-white/5 sticky top-20 z-40 backdrop-blur-sm shadow-sm">
+          <LiveTicker />
           <div className="container mx-auto px-6 py-3 flex justify-between items-center text-[0.6rem] uppercase tracking-widest text-slate">
               <div className="flex gap-6">
                   <span className="flex items-center gap-2"><Users size={12} /> {isAr ? 'البناؤون النشطون' : 'Active Builders'}: 1,242</span>
-                  <span className="flex items-center gap-2 hidden md:flex"><Activity size={12} /> {isAr ? 'مشاريع جارية' : 'Sites Underway'}: {856 + (user?.projects || 0)}</span>
               </div>
               <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
@@ -226,15 +305,13 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
       </div>
 
       <div className="container mx-auto px-6 py-12">
-        
-        {/* Main Grid Layout */}
         <div className="flex flex-col lg:flex-row gap-8 max-w-[1400px] mx-auto">
           
-          {/* LEFT COLUMN: ID Card & Filters */}
+          {/* LEFT COLUMN: ID Card & Channels */}
           <div className="w-full lg:w-1/4 order-2 lg:order-1">
              <div className="sticky top-40 space-y-8">
                 
-                {/* ARCHITECT ID CARD - Interactive */}
+                {/* ARCHITECT ID CARD */}
                 <div 
                     onClick={() => user && setShowProfileModal(true)}
                     className={`bg-white dark:bg-[#1a1a1a] border-2 ${user ? 'border-bronze/50 cursor-pointer hover:shadow-[0_0_20px_rgba(197,160,101,0.15)]' : 'border-slate/20'} p-1 relative overflow-hidden shadow-xl group transition-all duration-500`}
@@ -258,7 +335,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                                     <h3 className={`text-lg font-bold ${headingFont}`}>{user.name}</h3>
                                     <span className="text-[0.6rem] uppercase tracking-widest text-bronze block mt-1">{user.rank}</span>
                                     
-                                    {/* XP Bar */}
                                     <div className="mt-4 w-full h-1 bg-slate/20 rounded-full overflow-hidden">
                                         <div className="h-full bg-bronze" style={{ width: `${Math.min(100, (user.xp % 100))}%` }}></div>
                                     </div>
@@ -271,7 +347,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                                 <>
                                     <div className="w-20 h-20 bg-slate/20 text-slate rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-dashed border-slate/30">?</div>
                                     <h3 className={`text-lg font-bold text-slate ${headingFont}`}>{isAr ? 'زائر' : 'Guest Visitor'}</h3>
-                                    <button onClick={() => setShowRegisterModal(true)} className="text-[0.6rem] uppercase tracking-widest text-bronze underline block mt-2 hover:text-charcoal dark:hover:text-white">
+                                    <button onClick={() => setView('register')} className="text-[0.6rem] uppercase tracking-widest text-bronze underline block mt-2 hover:text-charcoal dark:hover:text-white">
                                         {isAr ? 'تفعيل الهوية' : 'Activate ID'}
                                     </button>
                                 </>
@@ -289,33 +365,11 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                              </div>
                          </div>
                     </div>
-                    {/* Holographic Effect Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-700"></div>
                 </div>
 
                 {/* Navigation / Channels */}
                 <div className="bg-white dark:bg-white/5 border border-slate/10 p-6">
-                    <h3 className={`text-xs uppercase tracking-widest text-slate mb-6 flex items-center gap-2 font-bold`}>
-                        <Compass size={14} /> {t.channels[lang]}
-                    </h3>
-                    <div className="space-y-1">
-                        <button 
-                            onClick={() => setActiveFilter('All')}
-                            className={`w-full text-start px-4 py-3 text-xs uppercase tracking-wider transition-colors border-l-2 ${activeFilter === 'All' ? 'border-bronze bg-bronze/5 text-charcoal dark:text-white font-bold' : 'border-transparent text-slate hover:text-bronze hover:bg-slate/5'}`}
-                        >
-                            {t.feed[lang]}
-                        </button>
-                        {PILLARS.map(pillar => (
-                            <button 
-                                key={pillar.id}
-                                onClick={() => setActiveFilter(pillar.channelId || '')}
-                                className={`w-full text-start px-4 py-3 text-xs uppercase tracking-wider transition-colors border-l-2 ${activeFilter === pillar.channelId ? 'border-bronze bg-bronze/5 text-charcoal dark:text-white font-bold' : 'border-transparent text-slate hover:text-bronze hover:bg-slate/5'}`}
-                            >
-                                {pillar.channelId}
-                            </button>
-                        ))}
-                    </div>
-                    <div className="mt-8 pt-8 border-t border-slate/10">
+                    <div className="mt-2 pt-2 border-t border-slate/10">
                         <button 
                             onClick={handleNewPostClick}
                             className="w-full py-4 bg-charcoal dark:bg-concrete text-alabaster dark:text-charcoal uppercase tracking-widest text-xs font-bold hover:bg-bronze dark:hover:bg-bronze hover:text-white transition-colors flex items-center justify-center gap-2 shadow-md group"
@@ -331,25 +385,39 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
           {/* MIDDLE COLUMN: Feed */}
           <div className="w-full lg:w-1/2 order-1 lg:order-2">
             
-            {/* Mobile Filters */}
-            <div className="lg:hidden mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-               <button onClick={() => setActiveFilter('All')} className={`px-4 py-2 text-xs uppercase tracking-widest whitespace-nowrap border ${activeFilter === 'All' ? 'bg-bronze text-white border-bronze' : 'border-slate/20 text-slate'}`}>All</button>
+            {/* NEW: DAILY WORK ORDER WIDGET */}
+            {user && <DailyWorkOrder />}
+
+            {/* TAB SYSTEM: LOG vs SOS */}
+            <div className="flex border-b border-slate/20 mb-8">
+                <button 
+                    onClick={() => setActiveTab('log')}
+                    className={`flex-1 py-4 text-center text-xs uppercase tracking-widest font-bold transition-colors relative ${activeTab === 'log' ? 'text-bronze' : 'text-slate hover:text-white'}`}
+                >
+                    {isAr ? 'السجل العام' : 'Public Log'}
+                    {activeTab === 'log' && <motion.div layoutId="tabLine" className="absolute bottom-0 left-0 w-full h-[2px] bg-bronze" />}
+                </button>
+                <button 
+                    onClick={() => setActiveTab('sos')}
+                    className={`flex-1 py-4 text-center text-xs uppercase tracking-widest font-bold transition-colors relative ${activeTab === 'sos' ? 'text-red-500' : 'text-slate hover:text-red-400'}`}
+                >
+                    <div className="flex items-center justify-center gap-2">
+                        <AlertTriangle size={14} className={activeTab === 'sos' ? 'animate-pulse' : ''} />
+                        {isAr ? 'نداءات الترميم' : 'SOS / Repairs'}
+                    </div>
+                    {activeTab === 'sos' && <motion.div layoutId="tabLine" className="absolute bottom-0 left-0 w-full h-[2px] bg-red-500" />}
+                </button>
+            </div>
+
+            {/* Sub Filters */}
+            <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+               <button onClick={() => setActiveFilter('All')} className={`px-3 py-1 text-[0.6rem] uppercase tracking-widest whitespace-nowrap border rounded-full ${activeFilter === 'All' ? 'bg-white/10 text-white border-white/20' : 'border-transparent text-slate'}`}>All</button>
                {PILLARS.map(p => (
-                   <button key={p.id} onClick={() => setActiveFilter(p.channelId || '')} className={`px-4 py-2 text-xs uppercase tracking-widest whitespace-nowrap border ${activeFilter === p.channelId ? 'bg-bronze text-white border-bronze' : 'border-slate/20 text-slate'}`}>{p.channelId}</button>
+                   <button key={p.id} onClick={() => setActiveFilter(p.channelId || '')} className={`px-3 py-1 text-[0.6rem] uppercase tracking-widest whitespace-nowrap border rounded-full ${activeFilter === p.channelId ? 'bg-white/10 text-white border-white/20' : 'border-transparent text-slate'}`}>{p.channelId}</button>
                ))}
             </div>
 
-            <div className="flex items-center justify-between mb-8">
-                <div>
-                    <h2 className={`text-3xl ${headingFont}`}>{isAr ? 'سجل الموقع العام' : 'Site Log Feed'}</h2>
-                    <p className="text-xs text-slate mt-1">{isAr ? 'تحديثات حية من البنائين' : 'Live updates from fellow architects'}</p>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-slate bg-white dark:bg-white/5 px-3 py-1 border border-slate/10">
-                    <Filter size={12} />
-                    <span className="uppercase tracking-widest font-bold">{activeFilter}</span>
-                </div>
-            </div>
-
+            {/* FEED CONTENT */}
             <div className="space-y-6 min-h-[50vh]">
               {filteredPosts.length > 0 ? (
                 filteredPosts.map((post) => (
@@ -358,14 +426,19 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                         layoutId={post.id}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-white dark:bg-white/5 border border-slate/10 hover:border-bronze/50 transition-colors group relative overflow-hidden cursor-pointer shadow-sm hover:shadow-md"
+                        className={`bg-white dark:bg-white/5 border hover:border-bronze/50 transition-colors group relative overflow-hidden cursor-pointer shadow-sm hover:shadow-md ${post.type === 'emergency' ? 'border-red-900/30 bg-red-900/5' : 'border-slate/10'}`}
                         onClick={() => setSelectedPost(post)}
                     >
-                    {/* Blueprint Grid Background */}
                     <div className="absolute inset-0 opacity-[0.03] pointer-events-none architectural-grid"></div>
                     
                     <div className="p-6 md:p-8 relative z-10">
-                        {/* Post Header */}
+                        {/* Emergency Badge */}
+                        {post.type === 'emergency' && (
+                            <div className="absolute top-0 right-0 bg-red-500 text-white text-[0.5rem] uppercase tracking-widest px-3 py-1 font-bold">
+                                {isAr ? 'طلب استغاثة' : 'SOS REQUEST'}
+                            </div>
+                        )}
+
                         <div className="flex justify-between items-start mb-4">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-slate/10 dark:bg-white/10 rounded-full flex items-center justify-center text-charcoal dark:text-concrete font-serif border border-slate/20 relative">
@@ -387,49 +460,45 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                             </div>
                         </div>
 
-                        {/* Content */}
                         <h3 className={`text-xl mb-3 ${headingFont} group-hover:text-bronze transition-colors`}>{typeof post.title === 'string' ? post.title : post.title[lang]}</h3>
                         <p className={`text-sm text-slate dark:text-slate/80 leading-relaxed mb-6 ${bodyFont} line-clamp-3`}>
                             {typeof post.content === 'string' ? post.content : post.content[lang]}
                         </p>
 
-                        {/* Tags */}
-                        {post.tags && (
-                            <div className="flex gap-2 mb-6">
-                                {post.tags.map(tag => (
-                                    <span key={tag} className="text-[0.55rem] uppercase tracking-wider text-slate/60 bg-slate/5 px-2 py-1">#{tag}</span>
-                                ))}
-                            </div>
-                        )}
-
-                        {/* Action Bar */}
                         <div className="flex items-center gap-6 border-t border-slate/10 pt-4">
                             <button 
                                 onClick={(e) => handleEndorse(e, post.id)}
                                 className="flex items-center gap-2 text-slate hover:text-bronze transition-colors text-[0.65rem] uppercase tracking-widest font-bold group/btn"
                             >
                                 <Award size={14} className="group-hover/btn:scale-110 transition-transform" />
-                                <span>{t.actions.endorse[lang]} ({post.endorsements})</span>
+                                <span>{post.type === 'emergency' ? (isAr ? 'دعم' : 'Support') : t.actions.endorse[lang]} ({post.endorsements})</span>
                             </button>
                             <button className="flex items-center gap-2 text-slate hover:text-bronze transition-colors text-[0.65rem] uppercase tracking-widest font-bold">
                                 <MessageCircle size={14} />
-                                <span>{t.actions.review[lang]} ({post.reviews.length})</span>
+                                <span>{post.type === 'emergency' ? (isAr ? 'تقديم حل' : 'Propose Fix') : t.actions.review[lang]} ({post.reviews.length})</span>
                             </button>
                             <span className="ml-auto text-[0.6rem] text-slate/40 font-mono">{post.timestamp}</span>
                         </div>
                     </div>
-                    {/* Hover Indicator */}
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-bronze transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                    {/* Status Bar for Emergency */}
+                    {post.type === 'emergency' && (
+                        <div className={`h-1 w-full ${post.isSolved ? 'bg-green-500' : 'bg-red-500/50'}`}></div>
+                    )}
                     </motion.div>
                 ))
               ) : (
                   <div className="py-20 text-center border-2 border-dashed border-slate/10 bg-slate/5">
                       <Compass size={48} className="mx-auto text-slate/20 mb-4" />
-                      <h3 className="text-slate/50 text-sm uppercase tracking-widest">{isAr ? 'لا توجد مخططات في هذا القسم' : 'No Blueprints in this Sector'}</h3>
+                      <h3 className="text-slate/50 text-sm uppercase tracking-widest">
+                          {activeTab === 'sos' 
+                             ? (isAr ? 'جميع المواقع مستقرة.' : 'All sites are stable.')
+                             : (isAr ? 'لا توجد مخططات في هذا القسم' : 'No Blueprints in this Sector')
+                          }
+                      </h3>
                   </div>
               )}
               
-              {!archiveLoaded && (
+              {!archiveLoaded && activeTab === 'log' && (
                 <div className="py-8 text-center border-t border-dashed border-slate/20">
                     <button 
                         onClick={loadArchivedLogs}
@@ -448,9 +517,15 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Top Builders (Desktop Only) */}
+          {/* RIGHT COLUMN: Radar & Protocols */}
           <div className="hidden lg:block w-1/4 order-3">
              <div className="sticky top-40">
+                 
+                 <RadarWidget />
+
+                 {/* GUILD PROTOCOLS */}
+                 <GuildProtocolWidget />
+
                  <div className="bg-white dark:bg-white/5 border border-slate/10 p-6">
                     <div className="flex items-center justify-between mb-6">
                         <h3 className={`text-xs uppercase tracking-widest text-slate flex items-center gap-2 font-bold`}>
@@ -496,8 +571,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
 
       {/* --- MODALS --- */}
       <AnimatePresence>
-        
-        {/* POST DETAIL / PEER REVIEW MODAL */}
         {selectedPost && (
             <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -509,9 +582,11 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                     className="bg-alabaster dark:bg-[#151515] w-full max-w-3xl h-full md:h-auto md:max-h-[90vh] overflow-y-auto border border-bronze/30 shadow-2xl relative flex flex-col"
                     onClick={(e) => e.stopPropagation()}
                 >
-                    {/* Modal Header */}
-                    <div className="sticky top-0 z-10 bg-alabaster/95 dark:bg-[#151515]/95 backdrop-blur border-b border-slate/10 p-6 flex justify-between items-center">
+                    <div className={`sticky top-0 z-10 bg-alabaster/95 dark:bg-[#151515]/95 backdrop-blur border-b p-6 flex justify-between items-center ${selectedPost.type === 'emergency' ? 'border-red-900/50' : 'border-slate/10'}`}>
                         <div className="flex items-center gap-3">
+                            {selectedPost.type === 'emergency' && (
+                                <AlertTriangle size={16} className="text-red-500 animate-pulse" />
+                            )}
                             <div className="text-[0.6rem] text-bronze uppercase tracking-widest border border-bronze/30 px-2 py-1">{selectedPost.phase} Phase</div>
                             <span className="text-slate/30 text-xs">|</span>
                             <span className="text-[0.6rem] text-slate uppercase tracking-widest">Log #{selectedPost.id.toUpperCase()}</span>
@@ -522,7 +597,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                     </div>
 
                     <div className="p-8 md:p-12">
-                        {/* Original Post */}
                         <div className="mb-12">
                             <h2 className={`text-3xl md:text-4xl mb-6 ${headingFont}`}>{typeof selectedPost.title === 'string' ? selectedPost.title : selectedPost.title[lang]}</h2>
                             <div className="flex items-center gap-4 mb-8 pb-8 border-b border-slate/10">
@@ -539,11 +613,10 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                             </div>
                         </div>
 
-                        {/* Reviews Section */}
                         <div className="bg-white dark:bg-white/5 border border-slate/10 p-8">
                             <h3 className={`text-xl mb-6 flex items-center gap-2 ${headingFont}`}>
                                 <MessageCircle size={20} className="text-bronze" />
-                                {isAr ? 'مراجعات الأقران' : 'Peer Reviews'}
+                                {selectedPost.type === 'emergency' ? (isAr ? 'الحلول المقترحة' : 'Proposed Solutions') : (isAr ? 'مراجعات الأقران' : 'Peer Reviews')}
                             </h3>
                             
                             <div className="space-y-6 mb-8">
@@ -564,7 +637,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                                 )}
                             </div>
 
-                            {/* Add Review Box */}
                             <div className="flex gap-4 items-start">
                                 <div className="w-8 h-8 bg-bronze text-white rounded-full flex items-center justify-center flex-shrink-0 text-xs">
                                     {user ? user.avatarChar : '?'}
@@ -583,7 +655,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                                             disabled={!user || !reviewContent.trim()}
                                             className="px-6 py-2 bg-charcoal text-white text-xs uppercase tracking-widest hover:bg-bronze disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                         >
-                                            {isAr ? 'إرسال المراجعة' : 'Submit Review'}
+                                            {isAr ? 'إرسال' : 'Submit'}
                                         </button>
                                     </div>
                                 </div>
@@ -594,57 +666,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
             </motion.div>
         )}
 
-        {/* REGISTER MODAL */}
-        {showRegisterModal && (
-            <motion.div 
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4"
-                onClick={() => setShowRegisterModal(false)}
-            >
-                <motion.div 
-                    initial={{ scale: 0.9 }} animate={{ scale: 1 }}
-                    className="bg-alabaster dark:bg-[#1a1a1a] p-8 max-w-md w-full border border-bronze shadow-2xl relative"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <button onClick={() => setShowRegisterModal(false)} className="absolute top-4 right-4 text-slate hover:text-charcoal"><X size={20}/></button>
-                    <div className="text-center mb-8">
-                        <Shield size={40} className="mx-auto text-bronze mb-4" />
-                        <h2 className={`text-2xl ${headingFont}`}>{isAr ? 'الانضمام للنقابة' : 'Join The Guild'}</h2>
-                        <p className="text-xs text-slate mt-2 uppercase tracking-widest">{isAr ? 'اصدر هويتك الهندسية' : 'Issue Your Architectural ID'}</p>
-                    </div>
-                    
-                    <form onSubmit={handleRegister} className="space-y-6">
-                        <div>
-                            <label className="text-[0.6rem] uppercase tracking-widest text-slate block mb-1">Name / Alias</label>
-                            <input 
-                                type="text" 
-                                required
-                                value={regName}
-                                onChange={(e) => setRegName(e.target.value)}
-                                className="w-full bg-transparent border-b border-slate/30 py-2 focus:border-bronze outline-none"
-                                placeholder="Architect Name"
-                            />
-                        </div>
-                        <div>
-                            <label className="text-[0.6rem] uppercase tracking-widest text-slate block mb-1">Email (For ID Recovery)</label>
-                            <input 
-                                type="email" 
-                                required
-                                value={regEmail}
-                                onChange={(e) => setRegEmail(e.target.value)}
-                                className="w-full bg-transparent border-b border-slate/30 py-2 focus:border-bronze outline-none"
-                                placeholder="arch@example.com"
-                            />
-                        </div>
-                        <button type="submit" className="w-full py-4 bg-bronze text-white uppercase tracking-widest text-xs font-bold hover:bg-charcoal transition-colors">
-                            {isAr ? 'توقيع العقد' : 'Sign Contract'}
-                        </button>
-                    </form>
-                </motion.div>
-            </motion.div>
-        )}
-
-        {/* NEW POST MODAL */}
         {showPostModal && (
             <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -657,9 +678,30 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                     onClick={(e) => e.stopPropagation()}
                 >
                      <button onClick={() => setShowPostModal(false)} className="absolute top-4 right-4 text-slate hover:text-charcoal"><X size={20}/></button>
-                     <h2 className={`text-xl mb-6 ${headingFont}`}>{isAr ? 'طرح مخطط جديد' : 'Submit New Blueprint'}</h2>
+                     <h2 className={`text-xl mb-6 ${headingFont}`}>{isAr ? 'إضافة سجل جديد' : 'New Log Entry'}</h2>
                      
                      <form onSubmit={handleSubmitPost} className="space-y-6">
+                        
+                        {/* TYPE SELECTOR */}
+                        <div className="flex gap-4 mb-4">
+                            <button
+                                type="button" 
+                                onClick={() => setPostType('standard')}
+                                className={`flex-1 py-3 text-xs uppercase tracking-widest border ${postType === 'standard' ? 'bg-bronze text-white border-bronze' : 'border-slate/30 text-slate'}`}
+                            >
+                                <FileText size={14} className="inline mr-2" />
+                                {isAr ? 'سجل عادي' : 'Standard Log'}
+                            </button>
+                            <button 
+                                type="button"
+                                onClick={() => setPostType('emergency')}
+                                className={`flex-1 py-3 text-xs uppercase tracking-widest border ${postType === 'emergency' ? 'bg-red-600 text-white border-red-600' : 'border-slate/30 text-slate'}`}
+                            >
+                                <AlertTriangle size={14} className="inline mr-2" />
+                                {isAr ? 'نداء ترميم' : 'SOS / Help'}
+                            </button>
+                        </div>
+
                         <div>
                             <label className="text-[0.6rem] uppercase tracking-widest text-slate block mb-1">Sector (Channel)</label>
                             <select 
@@ -678,7 +720,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                                 value={newPostTitle}
                                 onChange={(e) => setNewPostTitle(e.target.value)}
                                 className="w-full bg-transparent border-b border-slate/30 py-2 focus:border-bronze outline-none font-bold"
-                                placeholder="e.g., Structural Failure in Sleep Routine"
+                                placeholder={postType === 'standard' ? "e.g., Structural Failure in Sleep Routine" : "e.g., URGENT: Collapse in Motivation"}
                             />
                         </div>
                          <div>
@@ -689,11 +731,14 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang }) => {
                                 value={newPostContent}
                                 onChange={(e) => setNewPostContent(e.target.value)}
                                 className="w-full bg-transparent border-b border-slate/30 py-2 focus:border-bronze outline-none text-sm resize-none"
-                                placeholder="Describe the architectural issue..."
+                                placeholder={postType === 'standard' ? "Describe the architectural issue..." : "Describe the problem. Other architects will advise."}
                             />
                         </div>
-                        <button type="submit" className="w-full py-4 bg-charcoal text-white uppercase tracking-widest text-xs font-bold hover:bg-bronze transition-colors">
-                            {isAr ? 'نشر في السجل' : 'Publish to Log'}
+                        <button 
+                            type="submit" 
+                            className={`w-full py-4 text-white uppercase tracking-widest text-xs font-bold transition-colors ${postType === 'emergency' ? 'bg-red-600 hover:bg-red-700' : 'bg-charcoal hover:bg-bronze'}`}
+                        >
+                            {postType === 'emergency' ? (isAr ? 'إطلاق نداء الاستغاثة' : 'BROADCAST SOS') : (isAr ? 'نشر في السجل' : 'Publish to Log')}
                         </button>
                      </form>
                 </motion.div>

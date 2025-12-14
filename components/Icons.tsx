@@ -58,7 +58,11 @@ import {
   RotateCcw,
   Gauge,
   Zap,
-  Brain
+  Brain,
+  Calendar,
+  Radio,
+  Target,
+  Key
 } from 'lucide-react';
 
 export { 
@@ -119,5 +123,9 @@ export {
   RotateCcw,
   Gauge,
   Zap,
-  Brain
+  Brain,
+  Calendar,
+  Radio,
+  Target,
+  Key
 };

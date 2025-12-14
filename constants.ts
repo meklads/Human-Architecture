@@ -129,9 +129,7 @@ export const PILLARS: PillarData[] = [
       en: 'Reprogramming cognitive operating systems.', 
       fr: 'Reprogrammation cognitive.' 
     },
-    // Updated Image: Futuristic Control Room / Abstract Tech
     image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80',
-    // Blueprint: Circuitry
     blueprintImage: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80'
   },
   {
@@ -143,9 +141,7 @@ export const PILLARS: PillarData[] = [
       en: 'Pouring concrete bases for bio-energy.', 
       fr: 'Coulage des bases.' 
     },
-    // Updated Image: Brutalist Concrete Structure
     image: 'https://images.unsplash.com/photo-1486718448742-1666229e2185?auto=format&fit=crop&q=80',
-    // Blueprint: Construction Site
     blueprintImage: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80'
   },
   {
@@ -157,9 +153,7 @@ export const PILLARS: PillarData[] = [
       en: 'Orienting the structure to True North.', 
       fr: 'Orientation vers le Nord.' 
     },
-    // Updated Image: Light and Space
     image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80',
-    // Blueprint: Geometry
     blueprintImage: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80'
   },
   {
@@ -171,9 +165,7 @@ export const PILLARS: PillarData[] = [
       en: 'Protection systems and external interfaces.', 
       fr: 'Systèmes de protection.' 
     },
-    // Updated Image: Facade / Glass
     image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80',
-    // Blueprint: Grid
     blueprintImage: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&q=80'
   }
 ];
@@ -381,7 +373,23 @@ export const COMMUNITY_POSTS: CommunityPost[] = [
         endorsements: 12,
         reviews: [],
         tags: ['Foundation'],
-        timestamp: '2h ago'
+        timestamp: '2h ago',
+        type: 'standard'
+    },
+    {
+        id: 'p2',
+        author: 'Mona L.',
+        role: { ar: 'مهندس مبتدئ', en: 'Novice', fr: 'Novice' },
+        rankLevel: 0,
+        phase: 'Structure',
+        title: { ar: 'انهيار كامل في جدار التركيز', en: 'Total collapse of focus wall', fr: 'Effondrement' },
+        content: { ar: 'أواجه صعوبة في تثبيت عمود "العمل العميق". كلما بدأت، تنهار القلعة بسبب المقاطعات. أحتاج لدعم هندسي عاجل.', en: 'Struggling to fix the Deep Work pillar. Need urgent structural advice.', fr: 'Besoin d\'aide.' },
+        endorsements: 5,
+        reviews: [],
+        tags: ['Focus', 'Structure'],
+        timestamp: '15m ago',
+        type: 'emergency',
+        isSolved: false
     }
 ];
 

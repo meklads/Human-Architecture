@@ -1,12 +1,25 @@
 
 export type Language = 'ar' | 'en' | 'fr';
 
-export type View = 'home' | 'philosophy' | 'journal' | 'library' | 'contact' | 'landing' | 'checkout' | 'community';
+export type View = 'home' | 'philosophy' | 'journal' | 'library' | 'contact' | 'landing' | 'checkout' | 'community' | 'register';
 
 export interface ContentText {
   ar: string;
   en: string;
   fr: string;
+}
+
+export interface UserProfile {
+  name: string;
+  handle: string;
+  email: string;
+  rank: string;
+  level: number;
+  xp: number;
+  projects: number;
+  endorsed: number;
+  joinedDate: string;
+  avatarChar: string;
 }
 
 export interface PillarData {
@@ -100,4 +113,6 @@ export interface CommunityPost {
   reviews: PeerReview[];
   tags?: string[];
   timestamp: string;
+  type?: 'standard' | 'emergency'; // New field: Is this a normal log or an SOS?
+  isSolved?: boolean; // New field: Has the community helped fix this?
 }
