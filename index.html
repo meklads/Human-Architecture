@@ -12,20 +12,20 @@
         theme: {
           extend: {
             colors: {
-              alabaster: '#F9F9F9', // Whiter background for clean look
+              alabaster: '#F2F0EB',
               concrete: '#E6E2DD',
-              slate: '#64748B',
+              slate: '#8C9598',
               bronze: '#C5A065',
-              charcoal: '#1E293B',
+              charcoal: '#2B2B2B',
               darkBg: '#0F0F0F',
-              blueprint: '#003366', // The new Primary Blue
+              blueprint: '#003366',
               blueprintLine: '#4da6ff',
             },
             fontFamily: {
-              amiri: ['Amiri', 'serif'], // Keep for Arabic
-              ibm: ['IBM Plex Sans Arabic', 'sans-serif'], // Keep for Arabic
-              serif: ['Lora', 'Playfair Display', 'serif'], // Updated for English Headings
-              sans: ['Inter', 'Montserrat', 'sans-serif'], // Updated for English Body
+              amiri: ['Amiri', 'serif'],
+              ibm: ['IBM Plex Sans Arabic', 'sans-serif'],
+              playfair: ['Playfair Display', 'serif'],
+              montserrat: ['Montserrat', 'sans-serif'],
               mono: ['IBM Plex Mono', 'monospace'],
             },
             cursor: {
@@ -49,17 +49,17 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
         width: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: #F9F9F9; 
+        background: #0F0F0F; 
       }
       ::-webkit-scrollbar-thumb {
-        background: #003366; 
+        background: #C5A065; 
         border-radius: 3px;
       }
       
@@ -68,20 +68,14 @@
         overflow-x: hidden;
       }
 
-      /* Luxury Mode Grid - Refined for Blueprint Style */
+      /* Luxury Mode Grid */
       .architectural-grid {
         background-size: 40px 40px;
-        background-image: linear-gradient(to right, rgba(0, 51, 102, 0.05) 1px, transparent 1px),
-                          linear-gradient(to bottom, rgba(0, 51, 102, 0.05) 1px, transparent 1px);
-      }
-      
-      /* Dark Mode Grid */
-      .dark .architectural-grid {
-         background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                          linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-image: linear-gradient(to right, rgba(140, 149, 152, 0.1) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(140, 149, 152, 0.1) 1px, transparent 1px);
       }
 
-      /* BLUEPRINT MODE STYLES */
+      /* BLUEPRINT MODE STYLES (The High-Impact Feature) */
       body.blueprint-mode {
         background-color: #002b4d !important;
         color: #89cff0 !important;
@@ -102,8 +96,7 @@
       }
 
       body.blueprint-mode .text-charcoal,
-      body.blueprint-mode .text-slate,
-      body.blueprint-mode .text-blueprint {
+      body.blueprint-mode .text-slate {
         color: #a8d8f0 !important;
       }
       
@@ -133,8 +126,8 @@
       }
 
       ::selection {
-        background: #003366;
-        color: #fff;
+        background: #C5A065;
+        color: #000;
       }
     </style>
   <script type="importmap">
@@ -150,7 +143,7 @@
 }
 </script>
 </head>
-  <body class="bg-alabaster text-charcoal antialiased transition-colors duration-700 overflow-x-hidden">
+  <body class="bg-darkBg text-concrete antialiased transition-colors duration-700 overflow-x-hidden">
     <div id="root"></div>
     <!-- CRITICAL: This connects your index.tsx to the HTML -->
     <script type="module" src="/index.tsx"></script>
