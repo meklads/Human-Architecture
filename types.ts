@@ -87,6 +87,7 @@ export interface DayPlan {
   visualConcept?: ContentText;
   aiPrompt?: string;
   isLocked: boolean;
+  bookPageRef?: number; // ADDED: Link to physical book page
 }
 
 export interface WeekPlan {

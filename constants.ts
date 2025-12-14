@@ -358,10 +358,11 @@ export const THEORY_CARDS: DayPlan[] = [
     }
 ];
 
+// NOTE: Replace these placeholder tasks with your specific book content!
 export const THIRTY_DAY_PROGRAM: WeekPlan[] = [
     {
         id: 1,
-        title: { ar: 'الأساسات', en: 'Foundation', fr: 'Fondation' },
+        title: { ar: 'المرحلة 1: الأساسات', en: 'Phase 1: Foundation', fr: 'Fondation' },
         focus: { ar: 'الترميم الجسدي', en: 'Physical Restoration', fr: 'Restauration Physique' },
         days: [
             {
@@ -369,13 +370,232 @@ export const THIRTY_DAY_PROGRAM: WeekPlan[] = [
                 title: { ar: 'فحص التربة', en: 'Soil Testing', fr: 'Test de Sol' },
                 task: { ar: 'سجل كل مدخلاتك اليوم (طعام، معلومات، محادثات).', en: 'Log all inputs today (food, info, chats).', fr: 'Enregistrez tout.' },
                 visualConcept: { ar: 'المصفاة', en: 'The Sieve', fr: 'Le Tamis' },
-                isLocked: false
+                isLocked: false,
+                bookPageRef: 24 
             },
             {
                 day: 2,
                 title: { ar: 'صب الخرسانة', en: 'Pouring Concrete', fr: 'Béton' },
-                task: { ar: 'تطبيق بروتوكول النوم بدقة.', en: 'Strict sleep protocol.', fr: 'Sommeil strict.' },
-                isLocked: true
+                task: { ar: 'تطبيق بروتوكول النوم بدقة (قاعدة 10-3-2-1).', en: 'Strict sleep protocol (10-3-2-1 rule).', fr: 'Sommeil strict.' },
+                isLocked: true,
+                bookPageRef: 32
+            },
+            {
+                day: 3,
+                title: { ar: 'حديد التسليح', en: 'Reinforcement', fr: 'Renforcement' },
+                task: { ar: 'رفع نسبة الماء وحذف السكريات المكررة.', en: 'Increase hydration, remove refined sugars.', fr: 'Hydratation.' },
+                isLocked: true,
+                bookPageRef: 38
+            },
+            {
+                day: 4,
+                title: { ar: 'اختبار الأحمال', en: 'Load Bearing', fr: 'Charge' },
+                task: { ar: 'حركة بدنية لمدة 20 دقيقة (مشي أو تمارين مقاومة).', en: '20 min physical load (walk or resistance).', fr: 'Mouvement.' },
+                isLocked: true,
+                bookPageRef: 45
+            },
+            {
+                day: 5,
+                title: { ar: 'عزل الاهتزازات', en: 'Vibration Control', fr: 'Vibrations' },
+                task: { ar: 'صيام رقمي لمدة 3 ساعات قبل النوم.', en: 'Digital fast 3 hours before bed.', fr: 'Jeûne numérique.' },
+                isLocked: true,
+                bookPageRef: 51
+            },
+            {
+                day: 6,
+                title: { ar: 'زمن التصلب', en: 'Curing Time', fr: 'Temps de Prise' },
+                task: { ar: 'يوم راحة نشطة (تأمل أو قراءة خفيفة).', en: 'Active rest day (meditation or light reading).', fr: 'Repos actif.' },
+                isLocked: true,
+                bookPageRef: 58
+            },
+            {
+                day: 7,
+                title: { ar: 'فحص المتانة', en: 'Integrity Audit', fr: 'Audit' },
+                task: { ar: 'مراجعة الأسبوع وتعديل المخطط للأسبوع القادم.', en: 'Review the week and adjust blueprint.', fr: 'Revue.' },
+                isLocked: true,
+                bookPageRef: 65
+            }
+        ]
+    },
+    {
+        id: 2,
+        title: { ar: 'المرحلة 2: الهيكل', en: 'Phase 2: Structure', fr: 'Structure' },
+        focus: { ar: 'النظام العقلي', en: 'Mental Framework', fr: 'Cadre Mental' },
+        days: [
+            {
+                day: 8,
+                title: { ar: 'رسم المخطط', en: 'The Blueprint', fr: 'Le Plan' },
+                task: { ar: 'تحديد 3 أهداف كبرى لهذا الربع السنوي.', en: 'Define 3 major goals for this quarter.', fr: 'Objectifs.' },
+                isLocked: true,
+                bookPageRef: 72
+            },
+            {
+                day: 9,
+                title: { ar: 'محاذاة الأعمدة', en: 'Column Alignment', fr: 'Alignement' },
+                task: { ar: 'تحديد ساعات "العمل العميق" بلا مقاطعات.', en: 'Block "Deep Work" hours without interruptions.', fr: 'Travail profond.' },
+                isLocked: true,
+                bookPageRef: 78
+            },
+            {
+                day: 10,
+                title: { ar: 'إزالة الأنقاض', en: 'Debris Removal', fr: 'Débris' },
+                task: { ar: 'كتابة وتفنيد 3 أفكار سلبية تعيقك.', en: 'Write and refute 3 limiting beliefs.', fr: 'Croyances limitantes.' },
+                isLocked: true,
+                bookPageRef: 84
+            },
+            {
+                day: 11,
+                title: { ar: 'اختبار الضغط', en: 'Stress Testing', fr: 'Test de Stress' },
+                task: { ar: 'إنجاز مهمة مؤجلة صعبة في جلسة واحدة.', en: 'Complete one difficult procrastinated task.', fr: 'Tâche difficile.' },
+                isLocked: true,
+                bookPageRef: 90
+            },
+            {
+                day: 12,
+                title: { ar: 'العزل الحراري', en: 'Insulation', fr: 'Isolation' },
+                task: { ar: 'تنظيف بيئة العمل من المشتتات البصرية.', en: 'Declutter workspace from visual noise.', fr: 'Déclutter.' },
+                isLocked: true,
+                bookPageRef: 95
+            },
+            {
+                day: 13,
+                title: { ar: 'نظام التهوية', en: 'Ventilation', fr: 'Ventilation' },
+                task: { ar: 'تعلم معلومة جديدة (قراءة 10 صفحات).', en: 'Learn something new (Read 10 pages).', fr: 'Lecture.' },
+                isLocked: true,
+                bookPageRef: 101
+            },
+            {
+                day: 14,
+                title: { ar: 'فحص الاستقرار', en: 'Stability Check', fr: 'Stabilité' },
+                task: { ar: 'تقييم الإنجاز العقلي للأسبوع.', en: 'Evaluate mental output for the week.', fr: 'Évaluation.' },
+                isLocked: true,
+                bookPageRef: 108
+            }
+        ]
+    },
+    {
+        id: 3,
+        title: { ar: 'المرحلة 3: التصميم الداخلي', en: 'Phase 3: Interior', fr: 'Intérieur' },
+        focus: { ar: 'الترميم الروحي', en: 'Spiritual Design', fr: 'Design Spirituel' },
+        days: [
+            {
+                day: 15,
+                title: { ar: 'تحليل الإضاءة', en: 'Light Analysis', fr: 'Lumière' },
+                task: { ar: 'كتابة 3 أشياء تمتن لها بصدق.', en: 'Write 3 things you are truly grateful for.', fr: 'Gratitude.' },
+                isLocked: true,
+                bookPageRef: 120
+            },
+            {
+                day: 16,
+                title: { ar: 'تخطيط المساحات', en: 'Space Planning', fr: 'Espace' },
+                task: { ar: 'تفريغ الذهن بالكتابة الحرة (Journaling).', en: 'Brain dump via free journaling.', fr: 'Journaling.' },
+                isLocked: true,
+                bookPageRef: 126
+            },
+            {
+                day: 17,
+                title: { ar: 'الديكور', en: 'Decor', fr: 'Décor' },
+                task: { ar: 'فعل شيء واحد لطيف لنفسك (Self-Care).', en: 'Do one act of self-care.', fr: 'Soin de soi.' },
+                isLocked: true,
+                bookPageRef: 132
+            },
+            {
+                day: 18,
+                title: { ar: 'عزل الصوت', en: 'Acoustics', fr: 'Acoustique' },
+                task: { ar: 'الجلوس في صمت تام لمدة 10 دقائق.', en: 'Sit in total silence for 10 minutes.', fr: 'Silence.' },
+                isLocked: true,
+                bookPageRef: 138
+            },
+            {
+                day: 19,
+                title: { ar: 'الصيانة', en: 'Maintenance', fr: 'Maintenance' },
+                task: { ar: 'مسامحة شخص أو موقف قديم.', en: 'Forgive a person or past situation.', fr: 'Pardon.' },
+                isLocked: true,
+                bookPageRef: 144
+            },
+            {
+                day: 20,
+                title: { ar: 'جودة الهواء', en: 'Air Quality', fr: 'Qualité de l\'air' },
+                task: { ar: 'تمارين تنفس عميق (Breathwork).', en: 'Practice deep breathwork.', fr: 'Respiration.' },
+                isLocked: true,
+                bookPageRef: 150
+            },
+            {
+                day: 21,
+                title: { ar: 'فحص الراحة', en: 'Comfort Check', fr: 'Confort' },
+                task: { ar: 'قياس مستوى الرضا الداخلي.', en: 'Measure internal satisfaction level.', fr: 'Satisfaction.' },
+                isLocked: true,
+                bookPageRef: 156
+            }
+        ]
+    },
+    {
+        id: 4,
+        title: { ar: 'المرحلة 4: الواجهة', en: 'Phase 4: Exterior', fr: 'Extérieur' },
+        focus: { ar: 'الأثر الاجتماعي', en: 'Social Impact', fr: 'Impact Social' },
+        days: [
+            {
+                day: 22,
+                title: { ar: 'تصميم الواجهة', en: 'Facade Design', fr: 'Façade' },
+                task: { ar: 'تحسين مظهرك الخارجي ليعكس قيمك.', en: 'Align appearance with your values.', fr: 'Apparence.' },
+                isLocked: true,
+                bookPageRef: 168
+            },
+            {
+                day: 23,
+                title: { ar: 'المداخل', en: 'Entryways', fr: 'Entrées' },
+                task: { ar: 'تحديد حدود واضحة في علاقة واحدة.', en: 'Set clear boundaries in one relationship.', fr: 'Limites.' },
+                isLocked: true,
+                bookPageRef: 174
+            },
+            {
+                day: 24,
+                title: { ar: 'الجسور', en: 'Bridges', fr: 'Ponts' },
+                task: { ar: 'التواصل مع شخص ملهم أو مرشد.', en: 'Reach out to a mentor or peer.', fr: 'Mentorat.' },
+                isLocked: true,
+                bookPageRef: 180
+            },
+            {
+                day: 25,
+                title: { ar: 'أنظمة الأمن', en: 'Security Systems', fr: 'Sécurité' },
+                task: { ar: 'قول "لا" لطلب يستنزف طاقتك.', en: 'Say "No" to a draining request.', fr: 'Non.' },
+                isLocked: true,
+                bookPageRef: 186
+            },
+            {
+                day: 26,
+                title: { ar: 'تنسيق الموقع', en: 'Landscaping', fr: 'Paysage' },
+                task: { ar: 'تقديم مساعدة لشخص دون مقابل.', en: 'Help someone without expecting return.', fr: 'Aide.' },
+                isLocked: true,
+                bookPageRef: 192
+            },
+            {
+                day: 27,
+                title: { ar: 'التلميع النهائي', en: 'Final Polish', fr: 'Finition' },
+                task: { ar: 'صقل مهارة اجتماعية أو تواصلية.', en: 'Refine a communication skill.', fr: 'Communication.' },
+                isLocked: true,
+                bookPageRef: 198
+            },
+            {
+                day: 28,
+                title: { ar: 'تحضير الافتتاح', en: 'Grand Opening Prep', fr: 'Ouverture' },
+                task: { ar: 'مراجعة شاملة للأثر الخارجي.', en: 'Review external impact.', fr: 'Impact.' },
+                isLocked: true,
+                bookPageRef: 204
+            },
+             {
+                day: 29,
+                title: { ar: 'التفتيش النهائي', en: 'Final Inspection', fr: 'Inspection Finale' },
+                task: { ar: 'تدقيق كامل لجميع الأركان الأربعة.', en: 'Full audit of all four pillars.', fr: 'Audit complet.' },
+                isLocked: true,
+                bookPageRef: 210
+            },
+            {
+                day: 30,
+                title: { ar: 'التسليم', en: 'Handover', fr: 'Livraison' },
+                task: { ar: 'احتفل! أنت الآن المهندس المسؤول.', en: 'Celebrate! You are now the Architect.', fr: 'Célébration.' },
+                isLocked: true,
+                bookPageRef: 216
             }
         ]
     }

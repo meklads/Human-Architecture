@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Language, View, Product, UserProfile } from './types';
 import { TRANSLATIONS } from './constants';
-import { Menu, X, Moon, Sun, Grid, Layers, Users, Shield, Layout } from './components/Icons';
+import { Menu, X, Moon, Sun, Grid, Layers, Users, Shield, Layout, LogOut } from './components/Icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HomePage } from './components/HomePage';
 import { PhilosophyPage } from './components/PhilosophyPage';
@@ -130,6 +130,12 @@ function App() {
       setCurrentView('dashboard'); // Redirect to Dashboard after login/register
   };
 
+  const handleLogout = () => {
+      setCurrentUser(null);
+      localStorage.removeItem('iham_user_profile');
+      setCurrentView('home');
+  };
+
   const navItems: { id: View; label: string }[] = [
     { id: 'home', label: TRANSLATIONS.nav.home[lang] },
     { id: 'philosophy', label: TRANSLATIONS.nav.philosophy[lang] },
@@ -181,12 +187,13 @@ function App() {
       </AnimatePresence>
       
       {/* --- NAVIGATION BAR --- */}
-      <header className="fixed top-0 w-full z-50 mix-blend-difference text-white">
-        <div className="container mx-auto px-6 py-6 flex justify-between items-center">
+      {/* Changed from mix-blend-difference to solid background for better click reliability */}
+      <header className="fixed top-0 w-full z-50 bg-[#050505]/90 backdrop-blur-md border-b border-white/5 text-alabaster shadow-lg">
+        <div className="container mx-auto px-6 py-4 md:py-6 flex justify-between items-center">
           
           {/* Logo Area */}
           <div className="flex items-center gap-4 group cursor-pointer" onClick={() => setCurrentView('home')}>
-             <div className={`w-12 h-12 border-2 border-white flex items-center justify-center font-bold text-xl group-hover:rotate-45 transition-transform duration-500 bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)]`}>
+             <div className={`w-10 h-10 md:w-12 md:h-12 border-2 border-white flex items-center justify-center font-bold text-xl group-hover:rotate-45 transition-transform duration-500 bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)]`}>
                  H
              </div>
              <div className="hidden lg:block">
@@ -196,12 +203,12 @@ function App() {
           </div>
 
           {/* Center Navigation (Desktop) - Restored */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8">
              {navItems.map((item) => (
                  <button
                     key={item.id}
                     onClick={() => setCurrentView(item.id)}
-                    className={`text-xs uppercase tracking-widest hover:text-bronze transition-colors ${currentView === item.id ? 'text-bronze font-bold border-b border-bronze pb-1' : 'text-slate'}`}
+                    className={`text-xs uppercase tracking-widest hover:text-bronze transition-colors py-2 ${currentView === item.id ? 'text-bronze font-bold border-b border-bronze' : 'text-slate'}`}
                  >
                      {item.label}
                  </button>
@@ -210,7 +217,7 @@ function App() {
              {currentUser && (
                 <button
                     onClick={() => setCurrentView('dashboard')}
-                    className={`text-xs uppercase tracking-widest hover:text-bronze transition-colors ${currentView === 'dashboard' ? 'text-bronze font-bold border-b border-bronze pb-1' : 'text-slate'}`}
+                    className={`text-xs uppercase tracking-widest hover:text-bronze transition-colors py-2 ${currentView === 'dashboard' ? 'text-bronze font-bold border-b border-bronze' : 'text-slate'}`}
                 >
                     {lang === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
                 </button>
@@ -218,7 +225,7 @@ function App() {
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 md:gap-6">
               <button 
                 onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
                 className="text-xs font-bold hover:text-bronze transition-colors uppercase"
@@ -228,17 +235,26 @@ function App() {
               
               {/* Join/Register Link or User Profile */}
               {currentUser ? (
-                  <button 
-                    onClick={() => setCurrentView('dashboard')}
-                    className="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-bronze hover:text-white transition-colors border border-bronze/30 px-3 py-1 rounded-full"
-                  >
-                      <Layout size={12} />
-                      {currentUser.name.split(' ')[0]}
-                  </button>
+                  <div className="flex items-center gap-3">
+                      <button 
+                        onClick={() => setCurrentView('dashboard')}
+                        className="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-bronze hover:text-white transition-colors border border-bronze/30 px-3 py-1 rounded-full"
+                      >
+                          <Layout size={12} />
+                          {currentUser.name.split(' ')[0]}
+                      </button>
+                      <button
+                         onClick={handleLogout}
+                         className="text-slate hover:text-red-400 transition-colors"
+                         title={lang === 'ar' ? 'تسجيل الخروج' : 'Log Out'}
+                      >
+                          <LogOut size={16} />
+                      </button>
+                  </div>
               ) : (
                   <button 
                     onClick={() => setCurrentView('register')}
-                    className="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:text-bronze transition-colors"
+                    className="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-bronze hover:text-white transition-colors border border-bronze px-4 py-2"
                   >
                       <Users size={14} />
                       {lang === 'ar' ? 'انضمام' : 'Join'}
@@ -283,7 +299,7 @@ function App() {
                 </button>
 
                 {/* Navigation Links */}
-                <nav className="space-y-8 text-center">
+                <nav className="space-y-6 text-center">
                     {navItems.map((item, idx) => (
                         <motion.div
                             key={item.id}
@@ -293,9 +309,9 @@ function App() {
                         >
                             <button 
                                 onClick={() => { setCurrentView(item.id); setMenuOpen(false); }}
-                                className={`text-4xl ${headingFont} hover:text-bronze transition-all duration-300 group flex items-center justify-center gap-6 ${currentView === item.id ? 'text-bronze' : 'text-slate'}`}
+                                className={`text-3xl ${headingFont} hover:text-bronze transition-all duration-300 group flex items-center justify-center gap-6 ${currentView === item.id ? 'text-bronze' : 'text-slate'}`}
                             >
-                                <span className="text-xs font-mono opacity-30 group-hover:opacity-100 transition-opacity -mt-4">0{idx+1}</span>
+                                <span className="text-xs font-mono opacity-30 group-hover:opacity-100 transition-opacity -mt-2">0{idx+1}</span>
                                 {item.label}
                             </button>
                         </motion.div>
@@ -306,18 +322,36 @@ function App() {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: navItems.length * 0.1 }}
+                        className="pt-6 border-t border-white/10 mt-6"
                     >
-                         <button 
-                            onClick={() => { setCurrentView(currentUser ? 'dashboard' : 'register'); setMenuOpen(false); }}
-                            className={`text-4xl ${headingFont} text-bronze hover:text-white transition-all duration-300 group flex items-center justify-center gap-6`}
-                        >
-                            {currentUser ? (lang === 'ar' ? 'لوحة التحكم' : 'Dashboard') : (lang === 'ar' ? 'الانضمام' : 'Join Guild')}
-                        </button>
+                        {currentUser ? (
+                             <div className="flex flex-col gap-4">
+                                <button 
+                                    onClick={() => { setCurrentView('dashboard'); setMenuOpen(false); }}
+                                    className={`text-2xl ${headingFont} text-bronze hover:text-white transition-all`}
+                                >
+                                    {lang === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
+                                </button>
+                                <button 
+                                    onClick={() => { handleLogout(); setMenuOpen(false); }}
+                                    className="text-sm text-red-400 uppercase tracking-widest"
+                                >
+                                    {lang === 'ar' ? 'تسجيل الخروج' : 'Log Out'}
+                                </button>
+                             </div>
+                        ) : (
+                             <button 
+                                onClick={() => { setCurrentView('register'); setMenuOpen(false); }}
+                                className={`text-3xl ${headingFont} text-bronze hover:text-white transition-all duration-300 group flex items-center justify-center gap-6`}
+                            >
+                                {lang === 'ar' ? 'الانضمام / دخول' : 'Join / Login'}
+                            </button>
+                        )}
                     </motion.div>
                 </nav>
 
                 {/* Footer Controls */}
-                <div className="mt-20 flex gap-12 text-slate">
+                <div className="mt-12 flex gap-8 text-slate">
                         <button onClick={() => setDarkMode(!darkMode)} className="hover:text-white transition-colors flex items-center gap-2 text-xs uppercase tracking-widest">
                             {darkMode ? <Sun size={18} /> : <Moon size={18} />} {darkMode ? 'Light' : 'Dark'}
                         </button>

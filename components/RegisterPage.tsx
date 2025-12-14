@@ -101,44 +101,59 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
         }
     } 
     
-    // ---------------- LOGIN FLOW ----------------
+    // ---------------- LOGIN FLOW (SECURE CHECK) ----------------
     else if (authMode === 'login') {
         try {
-            const formDataToSend = new FormData();
-            formDataToSend.append('action', 'login');
-            formDataToSend.append('email', formData.email);
-            formDataToSend.append('password', formData.password);
+            // Use GET with query params to allow reading the JSON response (CORS-friendly for reading)
+            const params = new URLSearchParams();
+            params.append('action', 'login');
+            params.append('email', formData.email);
+            params.append('password', formData.password);
 
-            await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formDataToSend, mode: 'no-cors' });
+            const response = await fetch(`${GOOGLE_SCRIPT_URL}?${params.toString()}`, {
+                method: 'GET',
+                // Important: Do NOT use no-cors here, we need to read the body
+            });
 
-            // SIMULATE SUCCESS (Since no-cors doesn't return body)
-            // In a real app, we would validate the response here.
-            
-            // Mock Profile for Login
-            const mockProfile: UserProfile = {
-                name: "Architect", // Ideally we get this from DB
-                handle: "arch_user",
-                email: formData.email,
-                rank: isAr ? 'مهندس' : 'Architect',
-                level: 2,
-                xp: 150,
-                projects: 3,
-                endorsed: 5,
-                joinedDate: "2023-01-01",
-                avatarChar: formData.email.charAt(0).toUpperCase()
-            };
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-            setSuccessMessage(isAr ? 'تم التحقق من الهوية.' : 'Identity Verified.');
-            setStatus('success');
-            
-            setTimeout(() => {
-                onRegisterSuccess(mockProfile);
-                setView('community');
-            }, 1500);
+            const data = await response.json();
+
+            // REAL VALIDATION CHECK
+            if (data.result === 'success') {
+                // Create Profile based on returned data or fallback
+                const mockProfile: UserProfile = {
+                    name: data.name || "Architect", 
+                    handle: "arch_user",
+                    email: formData.email,
+                    rank: isAr ? 'مهندس' : 'Architect',
+                    level: 2,
+                    xp: 150,
+                    projects: 3,
+                    endorsed: 5,
+                    joinedDate: "2023-01-01",
+                    avatarChar: formData.email.charAt(0).toUpperCase()
+                };
+
+                setSuccessMessage(isAr ? 'تم التحقق من الهوية بنجاح.' : 'Identity Verified Successfully.');
+                setStatus('success');
+                
+                setTimeout(() => {
+                    onRegisterSuccess(mockProfile);
+                    setView('community');
+                }, 1500);
+            } else {
+                // FAILED LOGIN
+                setStatus('error');
+                setErrorMessage(isAr ? 'البريد الإلكتروني أو كلمة المرور غير صحيحة' : 'Invalid Email or Password');
+            }
 
         } catch (error) {
+             console.error("Login Error:", error);
              setStatus('error');
-             setErrorMessage(isAr ? 'بيانات الدخول غير صحيحة' : 'Invalid Credentials');
+             setErrorMessage(isAr ? 'فشل الاتصال بقاعدة البيانات' : 'Database Connection Failed');
         }
     }
 

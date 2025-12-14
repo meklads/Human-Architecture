@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, UserProfile, SiteLogEntry } from '../types';
-import { Check, Lock, Play, ArrowRight, Shield, Award, Activity, MessageCircle, Send, Clock, Calendar, Target, Zap } from './Icons';
+import { Check, Lock, Play, ArrowRight, Shield, Award, Activity, MessageCircle, Send, Clock, Calendar, Target, Zap, BookOpen } from './Icons';
 import { THIRTY_DAY_PROGRAM } from '../constants';
 
 interface ProgramDashboardProps {
@@ -74,7 +74,7 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
           if (found) return found;
       }
       // Fallback
-      return { title: { ar: 'يوم راحة', en: 'Rest Day' }, task: { ar: 'استرح وراجع ما سبق.', en: 'Rest and review.' } };
+      return { title: { ar: 'يوم راحة', en: 'Rest Day' }, task: { ar: 'استرح وراجع ما سبق.', en: 'Rest and review.' }, bookPageRef: 0 };
   };
 
   const activeTaskData = getTaskForDay(activeDay);
@@ -216,27 +216,39 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                     <h2 className={`text-3xl mb-4 ${headingFont} text-charcoal dark:text-white`}>
                         {activeTaskData.title[lang]}
                     </h2>
-                    <p className={`text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-8 ${bodyFont}`}>
+                    <p className={`text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-6 ${bodyFont}`}>
                         {activeTaskData.task[lang]}
                     </p>
                     
-                    {!completedDays.includes(activeDay) ? (
-                         <button 
-                            onClick={() => handleCompleteDay(activeDay)}
-                            className="w-full md:w-auto px-8 py-4 bg-charcoal dark:bg-blueprint text-white text-sm uppercase tracking-[0.2em] font-bold hover:bg-bronze transition-colors shadow-lg flex items-center justify-center gap-3"
-                        >
-                            <Zap size={18} fill="currentColor" />
-                            {isAr ? 'إتمام المهمة & فتح اليوم التالي' : 'COMPLETE & UNLOCK NEXT DAY'}
-                        </button>
-                    ) : (
-                        <div className="p-4 bg-green-500/10 border border-green-500/30 text-green-600 flex items-center gap-3 rounded-lg">
-                            <div className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center"><Check size={16} /></div>
-                            <div>
-                                <span className="block font-bold uppercase text-xs tracking-widest">{isAr ? 'تم الإنجاز' : 'MISSION ACCOMPLISHED'}</span>
-                                <span className="text-xs opacity-80">{isAr ? 'جاري تحميل بروتوكول اليوم التالي...' : 'Next day protocol loading...'}</span>
-                            </div>
+                    {/* BOOK REFERENCE - The Link to "The Accelerator" */}
+                    {activeTaskData.bookPageRef && (
+                        <div className="mb-8 inline-flex items-center gap-3 bg-alabaster dark:bg-white/5 px-4 py-2 rounded border border-slate/20">
+                            <BookOpen size={16} className="text-bronze" />
+                            <span className="text-xs uppercase tracking-widest text-slate">
+                                {isAr ? `المرجع: الكتاب صفحة ${activeTaskData.bookPageRef}` : `Ref: Book Page ${activeTaskData.bookPageRef}`}
+                            </span>
                         </div>
                     )}
+                    
+                    <div className="mt-2">
+                        {!completedDays.includes(activeDay) ? (
+                            <button 
+                                onClick={() => handleCompleteDay(activeDay)}
+                                className="w-full md:w-auto px-8 py-4 bg-charcoal dark:bg-blueprint text-white text-sm uppercase tracking-[0.2em] font-bold hover:bg-bronze transition-colors shadow-lg flex items-center justify-center gap-3"
+                            >
+                                <Zap size={18} fill="currentColor" />
+                                {isAr ? 'إتمام المهمة & فتح اليوم التالي' : 'COMPLETE & UNLOCK NEXT DAY'}
+                            </button>
+                        ) : (
+                            <div className="p-4 bg-green-500/10 border border-green-500/30 text-green-600 flex items-center gap-3 rounded-lg">
+                                <div className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center"><Check size={16} /></div>
+                                <div>
+                                    <span className="block font-bold uppercase text-xs tracking-widest">{isAr ? 'تم الإنجاز' : 'MISSION ACCOMPLISHED'}</span>
+                                    <span className="text-xs opacity-80">{isAr ? 'جاري تحميل بروتوكول اليوم التالي...' : 'Next day protocol loading...'}</span>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 

@@ -65,7 +65,8 @@ import {
   Key,
   Camera,
   Send,
-  Clock
+  Clock,
+  LogOut
 } from 'lucide-react';
 
 export { 
@@ -133,5 +134,6 @@ export {
   Key,
   Camera,
   Send,
-  Clock
+  Clock,
+  LogOut
 };
