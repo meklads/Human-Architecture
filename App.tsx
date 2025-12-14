@@ -14,6 +14,7 @@ import { CheckoutPage } from './components/CheckoutPage';
 import { CommunityPage } from './components/CommunityPage';
 import { RegisterPage } from './components/RegisterPage'; 
 import { ProgramDashboard } from './components/ProgramDashboard';
+import { AboutPage } from './components/AboutPage';
 import { CustomCursor } from './components/CustomCursor';
 import { Magnetic } from './components/Magnetic';
 import { BlueprintOverlay } from './components/BlueprintOverlay';
@@ -67,7 +68,7 @@ function App() {
     const targetView = params.get('view') as View;
     
     // Validate view before switching
-    if (targetView && ['home', 'philosophy', 'journal', 'library', 'contact', 'landing', 'community', 'register', 'dashboard'].includes(targetView)) {
+    if (targetView && ['home', 'philosophy', 'journal', 'library', 'contact', 'landing', 'community', 'register', 'dashboard', 'about'].includes(targetView)) {
         setCurrentView(targetView);
     }
 
@@ -132,6 +133,7 @@ function App() {
   const navItems: { id: View; label: string }[] = [
     { id: 'home', label: TRANSLATIONS.nav.home[lang] },
     { id: 'philosophy', label: TRANSLATIONS.nav.philosophy[lang] },
+    { id: 'about', label: TRANSLATIONS.nav.architect[lang] }, // Added Architect Link
     { id: 'library', label: TRANSLATIONS.nav.library[lang] },
     { id: 'journal', label: TRANSLATIONS.nav.journal[lang] },
     { id: 'community', label: TRANSLATIONS.nav.community[lang] },
@@ -335,6 +337,7 @@ function App() {
         <AnimatePresence mode='wait'>
             {currentView === 'home' && <HomePage key="home" lang={lang} setView={setCurrentView} />}
             {currentView === 'philosophy' && <PhilosophyPage key="philosophy" lang={lang} setView={setCurrentView} />}
+            {currentView === 'about' && <AboutPage key="about" lang={lang} />}
             {currentView === 'journal' && <JournalPage key="journal" lang={lang} />}
             {currentView === 'library' && <LibraryPage key="library" lang={lang} onCheckout={handleAddToCart} />}
             {currentView === 'contact' && <ContactPage key="contact" lang={lang} />}

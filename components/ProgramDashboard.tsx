@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, UserProfile, SiteLogEntry } from '../types';
-import { Check, Lock, Play, ArrowRight, Shield, Award, Activity, MessageCircle, Send, Clock, Calendar } from './Icons';
+import { Check, Lock, Play, ArrowRight, Shield, Award, Activity, MessageCircle, Send, Clock, Calendar, Target, Zap } from './Icons';
+import { THIRTY_DAY_PROGRAM } from '../constants';
 
 interface ProgramDashboardProps {
   lang: Language;
@@ -26,6 +27,8 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
   const [completedDays, setCompletedDays] = useState<number[]>([]);
   const [feed, setFeed] = useState<SiteLogEntry[]>([]);
   const [newLogContent, setNewLogContent] = useState('');
+  // Track the highest unlocked day (The Active Work Order)
+  const [activeDay, setActiveDay] = useState<number>(1);
   
   const totalDays = 30;
   
@@ -34,9 +37,15 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
       // 1. Load Progress
       const savedProgress = localStorage.getItem('iham_progress');
       if (savedProgress) {
-          setCompletedDays(JSON.parse(savedProgress));
+          const parsed = JSON.parse(savedProgress);
+          setCompletedDays(parsed);
+          // Determine active day: It is the next day after the last completed one.
+          // Example: If [1, 2] are done, max is 2, so active is 3.
+          const maxCompleted = parsed.length > 0 ? Math.max(...parsed) : 0;
+          setActiveDay(Math.min(maxCompleted + 1, totalDays));
       } else {
           setCompletedDays([]); 
+          setActiveDay(1);
       }
 
       // 2. Load Local Feed (Simulation of Database)
@@ -55,40 +64,45 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
   // Calculate Progress & Rank
   const completedCount = completedDays.length;
   const progressPercentage = Math.round((completedCount / totalDays) * 100);
-  // Current day is the first uncompleted day (e.g. if 1,2 done, current is 3)
-  // BUT: user can replay old days. The "Active" day is max completed + 1.
-  const currentDay = completedCount + 1;
   const rankInfo = calculateRank(completedCount);
+
+  // Helper to get task data for a specific day
+  const getTaskForDay = (dayNum: number) => {
+      // Flatten the weeks structure to find the day
+      for (const week of THIRTY_DAY_PROGRAM) {
+          const found = week.days.find(d => d.day === dayNum);
+          if (found) return found;
+      }
+      // Fallback
+      return { title: { ar: 'يوم راحة', en: 'Rest Day' }, task: { ar: 'استرح وراجع ما سبق.', en: 'Rest and review.' } };
+  };
+
+  const activeTaskData = getTaskForDay(activeDay);
 
   // --- HANDLERS ---
 
   const handleDayClick = (day: number) => {
-      // Logic: Can only toggle completion if it's the current day (to unlock) or previous days (to toggle off/on)
-      // We want to force sequential progress? Or allow jumping?
-      // Strict Mode: Can only complete `currentDay`.
-      if (day > currentDay) return; // Locked
-
-      let newCompleted;
-      if (completedDays.includes(day)) {
-          // Uncheck (only if it's the last completed day to maintain sequence, strictly speaking, but flexible for now)
-          newCompleted = completedDays.filter(d => d !== day);
-      } else {
-          // Check
-          newCompleted = [...completedDays, day];
-      }
+      // Strict Mode: You cannot "uncomplete" past days easily to maintain integrity, 
+      // and you cannot click future locked days.
+      if (day > activeDay) return; // Locked
       
-      // Update State & LocalStorage
-      setCompletedDays(newCompleted);
-      localStorage.setItem('iham_progress', JSON.stringify(newCompleted));
+      // For demo purposes, we allow clicking the *Active* day to complete it via grid too
+      if (day === activeDay && !completedDays.includes(day)) {
+          handleCompleteDay(day);
+      }
   };
 
-  const handleCompleteToday = () => {
-      if (!completedDays.includes(currentDay)) {
-          const newCompleted = [...completedDays, currentDay];
+  const handleCompleteDay = (day: number) => {
+      if (!completedDays.includes(day)) {
+          const newCompleted = [...completedDays, day];
           setCompletedDays(newCompleted);
           localStorage.setItem('iham_progress', JSON.stringify(newCompleted));
           
-          // Optional: Trigger celebration animation here
+          // Auto-advance to next day
+          const nextDay = Math.min(day + 1, totalDays);
+          setActiveDay(nextDay);
+          
+          // Celebration / Feedback could go here
       }
   };
 
@@ -101,7 +115,7 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
           author: currentUser.name,
           authorAvatar: currentUser.avatarImage,
           authorChar: currentUser.avatarChar,
-          dayNumber: currentDay, // Stamped with their current progress
+          dayNumber: activeDay, // Log is associated with current active day
           content: newLogContent,
           timestamp: isAr ? 'الآن' : 'Just now',
           likes: 0
@@ -159,7 +173,7 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                                 {rankInfo.title[lang]}
                             </span>
                             <span className="bg-white/10 px-3 py-1 rounded-full text-xs uppercase tracking-widest text-slate-300">
-                                {isAr ? `يوم ${currentDay}` : `Day ${currentDay}`}
+                                {isAr ? `المرحلة الحالية: يوم ${activeDay}` : `Current Phase: Day ${activeDay}`}
                             </span>
                         </div>
                     </div>
@@ -184,26 +198,46 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                 </div>
             </div>
 
-            {/* 3. CTA BUTTON (Complete Today) */}
-            <div className="text-center bg-white dark:bg-[#111] p-8 rounded-xl border border-dashed border-slate-300 dark:border-white/10">
-                <span className="block text-bronze font-bold uppercase tracking-[0.2em] text-xs mb-4">
-                    {isAr ? `المهمة الحالية: يوم ${currentDay}` : `Current Task: Day ${currentDay}`}
-                </span>
-                
-                {!completedDays.includes(currentDay) ? (
-                    <button 
-                        onClick={handleCompleteToday}
-                        className="inline-flex items-center gap-3 bg-blueprint text-white px-10 py-4 rounded-full text-lg font-bold hover:bg-blue-900 transition-all shadow-lg hover:shadow-blue-900/30 transform hover:-translate-y-1"
-                    >
-                        <Check size={20} />
-                        {isAr ? 'إكمال مهمة اليوم' : 'Complete Daily Protocol'}
-                    </button>
-                ) : (
-                    <div className="inline-flex items-center gap-3 bg-green-600 text-white px-10 py-4 rounded-full text-lg font-bold shadow-lg cursor-default">
-                         <Check size={20} />
-                         {isAr ? 'تم الإنجاز! اليوم التالي متاح' : 'Done! Next Day Unlocked'}
+            {/* 3. ACTIVE WORK ORDER (Dynamic Content based on Active Day) */}
+            <div className="bg-white dark:bg-[#111] rounded-xl border border-bronze/30 shadow-lg overflow-hidden relative group">
+                {/* Header */}
+                <div className="bg-bronze/10 border-b border-bronze/20 p-4 flex justify-between items-center">
+                    <div className="flex items-center gap-2 text-bronze font-bold uppercase tracking-widest text-xs">
+                        <Target size={16} />
+                        {isAr ? 'أمر العمل اليومي' : 'DAILY WORK ORDER'}
                     </div>
-                )}
+                    <div className="bg-bronze text-white text-xs font-mono px-2 py-0.5 rounded-sm">
+                        DAY {activeDay < 10 ? `0${activeDay}` : activeDay}
+                    </div>
+                </div>
+                
+                {/* Content */}
+                <div className="p-8">
+                    <h2 className={`text-3xl mb-4 ${headingFont} text-charcoal dark:text-white`}>
+                        {activeTaskData.title[lang]}
+                    </h2>
+                    <p className={`text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-8 ${bodyFont}`}>
+                        {activeTaskData.task[lang]}
+                    </p>
+                    
+                    {!completedDays.includes(activeDay) ? (
+                         <button 
+                            onClick={() => handleCompleteDay(activeDay)}
+                            className="w-full md:w-auto px-8 py-4 bg-charcoal dark:bg-blueprint text-white text-sm uppercase tracking-[0.2em] font-bold hover:bg-bronze transition-colors shadow-lg flex items-center justify-center gap-3"
+                        >
+                            <Zap size={18} fill="currentColor" />
+                            {isAr ? 'إتمام المهمة & فتح اليوم التالي' : 'COMPLETE & UNLOCK NEXT DAY'}
+                        </button>
+                    ) : (
+                        <div className="p-4 bg-green-500/10 border border-green-500/30 text-green-600 flex items-center gap-3 rounded-lg">
+                            <div className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center"><Check size={16} /></div>
+                            <div>
+                                <span className="block font-bold uppercase text-xs tracking-widest">{isAr ? 'تم الإنجاز' : 'MISSION ACCOMPLISHED'}</span>
+                                <span className="text-xs opacity-80">{isAr ? 'جاري تحميل بروتوكول اليوم التالي...' : 'Next day protocol loading...'}</span>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* 4. DAYS GRID */}
@@ -214,8 +248,9 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                 <div className="grid grid-cols-5 md:grid-cols-6 gap-3">
                     {Array.from({ length: totalDays }, (_, i) => i + 1).map((day) => {
                         const isCompleted = completedDays.includes(day);
-                        const isCurrent = day === currentDay;
-                        const isLocked = day > currentDay;
+                        const isCurrent = day === activeDay;
+                        // Day is locked if it's greater than the active day (which is max completed + 1)
+                        const isLocked = day > activeDay;
                         
                         return (
                             <motion.div
@@ -270,7 +305,7 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                                 value={newLogContent}
                                 onChange={(e) => setNewLogContent(e.target.value)}
                                 maxLength={280}
-                                placeholder={isAr ? `وثّق إنجاز اليوم ${currentDay}...` : `Log progress for Day ${currentDay}...`}
+                                placeholder={isAr ? `وثّق إنجاز اليوم ${activeDay}...` : `Log progress for Day ${activeDay}...`}
                                 className="w-full bg-transparent text-sm resize-none outline-none text-charcoal dark:text-concrete placeholder-slate/40 h-20"
                              />
                          </div>

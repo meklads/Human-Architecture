@@ -166,7 +166,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
                 transition={{ duration: 1 }}
                 className="relative w-full max-w-md aspect-[3/4] bg-[#020202] overflow-hidden cursor-crosshair group shadow-2xl border border-white/5"
             >
-                {/* 1. IDLE STATE: High Quality Portrait */}
+                {/* 1. IDLE STATE: High Quality Portrait (THE DARK ONE) */}
                 <div className="absolute inset-0 w-full h-full z-10 pointer-events-none">
                      <img 
                         src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1287&auto=format&fit=crop" 

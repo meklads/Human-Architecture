@@ -56,6 +56,23 @@ export const TRANSLATIONS = {
   }
 };
 
+export const ABOUT_CONTENT = {
+    title: { ar: 'المعماري', en: 'The Architect', fr: 'L\'Architecte' },
+    name: { ar: 'أبراهام مقلد', en: 'Abraham Meklad', fr: 'Abraham Meklad' },
+    titles: { ar: 'معماري | فنان بصري | CEO Graphics House', en: 'Architect | Visual Artist | CEO Graphics House', fr: 'Architecte | Artiste | CEO Graphics House' },
+    bio: {
+        ar: 'مهندس معماري وفنان متعدد التخصصات، يشغل منصب رئيس مجلس إدارة "جرافيكس هاوس". يجمع أبراهام بين دقة الخطوط الهندسية وعمق الرؤية الفنية. لا يرى العالم كمجموعة من الأشكال، بل كنظم وعلاقات إنشائية. قضى سنوات في دراسة كيف يمكن للفلسفة المعمارية أن تُطبق على النفس البشرية، مؤمناً بأن الإنسان هو أعقد وأقدس بنيان على وجه الأرض.',
+        en: 'Architect, multidisciplinary artist, and CEO of Graphics House. Abraham combines the precision of engineering lines with the depth of artistic vision. He does not see the world as shapes, but as systems and structural relationships. He has spent years studying how architectural philosophy applies to the human psyche, believing that the human being is the most complex and sacred structure on earth.',
+        fr: 'Architecte et artiste multidisciplinaire, CEO de Graphics House.'
+    },
+    philosophyTitle: { ar: 'عن المشروع: لماذا "عمارة الإنسان"؟', en: 'The Project: Why Human Architecture?', fr: 'Pourquoi?' },
+    philosophy: {
+        ar: 'هذا المشروع ليس مجرد موقع إلكتروني، ولا هو دورة في التنمية البشرية التقليدية. إنه "مخطط تنفيذي" لإعادة الهيكلة. نحن نعيش في عالم يحاول ترميم "المظهر" (الواجهة)، بينما تتآكل "الأساسات" في صمت. "عمارة الإنسان" هي دعوة للعودة إلى المبادئ الإنشائية الأولى: المتانة، المنفعة، والجمال. نحن نساعدك على التحول من ساكن عشوائي في جسدك، إلى المهندس المسؤول عن صيانته وتطويره، طوبة تلو الأخرى.',
+        en: 'This project is not just a website, nor traditional self-help. It is an "Execution Blueprint" for restructuring. We live in a world fixing the "facade" while foundations erode in silence. "Human Architecture" is a call to return to first structural principles: Firmitas, Utilitas, Venustas. We shift you from a random occupant of your body to the Lead Architect responsible for its maintenance and development, brick by brick.',
+        fr: 'Ce projet est un plan d\'exécution pour la restructuration.'
+    }
+};
+
 export const LANDING_CONTENT = {
   hero: {
     headline: { ar: 'حياتك ليست عشوائية. إنها مشروع هندسي.', en: 'Your Life is Not Random. It is an Engineering Project.', fr: 'Votre vie n\'est pas un hasard.' },
@@ -129,8 +146,8 @@ export const PILLARS: PillarData[] = [
       en: 'Reprogramming cognitive operating systems.', 
       fr: 'Reprogrammation cognitive.' 
     },
-    // Updated Image: Tech/Abstract
-    image: 'https://images.unsplash.com/photo-1555679427-1f6dfcce943b?auto=format&fit=crop&q=80',
+    // Abstract Mind/Structure - Tech/Abstract
+    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80',
     blueprintImage: 'https://images.unsplash.com/photo-1516110833967-0b5716ca1387?auto=format&fit=crop&q=80'
   },
   {
@@ -142,8 +159,8 @@ export const PILLARS: PillarData[] = [
       en: 'Pouring concrete bases for bio-energy.', 
       fr: 'Coulage des bases.' 
     },
-    // Updated Image: Concrete/Strength
-    image: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&q=80',
+    // UPDATED: Sculpture/Torso to represent "Human as Structure" (Replaces Girl)
+    image: 'https://images.unsplash.com/photo-1563409257650-77990b793710?auto=format&fit=crop&q=80',
     blueprintImage: 'https://images.unsplash.com/photo-1534970028765-38ce47ef7d8d?auto=format&fit=crop&q=80'
   },
   {
@@ -155,7 +172,7 @@ export const PILLARS: PillarData[] = [
       en: 'Orienting the structure to True North.', 
       fr: 'Orientation vers le Nord.' 
     },
-    // Updated Image: Interior/Light
+    // UPDATED: Reliable Interior Light
     image: 'https://images.unsplash.com/photo-1507643179173-617d67456fd3?auto=format&fit=crop&q=80',
     blueprintImage: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80'
   },
@@ -168,7 +185,7 @@ export const PILLARS: PillarData[] = [
       en: 'Protection systems and external interfaces.', 
       fr: 'Systèmes de protection.' 
     },
-    // Updated Image: Facade/Glass
+    // Facade - Modern Architecture
     image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80',
     blueprintImage: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&q=80'
   }
