@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Language, View, Product, UserProfile } from './types';
 import { TRANSLATIONS } from './constants';
-import { Menu, X, Moon, Sun, Grid, Layers, Users, Shield } from './components/Icons';
+import { Menu, X, Moon, Sun, Grid, Layers, Users, Shield, Layout } from './components/Icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HomePage } from './components/HomePage';
 import { PhilosophyPage } from './components/PhilosophyPage';
@@ -13,10 +13,10 @@ import { LandingPage } from './components/LandingPage';
 import { CheckoutPage } from './components/CheckoutPage';
 import { CommunityPage } from './components/CommunityPage';
 import { RegisterPage } from './components/RegisterPage'; 
+import { ProgramDashboard } from './components/ProgramDashboard';
 import { CustomCursor } from './components/CustomCursor';
 import { Magnetic } from './components/Magnetic';
 import { BlueprintOverlay } from './components/BlueprintOverlay';
-import { SoundController } from './components/SoundController';
 
 function App() {
   const [lang, setLang] = useState<Language>('en');
@@ -67,7 +67,7 @@ function App() {
     const targetView = params.get('view') as View;
     
     // Validate view before switching
-    if (targetView && ['home', 'philosophy', 'journal', 'library', 'contact', 'landing', 'community', 'register'].includes(targetView)) {
+    if (targetView && ['home', 'philosophy', 'journal', 'library', 'contact', 'landing', 'community', 'register', 'dashboard'].includes(targetView)) {
         setCurrentView(targetView);
     }
 
@@ -116,7 +116,7 @@ function App() {
       const hasBundle = checkoutItems.some(i => i.category === 'bundle');
       if (hasBundle) {
           // Note: In a real app we would unlock content here
-          setCurrentView('community'); // Assuming community/dashboard access
+          setCurrentView('dashboard'); // Assuming dashboard access
       } else {
           setCurrentView('home');
       }
@@ -126,6 +126,7 @@ function App() {
   const handleRegisterSuccess = (profile: UserProfile) => {
       setCurrentUser(profile);
       localStorage.setItem('iham_user_profile', JSON.stringify(profile));
+      setCurrentView('dashboard'); // Redirect to Dashboard after login/register
   };
 
   const navItems: { id: View; label: string }[] = [
@@ -134,7 +135,6 @@ function App() {
     { id: 'library', label: TRANSLATIONS.nav.library[lang] },
     { id: 'journal', label: TRANSLATIONS.nav.journal[lang] },
     { id: 'community', label: TRANSLATIONS.nav.community[lang] },
-    { id: 'contact', label: TRANSLATIONS.nav.contact[lang] },
   ];
 
   if (loading) {
@@ -163,9 +163,6 @@ function App() {
   return (
     <div className={`min-h-screen transition-colors duration-700 ${darkMode ? 'dark' : ''}`} dir={direction}>
       <CustomCursor />
-      
-      {/* GLOBAL AUDIO SYSTEM */}
-      <SoundController />
       
       {/* GLOBAL BLUEPRINT OVERLAY */}
       <AnimatePresence>
@@ -207,6 +204,15 @@ function App() {
                      {item.label}
                  </button>
              ))}
+             {/* Dashboard Link if Logged In */}
+             {currentUser && (
+                <button
+                    onClick={() => setCurrentView('dashboard')}
+                    className={`text-xs uppercase tracking-widest hover:text-bronze transition-colors ${currentView === 'dashboard' ? 'text-bronze font-bold border-b border-bronze pb-1' : 'text-slate'}`}
+                >
+                    {lang === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
+                </button>
+             )}
           </nav>
 
           {/* Right Actions */}
@@ -221,10 +227,10 @@ function App() {
               {/* Join/Register Link or User Profile */}
               {currentUser ? (
                   <button 
-                    onClick={() => setCurrentView('community')}
+                    onClick={() => setCurrentView('dashboard')}
                     className="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-bronze hover:text-white transition-colors border border-bronze/30 px-3 py-1 rounded-full"
                   >
-                      <Shield size={12} />
+                      <Layout size={12} />
                       {currentUser.name.split(' ')[0]}
                   </button>
               ) : (
@@ -293,17 +299,17 @@ function App() {
                         </motion.div>
                     ))}
                     
-                    {/* Register Link in Mobile Menu */}
+                    {/* Register/Dashboard Link in Mobile Menu */}
                     <motion.div
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: navItems.length * 0.1 }}
                     >
                          <button 
-                            onClick={() => { setCurrentView(currentUser ? 'community' : 'register'); setMenuOpen(false); }}
+                            onClick={() => { setCurrentView(currentUser ? 'dashboard' : 'register'); setMenuOpen(false); }}
                             className={`text-4xl ${headingFont} text-bronze hover:text-white transition-all duration-300 group flex items-center justify-center gap-6`}
                         >
-                            {currentUser ? (lang === 'ar' ? 'ملفي الشخصي' : 'My Profile') : (lang === 'ar' ? 'الانضمام' : 'Join Guild')}
+                            {currentUser ? (lang === 'ar' ? 'لوحة التحكم' : 'Dashboard') : (lang === 'ar' ? 'الانضمام' : 'Join Guild')}
                         </button>
                     </motion.div>
                 </nav>
@@ -340,6 +346,13 @@ function App() {
                     lang={lang} 
                     setView={setCurrentView} 
                     onRegisterSuccess={handleRegisterSuccess} 
+                />
+            )}
+            {currentView === 'dashboard' && (
+                <ProgramDashboard 
+                    key="dashboard" 
+                    lang={lang} 
+                    currentUser={currentUser}
                 />
             )}
             {currentView === 'checkout' && (

@@ -28,7 +28,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
 
-  // Lens Size: 0 when hidden, 250px when hovering (Large scanner)
+  // Lens Size: 0 when hidden, 125px (Half Size) when hovering
   const radius = useMotionValue(0);
   const springRadius = useSpring(radius, { damping: 20, stiffness: 150 });
 
@@ -36,14 +36,14 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
     // If hovering (mouse usage), show lens.
     // IF NOT hovering, check if it's likely a touch device to run auto-scan.
     if (isHovering) {
-        radius.set(250);
+        radius.set(125); // Reduced from 250 to 125
     } else {
         // MOBILE AUTO-SCAN LOGIC
         // We set radius to open up on mobile load
         const isTouch = window.matchMedia("(max-width: 1024px)").matches;
         if (isTouch) {
-            // Smaller radius for mobile (was 200, now 130)
-            radius.set(130);
+            // Smaller radius for mobile
+            radius.set(100);
             
             // Much slower, smoother animation loop
             // Constrain movement to be more central to avoid jarring edges
@@ -63,9 +63,9 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
   // Dynamic Clip Path
   const clipPath = useMotionTemplate`circle(${springRadius}px at ${springX}px ${springY}px)`;
 
-  // Reticle movement (Center the 500px reticle on the mouse)
-  const reticleX = useTransform(springX, (val) => val - 250);
-  const reticleY = useTransform(springY, (val) => val - 250);
+  // Reticle movement (Center the 250px reticle on the mouse) - Adjusted offset to 125
+  const reticleX = useTransform(springX, (val) => val - 125);
+  const reticleY = useTransform(springY, (val) => val - 125);
   
   // Parallax for the texture inside (Subtle movement for depth)
   const texX = useTransform(springX, (val) => val / -20);
@@ -239,8 +239,9 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
                 </motion.div>
 
                 {/* 3. THE LENS UI (Ring + Geometric Shapes) */}
+                {/* REDUCED SIZE: Width/Height 250px (was 500px) */}
                 <motion.div 
-                    className="absolute z-50 pointer-events-none w-[500px] h-[500px] rounded-full border border-cyan-500/30 flex items-center justify-center shadow-[0_0_30px_rgba(0,255,255,0.1)]"
+                    className="absolute z-50 pointer-events-none w-[250px] h-[250px] rounded-full border border-cyan-500/30 flex items-center justify-center shadow-[0_0_30px_rgba(0,255,255,0.1)]"
                     style={{ 
                         x: reticleX, 
                         y: reticleY,
@@ -254,34 +255,34 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
                         className="absolute inset-2 rounded-full border border-dashed border-cyan-500/10"
                     ></motion.div>
 
-                    {/* B. Rotating Square HUD (New Addition) */}
+                    {/* B. Rotating Square HUD (New Addition) - Scaled Down */}
                     <motion.div
                         animate={{ rotate: -360 }}
                         transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-                        className="absolute w-[240px] h-[240px] border border-cyan-500/10"
+                        className="absolute w-[120px] h-[120px] border border-cyan-500/10"
                     >
                          {/* Corners for Tech Feel */}
-                         <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-cyan-500/50"></div>
-                         <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-cyan-500/50"></div>
-                         <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-cyan-500/50"></div>
-                         <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-cyan-500/50"></div>
+                         <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-cyan-500/50"></div>
+                         <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-cyan-500/50"></div>
+                         <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-cyan-500/50"></div>
+                         <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-cyan-500/50"></div>
                     </motion.div>
 
-                    {/* C. Pulsing Inner Circle (New Addition) */}
+                    {/* C. Pulsing Inner Circle (New Addition) - Scaled Down */}
                     <motion.div
                          animate={{ scale: [0.8, 1, 0.8], opacity: [0.1, 0.4, 0.1] }}
                          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                         className="absolute w-[120px] h-[120px] rounded-full border border-cyan-500/30 bg-cyan-500/5"
+                         className="absolute w-[60px] h-[60px] rounded-full border border-cyan-500/30 bg-cyan-500/5"
                     ></motion.div>
 
                     {/* D. Center Crosshair (New Addition) */}
-                    <div className="absolute w-6 h-6 flex items-center justify-center">
+                    <div className="absolute w-4 h-4 flex items-center justify-center">
                         <div className="w-full h-[1px] bg-cyan-500/80"></div>
                         <div className="h-full w-[1px] bg-cyan-500/80 absolute"></div>
                     </div>
 
                     {/* Label */}
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-black text-cyan-400 border border-cyan-500/50 text-[0.6rem] font-mono px-3 py-1 uppercase tracking-widest shadow-lg">
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-black text-cyan-400 border border-cyan-500/50 text-[0.6rem] font-mono px-3 py-1 uppercase tracking-widest shadow-lg whitespace-nowrap">
                         {isAr ? 'دمج: إنسان/بنيان' : 'MERGE: HUMAN/STRUCT'}
                     </div>
                 </motion.div>

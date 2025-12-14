@@ -1,9 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, CommunityPost, PeerReview, View, UserProfile } from '../types';
 import { COMMUNITY_POSTS, TRANSLATIONS, PILLARS, TOP_BUILDERS, THIRTY_DAY_PROGRAM } from '../constants';
-import { MessageCircle, ThumbsUp, Share2, Plus, Filter, Shield, Compass, X, Check, Users, Star, Activity, Award, Lock, ArrowRight, Quote, Loader2, Calendar, Radio, Target, Zap, AlertTriangle, FileText } from './Icons';
+import { MessageCircle, ThumbsUp, Share2, Plus, Filter, Shield, Compass, X, Check, Users, Star, Activity, Award, Lock, ArrowRight, Quote, Loader2, Calendar, Radio, Target, Zap, AlertTriangle, FileText, Upload, Camera } from './Icons';
 
 interface CommunityPageProps {
   lang: Language;
@@ -15,10 +15,11 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
   // -- STATE --
   const [posts, setPosts] = useState<CommunityPost[]>(COMMUNITY_POSTS);
   const [activeFilter, setActiveFilter] = useState<string>('All');
-  const [activeTab, setActiveTab] = useState<'log' | 'sos'>('log'); // Standard vs Emergency
+  const [activeTab, setActiveTab] = useState<'log' | 'sos'>('log'); 
   
   // User System
   const [user, setUser] = useState<UserProfile | null>(currentUser);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   useEffect(() => {
       setUser(currentUser);
@@ -26,7 +27,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
 
   const [showPostModal, setShowPostModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
-  const [showProtocol, setShowProtocol] = useState(true); // Show rules by default on first load
   
   // Interaction State
   const [selectedPost, setSelectedPost] = useState<CommunityPost | null>(null);
@@ -101,10 +101,14 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                       {currentTask.task[lang]}
                   </p>
                   <div className="flex gap-4">
-                      <button className="flex-1 py-3 bg-bronze text-white text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2">
+                      {/* ACTION FIX: Redirect to Dashboard */}
+                      <button 
+                          onClick={() => setView('dashboard')}
+                          className="flex-1 py-3 bg-bronze text-white text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2"
+                      >
                           {isAr ? 'تنفيذ المهمة' : 'EXECUTE'} <ArrowRight size={14} />
                       </button>
-                      <button className="px-4 py-3 border border-white/20 text-slate hover:text-white transition-colors">
+                      <button className="px-4 py-3 border border-white/20 text-slate hover:text-white transition-colors" title="Mark Complete">
                           <Check size={16} />
                       </button>
                   </div>
@@ -112,28 +116,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
           </div>
       );
   };
-
-  const GuildProtocolWidget = () => (
-      <div className="bg-[#111] border border-slate/10 p-6 mb-6">
-          <h3 className={`text-xs uppercase tracking-widest text-slate mb-4 flex items-center gap-2 font-bold`}>
-              <Shield size={14} className="text-bronze" /> {isAr ? 'ميثاق الشرف' : 'Guild Protocols'}
-          </h3>
-          <ul className="space-y-3 text-[0.65rem] text-slate/80 uppercase tracking-wide font-mono">
-              <li className="flex gap-2">
-                  <span className="text-bronze">01.</span>
-                  {isAr ? 'نحن نبني هياكل، لا نبني أوهاماً.' : 'We build structures, not illusions.'}
-              </li>
-              <li className="flex gap-2">
-                  <span className="text-bronze">02.</span>
-                  {isAr ? 'النقد البناء هو أساس الترميم.' : 'Constructive critique is the basis of repair.'}
-              </li>
-              <li className="flex gap-2">
-                  <span className="text-bronze">03.</span>
-                  {isAr ? 'لا تترك زميلاً تحت الأنقاض.' : 'Never leave a builder under rubble.'}
-              </li>
-          </ul>
-      </div>
-  );
 
   const RadarWidget = () => {
       return (
@@ -151,8 +133,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                   <div className="absolute w-full h-[1px] bg-slate/10"></div>
                   <div className="absolute h-full w-[1px] bg-slate/10"></div>
                   <span className="absolute top-1/4 right-1/3 w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.8)]"></span>
-                  <span className="absolute bottom-1/3 left-1/4 w-1.5 h-1.5 bg-green-500/50 rounded-full animate-pulse delay-75"></span>
-                  <span className="absolute top-1/2 left-2/3 w-1 h-1 bg-green-500/80 rounded-full animate-pulse delay-150"></span>
                   <div className="w-3 h-3 bg-bronze rounded-full border-2 border-black z-10 relative"></div>
               </div>
               <div className="mt-4 flex justify-between text-[0.6rem] uppercase tracking-wider text-slate">
@@ -172,6 +152,29 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
         setView('register');
     }
   };
+
+  // --- IMAGE UPLOAD LOGIC ---
+  const handleAvatarClick = () => {
+      fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file && user) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+              const base64String = reader.result as string;
+              
+              // Update User State
+              const updatedUser = { ...user, avatarImage: base64String };
+              setUser(updatedUser);
+              
+              // Persist to Local Storage
+              localStorage.setItem('iham_user_profile', JSON.stringify(updatedUser));
+          };
+          reader.readAsDataURL(file);
+      }
+  };
   
   const loadArchivedLogs = () => {
       setLoadingArchive(true);
@@ -189,7 +192,8 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                 reviews: [],
                 tags: ['History', 'Wisdom'],
                 timestamp: '2 years ago',
-                type: 'standard'
+                type: 'standard',
+                status: 'approved'
               }
           ];
           setPosts([...posts, ...archived]);
@@ -206,7 +210,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
           id: `cp-${Date.now()}`,
           author: user.name,
           role: { ar: user.rank, en: user.rank, fr: user.rank },
-          rankLevel: 1,
+          rankLevel: user.level,
           phase: 'Foundation',
           title: { ar: newPostTitle, en: newPostTitle, fr: newPostTitle },
           content: { ar: newPostContent, en: newPostContent, fr: newPostContent },
@@ -215,7 +219,8 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
           tags: [newPostCategory],
           timestamp: 'Just now',
           type: postType,
-          isSolved: false
+          isSolved: false,
+          status: 'pending' // MODERATION FIX: Set new posts to pending
       };
 
       setPosts([newPost, ...posts]);
@@ -225,7 +230,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
       setNewPostContent('');
       setPostType('standard');
       
-      // Auto switch to relevant tab
       if (postType === 'emergency') setActiveTab('sos');
       else setActiveTab('log');
   };
@@ -257,7 +261,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
       const updatedPost = { 
           ...selectedPost, 
           reviews: [newReview, ...selectedPost.reviews],
-          // If it was emergency, mark potentially solved if author decides (simulated here)
       };
       
       setSelectedPost(updatedPost);
@@ -281,8 +284,13 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
       if (activeTab === 'log' && p.type === 'emergency') return false;
 
       // 2. Channel Filter
-      if (activeFilter === 'All') return true;
-      return p.tags?.includes(activeFilter) || PILLARS.find(pil => pil.channelId === activeFilter)?.id === p.id;
+      if (activeFilter !== 'All' && !p.tags?.includes(activeFilter) && PILLARS.find(pil => pil.channelId === activeFilter)?.id !== p.id) return false;
+
+      // 3. Moderation Filter (Simulated)
+      // Only show pending posts if they belong to the current user
+      if (p.status === 'pending' && p.author !== user?.name) return false;
+
+      return true;
   });
 
   return (
@@ -290,6 +298,15 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="pt-28 min-h-screen bg-alabaster dark:bg-darkBg text-charcoal dark:text-concrete"
     >
+      {/* Hidden Input for Image Upload */}
+      <input 
+        type="file" 
+        ref={fileInputRef} 
+        className="hidden" 
+        accept="image/*" 
+        onChange={handleFileChange}
+      />
+
       {/* Top Stats Bar */}
       <div className="border-b border-slate/10 bg-white dark:bg-white/5 sticky top-20 z-40 backdrop-blur-sm shadow-sm">
           <LiveTicker />
@@ -313,10 +330,20 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                 
                 {/* ARCHITECT ID CARD */}
                 <div 
-                    onClick={() => user && setShowProfileModal(true)}
+                    onClick={() => { if(user) handleAvatarClick() }}
                     className={`bg-white dark:bg-[#1a1a1a] border-2 ${user ? 'border-bronze/50 cursor-pointer hover:shadow-[0_0_20px_rgba(197,160,101,0.15)]' : 'border-slate/20'} p-1 relative overflow-hidden shadow-xl group transition-all duration-500`}
                 >
                     <div className={`absolute top-0 left-0 w-full h-1 ${user ? 'bg-bronze' : 'bg-slate/30'}`}></div>
+                    
+                    {/* Hover Overlay for Upload */}
+                    {user && (
+                        <div className="absolute inset-0 z-20 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                            <span className="text-white text-xs uppercase tracking-widest flex items-center gap-2 font-bold">
+                                <Camera size={16} /> {isAr ? 'تحديث الصورة' : 'Update Photo'}
+                            </span>
+                        </div>
+                    )}
+
                     <div className="p-6 border border-slate/10 relative z-10 bg-alabaster/50 dark:bg-transparent">
                          <div className="flex justify-between items-start mb-6">
                              <Shield size={32} className={`${user ? 'text-bronze' : 'text-charcoal dark:text-concrete'} opacity-20`} />
@@ -326,8 +353,12 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                          <div className="text-center mb-6">
                             {user ? (
                                 <>
-                                    <div className="w-20 h-20 bg-charcoal text-alabaster rounded-full flex items-center justify-center mx-auto mb-3 text-3xl font-serif border-4 border-double border-bronze relative group-hover:scale-110 transition-transform">
-                                        {user.avatarChar}
+                                    <div className="w-20 h-20 bg-charcoal text-alabaster rounded-full flex items-center justify-center mx-auto mb-3 text-3xl font-serif border-4 border-double border-bronze relative group-hover:scale-110 transition-transform overflow-hidden">
+                                        {user.avatarImage ? (
+                                            <img src={user.avatarImage} alt="Avatar" className="w-full h-full object-cover" />
+                                        ) : (
+                                            user.avatarChar
+                                        )}
                                         <div className="absolute bottom-0 right-0 w-6 h-6 bg-bronze text-white text-[0.5rem] flex items-center justify-center rounded-full border-2 border-white dark:border-[#1a1a1a]">
                                             {user.level}
                                         </div>
@@ -432,14 +463,21 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                     <div className="absolute inset-0 opacity-[0.03] pointer-events-none architectural-grid"></div>
                     
                     <div className="p-6 md:p-8 relative z-10">
-                        {/* Emergency Badge */}
-                        {post.type === 'emergency' && (
-                            <div className="absolute top-0 right-0 bg-red-500 text-white text-[0.5rem] uppercase tracking-widest px-3 py-1 font-bold">
-                                {isAr ? 'طلب استغاثة' : 'SOS REQUEST'}
-                            </div>
-                        )}
-
                         <div className="flex justify-between items-start mb-4">
+                            {/* Badges Area */}
+                            <div className="absolute top-0 right-0 flex">
+                                {post.status === 'pending' && (
+                                    <div className="bg-yellow-600/90 text-white text-[0.5rem] uppercase tracking-widest px-3 py-1 font-bold flex items-center gap-1">
+                                        <Lock size={8} /> {isAr ? 'قيد المراجعة' : 'UNDER REVIEW'}
+                                    </div>
+                                )}
+                                {post.type === 'emergency' && (
+                                    <div className="bg-red-500 text-white text-[0.5rem] uppercase tracking-widest px-3 py-1 font-bold">
+                                        {isAr ? 'طلب استغاثة' : 'SOS REQUEST'}
+                                    </div>
+                                )}
+                            </div>
+
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 bg-slate/10 dark:bg-white/10 rounded-full flex items-center justify-center text-charcoal dark:text-concrete font-serif border border-slate/20 relative">
                                 {post.author.charAt(0)}
@@ -455,7 +493,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                                 <span className="text-[0.6rem] text-bronze uppercase tracking-widest">{typeof post.role === 'string' ? post.role : post.role[lang]}</span>
                                 </div>
                             </div>
-                            <div className="text-[0.6rem] text-slate uppercase tracking-widest bg-slate/5 px-2 py-1 border border-slate/10 rounded-sm">
+                            <div className="text-[0.6rem] text-slate uppercase tracking-widest bg-slate/5 px-2 py-1 border border-slate/10 rounded-sm mt-6 mr-6">
                                 {post.phase}
                             </div>
                         </div>
@@ -497,23 +535,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                       </h3>
                   </div>
               )}
-              
-              {!archiveLoaded && activeTab === 'log' && (
-                <div className="py-8 text-center border-t border-dashed border-slate/20">
-                    <button 
-                        onClick={loadArchivedLogs}
-                        disabled={loadingArchive}
-                        className="text-xs text-slate hover:text-bronze uppercase tracking-widest flex items-center justify-center gap-2 mx-auto disabled:opacity-50"
-                    >
-                        {loadingArchive ? <Loader2 size={14} className="animate-spin" /> : <Activity size={14} />}
-                        {loadingArchive 
-                            ? (isAr ? 'جاري استرجاع الأرشيف...' : 'Retrieving Archive...') 
-                            : (isAr ? 'تحميل سجلات أقدم' : 'Load Archived Logs')
-                        }
-                    </button>
-                </div>
-              )}
-
             </div>
           </div>
 
@@ -523,8 +544,25 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                  
                  <RadarWidget />
 
-                 {/* GUILD PROTOCOLS */}
-                 <GuildProtocolWidget />
+                 <div className="bg-[#111] border border-slate/10 p-6 mb-6">
+                    <h3 className={`text-xs uppercase tracking-widest text-slate mb-4 flex items-center gap-2 font-bold`}>
+                        <Shield size={14} className="text-bronze" /> {isAr ? 'ميثاق الشرف' : 'Guild Protocols'}
+                    </h3>
+                    <ul className="space-y-3 text-[0.65rem] text-slate/80 uppercase tracking-wide font-mono">
+                        <li className="flex gap-2">
+                            <span className="text-bronze">01.</span>
+                            {isAr ? 'نحن نبني هياكل، لا نبني أوهاماً.' : 'We build structures, not illusions.'}
+                        </li>
+                        <li className="flex gap-2">
+                            <span className="text-bronze">02.</span>
+                            {isAr ? 'النقد البناء هو أساس الترميم.' : 'Constructive critique is the basis of repair.'}
+                        </li>
+                        <li className="flex gap-2">
+                            <span className="text-bronze">03.</span>
+                            {isAr ? 'لا تترك زميلاً تحت الأنقاض.' : 'Never leave a builder under rubble.'}
+                        </li>
+                    </ul>
+                </div>
 
                  <div className="bg-white dark:bg-white/5 border border-slate/10 p-6">
                     <div className="flex items-center justify-between mb-6">
@@ -597,10 +635,19 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                     </div>
 
                     <div className="p-8 md:p-12">
+                        {/* Status Warning in Modal */}
+                        {selectedPost.status === 'pending' && (
+                            <div className="bg-yellow-500/10 border border-yellow-500/20 p-4 mb-6 text-center text-xs text-yellow-500 flex items-center justify-center gap-2">
+                                <Lock size={14} />
+                                {isAr ? 'هذا المنشور قيد المراجعة ولا يظهر للعامة بعد.' : 'This post is under review and not yet public.'}
+                            </div>
+                        )}
+
                         <div className="mb-12">
                             <h2 className={`text-3xl md:text-4xl mb-6 ${headingFont}`}>{typeof selectedPost.title === 'string' ? selectedPost.title : selectedPost.title[lang]}</h2>
                             <div className="flex items-center gap-4 mb-8 pb-8 border-b border-slate/10">
-                                <div className="w-12 h-12 bg-charcoal text-alabaster rounded-full flex items-center justify-center font-serif text-xl border-2 border-slate/10">
+                                <div className="w-12 h-12 bg-charcoal text-alabaster rounded-full flex items-center justify-center font-serif text-xl border-2 border-slate/10 overflow-hidden">
+                                     {/* Simplified avatar check for list view, full check for profile */}
                                     {selectedPost.author.charAt(0)}
                                 </div>
                                 <div>
@@ -612,7 +659,8 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                                 {typeof selectedPost.content === 'string' ? selectedPost.content : selectedPost.content[lang]}
                             </div>
                         </div>
-
+                        
+                        {/* Comments section... */}
                         <div className="bg-white dark:bg-white/5 border border-slate/10 p-8">
                             <h3 className={`text-xl mb-6 flex items-center gap-2 ${headingFont}`}>
                                 <MessageCircle size={20} className="text-bronze" />
@@ -638,8 +686,8 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                             </div>
 
                             <div className="flex gap-4 items-start">
-                                <div className="w-8 h-8 bg-bronze text-white rounded-full flex items-center justify-center flex-shrink-0 text-xs">
-                                    {user ? user.avatarChar : '?'}
+                                <div className="w-8 h-8 bg-bronze text-white rounded-full flex items-center justify-center flex-shrink-0 text-xs overflow-hidden">
+                                    {user && user.avatarImage ? <img src={user.avatarImage} className="w-full h-full object-cover" /> : (user ? user.avatarChar : '?')}
                                 </div>
                                 <div className="flex-1">
                                     <textarea 
@@ -681,8 +729,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                      <h2 className={`text-xl mb-6 ${headingFont}`}>{isAr ? 'إضافة سجل جديد' : 'New Log Entry'}</h2>
                      
                      <form onSubmit={handleSubmitPost} className="space-y-6">
-                        
-                        {/* TYPE SELECTOR */}
+                        {/* Form contents same as before */}
                         <div className="flex gap-4 mb-4">
                             <button
                                 type="button" 
@@ -733,6 +780,14 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                                 className="w-full bg-transparent border-b border-slate/30 py-2 focus:border-bronze outline-none text-sm resize-none"
                                 placeholder={postType === 'standard' ? "Describe the architectural issue..." : "Describe the problem. Other architects will advise."}
                             />
+                        </div>
+                        <div className="bg-blue-500/10 border border-blue-500/20 p-3 flex gap-2 items-start">
+                            <Shield size={14} className="text-blue-500 shrink-0 mt-0.5" />
+                            <p className="text-[0.65rem] text-slate/70">
+                                {isAr 
+                                ? 'سيتم مراجعة هذا المنشور من قبل المشرفين قبل نشره للعامة. ستراه أنت فقط مع علامة "قيد المراجعة".' 
+                                : 'This post will be moderated before going public. You will see it marked as "Pending Review".'}
+                            </p>
                         </div>
                         <button 
                             type="submit" 

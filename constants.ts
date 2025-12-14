@@ -129,8 +129,9 @@ export const PILLARS: PillarData[] = [
       en: 'Reprogramming cognitive operating systems.', 
       fr: 'Reprogrammation cognitive.' 
     },
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80',
-    blueprintImage: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80'
+    // Updated Image: Tech/Abstract
+    image: 'https://images.unsplash.com/photo-1555679427-1f6dfcce943b?auto=format&fit=crop&q=80',
+    blueprintImage: 'https://images.unsplash.com/photo-1516110833967-0b5716ca1387?auto=format&fit=crop&q=80'
   },
   {
     id: 'body',
@@ -141,8 +142,9 @@ export const PILLARS: PillarData[] = [
       en: 'Pouring concrete bases for bio-energy.', 
       fr: 'Coulage des bases.' 
     },
-    image: 'https://images.unsplash.com/photo-1486718448742-1666229e2185?auto=format&fit=crop&q=80',
-    blueprintImage: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80'
+    // Updated Image: Concrete/Strength
+    image: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&q=80',
+    blueprintImage: 'https://images.unsplash.com/photo-1534970028765-38ce47ef7d8d?auto=format&fit=crop&q=80'
   },
   {
     id: 'spirit',
@@ -153,7 +155,8 @@ export const PILLARS: PillarData[] = [
       en: 'Orienting the structure to True North.', 
       fr: 'Orientation vers le Nord.' 
     },
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80',
+    // Updated Image: Interior/Light
+    image: 'https://images.unsplash.com/photo-1507643179173-617d67456fd3?auto=format&fit=crop&q=80',
     blueprintImage: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80'
   },
   {
@@ -165,6 +168,7 @@ export const PILLARS: PillarData[] = [
       en: 'Protection systems and external interfaces.', 
       fr: 'Systèmes de protection.' 
     },
+    // Updated Image: Facade/Glass
     image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80',
     blueprintImage: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&q=80'
   }
@@ -216,6 +220,7 @@ export const PRODUCTS: Product[] = [
     price: 67, 
     originalPrice: 99,
     type: 'hybrid',
+    // Updated Image: Books/Plans
     image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80',
     status: 'available',
     isBestSeller: true,
@@ -238,6 +243,7 @@ export const PRODUCTS: Product[] = [
     price: 35,
     originalPrice: 45,
     type: 'physical',
+    // Updated Image: Single Book
     image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80',
     status: 'available',
     features: [
@@ -256,6 +262,7 @@ export const PRODUCTS: Product[] = [
     },
     price: 15,
     type: 'physical',
+    // Updated Image: Cards/Hands
     image: 'https://images.unsplash.com/photo-1621360841016-0e9f4e245648?auto=format&fit=crop&q=80',
     status: 'available'
   }
@@ -301,6 +308,7 @@ export const BLOG_POSTS: BlogPost[] = [
         en: '<p>Full content here...</p>',
         fr: '<p>Contenu complet...</p>'
     },
+    // Updated Image: Surface/Wall
     image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80'
   },
   {
@@ -318,6 +326,7 @@ export const BLOG_POSTS: BlogPost[] = [
         en: '<p>Full content here...</p>',
         fr: '<p>Contenu complet...</p>'
     },
+    // Updated Image: Rest/Structure
     image: 'https://images.unsplash.com/photo-1517672651691-24622a91b550?auto=format&fit=crop&q=80'
   }
 ];

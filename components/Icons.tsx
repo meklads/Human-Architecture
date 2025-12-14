@@ -62,7 +62,10 @@ import {
   Calendar,
   Radio,
   Target,
-  Key
+  Key,
+  Camera,
+  Send,
+  Clock
 } from 'lucide-react';
 
 export { 
@@ -127,5 +130,8 @@ export {
   Calendar,
   Radio,
   Target,
-  Key
+  Key,
+  Camera,
+  Send,
+  Clock
 };

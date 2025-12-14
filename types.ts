@@ -1,7 +1,7 @@
 
 export type Language = 'ar' | 'en' | 'fr';
 
-export type View = 'home' | 'philosophy' | 'journal' | 'library' | 'contact' | 'landing' | 'checkout' | 'community' | 'register';
+export type View = 'home' | 'philosophy' | 'journal' | 'library' | 'contact' | 'landing' | 'checkout' | 'community' | 'register' | 'dashboard';
 
 export interface ContentText {
   ar: string;
@@ -13,13 +13,27 @@ export interface UserProfile {
   name: string;
   handle: string;
   email: string;
-  rank: string;
-  level: number;
+  rank: string; // Dynamic Rank Title
+  rankColor?: string; // Hex Code for Badge
+  level: number; // Current Day Level
   xp: number;
   projects: number;
   endorsed: number;
   joinedDate: string;
   avatarChar: string;
+  avatarImage?: string; 
+}
+
+// New Interface for the Feed
+export interface SiteLogEntry {
+    id: string;
+    author: string;
+    authorAvatar?: string;
+    authorChar: string;
+    dayNumber: number; // Which day they are on
+    content: string;
+    timestamp: string;
+    likes: number;
 }
 
 export interface PillarData {
@@ -28,7 +42,7 @@ export interface PillarData {
   description: ContentText;
   fullContent?: ContentText;
   image: string;
-  blueprintImage?: string; // New field for X-Ray effect
+  blueprintImage?: string; 
   channelId?: string;
 }
 
@@ -38,7 +52,7 @@ export interface BlogPost {
   title: ContentText;
   date: string;
   excerpt: ContentText;
-  content?: ContentText; // Full content for the internal page
+  content?: ContentText; 
   image: string;
 }
 
@@ -48,22 +62,22 @@ export interface Product {
   name: ContentText;
   description?: ContentText;
   price: number;
-  originalPrice?: number; // For discount display
+  originalPrice?: number; 
   type: 'physical' | 'digital' | 'hybrid';
   image: string;
   specs?: { label: ContentText; value: ContentText }[];
   status?: 'available' | 'coming_soon' | 'in_dev';
-  panels?: number; // 1 = single, 3 = triptych, 4 = quadriptych
-  aiPrompt?: string; // For Art/Tools generative reproduction
-  features?: ContentText[]; // List of what's inside
+  panels?: number; 
+  aiPrompt?: string; 
+  features?: ContentText[]; 
   isBestSeller?: boolean;
 }
 
 export enum AssessmentCategory {
-  FOUNDATION = 'Foundation', // Basics/Body
-  STRUCTURE = 'Structure', // Mind/Mental
-  INTERIOR = 'Interior', // Soul/Spirit
-  EXTERIOR = 'Exterior', // Social
+  FOUNDATION = 'Foundation', 
+  STRUCTURE = 'Structure', 
+  INTERIOR = 'Interior', 
+  EXTERIOR = 'Exterior', 
 }
 
 export interface DayPlan {
@@ -113,6 +127,7 @@ export interface CommunityPost {
   reviews: PeerReview[];
   tags?: string[];
   timestamp: string;
-  type?: 'standard' | 'emergency'; // New field: Is this a normal log or an SOS?
-  isSolved?: boolean; // New field: Has the community helped fix this?
+  type?: 'standard' | 'emergency'; 
+  isSolved?: boolean; 
+  status?: 'approved' | 'pending' | 'rejected'; 
 }
