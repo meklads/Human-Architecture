@@ -138,10 +138,8 @@ function App() {
   };
 
   const navItems: { id: View; label: string }[] = [
-    { id: 'landing', label: TRANSLATIONS.nav.home[lang] },
-    { id: 'library', label: TRANSLATIONS.nav.blueprint[lang] },
-    { id: 'philosophy', label: TRANSLATIONS.nav.philosophy[lang] },
-    { id: 'store', label: TRANSLATIONS.nav.library[lang] }, // CHANGED ID to 'store' to separate from 'library'
+    // Removed Headquarters & Blueprint as requested to avoid duplication
+    { id: 'store', label: TRANSLATIONS.nav.library[lang] },
     { id: 'journal', label: TRANSLATIONS.nav.journal[lang] },
     { id: 'community', label: TRANSLATIONS.nav.community[lang] },
     { id: 'contact', label: TRANSLATIONS.nav.contact[lang] },
@@ -234,9 +232,9 @@ function App() {
                   </button>
               )}
 
-              {/* BLUEPRINT Button (Luxury Style) */}
+              {/* BLUEPRINT Button (Luxury Style) - NOW POINTS TO STORE/FUNNEL */}
               <button 
-                onClick={() => setCurrentView('library')}
+                onClick={() => setCurrentView('store')}
                 className="hidden md:flex border border-white/20 text-white px-6 py-2 text-xs uppercase tracking-widest font-bold hover:border-bronze hover:text-bronze transition-colors rounded-sm"
               >
                   {lang === 'ar' ? 'المخطط' : 'THE BLUEPRINT'}
@@ -277,12 +275,26 @@ function App() {
 
                 {/* Navigation Links */}
                 <nav className="space-y-6 text-center">
+                    {/* Manually add Blueprint for Mobile since button is hidden */}
+                    <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0 }}
+                    >
+                         <button 
+                            onClick={() => { setCurrentView('store'); setMenuOpen(false); }}
+                            className={`text-2xl ${headingFont} hover:text-bronze transition-all duration-300 group flex items-center justify-center gap-6 ${currentView === 'store' ? 'text-white' : 'text-slate-600'}`}
+                        >
+                            {TRANSLATIONS.nav.blueprint[lang]}
+                        </button>
+                    </motion.div>
+
                     {navItems.map((item, idx) => (
                         <motion.div
                             key={item.id}
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: idx * 0.1 }}
+                            transition={{ delay: (idx + 1) * 0.1 }}
                         >
                             <button 
                                 onClick={() => { setCurrentView(item.id); setMenuOpen(false); }}
@@ -305,57 +317,4 @@ function App() {
             {currentView === 'philosophy' && <PhilosophyPage key="philosophy" lang={lang} setView={setCurrentView} />}
             {currentView === 'about' && <AboutPage key="about" lang={lang} />}
             {currentView === 'journal' && <JournalPage key="journal" lang={lang} />}
-            {currentView === 'library' && <LibraryPage key="library" lang={lang} onCheckout={handleAddToCart} />}
-            {/* Store renders the LibraryPage but keeps the 'store' ID active in nav */}
-            {currentView === 'store' && <LibraryPage key="store" lang={lang} onCheckout={handleAddToCart} />}
-            {currentView === 'contact' && <ContactPage key="contact" lang={lang} />}
-            {currentView === 'community' && <CommunityPage key="community" lang={lang} setView={setCurrentView} currentUser={currentUser} />}
-            {currentView === 'register' && (
-                <RegisterPage 
-                    key="register" 
-                    lang={lang} 
-                    setView={setCurrentView} 
-                    onRegisterSuccess={handleRegisterSuccess} 
-                />
-            )}
-            {currentView === 'dashboard' && (
-                <ProgramDashboard 
-                    key="dashboard" 
-                    lang={lang} 
-                    currentUser={currentUser}
-                />
-            )}
-            {currentView === 'checkout' && (
-                <CheckoutPage 
-                    key="checkout" 
-                    lang={lang} 
-                    items={checkoutItems} 
-                    onBack={() => setCurrentView('library')}
-                    onComplete={handlePurchaseComplete}
-                />
-            )}
-        </AnimatePresence>
-      </main>
-
-      {/* --- FOOTER --- */}
-      {currentView !== 'checkout' && (
-      <footer className="bg-[#050505] text-slate-400 py-12 border-t border-white/5 relative z-10">
-          <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-              <div className="text-[0.6rem] uppercase tracking-widest text-slate">
-                  {TRANSLATIONS.footer.copyright[lang]}
-              </div>
-              
-              <div className="flex items-center gap-8">
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-bronze transition-colors"><span className="sr-only">Instagram</span><Instagram size={18} /></a>
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-bronze transition-colors"><span className="sr-only">Twitter</span><Twitter size={18} /></a>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-bronze transition-colors"><span className="sr-only">LinkedIn</span><Linkedin size={18} /></a>
-              </div>
-          </div>
-      </footer>
-      )}
-      
-    </div>
-  );
-}
-
-export default App;
+            
