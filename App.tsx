@@ -138,10 +138,8 @@ function App() {
   };
 
   const navItems: { id: View; label: string }[] = [
-    { id: 'landing', label: TRANSLATIONS.nav.home[lang] },
-    { id: 'library', label: TRANSLATIONS.nav.blueprint[lang] },
+    { id: 'about', label: TRANSLATIONS.nav.architect[lang] }, // Added About Page to Nav
     { id: 'philosophy', label: TRANSLATIONS.nav.philosophy[lang] },
-    { id: 'store', label: TRANSLATIONS.nav.library[lang] }, // CHANGED ID to 'store' to separate from 'library'
     { id: 'journal', label: TRANSLATIONS.nav.journal[lang] },
     { id: 'community', label: TRANSLATIONS.nav.community[lang] },
     { id: 'contact', label: TRANSLATIONS.nav.contact[lang] },
@@ -277,12 +275,26 @@ function App() {
 
                 {/* Navigation Links */}
                 <nav className="space-y-6 text-center">
+                    {/* Explicitly adding The Blueprint for Mobile since we removed it from navItems to clean desktop */}
+                    <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0 }}
+                    >
+                         <button 
+                            onClick={() => { setCurrentView('library'); setMenuOpen(false); }}
+                            className={`text-2xl ${headingFont} hover:text-bronze transition-all duration-300 group flex items-center justify-center gap-6 ${currentView === 'library' ? 'text-white' : 'text-slate-600'}`}
+                        >
+                            {TRANSLATIONS.nav.blueprint[lang]}
+                        </button>
+                    </motion.div>
+
                     {navItems.map((item, idx) => (
                         <motion.div
                             key={item.id}
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: idx * 0.1 }}
+                            transition={{ delay: (idx + 1) * 0.1 }}
                         >
                             <button 
                                 onClick={() => { setCurrentView(item.id); setMenuOpen(false); }}
@@ -306,7 +318,7 @@ function App() {
             {currentView === 'about' && <AboutPage key="about" lang={lang} />}
             {currentView === 'journal' && <JournalPage key="journal" lang={lang} />}
             {currentView === 'library' && <LibraryPage key="library" lang={lang} onCheckout={handleAddToCart} />}
-            {/* Store renders the LibraryPage but keeps the 'store' ID active in nav */}
+            {/* Store renders the LibraryPage but keeps the 'store' ID active in nav logic if accessed via deep link */}
             {currentView === 'store' && <LibraryPage key="store" lang={lang} onCheckout={handleAddToCart} />}
             {currentView === 'contact' && <ContactPage key="contact" lang={lang} />}
             {currentView === 'community' && <CommunityPage key="community" lang={lang} setView={setCurrentView} currentUser={currentUser} />}

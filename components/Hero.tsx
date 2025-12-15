@@ -78,6 +78,20 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
     y.set(e.clientY - rect.top);
   };
 
+  const handleCtaClick = () => {
+      const assessmentSection = document.getElementById('assessment-section');
+      if (assessmentSection) {
+          assessmentSection.scrollIntoView({ behavior: 'smooth' });
+      } else {
+          setView('landing');
+          // Try to scroll after a brief delay if switching views
+          setTimeout(() => {
+              const el = document.getElementById('assessment-section');
+              el?.scrollIntoView({ behavior: 'smooth' });
+          }, 300);
+      }
+  };
+
   return (
     <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center bg-[#050505] pt-20 lg:pt-0">
       
@@ -135,7 +149,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
             >
                 <Magnetic strength={0.4}>
                     <button 
-                        onClick={() => setView('landing')}
+                        onClick={handleCtaClick}
                         className="px-10 py-5 bg-bronze text-white font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-charcoal transition-all shadow-[0_0_20px_rgba(197,160,101,0.2)]"
                     >
                     {TRANSLATIONS.hero.cta[lang]}
@@ -144,7 +158,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
                 
                 <Magnetic strength={0.2}>
                     <button 
-                        onClick={() => document.getElementById('assessment-section')?.scrollIntoView({ behavior: 'smooth' })}
+                        onClick={handleCtaClick}
                         className="px-10 py-5 border border-white/10 text-slate hover:text-white hover:border-white/50 transition-colors uppercase tracking-[0.2em] text-xs font-bold flex items-center gap-3"
                     >
                         <ScanLine size={16} />
@@ -307,7 +321,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
         animate={{ y: [0, 10, 0], opacity: [0.3, 1, 0.3] }}
         transition={{ duration: 2, repeat: Infinity }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
-        onClick={() => document.getElementById('assessment-section')?.scrollIntoView({ behavior: 'smooth' })}
+        onClick={handleCtaClick}
       >
         <span className="text-[0.5rem] uppercase tracking-[0.3em] text-slate">{isAr ? 'بدء التحليل' : 'INITIALIZE'}</span>
         <div className="w-px h-8 bg-gradient-to-b from-bronze to-transparent"></div>

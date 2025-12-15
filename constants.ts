@@ -64,18 +64,18 @@ export const TRANSLATIONS = {
 };
 
 export const ABOUT_CONTENT = {
-    title: { ar: 'المعماري', en: 'The Architect', fr: 'L\'Architecte' },
+    title: { ar: 'عن المعماري', en: 'The Architect', fr: 'L\'Architecte' },
     name: { ar: 'أبراهام مقلد', en: 'Abraham Meklad', fr: 'Abraham Meklad' },
-    titles: { ar: 'معماري | فنان بصري | CEO Graphics House', en: 'Architect | Visual Artist | CEO Graphics House', fr: 'Architecte | Artiste | CEO Graphics House' },
+    titles: { ar: 'مؤسس Graphics House | معماري وفنان', en: 'Founder of Graphics House | Architect & Artist', fr: 'Architecte | Artiste | CEO Graphics House' },
     bio: {
-        ar: 'مهندس معماري وفنان متعدد التخصصات، يشغل منصب رئيس مجلس إدارة "جرافيكس هاوس". يجمع أبراهام بين دقة الخطوط الهندسية وعمق الرؤية الفنية. لا يرى العالم كمجموعة من الأشكال، بل كنظم وعلاقات إنشائية. قضى سنوات في دراسة كيف يمكن للفلسفة المعمارية أن تُطبق على النفس البشرية، مؤمناً بأن الإنسان هو أعقد وأقدس بنيان على وجه الأرض.',
-        en: 'Architect, multidisciplinary artist, and CEO of Graphics House. Abraham combines the precision of engineering lines with the depth of artistic vision. He does not see the world as shapes, but as systems and structural relationships. He has spent years studying how architectural philosophy applies to the human psyche, believing that the human being is the most complex and sacred structure on earth.',
+        ar: 'أنا معماري وفنان عاشق للجمال. قضيت عمراً طويلاً في رحاب الهندسة والعمارة، ولي شغف عميق بمجال الطب والصحة العامة. أسست شركة "جرافيكس هاوس" الإبداعية، حيث تشرفت بتنفيذ العديد من المشاريع الكبرى.',
+        en: 'I am an architect and artist devoted to beauty. I have spent a lifetime in the fields of engineering and architecture, with a deep passion for medicine and health in general. I founded the creative firm "Graphics House" and have executed numerous major projects.',
         fr: 'Architecte et artiste multidisciplinaire, CEO de Graphics House.'
     },
-    philosophyTitle: { ar: 'عن المشروع: لماذا "عمارة الإنسان"؟', en: 'The Project: Why Human Architecture?', fr: 'Pourquoi?' },
+    philosophyTitle: { ar: 'الرؤية: دمج العمارة بالطب', en: 'The Vision: Merging Architecture & Health', fr: 'Pourquoi?' },
     philosophy: {
-        ar: 'هذا المشروع ليس مجرد موقع إلكتروني، ولا هو دورة في التنمية البشرية التقليدية. إنه "مخطط تنفيذي" لإعادة الهيكلة. نحن نعيش في عالم يحاول ترميم "المظهر" (الواجهة)، بينما تتآكل "الأساسات" في صمت. "عمارة الإنسان" هي دعوة للعودة إلى المبادئ الإنشائية الأولى: المتانة، المنفعة، والجمال. نحن نساعدك على التحول من ساكن عشوائي في جسدك، إلى المهندس المسؤول عن صيانته وتطويره، طوبة تلو الأخرى.',
-        en: 'This project is not just a website, nor traditional self-help. It is an "Execution Blueprint" for restructuring. We live in a world fixing the "facade" while foundations erode in silence. "Human Architecture" is a call to return to first structural principles: Firmitas, Utilitas, Venustas. We shift you from a random occupant of your body to the Lead Architect responsible for its maintenance and development, brick by brick.',
+        ar: 'هذا المشروع هو نتاج دمج خبرتي الطويلة في العمارة مع شغفي بالطب. "عمارة الإنسان" ليست مجرد فلسفة، بل هي تطبيق للمبادئ الهندسية الصارمة على الصحة النفسية والجسدية. كما يُبنى ناطحات السحاب على أسس متينة، يجب أن يُبنى الإنسان. أنا هنا لا لأقدم نصائح، بل لأعطيك "المخطط التنفيذي" لإعادة بناء ذاتك كتحفة معمارية.',
+        en: 'This project is the result of merging my lifetime experience in architecture with my passion for medicine. "Human Architecture" is not just a philosophy; it is the application of strict engineering principles to mental and physical health. Just as skyscrapers are built on solid foundations, so must the human being. I am not here to offer advice, but to hand you the "Execution Blueprint" to rebuild yourself as a structural masterpiece.',
         fr: 'Ce projet est un plan d\'exécution pour la restructuration.'
     }
 };

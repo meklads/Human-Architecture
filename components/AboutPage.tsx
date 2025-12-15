@@ -96,12 +96,12 @@ export const AboutPage: React.FC<AboutPageProps> = ({ lang }) => {
                         onMouseLeave={() => setIsHovering(false)}
                         className="relative z-10 aspect-[3/4] bg-[#020202] overflow-hidden cursor-crosshair shadow-2xl border border-white/5"
                     >
-                         {/* 1. IDLE STATE: Zaha Hadid (Dark & Moody) */}
+                         {/* 1. IDLE STATE: User Image (Dark & Moody) */}
                          <div className="absolute inset-0 w-full h-full z-10 pointer-events-none">
                              <img 
-                                src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80" 
-                                alt="Zaha Hadid Architecture - Surface" 
-                                className="w-full h-full object-cover grayscale-[50%] contrast-[1.1] brightness-[0.6]" 
+                                src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1287&auto=format&fit=crop" 
+                                alt="Abraham Meklad" 
+                                className="w-full h-full object-cover grayscale-[20%] contrast-[1.2] brightness-[0.8]" 
                              />
                              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80"></div>
                              
@@ -119,7 +119,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ lang }) => {
                              {/* Image Base - High Contrast / Inverted / Technical */}
                              <div className="absolute inset-0 w-full h-full z-0">
                                  <img 
-                                    src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80" 
+                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1287&auto=format&fit=crop" 
                                     alt="Structure Blueprint"
                                     className="w-full h-full object-cover filter contrast-[1.5] brightness-125 grayscale sepia-[100%] hue-rotate-[170deg] saturate-[400%]" 
                                  />
@@ -143,8 +143,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ lang }) => {
                                      <line x1="350" y1="0" x2="350" y2="600" strokeDasharray="10 5" opacity="0.5" />
                                      <circle cx="200" cy="300" r="100" strokeDasharray="2 2" />
                                      <path d="M100,200 L300,200 L300,400 L100,400 Z" strokeDasharray="5 5" />
-                                     <text x="60" y="50" fill="cyan" fontSize="10" fontFamily="monospace">STRUCTURAL ANALYSIS</text>
-                                     <text x="60" y="550" fill="cyan" fontSize="10" fontFamily="monospace">INTEGRITY: 98%</text>
+                                     <text x="60" y="50" fill="cyan" fontSize="10" fontFamily="monospace">BIO-STRUCTURAL SCAN</text>
+                                     <text x="60" y="550" fill="cyan" fontSize="10" fontFamily="monospace">ARCHITECT: VERIFIED</text>
                                 </g>
                              </svg>
                          </motion.div>
@@ -172,7 +172,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ lang }) => {
 
                             {/* Label */}
                             <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-cyan-400 border border-cyan-500/30 text-[0.5rem] font-mono px-2 py-1 uppercase tracking-widest whitespace-nowrap">
-                                {isAr ? 'مسح: الهيكل' : 'SCAN: STRUCTURE'}
+                                {isAr ? 'مسح: المهندس' : 'SCAN: ARCHITECT'}
                             </div>
                          </motion.div>
 
@@ -234,18 +234,18 @@ export const AboutPage: React.FC<AboutPageProps> = ({ lang }) => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 text-left">
                         <div className="p-8 border border-white/5 hover:border-bronze/30 transition-colors group">
                             <span className="text-4xl font-serif text-white/10 group-hover:text-bronze/20 block mb-4">I</span>
-                            <h3 className={`text-xl mb-2 text-white ${headingFont}`}>{isAr ? 'المتانة' : 'Firmitas'}</h3>
-                            <p className="text-xs text-slate uppercase tracking-widest">{isAr ? 'قوة الأساس' : 'Structural Strength'}</p>
+                            <h3 className={`text-xl mb-2 text-white ${headingFont}`}>{isAr ? 'العمارة' : 'Architecture'}</h3>
+                            <p className="text-xs text-slate uppercase tracking-widest">{isAr ? 'البنية والهيكل' : 'Structure & Form'}</p>
                         </div>
                         <div className="p-8 border border-white/5 hover:border-bronze/30 transition-colors group">
                             <span className="text-4xl font-serif text-white/10 group-hover:text-bronze/20 block mb-4">II</span>
-                            <h3 className={`text-xl mb-2 text-white ${headingFont}`}>{isAr ? 'المنفعة' : 'Utilitas'}</h3>
-                            <p className="text-xs text-slate uppercase tracking-widest">{isAr ? 'كفاءة الوظيفة' : 'Functional Utility'}</p>
+                            <h3 className={`text-xl mb-2 text-white ${headingFont}`}>{isAr ? 'الطب' : 'Medicine'}</h3>
+                            <p className="text-xs text-slate uppercase tracking-widest">{isAr ? 'العلاج والترميم' : 'Healing & Repair'}</p>
                         </div>
                         <div className="p-8 border border-white/5 hover:border-bronze/30 transition-colors group">
                             <span className="text-4xl font-serif text-white/10 group-hover:text-bronze/20 block mb-4">III</span>
-                            <h3 className={`text-xl mb-2 text-white ${headingFont}`}>{isAr ? 'الجمال' : 'Venustas'}</h3>
-                            <p className="text-xs text-slate uppercase tracking-widest">{isAr ? 'تناغم التصميم' : 'Aesthetic Harmony'}</p>
+                            <h3 className={`text-xl mb-2 text-white ${headingFont}`}>{isAr ? 'الفن' : 'Art'}</h3>
+                            <p className="text-xs text-slate uppercase tracking-widest">{isAr ? 'الجمال والإبداع' : 'Beauty & Creation'}</p>
                         </div>
                     </div>
                 </div>
