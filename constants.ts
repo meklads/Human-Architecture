@@ -186,8 +186,9 @@ export const PILLARS: PillarData[] = [
       en: 'Reprogramming cognitive operating systems.', 
       fr: 'Reprogrammation cognitive.' 
     },
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80',
-    blueprintImage: 'https://images.unsplash.com/photo-1516110833967-0b5716ca1387?auto=format&fit=crop&q=80'
+    // Updated Image: Abstract Geometric / Tech Structure
+    image: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=2068&auto=format&fit=crop',
+    blueprintImage: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop'
   },
   {
     id: 'body',
@@ -198,8 +199,9 @@ export const PILLARS: PillarData[] = [
       en: 'Pouring concrete bases for bio-energy.', 
       fr: 'Coulage des bases.' 
     },
-    image: 'https://images.unsplash.com/photo-1563409257650-77990b793710?auto=format&fit=crop&q=80',
-    blueprintImage: 'https://images.unsplash.com/photo-1534970028765-38ce47ef7d8d?auto=format&fit=crop&q=80'
+    // Updated Image: Heavy Concrete Structure
+    image: 'https://images.unsplash.com/photo-1518005052354-a36d6956e43d?q=80&w=2088&auto=format&fit=crop',
+    blueprintImage: 'https://images.unsplash.com/photo-1534970028765-38ce47ef7d8d?q=80&w=2070&auto=format&fit=crop'
   },
   {
     id: 'spirit',
@@ -210,8 +212,9 @@ export const PILLARS: PillarData[] = [
       en: 'Orienting the structure to True North.', 
       fr: 'Orientation vers le Nord.' 
     },
-    image: 'https://images.unsplash.com/photo-1507643179173-617d67456fd3?auto=format&fit=crop&q=80',
-    blueprintImage: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80'
+    // Updated Image: Light and Shadow Interior
+    image: 'https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?q=80&w=2070&auto=format&fit=crop',
+    blueprintImage: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?q=80&w=2070&auto=format&fit=crop'
   },
   {
     id: 'social',
@@ -222,8 +225,9 @@ export const PILLARS: PillarData[] = [
       en: 'Protection systems and external interfaces.', 
       fr: 'Systèmes de protection.' 
     },
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80',
-    blueprintImage: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&q=80'
+    // Updated Image: Modern Facade
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop',
+    blueprintImage: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=2070&auto=format&fit=crop'
   }
 ];
 
