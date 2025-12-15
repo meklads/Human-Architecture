@@ -19,8 +19,9 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
 
   // X-Ray Logic
   const containerRef = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(250); // Default center
-  const y = useMotionValue(300); // Default center
+  // Initial values must match the start of the mobile animation loop to prevent "jumping"
+  const x = useMotionValue(200); 
+  const y = useMotionValue(250); 
   const [isHovering, setIsHovering] = useState(false);
 
   // Smooth mouse movement for the lens
@@ -36,7 +37,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
     // If hovering (mouse usage), show lens.
     // IF NOT hovering, check if it's likely a touch device to run auto-scan.
     if (isHovering) {
-        radius.set(125); // Reduced from 250 to 125
+        radius.set(125); 
     } else {
         // MOBILE AUTO-SCAN LOGIC
         // We set radius to open up on mobile load
@@ -45,10 +46,10 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
             // Smaller radius for mobile
             radius.set(100);
             
-            // Much slower, smoother animation loop
-            // Constrain movement to be more central to avoid jarring edges
-            const controlsX = animate(x, [120, 220, 120], { duration: 12, repeat: Infinity, ease: "easeInOut" });
-            const controlsY = animate(y, [200, 300, 200], { duration: 15, repeat: Infinity, ease: "easeInOut" });
+            // Fix: Start animation from the current center values (200, 250)
+            // Use a very gentle, slow breathing motion
+            const controlsX = animate(x, [200, 160, 240, 200], { duration: 20, repeat: Infinity, ease: "easeInOut" });
+            const controlsY = animate(y, [250, 300, 200, 250], { duration: 25, repeat: Infinity, ease: "easeInOut" });
             
             return () => {
                 controlsX.stop();
