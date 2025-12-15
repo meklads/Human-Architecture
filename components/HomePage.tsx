@@ -52,7 +52,8 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
       </div>
 
       {/* Pillars Preview - X-RAY ARCHITECTURE GALLERY */}
-      <section className="py-24 bg-[#080808] relative overflow-hidden">
+      {/* Added ID 'xray-section' for the Diagnostics button scroll target */}
+      <section id="xray-section" className="py-24 bg-[#080808] relative overflow-hidden">
          {/* Background Watermark */}
          <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 text-[10rem] md:text-[15rem] text-white/5 pointer-events-none whitespace-nowrap ${headingFont} z-0 opacity-10`}>
             STRUCTURE

@@ -32,7 +32,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView }) => {
       </div>
 
       {/* 3. STRUCTURAL PREVIEW (The Pillars) */}
-      <section className="py-24 bg-[#080808] relative overflow-hidden border-t border-white/10">
+      <section id="xray-section" className="py-24 bg-[#080808] relative overflow-hidden border-t border-white/10">
          <div className="container mx-auto px-6 relative z-10">
             <div className="text-center mb-16">
                 <span className="text-bronze text-xs uppercase tracking-[0.3em] flex items-center justify-center gap-2 mb-4">

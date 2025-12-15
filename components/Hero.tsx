@@ -78,15 +78,15 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
     y.set(e.clientY - rect.top);
   };
 
-  const handleCtaClick = () => {
-      const assessmentSection = document.getElementById('assessment-section');
-      if (assessmentSection) {
-          assessmentSection.scrollIntoView({ behavior: 'smooth' });
+  const handleCtaClick = (targetId: string) => {
+      const section = document.getElementById(targetId);
+      if (section) {
+          section.scrollIntoView({ behavior: 'smooth' });
       } else {
           setView('landing');
           // Try to scroll after a brief delay if switching views
           setTimeout(() => {
-              const el = document.getElementById('assessment-section');
+              const el = document.getElementById(targetId);
               el?.scrollIntoView({ behavior: 'smooth' });
           }, 300);
       }
@@ -149,7 +149,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
             >
                 <Magnetic strength={0.4}>
                     <button 
-                        onClick={handleCtaClick}
+                        onClick={() => handleCtaClick('assessment-section')}
                         className="px-10 py-5 bg-bronze text-white font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-charcoal transition-all shadow-[0_0_20px_rgba(197,160,101,0.2)]"
                     >
                     {TRANSLATIONS.hero.cta[lang]}
@@ -158,7 +158,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
                 
                 <Magnetic strength={0.2}>
                     <button 
-                        onClick={handleCtaClick}
+                        onClick={() => handleCtaClick('xray-section')}
                         className="px-10 py-5 border border-white/10 text-slate hover:text-white hover:border-white/50 transition-colors uppercase tracking-[0.2em] text-xs font-bold flex items-center gap-3"
                     >
                         <ScanLine size={16} />
@@ -321,7 +321,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, setView }) => {
         animate={{ y: [0, 10, 0], opacity: [0.3, 1, 0.3] }}
         transition={{ duration: 2, repeat: Infinity }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
-        onClick={handleCtaClick}
+        onClick={() => handleCtaClick('assessment-section')}
       >
         <span className="text-[0.5rem] uppercase tracking-[0.3em] text-slate">{isAr ? 'بدء التحليل' : 'INITIALIZE'}</span>
         <div className="w-px h-8 bg-gradient-to-b from-bronze to-transparent"></div>
