@@ -229,12 +229,14 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
           {selectedArt && (
               <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                // UPDATED: overflow-y-auto ensures the whole modal can scroll if needed
                 className="fixed inset-0 z-[100] bg-black/98 flex items-center justify-center p-0 lg:p-8 overflow-y-auto"
                 onClick={() => setSelectedArt(null)}
               >
                   <motion.div 
                     layoutId={selectedArt.id}
-                    className="bg-[#050505] w-full max-w-7xl h-full lg:h-[90vh] border border-[#222] shadow-2xl relative flex flex-col lg:flex-row overflow-hidden"
+                    // UPDATED: min-h-full allows growth on mobile. lg:overflow-hidden keeps desktop neat.
+                    className="bg-[#050505] w-full max-w-7xl min-h-full lg:min-h-0 lg:h-[90vh] border border-[#222] shadow-2xl relative flex flex-col lg:flex-row lg:overflow-hidden"
                     onClick={(e) => e.stopPropagation()}
                   >
                       <button 
@@ -245,7 +247,7 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
                       </button>
 
                       {/* Left: The Art (Immersion / AI Mockup) */}
-                      <div className="w-full lg:w-2/3 bg-[#020202] relative h-[50vh] lg:h-full flex items-center justify-center p-8 overflow-hidden group">
+                      <div className="w-full lg:w-2/3 bg-[#020202] relative h-[50vh] lg:h-full flex items-center justify-center p-8 overflow-hidden group shrink-0">
                           
                           {/* VIEW SWITCHER: Original vs AI */}
                           <div className="absolute top-6 left-6 z-50 flex gap-4">
@@ -301,7 +303,8 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
                       </div>
 
                       {/* Right: Acquisition Config (Concierge Style) */}
-                      <div className="w-full lg:w-1/3 p-10 lg:p-16 flex flex-col h-auto lg:h-full bg-[#0a0a0a] border-l border-[#222]">
+                      {/* UPDATED: lg:overflow-y-auto allows desktop scrolling for this section independently */}
+                      <div className="w-full lg:w-1/3 p-10 lg:p-16 flex flex-col h-auto lg:h-full bg-[#0a0a0a] border-l border-[#222] lg:overflow-y-auto">
                           
                           <div className="mb-12">
                               <div className="text-bronze text-xs uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
