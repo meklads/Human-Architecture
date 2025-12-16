@@ -70,7 +70,10 @@ import {
   Instagram,
   Twitter,
   Linkedin,
-  Facebook
+  Facebook,
+  HelpCircle,
+  Hammer,
+  Anchor
 } from 'lucide-react';
 
 export { 
@@ -143,5 +146,8 @@ export {
   Instagram,
   Twitter,
   Linkedin,
-  Facebook
+  Facebook,
+  HelpCircle,
+  Hammer,
+  Anchor
 };

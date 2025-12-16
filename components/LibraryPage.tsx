@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Language, Product } from '../types';
-import { PRODUCTS, LANDING_CONTENT } from '../constants';
-import { Layers, PenTool, Activity, Check, Shield, Lock, Play, ArrowRight, Star, AlertTriangle, Zap, Target, Users, BookOpen, ShoppingBag, Box } from './Icons';
+import { PRODUCTS, LANDING_CONTENT, ABOUT_CONTENT } from '../constants';
+import { Layers, PenTool, Activity, Check, Shield, Lock, Play, ArrowRight, Star, AlertTriangle, Zap, Target, Users, BookOpen, ShoppingBag, Box, Compass, HelpCircle, ChevronDown, Hammer, Anchor } from './Icons';
 import { Magnetic } from './Magnetic';
 
 interface LibraryPageProps {
@@ -18,13 +18,13 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
   const dir = isAr ? 'rtl' : 'ltr';
 
   // Products from catalog
-  const completeRebuild = PRODUCTS.find(p => p.id === 'bundle_master');
+  const completeRebuild = PRODUCTS.find(p => p.id === 'bundle_master') || PRODUCTS[0]; // Fallback
   
   // Individual items for "A La Carte"
   const bookDigital = PRODUCTS.find(p => p.id === 'book_digital');
   const bookPrint = PRODUCTS.find(p => p.id === 'book_print');
   const workbookPrint = PRODUCTS.find(p => p.id === 'workbook_print');
-  const systemHybrid = PRODUCTS.find(p => p.id === 'system_hybrid');
+  const systemHybrid = PRODUCTS.find(p => p.id === 'tier_architect_product');
 
   const handlePurchase = (product: Product | undefined) => {
     if (product && onCheckout) {
@@ -50,6 +50,24 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
           <p className={`text-slate text-lg ${bodyFont}`}>{text}</p>
       </div>
   );
+
+  const FaqItem = ({ q, a }: { q: string, a: string }) => {
+      const [isOpen, setIsOpen] = useState(false);
+      return (
+          <div className="border-b border-white/10">
+              <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full py-6 flex justify-between items-center text-start focus:outline-none group"
+              >
+                  <span className={`text-lg text-slate-200 group-hover:text-bronze transition-colors ${headingFont}`}>{q}</span>
+                  <ChevronDown size={20} className={`text-slate-500 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+              </button>
+              <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-48 opacity-100 pb-6' : 'max-h-0 opacity-0'}`}>
+                  <p className={`text-slate/70 ${bodyFont}`}>{a}</p>
+              </div>
+          </div>
+      )
+  };
 
   return (
     <div dir={dir} className="bg-[#050505] min-h-screen text-alabaster overflow-x-hidden pt-20">
@@ -106,17 +124,25 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
 
              <motion.div 
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+                className="flex flex-col sm:flex-row justify-center gap-6"
              >
                 <button 
                     onClick={() => document.getElementById('offer-stack')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="bg-bronze text-white px-12 py-6 text-lg uppercase tracking-[0.1em] font-bold hover:bg-white hover:text-black transition-all shadow-[0_0_30px_rgba(197,160,101,0.4)] rounded-sm flex items-center gap-4 mx-auto animate-pulse"
+                    className="bg-bronze text-white px-8 md:px-12 py-5 text-sm md:text-lg uppercase tracking-[0.1em] font-bold hover:bg-white hover:text-black transition-all shadow-[0_0_30px_rgba(197,160,101,0.4)] rounded-sm flex items-center justify-center gap-4 animate-pulse"
                 >
-                    {isAr ? 'نعم، أريد إعادة بناء حياتي الآن' : 'YES! I WANT TO REBUILD MY LIFE NOW'} <ArrowRight size={20} />
+                    {isAr ? 'نعم، أعد بناء حياتي' : 'YES! REBUILD MY LIFE'} <ArrowRight size={20} />
                 </button>
-                <p className="mt-4 text-xs text-slate/50 uppercase tracking-widest">
-                    {isAr ? 'ضمان استرجاع الأموال لمدة 30 يوماً' : '30-Day 100% Money Back Guarantee'}
-                </p>
+                <button 
+                    onClick={() => document.getElementById('methodology')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="px-8 md:px-12 py-5 border border-white/20 text-slate hover:text-white hover:border-white transition-all text-sm md:text-lg uppercase tracking-[0.1em] font-bold rounded-sm flex items-center justify-center gap-2"
+                >
+                    <Layers size={18} />
+                    {isAr ? 'كيف يعمل النظام؟' : 'See The Protocol'}
+                </button>
              </motion.div>
+             <p className="mt-6 text-xs text-slate/50 uppercase tracking-widest">
+                {isAr ? 'ضمان استرجاع الأموال لمدة 30 يوماً' : '30-Day 100% Money Back Guarantee'}
+            </p>
          </div>
       </section>
 
@@ -158,27 +184,184 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
       </section>
 
       {/* =====================================================================================
-          3. THE SOLUTION (The 3-Part System)
+          3. HOW IT WORKS (The Protocol) - NEW SECTION FOR CLARITY
       ===================================================================================== */}
-      <section id="system" className="py-32 bg-[#050505]">
+      <section id="methodology" className="py-32 bg-[#050505] relative overflow-hidden">
+          {/* Schematic Background */}
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+          
           <div className="container mx-auto px-6">
               <SectionHeader 
-                title={isAr ? 'نظام إعادة البناء المتكامل' : 'The Complete Rebuild System'}
-                subtitle={isAr ? 'الحل الهندسي' : 'THE ARCHITECTURAL SOLUTION'}
+                title={isAr ? 'المنهجية الهندسية' : 'The Engineering Protocol'}
+                subtitle={isAr ? 'كيف يعمل؟' : 'HOW IT WORKS'}
+              />
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                  {/* Connector Line */}
+                  <div className="hidden md:block absolute top-12 left-0 w-full h-[2px] bg-white/10 z-0"></div>
+
+                  {/* Phase 1 */}
+                  <div className="bg-[#111] p-8 border border-white/10 relative z-10 hover:border-bronze transition-colors group">
+                      <div className="w-24 h-24 bg-[#050505] border-2 border-slate-700 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:border-bronze transition-colors relative">
+                          <Hammer size={32} className="text-slate-500 group-hover:text-bronze" />
+                          <div className="absolute -top-3 bg-[#050505] px-2 text-xs font-mono text-slate-500">PHASE 01</div>
+                      </div>
+                      <h3 className={`text-2xl text-white text-center mb-4 ${headingFont}`}>{isAr ? 'الحفر والهدم' : 'Excavation & Demolition'}</h3>
+                      <p className={`text-slate text-center text-sm leading-relaxed ${bodyFont}`}>
+                          {isAr 
+                           ? 'قبل البناء، يجب إزالة الأنقاض. نتخلص من المعتقدات المعيقة وعادات الهروب باستخدام تمارين "التفكيك النفسي".' 
+                           : 'Before building, we must clear the rubble. We remove limiting beliefs and escapist habits using "Psych-Deconstruction" drills.'}
+                      </p>
+                  </div>
+
+                  {/* Phase 2 */}
+                  <div className="bg-[#111] p-8 border border-white/10 relative z-10 hover:border-bronze transition-colors group">
+                      <div className="w-24 h-24 bg-[#050505] border-2 border-slate-700 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:border-bronze transition-colors relative">
+                          <Anchor size={32} className="text-slate-500 group-hover:text-bronze" />
+                          <div className="absolute -top-3 bg-[#050505] px-2 text-xs font-mono text-slate-500">PHASE 02</div>
+                      </div>
+                      <h3 className={`text-2xl text-white text-center mb-4 ${headingFont}`}>{isAr ? 'صب الأساسات' : 'Pouring The Foundation'}</h3>
+                      <p className={`text-slate text-center text-sm leading-relaxed ${bodyFont}`}>
+                          {isAr 
+                           ? 'تطبيق بروتوكولات النوم، التغذية، والروتين الصباحي الصارم. الجسد هو الأرضية التي يحمل عليها العقل.' 
+                           : 'Implementing strict sleep, nutrition, and morning protocols. The body is the bedrock upon which the mind sits.'}
+                      </p>
+                  </div>
+
+                  {/* Phase 3 */}
+                  <div className="bg-[#111] p-8 border border-white/10 relative z-10 hover:border-bronze transition-colors group">
+                      <div className="w-24 h-24 bg-[#050505] border-2 border-slate-700 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:border-bronze transition-colors relative">
+                          <Compass size={32} className="text-slate-500 group-hover:text-bronze" />
+                          <div className="absolute -top-3 bg-[#050505] px-2 text-xs font-mono text-slate-500">PHASE 03</div>
+                      </div>
+                      <h3 className={`text-2xl text-white text-center mb-4 ${headingFont}`}>{isAr ? 'رفع الهيكل' : 'Structural Elevation'}</h3>
+                      <p className={`text-slate text-center text-sm leading-relaxed ${bodyFont}`}>
+                          {isAr 
+                           ? 'الآن فقط نبدأ في بناء الأهداف والطموحات. مع أساس متين، يمكنك بناء ناطحة سحاب دون خوف من الانهيار.' 
+                           : 'Only now do we build goals. With a solid foundation, you can erect a skyscraper without fear of collapse.'}
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      {/* =====================================================================================
+          4. THE ARCHITECT (Credibility) - NEW SECTION
+      ===================================================================================== */}
+      <section className="py-24 bg-[#080808] border-y border-white/5">
+          <div className="container mx-auto px-6">
+              <div className="flex flex-col lg:flex-row gap-16 items-center">
+                  <div className="w-full lg:w-1/2">
+                      <div className="relative aspect-square max-w-md mx-auto border-8 border-double border-white/5 shadow-2xl">
+                          <img 
+                            src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1287&auto=format&fit=crop" 
+                            alt="The Architect" 
+                            className="w-full h-full object-cover grayscale contrast-125"
+                          />
+                          <div className="absolute bottom-0 left-0 bg-bronze text-white px-6 py-2 text-xs font-bold uppercase tracking-widest">
+                              {ABOUT_CONTENT.name[lang]}
+                          </div>
+                      </div>
+                  </div>
+                  <div className="w-full lg:w-1/2">
+                      <span className="text-bronze text-xs uppercase tracking-[0.3em] font-bold mb-4 block">
+                          {isAr ? 'عن المؤسس' : 'THE ARCHITECT'}
+                      </span>
+                      <h2 className={`text-4xl text-white mb-6 ${headingFont}`}>
+                          {isAr ? 'لماذا تثق بمعماري لبناء ذاتك؟' : 'Why trust an Architect with your Psychology?'}
+                      </h2>
+                      <p className={`text-slate text-lg leading-relaxed mb-6 ${bodyFont}`}>
+                          {isAr 
+                           ? 'لأن النفس البشرية ليست غيمة عشوائية، بل هي "بنية" لها قواعد وقوانين وقدرة تحمل. قضيت حياتي المهنية في دمج صرامة الهندسة المعمارية مع علوم النفس.'
+                           : 'Because the human self is not a random cloud; it is a "structure" with laws, loads, and breaking points. I spent my career merging the rigor of Architecture with Psychology.'}
+                      </p>
+                      <p className={`text-slate text-lg leading-relaxed mb-8 ${bodyFont}`}>
+                          {isAr
+                           ? 'أنا لا أقدم لك كلمات لطيفة لتشعر بتحسن، بل أقدم لك "مخططات تنفيذية" لتعمل بشكل أفضل.'
+                           : 'I do not offer you nice words to make you feel better. I offer you "Execution Blueprints" to make you function better.'}
+                      </p>
+                      <div className="flex gap-4">
+                          <div className="border border-white/10 px-4 py-2 text-xs uppercase tracking-widest text-slate/60">
+                              Founder of Graphics House
+                          </div>
+                          <div className="border border-white/10 px-4 py-2 text-xs uppercase tracking-widest text-slate/60">
+                              Systems Engineer
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      {/* =====================================================================================
+          5. SOCIAL PROOF ("FIELD REPORTS") - UPGRADED
+      ===================================================================================== */}
+      <section className="py-24 bg-[#050505]">
+          <div className="container mx-auto px-6">
+              <SectionHeader title={isAr ? 'تقارير ميدانية' : 'Field Reports'} subtitle={isAr ? 'من موقع العمل' : 'FROM THE SITE'} />
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {[
+                      { 
+                          name: "Sarah Jenkins", 
+                          role: "CEO, TechStart", 
+                          text: "I thought I needed a vacation. I discovered I needed to redesign my day. The Architect System changed the rules completely. My stress capacity doubled in 30 days.",
+                          status: "Restored" 
+                      },
+                      { 
+                          name: "Ahmed Kamal", 
+                          role: "Senior Surgeon", 
+                          text: "In medicine, we follow protocols. This is the first time I've seen a protocol for life. No fluff, just pure structural logic. It saved my marriage.",
+                          status: "Stable" 
+                      },
+                      { 
+                          name: "Liam O'Connor", 
+                          role: "Creative Director", 
+                          text: "I was creative but chaotic. The 'Chaos Under Construction' concept resonated with me. Now, my creativity has a frame to hold it. Highly recommended.",
+                          status: "Optimized" 
+                      }
+                  ].map((review, i) => (
+                      <div key={i} className="bg-[#111] p-8 border border-white/10 hover:border-bronze/30 transition-colors relative">
+                          <div className="absolute top-4 right-4 opacity-10">
+                              <Shield size={40} />
+                          </div>
+                          <div className="flex gap-1 text-bronze mb-4">
+                              {[...Array(5)].map((_, j) => <Star key={j} fill="currentColor" size={14} />)}
+                          </div>
+                          <p className={`text-slate mb-6 leading-relaxed ${bodyFont} text-sm`}>
+                              "{review.text}"
+                          </p>
+                          <div className="flex items-center gap-4 border-t border-white/5 pt-4">
+                              <div className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                                  {review.name.charAt(0)}
+                              </div>
+                              <div>
+                                  <div className="text-white font-bold text-sm">{review.name}</div>
+                                  <div className="text-slate/50 text-xs uppercase">{review.role}</div>
+                              </div>
+                              <div className="ml-auto px-2 py-1 bg-green-900/20 text-green-500 text-[0.6rem] uppercase tracking-widest border border-green-900/50">
+                                  {review.status}
+                              </div>
+                          </div>
+                      </div>
+                  ))}
+              </div>
+          </div>
+      </section>
+
+      {/* =====================================================================================
+          6. THE SYSTEM (Offer Details)
+      ===================================================================================== */}
+      <section id="system" className="py-32 bg-[#0a0a0a]">
+          <div className="container mx-auto px-6">
+              <SectionHeader 
+                title={isAr ? 'اختر مستوى البناء' : 'Choose Your Build Level'}
+                subtitle={isAr ? 'الأدوات المتاحة' : 'AVAILABLE TOOLS'}
               />
 
               {/* STEP 1: THE BLUEPRINT (BOOK) */}
-              <div className="flex flex-col lg:flex-row gap-12 items-center mb-24 border border-white/5 p-8 md:p-12 bg-[#0a0a0a] relative overflow-hidden group hover:border-bronze/30 transition-colors">
-                  <div className="absolute top-0 right-0 bg-bronze text-white text-xs font-bold px-4 py-2 uppercase tracking-widest">
-                      {isAr ? 'الخطوة 1: النظرية' : 'STEP 1: THE THEORY'}
-                  </div>
-                  <div className="w-full lg:w-1/3 flex justify-center">
-                      <div className="w-48 h-64 bg-[#151515] border-2 border-white/10 flex items-center justify-center shadow-2xl rotate-[-5deg] group-hover:rotate-0 transition-transform duration-500">
-                          <Layers size={64} className="text-bronze" />
-                          <span className="absolute bottom-4 text-xs tracking-widest text-slate">BOOK</span>
-                      </div>
-                  </div>
-                  <div className="w-full lg:w-2/3">
+              <div className="flex flex-col lg:flex-row gap-12 items-center mb-12 border border-white/5 p-8 md:p-12 bg-[#050505] relative overflow-hidden group hover:border-bronze/30 transition-colors">
+                  <div className="w-full lg:w-2/3 order-2 lg:order-1">
                       <h3 className={`text-3xl text-white mb-2 ${headingFont}`}>{isAr ? 'الكتاب: المخطط الأصلي' : 'The Book: The Master Blueprint'}</h3>
                       <div className="flex gap-4 mb-4 text-xs font-mono uppercase tracking-widest text-slate/60">
                           <span className="border border-slate/20 px-2 py-1">{isAr ? 'متاح ديجيتال' : 'Digital Available'}</span>
@@ -189,39 +372,12 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                            ? 'ليس مجرد كتاب للقراءة، بل هو "دليل تشغيل" لنفسك. ستفهم فيزياء الانهيار، وقوانين الأحمال النفسية، وكيف ترسم خريطة "الشمال الحقيقي" الخاصة بك.' 
                            : 'Not just a book to read, but an "Owner\'s Manual" for your self. Understand the physics of collapse, laws of psychological load-bearing, and how to map your True North.'}
                       </p>
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <BenefitBullet text={isAr ? 'فهم الأعمدة الأربعة (عقل، جسد، روح، علاقات)' : 'Decode the 4 Pillars (Mind, Body, Spirit, Social)'} />
-                          <BenefitBullet text={isAr ? 'تحليل ميكانيكا الانهيار النفسي' : 'Analyze mechanics of psychological collapse'} />
-                      </ul>
-                  </div>
-              </div>
-
-              {/* STEP 2: THE WORKBOOK (28 DAYS) */}
-              <div className="flex flex-col lg:flex-row gap-12 items-center mb-24 border border-white/5 p-8 md:p-12 bg-[#0a0a0a] relative overflow-hidden group hover:border-bronze/30 transition-colors">
-                  <div className="absolute top-0 right-0 bg-bronze text-white text-xs font-bold px-4 py-2 uppercase tracking-widest">
-                      {isAr ? 'الخطوة 2: التطبيق' : 'STEP 2: THE PRACTICE'}
+                      <button onClick={() => handlePurchase(bookDigital)} className="text-bronze underline text-sm uppercase tracking-widest font-bold hover:text-white transition-colors">
+                          {isAr ? 'شراء الكتاب فقط ($29)' : 'Buy Book Only ($29)'}
+                      </button>
                   </div>
                   <div className="w-full lg:w-1/3 flex justify-center order-1 lg:order-2">
-                      <div className="w-48 h-64 bg-[#151515] border-2 border-white/10 flex items-center justify-center shadow-2xl rotate-[5deg] group-hover:rotate-0 transition-transform duration-500">
-                          <PenTool size={64} className="text-white" />
-                          <span className="absolute bottom-4 text-xs tracking-widest text-slate">WORKBOOK</span>
-                      </div>
-                  </div>
-                  <div className="w-full lg:w-2/3 order-2 lg:order-1">
-                      <h3 className={`text-3xl text-white mb-2 ${headingFont}`}>{isAr ? 'الوورك بوك: 28 يوماً من الحفر' : 'The Workbook: 28 Days of Excavation'}</h3>
-                      <div className="flex gap-4 mb-4 text-xs font-mono uppercase tracking-widest">
-                          <span className="bg-green-900/30 text-green-400 border border-green-700 px-2 py-1">{isAr ? 'ديجيتال: مجاناً' : 'Digital: FREE'}</span>
-                          <span className="text-slate/60 border border-slate/20 px-2 py-1">{isAr ? 'مطبوع: متوفر' : 'Print: Available'}</span>
-                      </div>
-                      <p className={`text-slate mb-6 ${bodyFont}`}>
-                          {isAr 
-                           ? 'المعرفة بلا تطبيق مجرد معلومات. هذا الوورك بوك يحتوي على 28 تمرين عملي لهدم المعتقدات القديمة وصب القواعد الجديدة.' 
-                           : 'Knowledge without action is data. This workbook contains 28 practical drills to demolish old beliefs and pour new concrete foundations.'}
-                      </p>
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <BenefitBullet text={isAr ? 'تمارين يومية صباحية ومسائية' : 'Daily AM/PM Structural Drills'} />
-                          <BenefitBullet text={isAr ? 'سجلات تتبع العادات والهدم' : 'Habit Tracking & Demolition Logs'} />
-                      </ul>
+                      <BookOpen size={80} className="text-white/20 group-hover:text-bronze transition-colors" strokeWidth={1} />
                   </div>
               </div>
 
@@ -229,17 +385,17 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
               <div className="flex flex-col lg:flex-row gap-12 items-center mb-24 border-2 border-bronze p-8 md:p-12 bg-[#0f0f0f] relative overflow-hidden group shadow-[0_0_60px_rgba(197,160,101,0.15)]">
                   <div className="absolute top-0 right-0 bg-bronze text-white text-xs font-bold px-4 py-2 uppercase tracking-widest flex items-center gap-2">
                       <Zap size={14} fill="currentColor" />
-                      {isAr ? 'الخطوة 3: النظام الهجين (الأقوى)' : 'STEP 3: THE HYBRID SYSTEM (CORE)'}
+                      {isAr ? 'النظام المتكامل' : 'THE COMPLETE SYSTEM'}
                   </div>
                   <div className="w-full lg:w-1/3 flex justify-center">
                       <div className="relative w-64 h-40 bg-[#151515] border-2 border-bronze rounded-lg flex items-center justify-center shadow-2xl group-hover:scale-105 transition-transform duration-500">
                           <Activity size={48} className="text-bronze animate-pulse" />
                           <div className="absolute inset-0 bg-bronze/5 animate-scan"></div>
-                          <span className="absolute bottom-2 text-[0.5rem] tracking-[0.3em] text-bronze uppercase">Hybrid: Print + Digital</span>
+                          <span className="absolute bottom-2 text-[0.5rem] tracking-[0.3em] text-bronze uppercase">Dashboard Access</span>
                       </div>
                   </div>
                   <div className="w-full lg:w-2/3">
-                      <h3 className={`text-3xl text-white mb-4 ${headingFont}`}>{isAr ? 'النظام المتكامل (30 يوماً)' : 'The 30-Day Hybrid System'}</h3>
+                      <h3 className={`text-3xl text-white mb-4 ${headingFont}`}>{isAr ? 'نظام الـ 30 يوماً (باقة المعماري)' : 'The 30-Day Architect System'}</h3>
                       <p className={`text-slate mb-6 ${bodyFont}`}>
                           {isAr 
                            ? 'أقوى ما في المنصة. ستحصل على الكتاب المطبوع + الكتاب الرقمي + تفعيل البرنامج التفاعلي (Dashboard) لمدة 30 يوماً لتتبع تقدمك مع النقابة.' 
@@ -258,7 +414,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
       </section>
 
       {/* =====================================================================================
-          4. THE OFFER STACK (THE BUNDLE)
+          7. THE OFFER STACK (THE BUNDLE)
       ===================================================================================== */}
       <section id="offer-stack" className="py-24 bg-gradient-to-b from-[#0a0a0a] to-[#000]">
           <div className="container mx-auto px-6 max-w-4xl">
@@ -338,118 +494,33 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
       </section>
 
       {/* =====================================================================================
-          5. A LA CARTE (Individual Items) - NEW SECTION
+          8. FAQ SECTION - NEW SECTION
       ===================================================================================== */}
-      <section className="py-24 bg-[#0a0a0a] border-t border-white/5">
-          <div className="container mx-auto px-6">
+      <section className="py-24 bg-[#080808] border-t border-white/5">
+          <div className="container mx-auto px-6 max-w-3xl">
               <div className="text-center mb-16">
-                  <span className="text-slate text-xs uppercase tracking-[0.3em] font-bold mb-4 block flex items-center justify-center gap-2">
-                      <ShoppingBag size={14} /> {isAr ? 'مخططات فردية' : 'INDIVIDUAL SCHEMATICS'}
-                  </span>
-                  <h3 className={`text-3xl text-white ${headingFont}`}>{isAr ? 'مخزن المواد الفردية' : 'Material Depot'}</h3>
-                  <p className="text-slate mt-2 text-sm">{isAr ? 'احصل على ما تحتاجه فقط من أدوات.' : 'Acquire only the specific tools you require.'}</p>
+                  <HelpCircle size={40} className="mx-auto text-slate-600 mb-4" />
+                  <h3 className={`text-3xl text-white ${headingFont}`}>{isAr ? 'أسئلة إنشائية (FAQ)' : 'Structural Queries'}</h3>
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-                  
-                  {/* Item 1: Blueprint Digital */}
-                  <div className="bg-[#111] border border-white/10 p-6 flex flex-col hover:border-bronze/50 transition-colors group">
-                      <div className="h-40 bg-[#050505] flex items-center justify-center mb-4 relative overflow-hidden">
-                          <BookOpen size={48} className="text-slate group-hover:text-white transition-colors" />
-                          <div className="absolute top-2 right-2 bg-slate/20 text-slate text-[0.6rem] px-2 py-1 uppercase font-bold">Digital</div>
-                      </div>
-                      <h4 className={`text-lg text-white mb-1 ${headingFont}`}>{bookDigital?.name[lang]}</h4>
-                      <p className="text-xs text-slate mb-4 flex-1">{bookDigital?.description?.[lang]}</p>
-                      <div className="flex justify-between items-center pt-4 border-t border-white/5">
-                          <span className="text-white font-mono font-bold">${bookDigital?.price}</span>
-                          <button onClick={() => handlePurchase(bookDigital)} className="text-xs uppercase tracking-widest text-bronze hover:text-white">{isAr ? 'إضافة للعدة' : 'Add to Kit'}</button>
-                      </div>
-                  </div>
-
-                  {/* Item 2: Blueprint Print */}
-                  <div className="bg-[#111] border border-white/10 p-6 flex flex-col hover:border-bronze/50 transition-colors group">
-                      <div className="h-40 bg-[#050505] flex items-center justify-center mb-4 relative overflow-hidden">
-                          <Box size={48} className="text-bronze group-hover:text-white transition-colors" />
-                          <div className="absolute top-2 right-2 bg-bronze/20 text-bronze text-[0.6rem] px-2 py-1 uppercase font-bold">Print</div>
-                      </div>
-                      <h4 className={`text-lg text-white mb-1 ${headingFont}`}>{bookPrint?.name[lang]}</h4>
-                      <p className="text-xs text-slate mb-4 flex-1">{bookPrint?.description?.[lang]}</p>
-                      <div className="flex justify-between items-center pt-4 border-t border-white/5">
-                          <span className="text-white font-mono font-bold">${bookPrint?.price}</span>
-                          <button onClick={() => handlePurchase(bookPrint)} className="text-xs uppercase tracking-widest text-bronze hover:text-white">{isAr ? 'إضافة للعدة' : 'Add to Kit'}</button>
-                      </div>
-                  </div>
-
-                  {/* Item 3: Workbook Print */}
-                  <div className="bg-[#111] border border-white/10 p-6 flex flex-col hover:border-bronze/50 transition-colors group">
-                      <div className="h-40 bg-[#050505] flex items-center justify-center mb-4 relative overflow-hidden">
-                          <PenTool size={48} className="text-bronze group-hover:text-white transition-colors" />
-                          <div className="absolute top-2 right-2 bg-bronze/20 text-bronze text-[0.6rem] px-2 py-1 uppercase font-bold">Print</div>
-                      </div>
-                      <h4 className={`text-lg text-white mb-1 ${headingFont}`}>{workbookPrint?.name[lang]}</h4>
-                      <p className="text-xs text-slate mb-4 flex-1">{workbookPrint?.description?.[lang]}</p>
-                      <div className="flex justify-between items-center pt-4 border-t border-white/5">
-                          <span className="text-white font-mono font-bold">${workbookPrint?.price}</span>
-                          <button onClick={() => handlePurchase(workbookPrint)} className="text-xs uppercase tracking-widest text-bronze hover:text-white">{isAr ? 'إضافة للعدة' : 'Add to Kit'}</button>
-                      </div>
-                  </div>
-
-                  {/* Item 4: System Hybrid */}
-                  <div className="bg-[#151515] border border-bronze/30 p-6 flex flex-col hover:border-bronze transition-colors group relative">
-                      <div className="absolute -top-3 -right-3 bg-bronze text-white text-[0.6rem] px-2 py-1 font-bold">CORE</div>
-                      <div className="h-40 bg-[#050505] flex items-center justify-center mb-4 relative overflow-hidden">
-                          <Activity size={48} className="text-bronze group-hover:text-white transition-colors" />
-                          <div className="absolute top-2 left-2 bg-blue-900/50 text-blue-300 text-[0.6rem] px-2 py-1 uppercase font-bold">Hybrid</div>
-                      </div>
-                      <h4 className={`text-lg text-white mb-1 ${headingFont}`}>{systemHybrid?.name[lang]}</h4>
-                      <p className="text-xs text-slate mb-4 flex-1">{systemHybrid?.description?.[lang]}</p>
-                      <div className="flex justify-between items-center pt-4 border-t border-white/5">
-                          <span className="text-white font-mono font-bold">${systemHybrid?.price}</span>
-                          <button onClick={() => handlePurchase(systemHybrid)} className="text-xs uppercase tracking-widest text-bronze hover:text-white">{isAr ? 'إضافة للعدة' : 'Add to Kit'}</button>
-                      </div>
-                  </div>
-
+              <div className="space-y-2">
+                  <FaqItem 
+                    q={isAr ? "هل هذا الكتاب بديل للعلاج النفسي؟" : "Is this book a replacement for therapy?"}
+                    a={isAr ? "لا. هذا نظام لبناء 'الهيكل' (Structure) لزيادة قدرة التحمل. إذا كان لديك 'كسور' حادة (Trauma)، ننصح بالمساعدة المختصة. نحن نبني ناطحات سحاب، لا نعالج الجرحى." : "No. This is a system for building 'Structure' to increase load capacity. If you have acute Trauma, seek professional help. We build skyscrapers; we don't triage the wounded."}
+                  />
+                  <FaqItem 
+                    q={isAr ? "كم من الوقت أحتاج يومياً؟" : "How much time does it take daily?"}
+                    a={isAr ? "يحتاج البرنامج 20-30 دقيقة يومياً. 10 دقائق صباحاً (Foundation) و 20 دقيقة مساءً (Review). إنه ليس وقتاً إضافياً، بل هو وقت 'صيانة' يحميك من الانهيار لاحقاً." : "The program requires 20-30 minutes daily. 10 mins AM (Foundation) and 20 mins PM (Review). It's not 'extra' time; it's 'maintenance' time that prevents collapse later."}
+                  />
+                  <FaqItem 
+                    q={isAr ? "ماذا لو لم يعجبني النظام؟" : "What if I don't like the system?"}
+                    a={isAr ? "لديك ضمان 30 يوماً. إذا طبقت التمارين ولم تشعر بفرق في ثباتك النفسي، سنعيد لك أموالك بالكامل. نحن نبيع نتائج." : "You have a 30-day guarantee. If you execute the drills and don't feel a shift in stability, we refund you fully. We sell results."}
+                  />
               </div>
           </div>
       </section>
 
       {/* =====================================================================================
-          6. SOCIAL PROOF (Testimonials)
-      ===================================================================================== */}
-      <section className="py-24 bg-[#050505]">
-          <div className="container mx-auto px-6">
-              <SectionHeader title={isAr ? 'قصص البنائين' : 'Builders Stories'} subtitle={isAr ? 'إثبات هندسي' : 'STRUCTURAL PROOF'} />
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {[1, 2, 3].map((i) => (
-                      <div key={i} className="bg-[#111] p-8 border border-white/10 hover:border-bronze/30 transition-colors">
-                          <div className="flex gap-1 text-bronze mb-4">
-                              <Star fill="currentColor" size={16} />
-                              <Star fill="currentColor" size={16} />
-                              <Star fill="currentColor" size={16} />
-                              <Star fill="currentColor" size={16} />
-                              <Star fill="currentColor" size={16} />
-                          </div>
-                          <p className={`text-slate mb-6 leading-relaxed ${bodyFont} text-sm`}>
-                              "{isAr 
-                                ? 'كنت أعتقد أنني بحاجة لإجازة، اكتشفت أنني بحاجة لإعادة تصميم يومي. هذا النظام غيّر القواعد تماماً.' 
-                                : 'I thought I needed a vacation; I discovered I needed to redesign my day. This system changed the rules completely.'}"
-                          </p>
-                          <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-slate-800 rounded-full"></div>
-                              <div>
-                                  <div className="text-white font-bold text-sm">Builder #{100+i}</div>
-                                  <div className="text-bronze text-xs uppercase">Senior Architect</div>
-                              </div>
-                          </div>
-                      </div>
-                  ))}
-              </div>
-          </div>
-      </section>
-
-      {/* =====================================================================================
-          7. GUARANTEE & FINAL CTA
+          9. GUARANTEE & FINAL CTA
       ===================================================================================== */}
       <section className="py-24 bg-white dark:bg-[#0a0a0a] border-t border-slate/10 text-center">
           <div className="container mx-auto px-6 max-w-3xl">
