@@ -41,6 +41,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
   const [newPostContent, setNewPostContent] = useState('');
   const [newPostCategory, setNewPostCategory] = useState(PILLARS[0].channelId || 'General');
   const [postType, setPostType] = useState<'standard' | 'emergency'>('standard');
+  const [postErrors, setPostErrors] = useState<{title?: string, content?: string}>({});
 
   const isAr = lang === 'ar';
   const headingFont = isAr ? 'font-amiri' : 'font-playfair';
@@ -148,6 +149,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
   const handleNewPostClick = () => {
     if (user) {
         setShowPostModal(true);
+        setPostErrors({});
     } else {
         setView('register');
     }
@@ -176,35 +178,34 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
       }
   };
   
-  const loadArchivedLogs = () => {
-      setLoadingArchive(true);
-      setTimeout(() => {
-          const archived: CommunityPost[] = [
-              {
-                id: 'arch-001',
-                author: 'Master Arch. Ziad',
-                role: { ar: 'مستشار', en: 'Advisor', fr: 'Conseiller' },
-                rankLevel: 3,
-                phase: 'Maintenance',
-                title: { ar: 'سجل قديم: أهمية الصيانة الدورية', en: 'Archived: Importance of Routine Maintenance', fr: '' },
-                content: { ar: 'تذكروا دائماً: الترميم ليس حدثاً، بل أسلوب حياة. الجدران تتشقق دائماً، السر في سرعة الاستجابة.', en: 'Remember: Restoration is not an event, but a lifestyle. Walls always crack; the secret is in response time.', fr: '' },
-                endorsements: 890,
-                reviews: [],
-                tags: ['History', 'Wisdom'],
-                timestamp: '2 years ago',
-                type: 'standard',
-                status: 'approved'
-              }
-          ];
-          setPosts([...posts, ...archived]);
-          setLoadingArchive(false);
-          setArchiveLoaded(true);
-      }, 1500);
+  const validatePost = () => {
+      const errors: {title?: string, content?: string} = {};
+      let isValid = true;
+
+      if (!newPostTitle.trim()) {
+          errors.title = isAr ? 'العنوان مطلوب' : 'Title is required';
+          isValid = false;
+      } else if (newPostTitle.length < 5) {
+          errors.title = isAr ? 'العنوان قصير جداً' : 'Title too short (min 5 chars)';
+          isValid = false;
+      }
+
+      if (!newPostContent.trim()) {
+          errors.content = isAr ? 'التفاصيل مطلوبة' : 'Content is required';
+          isValid = false;
+      } else if (newPostContent.length < 20) {
+          errors.content = isAr ? 'التفاصيل غير كافية' : 'Details too short (min 20 chars)';
+          isValid = false;
+      }
+
+      setPostErrors(errors);
+      return isValid;
   };
 
   const handleSubmitPost = (e: React.FormEvent) => {
       e.preventDefault();
       if (!user) return;
+      if (!validatePost()) return;
 
       const newPost: CommunityPost = {
           id: `cp-${Date.now()}`,
@@ -229,6 +230,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
       setNewPostTitle('');
       setNewPostContent('');
       setPostType('standard');
+      setPostErrors({});
       
       if (postType === 'emergency') setActiveTab('sos');
       else setActiveTab('log');
@@ -765,10 +767,14 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                                 type="text" 
                                 required
                                 value={newPostTitle}
-                                onChange={(e) => setNewPostTitle(e.target.value)}
-                                className="w-full bg-transparent border-b border-slate/30 py-2 focus:border-bronze outline-none font-bold"
+                                onChange={(e) => {
+                                    setNewPostTitle(e.target.value);
+                                    if(postErrors.title) setPostErrors(prev => ({...prev, title: ''}));
+                                }}
+                                className={`w-full bg-transparent border-b ${postErrors.title ? 'border-red-500' : 'border-slate/30'} py-2 focus:border-bronze outline-none font-bold`}
                                 placeholder={postType === 'standard' ? "e.g., Structural Failure in Sleep Routine" : "e.g., URGENT: Collapse in Motivation"}
                             />
+                            {postErrors.title && <span className="text-red-500 text-[0.6rem] uppercase tracking-widest">{postErrors.title}</span>}
                         </div>
                          <div>
                             <label className="text-[0.6rem] uppercase tracking-widest text-slate block mb-1">Report Details</label>
@@ -776,10 +782,14 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                                 required
                                 rows={4}
                                 value={newPostContent}
-                                onChange={(e) => setNewPostContent(e.target.value)}
-                                className="w-full bg-transparent border-b border-slate/30 py-2 focus:border-bronze outline-none text-sm resize-none"
+                                onChange={(e) => {
+                                    setNewPostContent(e.target.value);
+                                    if(postErrors.content) setPostErrors(prev => ({...prev, content: ''}));
+                                }}
+                                className={`w-full bg-transparent border-b ${postErrors.content ? 'border-red-500' : 'border-slate/30'} py-2 focus:border-bronze outline-none text-sm resize-none`}
                                 placeholder={postType === 'standard' ? "Describe the architectural issue..." : "Describe the problem. Other architects will advise."}
                             />
+                            {postErrors.content && <span className="text-red-500 text-[0.6rem] uppercase tracking-widest">{postErrors.content}</span>}
                         </div>
                         <div className="bg-blue-500/10 border border-blue-500/20 p-3 flex gap-2 items-start">
                             <Shield size={14} className="text-blue-500 shrink-0 mt-0.5" />

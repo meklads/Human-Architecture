@@ -11,22 +11,26 @@ interface ArtStorePageProps {
   onCheckout?: (items: Product[]) => void;
 }
 
-// Helper: Convert URL to Base64 for Gemini
+// Helper: Convert URL to Base64 for Gemini with robust error handling
 async function urlToBase64(url: string): Promise<string> {
   try {
-    const response = await fetch(url);
+    // Attempt to fetch with CORS mode enabled
+    const response = await fetch(url, { mode: 'cors' });
+    if (!response.ok) throw new Error("Network response was not ok");
     const blob = await response.blob();
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64data = reader.result as string;
-        resolve(base64data.split(',')[1]); // Remove data url prefix
+        // Strip the data:image/xyz;base64, prefix
+        const cleanBase64 = base64data.split(',')[1];
+        resolve(cleanBase64);
       };
       reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
   } catch (e) {
-    console.error("Image conversion failed", e);
+    console.warn("Image load failed (likely CORS), falling back to text description generation.", e);
     return "";
   }
 }
@@ -93,6 +97,7 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
   // AI Mockup State
   const [generatedMockup, setGeneratedMockup] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generationStep, setGenerationStep] = useState<string>("");
 
   const sizes = ['Estate (70x100cm)', 'Gallery (100x150cm)', 'Palace (150x200cm)'];
   const materials = ['Museum Canvas', 'Brushed Aluminum', 'Acrylic Glass'];
@@ -102,55 +107,73 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
       if (!selectedArt) return;
       setIsGenerating(true);
       setGeneratedMockup(null);
+      setGenerationStep(isAr ? "تحميل البيانات..." : "Loading Assets...");
 
       try {
+          // Attempt to load image for editing context
           const base64Image = await urlToBase64(selectedArt.image);
           
-          if (!base64Image) throw new Error("Failed to load image");
+          setGenerationStep(isAr ? "تصميم الغرفة..." : "Architecting Room...");
 
-          // Initialize GenAI - Using the specific alias Nano Banana model as requested
+          // Initialize GenAI
           const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
           
-          // DYNAMIC PROMPTING LOGIC BASED ON ART PIECE - ENHANCED FOR DECOR/FURNITURE
-          // Each art piece gets a tailored architectural context WITH FURNITURE explicitly mentioned
+          // Contextual Decor Prompt
           let contextPrompt = "";
-          
           switch(selectedArt.id) {
-              case 'art-new-01': // Kintsugi / Golden Repair
-                  contextPrompt = "in a minimalist, dark Japanese Zen luxury living room. Directly below the painting is a low, beige linen sofa and a rough hewn wooden coffee table with a bonsai tree. To the side, a paper floor lamp. Warm, golden lighting.";
+              case 'art-new-01': 
+                  contextPrompt = "a minimalist, dark Japanese Zen luxury living room with a low beige linen sofa and a bonsai tree.";
                   break;
-              case 'art-new-02': // Chaos / Blueprint
-                  contextPrompt = "in a high-tech modern executive office or industrial loft. In the foreground, a sleek black leather Corbusier armchair and a glass and steel side table. The wall is concrete. City lights visible in reflection.";
+              case 'art-new-02': 
+                  contextPrompt = "a high-tech modern executive office with a black leather Corbusier armchair and concrete walls.";
                   break;
-              case 'art-new-03': // Sacred Solitude
-                  contextPrompt = "in a moody, sophisticated reading corner. A high-back velvet wingback armchair in deep burgundy sits next to a small antique side table with a candle. The walls are dark stone. Very atmospheric and quiet.";
+              case 'art-new-03': 
+                  contextPrompt = "a moody, sophisticated reading corner with a burgundy velvet wingback chair and dark stone walls.";
                   break;
-              case 'art-new-04': // Vitruvian
-                  contextPrompt = "in a classic, scholarly private library. Below the art is a Chesterfield leather sofa in rich brown and a heavy mahogany desk with architectural rolled plans. Dark wood paneling on the walls.";
+              case 'art-new-04': 
+                  contextPrompt = "a classic private library with a Chesterfield leather sofa and dark wood paneling.";
                   break;
-              case 'art-new-05': // Glass Facade
-                  contextPrompt = "in a hyper-modern penthouse living room. A white curved designer sofa (like a Roche Bobois) and a marble coffee table are in front of the art. Floor-to-ceiling windows show a stormy sky outside. Contrast between cold rain and warm interior.";
+              case 'art-new-05': 
+                  contextPrompt = "a hyper-modern penthouse living room with a white curved sofa and storm clouds visible through floor-to-ceiling windows.";
                   break;
               default:
-                  // Fallback for older/other pieces
-                  contextPrompt = "in an ultra-luxury palace salon. In the foreground, a pair of velvet armchairs facing a marble coffee table with art books. A crystal chandelier hangs above. Dark, moody, sophisticated atmosphere.";
+                  contextPrompt = "an ultra-luxury palace salon with velvet armchairs and a crystal chandelier.";
           }
 
-          // Construct full prompt - Explicitly asking for INTERIOR DESIGN SHOT with FURNITURE
-          const fullPrompt = `A photorealistic, wide-angle interior design photograph of a luxury room. The focus is THIS exact painting hanging on the wall. To provide scale and decor context, include: ${contextPrompt}. The lighting should be cinematic and dramatic, highlighting both the art and the texture of the furniture. 8k resolution, architectural digest style.`;
-
-          const response = await ai.models.generateContent({
-              model: 'gemini-2.5-flash-image', // Nano Banana
-              contents: {
-                  parts: [
-                      { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
-                      { text: fullPrompt }
-                  ]
-              }
-          });
+          let response;
+          
+          // STRATEGY A: IMAGE + PROMPT (If we successfully got the base64)
+          if (base64Image) {
+              const fullPrompt = `A photorealistic interior design photograph. The specific art piece provided in the input image is hanging on the central wall of ${contextPrompt} The lighting is cinematic and dramatic. 8k resolution.`;
+              
+              response = await ai.models.generateContent({
+                  model: 'gemini-2.5-flash-image',
+                  contents: {
+                      parts: [
+                          { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
+                          { text: fullPrompt }
+                      ]
+                  }
+              });
+          } 
+          // STRATEGY B: TEXT ONLY FALLBACK (If CORS blocked image load)
+          else {
+              console.log("Using Text-Only Fallback for Mockup");
+              // Use the rich AI Prompt stored in constants plus the decor context
+              const artDescription = selectedArt.aiPrompt || selectedArt.description?.en || "Abstract architectural art";
+              const fullPrompt = `A photorealistic interior design photograph of ${contextPrompt} On the main wall hangs a large framed art piece described as: "${artDescription}". The lighting is cinematic. 8k resolution.`;
+              
+              response = await ai.models.generateContent({
+                  model: 'gemini-2.5-flash-image',
+                  contents: {
+                      parts: [
+                          { text: fullPrompt }
+                      ]
+                  }
+              });
+          }
 
           // Extract image from response
-          // Note: gemini-2.5-flash-image returns an image in the response parts
           if (response.candidates && response.candidates[0].content.parts) {
               for (const part of response.candidates[0].content.parts) {
                   if (part.inlineData) {
@@ -161,9 +184,10 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
           }
       } catch (error) {
           console.error("AI Generation Failed", error);
-          // Fallback or error handling UI could go here
+          // Optional: Set an error state to show a toast
       } finally {
           setIsGenerating(false);
+          setGenerationStep("");
       }
   };
 
@@ -272,7 +296,7 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
                           {isGenerating ? (
                               <div className="flex flex-col items-center gap-4 text-bronze animate-pulse">
                                   <Loader2 size={48} className="animate-spin" />
-                                  <span className="text-xs uppercase tracking-widest">{isAr ? 'جاري بناء المحاكاة...' : 'Constructing Simulation...'}</span>
+                                  <span className="text-xs uppercase tracking-widest">{generationStep || (isAr ? 'جاري بناء المحاكاة...' : 'Constructing Simulation...')}</span>
                               </div>
                           ) : generatedMockup ? (
                               // AI MOCKUP DISPLAY
