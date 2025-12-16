@@ -8,6 +8,7 @@ import { HomePage } from './components/HomePage';
 import { PhilosophyPage } from './components/PhilosophyPage';
 import { JournalPage } from './components/JournalPage';
 import { LibraryPage } from './components/LibraryPage';
+import { ArtStorePage } from './components/ArtStorePage';
 import { ContactPage } from './components/ContactPage';
 import { LandingPage } from './components/LandingPage';
 import { CheckoutPage } from './components/CheckoutPage';
@@ -68,7 +69,7 @@ function App() {
     const targetView = params.get('view') as View;
     
     // Validate view before switching
-    if (targetView && ['home', 'philosophy', 'journal', 'library', 'store', 'contact', 'landing', 'community', 'register', 'dashboard', 'about'].includes(targetView)) {
+    if (targetView && ['home', 'philosophy', 'journal', 'library', 'store', 'art-store', 'contact', 'landing', 'community', 'register', 'dashboard', 'about'].includes(targetView)) {
         setCurrentView(targetView);
     }
 
@@ -138,10 +139,12 @@ function App() {
   };
 
   const navItems: { id: View; label: string }[] = [
-    { id: 'about', label: TRANSLATIONS.nav.architect[lang] }, // Added About Page to Nav
+    { id: 'about', label: TRANSLATIONS.nav.architect[lang] }, 
     { id: 'philosophy', label: TRANSLATIONS.nav.philosophy[lang] },
     { id: 'journal', label: TRANSLATIONS.nav.journal[lang] },
     { id: 'community', label: TRANSLATIONS.nav.community[lang] },
+    { id: 'library', label: TRANSLATIONS.nav.library[lang] },
+    { id: 'art-store', label: TRANSLATIONS.nav.gallery[lang] }, // Moved to end
     { id: 'contact', label: TRANSLATIONS.nav.contact[lang] },
   ];
 
@@ -203,7 +206,7 @@ function App() {
           <nav className="hidden xl:flex items-center gap-6">
              {navItems.map((item) => (
                  <button
-                    key={item.id} // Added key here for list items
+                    key={item.id} 
                     onClick={() => setCurrentView(item.id)}
                     className={`text-[0.65rem] uppercase tracking-[0.15em] hover:text-bronze transition-colors py-2 ${currentView === item.id ? 'text-white font-bold border-b border-bronze' : 'text-slate'}`}
                  >
@@ -320,6 +323,7 @@ function App() {
             {currentView === 'library' && <LibraryPage key="library" lang={lang} onCheckout={handleAddToCart} />}
             {/* Store renders the LibraryPage but keeps the 'store' ID active in nav logic if accessed via deep link */}
             {currentView === 'store' && <LibraryPage key="store" lang={lang} onCheckout={handleAddToCart} />}
+            {currentView === 'art-store' && <ArtStorePage key="art-store" lang={lang} onCheckout={handleAddToCart} />}
             {currentView === 'contact' && <ContactPage key="contact" lang={lang} />}
             {currentView === 'community' && <CommunityPage key="community" lang={lang} setView={setCurrentView} currentUser={currentUser} />}
             {currentView === 'register' && (

@@ -336,13 +336,13 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
                         </span>
                         <div className="flex gap-4 transform translate-y-4 group-hover:translate-y-0 transition-transform delay-200">
                             <button 
-                                onClick={() => handleNavigate('library')} 
+                                onClick={() => handleNavigate('art-store')} 
                                 className="flex-1 py-4 bg-white text-charcoal text-xs uppercase tracking-[0.2em] font-bold hover:bg-bronze hover:text-white transition-colors flex items-center justify-center gap-2 shadow-lg"
                             >
                                 <ShoppingBag size={16} /> {isAr ? 'شراء اللوحة' : 'Buy Art'}
                             </button>
                             <button 
-                                onClick={() => handleNavigate('library')}
+                                onClick={() => handleNavigate('art-store')}
                                 className="px-5 py-4 border border-white/20 text-white hover:bg-white hover:text-charcoal transition-colors backdrop-blur-sm"
                             >
                                 <Eye size={20} />

@@ -266,7 +266,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
               <div className="border-4 border-bronze bg-[#111] p-8 md:p-16 relative shadow-2xl">
                   {/* Absolute Badge */}
                   <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-red-600 text-white px-8 py-3 uppercase tracking-widest font-bold text-lg shadow-lg rotate-[-2deg] border-2 border-white">
-                      {isAr ? 'الباقة الشاملة' : 'THE COMPLETE BUNDLE'}
+                      {isAr ? 'حزمة الترسانة الكاملة' : 'THE COMPLETE ARSENAL'}
                   </div>
 
                   <h2 className={`text-4xl md:text-5xl text-center text-white mb-12 ${headingFont}`}>
@@ -319,14 +319,14 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                       <div className="text-slate uppercase tracking-widest text-sm mb-2">{isAr ? 'القيمة الإجمالية' : 'TOTAL VALUE'}</div>
                       <div className="text-4xl text-slate line-through decoration-red-600 decoration-4 font-mono opacity-50 mb-6">$570</div>
                       
-                      <div className="text-bronze uppercase tracking-widest text-lg font-bold mb-2 animate-pulse">{isAr ? 'سعر العرض الكامل' : 'BUNDLE PRICE'}</div>
+                      <div className="text-bronze uppercase tracking-widest text-lg font-bold mb-2 animate-pulse">{isAr ? 'استثمار المهندس' : 'ARCHITECT INVESTMENT'}</div>
                       <div className="text-7xl md:text-8xl text-white font-bold font-mono mb-8">$397</div>
 
                       <button 
                         onClick={() => handlePurchase(completeRebuild)}
                         className="w-full py-6 bg-bronze text-white text-xl md:text-2xl uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all shadow-[0_0_40px_rgba(197,160,101,0.5)] rounded-sm flex items-center justify-center gap-4"
                       >
-                          {isAr ? 'شراء الباقة الكاملة الآن' : 'GET THE FULL BUNDLE NOW'} <ArrowRight size={24} strokeWidth={3} />
+                          {isAr ? 'استلام العدة الكاملة الآن' : 'ACQUIRE FULL TOOLKIT'} <ArrowRight size={24} strokeWidth={3} />
                       </button>
                       <p className="mt-4 text-xs text-slate uppercase tracking-widest">
                           {isAr ? 'وصول فوري للديجيتال - شحن للكتاب - ضمان 30 يوم' : 'Instant Digital Access - Book Shipping - 30 Day Guarantee'}
@@ -344,10 +344,10 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
           <div className="container mx-auto px-6">
               <div className="text-center mb-16">
                   <span className="text-slate text-xs uppercase tracking-[0.3em] font-bold mb-4 block flex items-center justify-center gap-2">
-                      <ShoppingBag size={14} /> {isAr ? 'الشراء الفردي' : 'A LA CARTE'}
+                      <ShoppingBag size={14} /> {isAr ? 'مخططات فردية' : 'INDIVIDUAL SCHEMATICS'}
                   </span>
                   <h3 className={`text-3xl text-white ${headingFont}`}>{isAr ? 'مخزن المواد الفردية' : 'Material Depot'}</h3>
-                  <p className="text-slate mt-2 text-sm">{isAr ? 'اشترِ ما تحتاجه فقط إذا كنت لا تريد الباقة الكاملة.' : 'Buy only what you need if you prefer not to bundle.'}</p>
+                  <p className="text-slate mt-2 text-sm">{isAr ? 'احصل على ما تحتاجه فقط من أدوات.' : 'Acquire only the specific tools you require.'}</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
@@ -362,7 +362,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                       <p className="text-xs text-slate mb-4 flex-1">{bookDigital?.description?.[lang]}</p>
                       <div className="flex justify-between items-center pt-4 border-t border-white/5">
                           <span className="text-white font-mono font-bold">${bookDigital?.price}</span>
-                          <button onClick={() => handlePurchase(bookDigital)} className="text-xs uppercase tracking-widest text-bronze hover:text-white">{isAr ? 'إضافة' : 'Add'}</button>
+                          <button onClick={() => handlePurchase(bookDigital)} className="text-xs uppercase tracking-widest text-bronze hover:text-white">{isAr ? 'إضافة للعدة' : 'Add to Kit'}</button>
                       </div>
                   </div>
 
@@ -376,7 +376,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                       <p className="text-xs text-slate mb-4 flex-1">{bookPrint?.description?.[lang]}</p>
                       <div className="flex justify-between items-center pt-4 border-t border-white/5">
                           <span className="text-white font-mono font-bold">${bookPrint?.price}</span>
-                          <button onClick={() => handlePurchase(bookPrint)} className="text-xs uppercase tracking-widest text-bronze hover:text-white">{isAr ? 'إضافة' : 'Add'}</button>
+                          <button onClick={() => handlePurchase(bookPrint)} className="text-xs uppercase tracking-widest text-bronze hover:text-white">{isAr ? 'إضافة للعدة' : 'Add to Kit'}</button>
                       </div>
                   </div>
 
@@ -390,7 +390,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                       <p className="text-xs text-slate mb-4 flex-1">{workbookPrint?.description?.[lang]}</p>
                       <div className="flex justify-between items-center pt-4 border-t border-white/5">
                           <span className="text-white font-mono font-bold">${workbookPrint?.price}</span>
-                          <button onClick={() => handlePurchase(workbookPrint)} className="text-xs uppercase tracking-widest text-bronze hover:text-white">{isAr ? 'إضافة' : 'Add'}</button>
+                          <button onClick={() => handlePurchase(workbookPrint)} className="text-xs uppercase tracking-widest text-bronze hover:text-white">{isAr ? 'إضافة للعدة' : 'Add to Kit'}</button>
                       </div>
                   </div>
 
@@ -405,7 +405,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                       <p className="text-xs text-slate mb-4 flex-1">{systemHybrid?.description?.[lang]}</p>
                       <div className="flex justify-between items-center pt-4 border-t border-white/5">
                           <span className="text-white font-mono font-bold">${systemHybrid?.price}</span>
-                          <button onClick={() => handlePurchase(systemHybrid)} className="text-xs uppercase tracking-widest text-bronze hover:text-white">{isAr ? 'إضافة' : 'Add'}</button>
+                          <button onClick={() => handlePurchase(systemHybrid)} className="text-xs uppercase tracking-widest text-bronze hover:text-white">{isAr ? 'إضافة للعدة' : 'Add to Kit'}</button>
                       </div>
                   </div>
 
