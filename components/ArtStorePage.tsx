@@ -229,41 +229,42 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
           {selectedArt && (
               <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                // UPDATED: overflow-y-auto ensures the whole modal can scroll if needed
-                className="fixed inset-0 z-[100] bg-black/98 flex items-center justify-center p-0 lg:p-8 overflow-y-auto"
+                // UPDATED: Fixed position outer container with scroll enabled
+                className="fixed inset-0 z-[100] bg-black/98 flex justify-center items-start lg:items-center overflow-y-auto"
                 onClick={() => setSelectedArt(null)}
               >
+                  {/* FIXED CLOSE BUTTON - Ensures accessibility on mobile scroll */}
+                  <button 
+                    onClick={() => setSelectedArt(null)} 
+                    className="fixed top-4 right-4 z-[120] text-white/70 hover:text-white transition-colors bg-black/40 backdrop-blur-md p-2 rounded-full border border-white/10 shadow-lg"
+                  >
+                      <X size={24} strokeWidth={1} />
+                  </button>
+
                   <motion.div 
                     layoutId={selectedArt.id}
-                    // UPDATED: min-h-full allows growth on mobile. lg:overflow-hidden keeps desktop neat.
-                    className="bg-[#050505] w-full max-w-7xl min-h-full lg:min-h-0 lg:h-[90vh] border border-[#222] shadow-2xl relative flex flex-col lg:flex-row lg:overflow-hidden"
+                    // UPDATED: min-h-screen for mobile (to push content), windowed height for desktop
+                    className="bg-[#050505] w-full max-w-7xl min-h-screen lg:min-h-0 lg:h-[90vh] border border-[#222] shadow-2xl relative flex flex-col lg:flex-row lg:overflow-hidden my-0 lg:my-8"
                     onClick={(e) => e.stopPropagation()}
                   >
-                      <button 
-                        onClick={() => setSelectedArt(null)} 
-                        className="absolute top-6 right-6 z-50 text-white/30 hover:text-white transition-colors"
-                      >
-                          <X size={32} strokeWidth={1} />
-                      </button>
-
                       {/* Left: The Art (Immersion / AI Mockup) */}
-                      <div className="w-full lg:w-2/3 bg-[#020202] relative h-[50vh] lg:h-full flex items-center justify-center p-8 overflow-hidden group shrink-0">
+                      <div className="w-full lg:w-2/3 bg-[#020202] relative h-[50vh] lg:h-full flex items-center justify-center p-0 lg:p-8 overflow-hidden group shrink-0 border-b border-[#222] lg:border-b-0 lg:border-r">
                           
-                          {/* VIEW SWITCHER: Original vs AI */}
-                          <div className="absolute top-6 left-6 z-50 flex gap-4">
+                          {/* VIEW SWITCHER: Original vs AI - Repositioned for mobile thumb access */}
+                          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:top-6 lg:left-6 lg:bottom-auto z-50 flex gap-3 p-1 bg-black/60 backdrop-blur rounded-full border border-white/10 w-max max-w-[90%] overflow-x-auto no-scrollbar">
                               <button 
                                 onClick={() => setGeneratedMockup(null)}
-                                className={`text-[0.6rem] uppercase tracking-widest px-3 py-1 border ${!generatedMockup ? 'border-bronze text-bronze' : 'border-[#333] text-slate/50'}`}
+                                className={`text-[0.6rem] uppercase tracking-widest px-4 py-2 rounded-full whitespace-nowrap transition-colors ${!generatedMockup ? 'bg-bronze text-white font-bold' : 'text-slate/60 hover:text-white'}`}
                               >
                                   {isAr ? 'الأصل' : 'Original'}
                               </button>
                               <button 
                                 onClick={generateLuxuryMockup}
                                 disabled={isGenerating}
-                                className={`text-[0.6rem] uppercase tracking-widest px-3 py-1 border flex items-center gap-2 ${generatedMockup ? 'border-bronze text-bronze' : 'border-[#333] text-white hover:border-bronze/50'}`}
+                                className={`text-[0.6rem] uppercase tracking-widest px-4 py-2 rounded-full whitespace-nowrap flex items-center gap-2 transition-colors ${generatedMockup ? 'bg-bronze text-white font-bold' : 'text-slate/60 hover:text-white hover:bg-white/5'}`}
                               >
                                   <Sparkles size={10} />
-                                  {isAr ? 'عرض مع الأثاث (AI)' : 'Visualize with Decor (AI)'}
+                                  {isAr ? 'محاكاة الديكور' : 'Visualize in Room'}
                               </button>
                           </div>
 
@@ -284,17 +285,17 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
                                     className="w-full h-full object-cover filter contrast-110" 
                                     alt="AI Mockup" 
                                   />
-                                  <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur px-2 py-1 text-[0.5rem] text-white/50 border border-white/10 uppercase tracking-widest">
-                                      Generated by Gemini Nano Banana
+                                  <div className="absolute top-4 right-4 bg-black/50 backdrop-blur px-3 py-1 text-[0.5rem] text-white/70 border border-white/10 uppercase tracking-widest rounded-full">
+                                      AI Generation
                                   </div>
                               </motion.div>
                           ) : (
                               // ORIGINAL DISPLAY (Floating Dark)
-                              <div className="relative shadow-[0_50px_100px_-20px_black] max-h-full max-w-full">
+                              <div className="relative shadow-[0_50px_100px_-20px_black] max-h-full max-w-full p-4 lg:p-0">
                                   <img 
                                     src={selectedArt.image} 
                                     alt="Detail" 
-                                    className="w-auto h-auto max-h-[70vh] object-contain block filter contrast-110 brightness-90"
+                                    className="w-auto h-auto max-h-[45vh] lg:max-h-[70vh] object-contain block filter contrast-110 brightness-90 shadow-2xl"
                                   />
                                   {/* Texture */}
                                   <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/canvas-orange.png')] opacity-20 mix-blend-overlay pointer-events-none"></div>
@@ -303,72 +304,88 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
                       </div>
 
                       {/* Right: Acquisition Config (Concierge Style) */}
-                      {/* UPDATED: lg:overflow-y-auto allows desktop scrolling for this section independently */}
-                      <div className="w-full lg:w-1/3 p-10 lg:p-16 flex flex-col h-auto lg:h-full bg-[#0a0a0a] border-l border-[#222] lg:overflow-y-auto">
+                      <div className="w-full lg:w-1/3 flex flex-col h-auto lg:h-full bg-[#0a0a0a] lg:overflow-y-auto pb-32 lg:pb-0">
                           
-                          <div className="mb-12">
-                              <div className="text-bronze text-xs uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
-                                  <Compass size={14} /> {isAr ? 'فلسفة العمل' : 'Artifact Philosophy'}
+                          <div className="p-8 lg:p-12">
+                              <div className="mb-10">
+                                  <div className="text-bronze text-xs uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
+                                      <Compass size={14} /> {isAr ? 'فلسفة العمل' : 'Artifact Philosophy'}
+                                  </div>
+                                  <h2 className={`text-3xl lg:text-4xl text-white mb-6 ${headingFont} leading-tight`}>{selectedArt.name[lang]}</h2>
+                                  <p className={`text-slate/70 leading-loose ${bodyFont} text-sm`}>
+                                      {selectedArt.description?.[lang]}
+                                  </p>
                               </div>
-                              <h2 className={`text-4xl text-white mb-6 ${headingFont}`}>{selectedArt.name[lang]}</h2>
-                              <p className={`text-slate/70 leading-loose ${bodyFont} text-sm`}>
-                                  {selectedArt.description?.[lang]}
-                              </p>
-                          </div>
 
-                          {/* Options */}
-                          <div className="space-y-8 flex-1">
-                              <div>
-                                  <label className="text-[0.6rem] uppercase tracking-[0.2em] text-slate/50 block mb-4">{isAr ? 'اختر الحجم' : 'Select Scale'}</label>
-                                  <div className="space-y-2">
-                                      {sizes.map(size => (
-                                          <button 
-                                            key={size}
-                                            onClick={() => setSelectedSize(size)}
-                                            className={`w-full py-4 px-6 text-left border transition-all duration-500 flex justify-between items-center ${selectedSize === size ? 'border-bronze bg-bronze/5 text-white' : 'border-[#222] text-slate/50 hover:border-slate/50'}`}
-                                          >
-                                              <span className={`text-sm ${bodyFont}`}>{size}</span>
-                                              {selectedSize === size && <div className="w-1.5 h-1.5 bg-bronze rounded-full shadow-[0_0_10px_#C5A065]"></div>}
-                                          </button>
-                                      ))}
+                              {/* Options */}
+                              <div className="space-y-8 mb-8">
+                                  <div>
+                                      <label className="text-[0.6rem] uppercase tracking-[0.2em] text-slate/50 block mb-4">{isAr ? 'اختر الحجم' : 'Select Scale'}</label>
+                                      <div className="space-y-2">
+                                          {sizes.map(size => (
+                                              <button 
+                                                key={size}
+                                                onClick={() => setSelectedSize(size)}
+                                                className={`w-full py-4 px-6 text-left border transition-all duration-300 flex justify-between items-center ${selectedSize === size ? 'border-bronze bg-bronze/5 text-white' : 'border-[#222] text-slate/50 hover:border-slate/50'}`}
+                                              >
+                                                  <span className={`text-sm ${bodyFont}`}>{size}</span>
+                                                  {selectedSize === size && <div className="w-1.5 h-1.5 bg-bronze rounded-full shadow-[0_0_10px_#C5A065]"></div>}
+                                              </button>
+                                          ))}
+                                      </div>
+                                  </div>
+
+                                  <div>
+                                      <label className="text-[0.6rem] uppercase tracking-[0.2em] text-slate/50 block mb-4">{isAr ? 'الخامة' : 'Medium'}</label>
+                                      <div className="grid grid-cols-3 gap-2">
+                                          {materials.map(mat => (
+                                              <button 
+                                                key={mat}
+                                                onClick={() => setSelectedMaterial(mat)}
+                                                className={`py-3 px-1 text-center border text-[0.6rem] uppercase tracking-wider transition-all duration-300 ${selectedMaterial === mat ? 'border-bronze text-white bg-bronze/5' : 'border-[#222] text-slate/50 hover:text-slate/80'}`}
+                                              >
+                                                  {mat}
+                                              </button>
+                                          ))}
+                                      </div>
                                   </div>
                               </div>
 
-                              <div>
-                                  <label className="text-[0.6rem] uppercase tracking-[0.2em] text-slate/50 block mb-4">{isAr ? 'الخامة' : 'Medium'}</label>
-                                  <div className="flex gap-2">
-                                      {materials.map(mat => (
-                                          <button 
-                                            key={mat}
-                                            onClick={() => setSelectedMaterial(mat)}
-                                            className={`flex-1 py-3 px-2 text-center border text-[0.65rem] uppercase tracking-wider transition-all duration-300 ${selectedMaterial === mat ? 'border-bronze text-white' : 'border-[#222] text-slate/50 hover:text-slate/80'}`}
-                                          >
-                                              {mat}
-                                          </button>
-                                      ))}
+                              {/* DESKTOP Footer (Hidden on Mobile) */}
+                              <div className="hidden lg:block mt-8 pt-8 border-t border-[#222]">
+                                  <div className="flex justify-between items-end mb-6">
+                                      <span className="text-slate/50 text-xs uppercase tracking-widest">{isAr ? 'قيمة الاستثمار' : 'Investment Value'}</span>
+                                      <span className="text-3xl text-bronze font-serif">${selectedArt.price + (sizes.indexOf(selectedSize) * 300)}.00</span>
                                   </div>
-                              </div>
-                          </div>
-
-                          {/* Acquisition Footer */}
-                          <div className="mt-12 pt-8 border-t border-[#222]">
-                              <div className="flex justify-between items-end mb-6">
-                                  <span className="text-slate/50 text-xs uppercase tracking-widest">{isAr ? 'قيمة الاستثمار' : 'Investment Value'}</span>
-                                  <span className="text-3xl text-bronze font-serif">${selectedArt.price + (sizes.indexOf(selectedSize) * 300)}.00</span>
-                              </div>
-                              <button 
-                                onClick={handlePurchase}
-                                className="w-full py-5 bg-white text-black text-sm uppercase tracking-[0.25em] font-bold hover:bg-bronze hover:text-white transition-all duration-500 flex items-center justify-center gap-4"
-                              >
-                                  {isAr ? 'طلب اقتناء' : 'Request Acquisition'} <ShoppingBag size={16} />
-                              </button>
-                              <div className="text-center mt-4">
-                                  <span className="text-[0.5rem] text-slate/30 uppercase tracking-[0.2em]">
-                                      {isAr ? 'يتم الشحن في صندوق خشبي مؤمن' : 'Shipped in Secure Wooden Crate'}
-                                  </span>
+                                  <button 
+                                    onClick={handlePurchase}
+                                    className="w-full py-5 bg-white text-black text-sm uppercase tracking-[0.25em] font-bold hover:bg-bronze hover:text-white transition-all duration-500 flex items-center justify-center gap-4"
+                                  >
+                                      {isAr ? 'طلب اقتناء' : 'Request Acquisition'} <ShoppingBag size={16} />
+                                  </button>
+                                  <div className="text-center mt-4">
+                                      <span className="text-[0.5rem] text-slate/30 uppercase tracking-[0.2em]">
+                                          {isAr ? 'يتم الشحن في صندوق خشبي مؤمن' : 'Shipped in Secure Wooden Crate'}
+                                      </span>
+                                  </div>
                               </div>
                           </div>
                       </div>
+
+                      {/* MOBILE STICKY FOOTER (Fixed to bottom of screen) */}
+                      <div className="fixed bottom-0 left-0 w-full bg-[#0a0a0a]/95 backdrop-blur-md border-t border-[#222] p-4 lg:hidden z-[110] flex items-center justify-between gap-4 safe-area-pb">
+                          <div className="flex flex-col">
+                              <span className="text-[0.5rem] text-slate/50 uppercase tracking-widest mb-1">{isAr ? 'القيمة' : 'Total'}</span>
+                              <span className="text-xl text-bronze font-serif font-bold leading-none">${selectedArt.price + (sizes.indexOf(selectedSize) * 300)}</span>
+                          </div>
+                          <button 
+                            onClick={handlePurchase}
+                            className="bg-white text-black px-8 py-3 text-xs uppercase tracking-[0.2em] font-bold shadow-lg hover:bg-bronze hover:text-white transition-colors rounded-sm flex items-center gap-2"
+                          >
+                              {isAr ? 'اقتناء' : 'Acquire'} <ShoppingBag size={14} />
+                          </button>
+                      </div>
+
                   </motion.div>
               </motion.div>
           )}
