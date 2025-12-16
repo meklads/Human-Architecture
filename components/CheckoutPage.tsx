@@ -20,42 +20,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ lang, items, onBack,
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '' });
-  const [errors, setErrors] = useState<{name?: string, email?: string}>({});
   
-  const validate = () => {
-      const newErrors: {name?: string, email?: string} = {};
-      let isValid = true;
-
-      if (!formData.name.trim()) {
-          newErrors.name = isAr ? 'الاسم مطلوب' : 'Name is required';
-          isValid = false;
-      }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!formData.email.trim()) {
-          newErrors.email = isAr ? 'البريد الإلكتروني مطلوب' : 'Email is required';
-          isValid = false;
-      } else if (!emailRegex.test(formData.email)) {
-          newErrors.email = isAr ? 'صيغة البريد غير صحيحة' : 'Invalid email format';
-          isValid = false;
-      }
-
-      setErrors(newErrors);
-      return isValid;
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
-      if (errors[e.target.name as keyof typeof errors]) {
-          setErrors(prev => ({ ...prev, [e.target.name]: undefined }));
-      }
-  };
-
   // Simulation of PayPal processing
   const handlePayPalClick = () => {
-    if (!validate()) return;
-
     setLoading(true);
     // Simulate API delay
     setTimeout(() => {
@@ -135,27 +102,11 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ lang, items, onBack,
                     <form className="space-y-6 mb-8 flex-1">
                         <div>
                             <label className="block text-[0.6rem] uppercase tracking-widest text-slate mb-1">Full Name</label>
-                            <input 
-                                type="text" 
-                                name="name"
-                                value={formData.name}
-                                onChange={handleInputChange}
-                                className={`w-full bg-white border-b ${errors.name ? 'border-red-500' : 'border-slate/20'} p-3 focus:border-bronze outline-none transition-colors`}
-                                placeholder="Architect Name" 
-                            />
-                            {errors.name && <span className="text-red-500 text-[0.6rem] uppercase tracking-widest">{errors.name}</span>}
+                            <input type="text" className="w-full bg-white border-b border-slate/20 p-3 focus:border-bronze outline-none transition-colors" placeholder="Architect Name" />
                         </div>
                         <div>
                             <label className="block text-[0.6rem] uppercase tracking-widest text-slate mb-1">Email Address</label>
-                            <input 
-                                type="email" 
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                className={`w-full bg-white border-b ${errors.email ? 'border-red-500' : 'border-slate/20'} p-3 focus:border-bronze outline-none transition-colors`}
-                                placeholder="arch@example.com" 
-                            />
-                            {errors.email && <span className="text-red-500 text-[0.6rem] uppercase tracking-widest">{errors.email}</span>}
+                            <input type="email" className="w-full bg-white border-b border-slate/20 p-3 focus:border-bronze outline-none transition-colors" placeholder="arch@example.com" />
                         </div>
                     </form>
 
@@ -168,7 +119,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ lang, items, onBack,
                         <button 
                             onClick={handlePayPalClick}
                             disabled={loading}
-                            className="w-full group relative h-16 bg-[#FFC439] hover:bg-[#F4B400] transition-all rounded-sm flex items-center justify-center shadow-lg overflow-hidden disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="w-full group relative h-16 bg-[#FFC439] hover:bg-[#F4B400] transition-all rounded-sm flex items-center justify-center shadow-lg overflow-hidden"
                         >
                             {loading ? (
                                 <Loader2 className="animate-spin text-charcoal" />

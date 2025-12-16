@@ -37,14 +37,9 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // Clear field error on change
-    if (fieldErrors[e.target.name]) {
-        setFieldErrors(prev => ({ ...prev, [e.target.name]: '' }));
-    }
   };
 
   const handleActionSwitch = (mode: AuthMode) => {
@@ -52,58 +47,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
       setStatus('idle');
       setErrorMessage('');
       setSuccessMessage('');
-      setFieldErrors({});
       setFormData(prev => ({ ...prev, password: '', confirmPassword: '', newPassword: '' }));
-  };
-
-  const validateForm = () => {
-      const errors: Record<string, string> = {};
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      let isValid = true;
-
-      // Common Email Validation
-      if (!formData.email.trim()) {
-          errors.email = isAr ? 'البريد الإلكتروني مطلوب' : 'Email is required';
-          isValid = false;
-      } else if (!emailRegex.test(formData.email)) {
-          errors.email = isAr ? 'صيغة البريد غير صحيحة' : 'Invalid email format';
-          isValid = false;
-      }
-
-      if (authMode === 'register') {
-          if (!formData.fullName.trim()) {
-              errors.fullName = isAr ? 'الاسم الكامل مطلوب' : 'Full name is required';
-              isValid = false;
-          }
-          if (!formData.password) {
-              errors.password = isAr ? 'كلمة المرور مطلوبة' : 'Password is required';
-              isValid = false;
-          } else if (formData.password.length < 6) {
-              errors.password = isAr ? 'كلمة المرور يجب أن تكون ٦ أحرف على الأقل' : 'Password must be at least 6 characters';
-              isValid = false;
-          }
-          if (formData.password !== formData.confirmPassword) {
-              errors.confirmPassword = isAr ? 'كلمات المرور غير متطابقة' : 'Passwords do not match';
-              isValid = false;
-          }
-      }
-
-      if (authMode === 'login') {
-          if (!formData.password) {
-              errors.password = isAr ? 'كلمة المرور مطلوبة' : 'Password is required';
-              isValid = false;
-          }
-      }
-
-      if (authMode === 'forgot_password') {
-          if (formData.newPassword.length < 6) {
-              errors.newPassword = isAr ? 'كلمة المرور قصيرة جداً' : 'Password too short (min 6 chars)';
-              isValid = false;
-          }
-      }
-
-      setFieldErrors(errors);
-      return isValid;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -111,13 +55,14 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
     setStatus('loading');
     setErrorMessage('');
     
-    if (!validateForm()) {
-        setStatus('idle');
-        return;
-    }
-    
     // ---------------- REGISTER FLOW ----------------
     if (authMode === 'register') {
+        if (formData.password !== formData.confirmPassword) {
+            setStatus('error');
+            setErrorMessage(isAr ? 'كلمات المرور غير متطابقة' : 'Passwords do not match');
+            return;
+        }
+
         try {
             const formDataToSend = new FormData();
             formDataToSend.append('action', 'register');
@@ -214,6 +159,12 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
 
     // ---------------- FORGOT PASSWORD FLOW ----------------
     else if (authMode === 'forgot_password') {
+        if (formData.newPassword.length < 6) {
+             setStatus('error');
+             setErrorMessage(isAr ? 'كلمة المرور قصيرة جداً' : 'Password too short');
+             return;
+        }
+
         try {
             const formDataToSend = new FormData();
             formDataToSend.append('action', 'reset_password');
@@ -296,7 +247,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                     <Loader2 className="animate-spin mx-auto text-bronze mt-4" size={24} />
                 </div>
             ) : (
-                <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+                <form onSubmit={handleSubmit} className="space-y-6">
                     
                     {/* Common Field: Email */}
                     <div className="space-y-2">
@@ -309,10 +260,9 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                             required
                             value={formData.email}
                             onChange={handleChange}
-                            className={`w-full bg-transparent border-b ${fieldErrors.email ? 'border-red-500' : (formData.email ? 'border-bronze' : 'border-slate/30')} py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white placeholder-slate/20`}
+                            className={`w-full bg-transparent border-b ${formData.email ? 'border-bronze' : 'border-slate/30'} py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white placeholder-slate/20`}
                             placeholder="arch@example.com"
                         />
-                        {fieldErrors.email && <span className="text-red-500 text-[0.6rem] uppercase tracking-widest">{fieldErrors.email}</span>}
                     </div>
 
                     {/* REGISTER ONLY FIELDS */}
@@ -329,10 +279,9 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                                         required
                                         value={formData.fullName}
                                         onChange={handleChange}
-                                        className={`w-full bg-transparent border-b ${fieldErrors.fullName ? 'border-red-500' : 'border-slate/30'} py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white`}
+                                        className="w-full bg-transparent border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white"
                                         placeholder={isAr ? "الاسم المعماري" : "Architect Name"}
                                     />
-                                    {fieldErrors.fullName && <span className="text-red-500 text-[0.6rem] uppercase tracking-widest">{fieldErrors.fullName}</span>}
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-[0.6rem] uppercase tracking-widest text-slate flex items-center gap-2">
@@ -365,9 +314,8 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                                 required
                                 value={formData.password}
                                 onChange={handleChange}
-                                className={`w-full bg-transparent border-b ${fieldErrors.password ? 'border-red-500' : 'border-slate/30'} py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white`}
+                                className="w-full bg-transparent border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white"
                             />
-                            {fieldErrors.password && <span className="text-red-500 text-[0.6rem] uppercase tracking-widest">{fieldErrors.password}</span>}
                         </div>
                     )}
 
@@ -382,9 +330,8 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                                 required
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
-                                className={`w-full bg-transparent border-b ${fieldErrors.confirmPassword ? 'border-red-500' : 'border-slate/30'} py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white`}
+                                className="w-full bg-transparent border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white"
                             />
-                            {fieldErrors.confirmPassword && <span className="text-red-500 text-[0.6rem] uppercase tracking-widest">{fieldErrors.confirmPassword}</span>}
                         </div>
                     )}
 
@@ -403,9 +350,8 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                                  required
                                  value={formData.newPassword}
                                  onChange={handleChange}
-                                 className={`w-full bg-transparent border-b ${fieldErrors.newPassword ? 'border-red-500' : 'border-slate/30'} py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white`}
+                                 className="w-full bg-transparent border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white"
                              />
-                             {fieldErrors.newPassword && <span className="text-red-500 text-[0.6rem] uppercase tracking-widest">{fieldErrors.newPassword}</span>}
                          </div>
                     )}
 
