@@ -143,7 +143,6 @@ function App() {
     { id: 'philosophy', label: TRANSLATIONS.nav.philosophy[lang] },
     { id: 'journal', label: TRANSLATIONS.nav.journal[lang] },
     { id: 'community', label: TRANSLATIONS.nav.community[lang] },
-    { id: 'library', label: TRANSLATIONS.nav.library[lang] },
     { id: 'art-store', label: TRANSLATIONS.nav.gallery[lang] }, // Moved to end
     { id: 'contact', label: TRANSLATIONS.nav.contact[lang] },
   ];
