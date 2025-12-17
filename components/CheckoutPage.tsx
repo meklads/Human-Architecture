@@ -9,7 +9,7 @@ interface CheckoutPageProps {
   lang: Language;
   items: Product[];
   onBack: () => void;
-  onComplete: () => void;
+  onComplete: (userData: { name: string; email: string }) => void;
 }
 
 export const CheckoutPage: React.FC<CheckoutPageProps> = ({ lang, items, onBack, onComplete }) => {
@@ -21,16 +21,25 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ lang, items, onBack,
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   
+  // Form State
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  
   // Simulation of PayPal processing
   const handlePayPalClick = () => {
+    if (!name.trim() || !email.trim()) {
+        alert(isAr ? 'يرجى إدخال الاسم والبريد الإلكتروني' : 'Please enter name and email');
+        return;
+    }
+
     setLoading(true);
     // Simulate API delay
     setTimeout(() => {
         setLoading(false);
         setSuccess(true);
-        // Redirect after success animation
+        // Redirect after success animation, passing user data
         setTimeout(() => {
-            onComplete();
+            onComplete({ name, email });
         }, 3000);
     }, 2500);
   };
@@ -99,16 +108,28 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ lang, items, onBack,
                         <p className="text-slate text-xs uppercase tracking-widest">Secure Transmission</p>
                     </div>
 
-                    <form className="space-y-6 mb-8 flex-1">
+                    <div className="space-y-6 mb-8 flex-1">
                         <div>
                             <label className="block text-[0.6rem] uppercase tracking-widest text-slate mb-1">Full Name</label>
-                            <input type="text" className="w-full bg-white border-b border-slate/20 p-3 focus:border-bronze outline-none transition-colors" placeholder="Architect Name" />
+                            <input 
+                                type="text" 
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="w-full bg-white border-b border-slate/20 p-3 focus:border-bronze outline-none transition-colors" 
+                                placeholder="Architect Name" 
+                            />
                         </div>
                         <div>
                             <label className="block text-[0.6rem] uppercase tracking-widest text-slate mb-1">Email Address</label>
-                            <input type="email" className="w-full bg-white border-b border-slate/20 p-3 focus:border-bronze outline-none transition-colors" placeholder="arch@example.com" />
+                            <input 
+                                type="email" 
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full bg-white border-b border-slate/20 p-3 focus:border-bronze outline-none transition-colors" 
+                                placeholder="arch@example.com" 
+                            />
                         </div>
-                    </form>
+                    </div>
 
                     <div className="mt-auto">
                         <div className="flex items-center gap-2 mb-4 text-[0.65rem] uppercase tracking-widest text-slate justify-center">
@@ -118,8 +139,8 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ lang, items, onBack,
                         {/* PAYPAL SIMULATION BUTTON */}
                         <button 
                             onClick={handlePayPalClick}
-                            disabled={loading}
-                            className="w-full group relative h-16 bg-[#FFC439] hover:bg-[#F4B400] transition-all rounded-sm flex items-center justify-center shadow-lg overflow-hidden"
+                            disabled={loading || !name || !email}
+                            className="w-full group relative h-16 bg-[#FFC439] hover:bg-[#F4B400] transition-all rounded-sm flex items-center justify-center shadow-lg overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? (
                                 <Loader2 className="animate-spin text-charcoal" />

@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, View, Product } from '../types';
-import { LANDING_CONTENT } from '../constants';
+import { LANDING_CONTENT, PRODUCTS } from '../constants';
 import { ArrowRight, Play, Check, AlertTriangle, Layers, Shield, Zap, Target, ArrowLeft, Layout, FileText, Plus, X, Maximize2, Box, CreditCard, Star, Gift, Users } from './Icons';
 
 interface LandingPageProps {
@@ -19,6 +20,27 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
 
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [pricingMode, setPricingMode] = useState<'digital' | 'physical'>('physical');
+
+  // Helper to get real product objects based on selection
+  const handleBuySchematic = () => {
+      if (!onCheckout) return;
+      // Get 'book_print' or 'book_digital' based on mode
+      const product = pricingMode === 'physical' 
+        ? PRODUCTS.find(p => p.id === 'book_print') 
+        : PRODUCTS.find(p => p.id === 'book_digital');
+      
+      if (product) onCheckout([product]);
+  };
+
+  const handleBuyMasterPlan = () => {
+      if (!onCheckout) return;
+      // The Master Plan maps to 'bundle_master' (Hybrid) usually, 
+      // but if user wants purely digital, we might send 'system_hybrid' or a digital bundle.
+      // For now, we will map 'Master Plan' to the 'bundle_master' as the premium option.
+      const product = PRODUCTS.find(p => p.id === 'bundle_master');
+      
+      if (product) onCheckout([product]);
+  };
 
   // Scroll to offer stack
   const scrollToOffer = () => {
@@ -427,7 +449,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
                       </ul>
 
                       <button 
-                        onClick={() => onCheckout && onCheckout([])}
+                        onClick={handleBuySchematic}
                         className="w-full py-4 border border-white/20 text-white text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-colors"
                       >
                           {isAr ? 'شراء الكتاب فقط' : 'Purchase Book Only'}
@@ -458,7 +480,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
                       </ul>
 
                       <button 
-                        onClick={() => onCheckout && onCheckout([])}
+                        onClick={handleBuyMasterPlan}
                         className="w-full py-5 bg-bronze text-white text-sm font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-colors shadow-lg flex items-center justify-center gap-2"
                       >
                           {isAr ? 'ابدأ إعادة البناء' : 'START REBUILDING'} <ArrowRight size={16} />

@@ -36,6 +36,9 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
   const handleStart = () => setStep(1);
 
   const handleAnswer = async (value: number) => {
+    // Prevent double clicking
+    if (isProcessing) return;
+
     // 1. Shake Effect based on severity (value 1-5)
     const shakeIntensity = value * 2;
     containerControls.start({
@@ -44,8 +47,6 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
     });
 
     // 2. Accumulate Pressure (Visual Gauge)
-    // Max possible score for 6 questions * 5 = 30. 
-    // Let's map roughly to 100%
     const pressureIncrease = (value / 30) * 100;
     setPressure(prev => Math.min(prev + pressureIncrease, 100));
 
@@ -180,7 +181,8 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
             <button
               key={val}
               onClick={() => handleAnswer(val)}
-              className="group relative flex flex-col items-center gap-4 focus:outline-none"
+              disabled={isProcessing}
+              className="group relative flex flex-col items-center gap-4 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {/* The "Switch" */}
                 <div className="w-16 h-24 bg-white/5 border border-slate/20 rounded-sm relative overflow-hidden group-hover:border-bronze transition-colors shadow-inner">

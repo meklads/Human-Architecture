@@ -114,12 +114,30 @@ function App() {
   };
 
   // After checkout success
-  const handlePurchaseComplete = () => {
+  const handlePurchaseComplete = (userData: { name: string; email: string }) => {
+      // 1. Auto-Create Account for Buyer
+      const newProfile: UserProfile = {
+          name: userData.name,
+          handle: userData.name.split(' ')[0].toLowerCase(),
+          email: userData.email,
+          rank: lang === 'ar' ? 'مهندس مبتدئ' : 'Novice Architect',
+          level: 1,
+          xp: 50, // Bonus XP for purchasing
+          projects: 0,
+          endorsed: 0,
+          joinedDate: new Date().toISOString().split('T')[0],
+          avatarChar: userData.name.charAt(0).toUpperCase()
+      };
+      
+      setCurrentUser(newProfile);
+      localStorage.setItem('iham_user_profile', JSON.stringify(newProfile));
+
+      // 2. Route based on purchase
       // If they bought the bundle, send to dashboard. Otherwise home.
       const hasBundle = checkoutItems.some(i => i.category === 'bundle');
+      
       if (hasBundle) {
-          // Note: In a real app we would unlock content here
-          setCurrentView('dashboard'); // Assuming dashboard access
+          setCurrentView('dashboard'); 
       } else {
           setCurrentView('home');
       }

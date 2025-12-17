@@ -169,8 +169,15 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
               const updatedUser = { ...user, avatarImage: base64String };
               setUser(updatedUser);
               
-              // Persist to Local Storage
-              localStorage.setItem('iham_user_profile', JSON.stringify(updatedUser));
+              // Persist to Local Storage with Safety Check
+              try {
+                  localStorage.setItem('iham_user_profile', JSON.stringify(updatedUser));
+              } catch (e) {
+                  console.error('Storage limit exceeded or quota error', e);
+                  alert(isAr ? 'الصورة كبيرة جداً. يرجى استخدام صورة أصغر.' : 'Image too large. Please use a smaller file.');
+                  // Revert state change if storage fails to keep sync
+                  setUser(user); 
+              }
           };
           reader.readAsDataURL(file);
       }
