@@ -22,7 +22,7 @@ import { BlueprintOverlay } from './components/BlueprintOverlay';
 
 function App() {
   const [lang, setLang] = useState<Language>('en');
-  const [currentView, setCurrentView] = useState<View>('landing'); // Default to Landing Page
+  const [currentView, setCurrentView] = useState<View>('home'); // Default restored to Home Page
   const [darkMode, setDarkMode] = useState(true); // Default to Dark Mode (The Beautiful One)
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -139,11 +139,12 @@ function App() {
   };
 
   const navItems: { id: View; label: string }[] = [
+    { id: 'home', label: TRANSLATIONS.nav.home[lang] }, 
     { id: 'about', label: TRANSLATIONS.nav.architect[lang] }, 
     { id: 'philosophy', label: TRANSLATIONS.nav.philosophy[lang] },
     { id: 'journal', label: TRANSLATIONS.nav.journal[lang] },
     { id: 'community', label: TRANSLATIONS.nav.community[lang] },
-    { id: 'art-store', label: TRANSLATIONS.nav.gallery[lang] }, // Moved to end
+    { id: 'art-store', label: TRANSLATIONS.nav.gallery[lang] }, 
     { id: 'contact', label: TRANSLATIONS.nav.contact[lang] },
   ];
 
@@ -170,6 +171,9 @@ function App() {
     );
   }
 
+  // FUNNEL MODE CHECK: If landing page (Blueprint), hide header/footer
+  const isFunnelMode = currentView === 'landing';
+
   return (
     <div className={`min-h-screen transition-colors duration-700 bg-darkBg text-concrete`} dir={direction}>
       <CustomCursor />
@@ -188,12 +192,13 @@ function App() {
         )}
       </AnimatePresence>
       
-      {/* --- STICKY DARK HEADER --- */}
+      {/* --- STICKY DARK HEADER (HIDDEN IN FUNNEL MODE) --- */}
+      {!isFunnelMode && (
       <header className="fixed top-0 w-full z-50 bg-[#050505]/90 backdrop-blur-md border-b border-white/5 shadow-2xl">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           
           {/* Logo Area */}
-          <div className="flex items-center gap-4 group cursor-pointer" onClick={() => setCurrentView('landing')}>
+          <div className="flex items-center gap-4 group cursor-pointer" onClick={() => setCurrentView('home')}>
              <div className="hidden lg:block text-alabaster group-hover:text-bronze transition-colors">
                  <span className={`block text-xl font-bold tracking-tight ${headingFont}`}>HUMAN ARCHITECTURE</span>
              </div>
@@ -234,9 +239,9 @@ function App() {
                   </button>
               )}
 
-              {/* BLUEPRINT Button (Luxury Style) */}
+              {/* BLUEPRINT Button (Luxury Style) - LINKS TO FUNNEL (LANDING) */}
               <button 
-                onClick={() => setCurrentView('library')}
+                onClick={() => setCurrentView('landing')}
                 className="hidden md:flex border border-white/20 text-white px-6 py-2 text-xs uppercase tracking-widest font-bold hover:border-bronze hover:text-bronze transition-colors rounded-sm"
               >
                   {lang === 'ar' ? 'المخطط' : 'THE BLUEPRINT'}
@@ -259,6 +264,7 @@ function App() {
           </div>
         </div>
       </header>
+      )}
 
       {/* --- MOBILE FULLSCREEN MENU --- */}
       <AnimatePresence>
@@ -284,8 +290,8 @@ function App() {
                         transition={{ delay: 0 }}
                     >
                          <button 
-                            onClick={() => { setCurrentView('library'); setMenuOpen(false); }}
-                            className={`text-2xl ${headingFont} hover:text-bronze transition-all duration-300 group flex items-center justify-center gap-6 ${currentView === 'library' ? 'text-white' : 'text-slate-600'}`}
+                            onClick={() => { setCurrentView('landing'); setMenuOpen(false); }}
+                            className={`text-2xl ${headingFont} hover:text-bronze transition-all duration-300 group flex items-center justify-center gap-6 ${currentView === 'landing' ? 'text-white' : 'text-slate-600'}`}
                         >
                             {TRANSLATIONS.nav.blueprint[lang]}
                         </button>
@@ -312,7 +318,7 @@ function App() {
       </AnimatePresence>
 
       {/* --- MAIN CONTENT AREA --- */}
-      <main className="relative z-10">
+      <main className={`relative z-10 ${isFunnelMode ? 'pt-0' : ''}`}>
         <AnimatePresence mode='wait'>
             {currentView === 'landing' && <LandingPage key="landing" lang={lang} setView={setCurrentView} onCheckout={handleAddToCart} />}
             {currentView === 'home' && <HomePage key="home" lang={lang} setView={setCurrentView} />}
@@ -352,8 +358,8 @@ function App() {
         </AnimatePresence>
       </main>
 
-      {/* --- FOOTER --- */}
-      {currentView !== 'checkout' && (
+      {/* --- FOOTER (HIDDEN IN FUNNEL MODE) --- */}
+      {!isFunnelMode && currentView !== 'checkout' && (
       <footer className="bg-[#050505] text-slate-400 py-12 border-t border-white/5 relative z-10">
           <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
               <div className="text-[0.6rem] uppercase tracking-widest text-slate">

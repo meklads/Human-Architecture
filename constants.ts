@@ -77,65 +77,138 @@ export const ABOUT_CONTENT = {
     philosophy: {
         ar: 'هذا المشروع هو نتاج دمج خبرتي الطويلة في العمارة مع شغفي بالطب. "عمارة الإنسان" ليست مجرد فلسفة، بل هي تطبيق للمبادئ الهندسية الصارمة على الصحة النفسية والجسدية. كما يُبنى ناطحات السحاب على أسس متينة، يجب أن يُبنى الإنسان. أنا هنا لا لأقدم نصائح، بل لأعطيك "المخطط التنفيذي" لإعادة بناء ذاتك كتحفة معمارية.',
         en: 'This project is the result of merging my lifetime experience in architecture with my passion for medicine. "Human Architecture" is not just a philosophy; it is the application of strict engineering principles to mental and physical health. Just as skyscrapers are built on solid foundations, so must the human being. I am not here to offer advice, but to hand you the "Execution Blueprint" to rebuild yourself as a structural masterpiece.',
-        fr: 'Ce projet est un plan d\'exécution pour la restructuration.'
+        fr: 'Ce projet est un plan\'exécution pour la restructuration.'
     }
 };
 
-// ... (Rest of LANDING_CONTENT, REPAIR_PROTOCOLS, PILLARS, PHASES remain the same) ...
+// --- UPDATED FUNNEL CONTENT TO MATCH BLUEPRINT ---
 export const LANDING_CONTENT = {
+  header: {
+      left: { en: 'HUMAN ARCHITECTURE™', ar: 'عمارة الإنسان™' },
+      right: { en: 'THE BLUEPRINT', ar: 'المخطط' },
+      join: { en: 'JOIN', ar: 'انضمام' }
+  },
+  warning: {
+      en: 'WARNING: This is not traditional self-help.',
+      ar: 'تحذير: هذا ليس تطوير ذات تقليدي.'
+  },
   hero: {
-    headline: { en: 'You Are Not Broken. You Are Poorly Designed.', ar: 'أنت لست مكسوراً. أنت سيء التصميم.' },
-    desc: { en: 'Human beings don\'t break randomly. They collapse architecturally.\nYou need structural engineering—not interior decoration—to rebuild your life from the foundation up.', ar: 'البشر لا ينهارون عشوائياً، بل إنشائياً. أنت بحاجة لهندسة هيكلية—وليس ديكوراً داخلياً—لإعادة بناء حياتك من الأساس.' },
-    cta: { en: 'TAKE YOUR STRUCTURAL INTEGRITY AUDIT', ar: 'ابدأ فحص السلامة الإنشائية' },
-    subCta: { en: "WATCH SARAH'S STORY", ar: 'شاهد قصة سارة' }
-  },
-  collapse: {
-    title: { en: 'You Are Not Broken. You Are Poorly Designed.', ar: 'أنت لست مكسوراً. أنت سيء التصميم.' },
-    quote: { en: 'Human beings don’t break randomly. They collapse architecturally.', ar: 'البشر لا ينكسرون عشوائياً. هم ينهارون معمارياً.' },
-    story: {
-        en: 'Sarah Mitchell—venture capitalist, marathon runner—stood in her kitchen watching her hands shake while pouring coffee. "I have built a life I cannot inhabit," she whispered. She had a pristine facade, but the internal load-bearing walls were rotting.',
-        ar: 'سارة ميتشل—مستثمرة وعداءة—وقفت في مطبخها تشاهد يديها ترتجفان أثناء سكب القهوة. همست: "لقد بنيت حياة لا أستطيع السكن فيها". كانت تملك واجهة مثالية، لكن الجدران الحاملة الداخلية كانت تتآكل.'
+    headline: { en: 'Stop Fixing Cracks.\nRe-Pour the Foundation.', ar: 'توقف عن ترميم الشقوق.\nأعد صب الأساسات.' },
+    subheadline: { 
+        en: 'The only engineering-grade system designed to restructure your mind, body, and internal systems — without motivation, hacks, or self-help hype.', 
+        ar: 'النظام الهندسي الوحيد المصمم لإعادة هيكلة عقلك، جسدك، وأنظمتك الداخلية — بدون حيل تحفيزية أو ضجيج تطوير الذات.' 
     },
-    cta: { en: 'Take Your Structural Integrity Audit →', ar: 'ابدأ فحص السلامة الإنشائية ←' }
+    support: { en: 'Built on Human Architecture protocols, not inspirational psychology.', ar: 'مبني على بروتوكولات هندسة الإنسان، وليس علم النفس التحفيزي.' },
+    videoLabel: { en: 'WATCH: How the Human Architecture System Works', ar: 'شاهد: كيف يعمل نظام عمارة الإنسان' },
+    videoDuration: { en: 'Duration: 3:45', ar: 'المدة: 3:45' },
+    cta: { en: 'YES — I Want to Rebuild My Internal Structure', ar: 'نعم — أريد إعادة بناء هيكلي الداخلي' },
+    guarantee: { en: '30-Day Money-Back Guarantee', ar: 'ضمان استعادة الأموال لمدة 30 يوماً' }
   },
-  system: {
-    title: { en: 'The Complete Rebuild System', ar: 'نظام إعادة البناء الكامل' },
-    subtitle: { en: '58 Days of Structural Transformation', ar: '٥٨ يوماً من التحول الهيكلي' },
-    components: [
-        {
-            title: { en: 'Phase 1: The Blueprint', ar: 'المخطط (نظري)' },
-            desc: { en: 'Digital + Print Book. The Owner’s Manual.', ar: 'كتاب ديجيتال + مطبوع. دليل المالك لفهم الانهيار.' },
-            price: '$14.99'
-        },
-        {
-            title: { en: 'Phase 2: The Workbook', ar: 'الوورك بوك (تطبيقي)' },
-            desc: { en: '28-Day Log. Digital is FREE. Print is paid.', ar: 'سجل ٢٨ يوم. الديجيتال مجاني، المطبوع برسوم.' },
-            price: 'Free / $25'
-        },
-        {
-            title: { en: 'Phase 3: The System', ar: 'النظام (هجين)' },
-            desc: { en: 'Print Book + Digital Book + Online Dashboard.', ar: 'كتاب مطبوع + ديجيتال + لوحة تحكم تفاعلية.' },
-            price: '$397'
-        }
-    ],
-    footer: { en: 'This is not self-help. This is human engineering.', ar: 'هذا ليس تطوير ذات. هذه هندسة بشرية.' }
+  problem: {
+    headline: { en: 'You Are Not Broken.\nYou Are Carrying Load on a Failing Structure.', ar: 'أنت لست مكسوراً.\nأنت تحمل أحمالاً على هيكل متداعٍ.' },
+    body: { 
+        en: 'Most people try to fix their lives by adding more effort. More discipline. More routines. More optimization. But effort applied to a weak structure doesn’t fix anything. It accelerates collapse.',
+        ar: 'معظم الناس يحاولون إصلاح حياتهم بزيادة الجهد. مزيد من الانضباط. مزيد من الروتين. لكن الجهد المبذول على هيكل ضعيف لا يصلح شيئاً. بل يسرع الانهيار.'
+    },
+    emphasis: { en: 'You don’t need another habit. You need structural correction.', ar: 'أنت لا تحتاج عادة جديدة. أنت تحتاج تصحيحاً إنشائياً.' }
   },
-  transformation: {
-    title: { en: 'From Collapse to Architecture', ar: 'من الانهيار إلى العمارة' },
-    quote: { en: 'After 28 days: Foundation stable.\nAfter 30 more: Running a half-marathon—not to prove anything, but because her body could finally carry her.', ar: 'بعد ٢٨ يوماً: الأساسات استقرت.\nبعد ٣٠ يوماً أخرى: ركضت نصف ماراثون—ليس لتثبت شيئاً، بل لأن جسدها أصبح قادراً أخيراً على حملها.' },
-    cta: { en: 'Start Your Rebuild →', ar: 'ابدأ إعادة البناء ←' }
+  failure: {
+      headline: { en: 'Why Traditional Self-Help Keeps You Stuck', ar: 'لماذا يبقيك تطوير الذات التقليدي عالقاً' },
+      bullets: [
+          { en: 'It treats symptoms in isolation', ar: 'يعالج الأعراض بشكل منفصل' },
+          { en: 'It ignores load distribution', ar: 'يتجاهل توزيع الأحمال' },
+          { en: 'It relies on motivation', ar: 'يعتمد على التحفيز المؤقت' },
+          { en: 'It collapses under pressure', ar: 'ينهار تحت الضغط' }
+      ],
+      closing: { en: 'Humans don’t fail randomly. They fail structurally.', ar: 'البشر لا يفشلون عشوائياً. هم يفشلون إنشائياً.' }
   },
-  pricing: {
-      title: { en: 'Choose Your Level of Reconstruction', ar: 'اختر مستوى إعادة البناء' }
+  solution: {
+      headline: { en: 'What If Your Life Worked Like a Building?', ar: 'ماذا لو كانت حياتك تعمل مثل المبنى؟' },
+      body: { 
+          en: 'Every high-performance structure is designed to carry load. So is the human system. When pressure increases, a structure must either: redistribute load, reinforce foundations, or collapse.',
+          ar: 'كل مبنى عالي الأداء مصمم لحمل الأوزان. وكذلك النظام البشري. عندما يزداد الضغط، يجب على الهيكل إما: إعادة توزيع الحمل، تدعيم الأساسات، أو الانهيار.' 
+      }
   },
-  guarantee: {
-      title: { en: 'The Architect’s Guarantee', ar: 'ضمان المعماري' },
-      text: { 
-          en: 'If you complete the 28-Day Protocol and the 30-Day Accelerator with full engagement, and you don’t feel structurally different—in your body, mind, emotion, and purpose—I will refund every dollar. But I’ve never had to.',
-          ar: 'إذا أتممت بروتوكول الـ ٢٨ يوماً وبرنامج التسريع (٣٠ يوماً) بالتزام كامل، ولم تشعر باختلاف هيكلي جذري—في جسدك، عقلك، مشاعرك، وهدفك—سأعيد لك كل دولار. لكنني لم أضطر لذلك أبداً.'
+  pillars: {
+      title: { en: 'The Four Load-Bearing Pillars', ar: 'الأعمدة الأربعة الحاملة' },
+      items: [
+          { title: { en: 'Foundation', ar: 'الأساس' }, desc: { en: 'Body', ar: 'الجسد' } },
+          { title: { en: 'Frame', ar: 'الإطار' }, desc: { en: 'Mind', ar: 'العقل' } },
+          { title: { en: 'Systems', ar: 'الأنظمة' }, desc: { en: 'Emotional Regulation', ar: 'التنظيم العاطفي' } },
+          { title: { en: 'Spire', ar: 'القمة' }, desc: { en: 'Direction & Meaning', ar: 'الاتجاه والمعنى' } }
+      ],
+      insight: { en: 'When one pillar weakens, stress transfers — silently — until failure appears.', ar: 'عندما يضعف عمود واحد، ينتقل الضغط — بصمت — حتى يظهر الفشل.' }
+  },
+  journey: {
+      title: { en: 'Your Path Through the Human Architecture™ System', ar: 'مسارك عبر نظام عمارة الإنسان™' },
+      intro: { en: 'This is not a collection of books. It is a progressive structural solution.', ar: 'هذه ليست مجموعة كتب. هذا حل إنشائي متدرج.' },
+      steps: [
+          { 
+              step: '01', 
+              name: { en: 'DIAGNOSE', ar: 'التشخيص' }, 
+              product: { en: 'The Blueprint', ar: 'المخطط' },
+              purpose: { en: 'Structural Awareness', ar: 'الوعي الهيكلي' },
+              why: { en: 'Before fixing anything, you must understand where your structure is failing and why.', ar: 'قبل إصلاح أي شيء، يجب أن تفهم أين يفشل هيكلك ولماذا.' },
+              outcome: { en: 'Clarity before correction.', ar: 'الوضوح قبل التصحيح.' }
+          },
+          { 
+              step: '02', 
+              name: { en: 'STABILIZE', ar: 'التثبيت' }, 
+              product: { en: '28-Day Foundation Program', ar: 'برنامج التأسيس 28 يوم' },
+              purpose: { en: 'Stabilization', ar: 'الاستقرار' },
+              why: { en: 'When a system is under stress, optimization makes collapse worse. Stability comes first.', ar: 'عندما يكون النظام تحت الضغط، التحسين يجعل الانهيار أسوأ. الاستقرار يأتي أولاً.' },
+              outcome: { en: 'Stability fixes the present.', ar: 'الاستقرار يصلح الحاضر.' }
+          },
+          { 
+              step: '03', 
+              name: { en: 'PREVENT', ar: 'الوقاية' }, 
+              product: { en: '30-Day Architectural Reset', ar: 'إعادة الضبط المعماري 30 يوم' },
+              purpose: { en: 'Structural Prevention', ar: 'الوقاية الهيكلية' },
+              why: { en: 'Stability alone does not prevent relapse. Design flaws must be corrected.', ar: 'الاستقرار وحده لا يمنع الانتكاس. يجب تصحيح عيوب التصميم.' },
+              outcome: { en: 'Structure protects the future.', ar: 'الهيكل يحمي المستقبل.' }
+          },
+          { 
+              step: '04', 
+              name: { en: 'REDESIGN', ar: 'إعادة التصميم' }, 
+              product: { en: '30-Day Accelerator', ar: 'المسرع 30 يوم' },
+              purpose: { en: 'Structural Redesign', ar: 'إعادة التصميم الهيكلي' },
+              why: { en: 'High performance requires a structure built for pressure — not comfort.', ar: 'الأداء العالي يتطلب هيكلاً مبنياً للضغط — ليس للراحة.' },
+              outcome: { en: 'Design for load, not motivation.', ar: 'صمم للأحمال، ليس للتحفيز.' }
+          }
+      ]
+  },
+  stack: {
+      headline: { en: 'What’s Included in the Complete System', ar: 'ماذا يتضمن النظام الكامل' },
+      items: [
+          { name: { en: 'The Blueprint (Book)', ar: 'كتاب المخطط' }, desc: { en: 'Understand the architecture of collapse before repair.', ar: 'افهم هندسة الانهيار قبل الإصلاح.' } },
+          { name: { en: '28-Day Foundation Workbook', ar: 'كراسة التأسيس 28 يوم' }, desc: { en: 'Stabilize your system and stop internal overload.', ar: 'ثبت نظامك وأوقف الحمل الزائد الداخلي.' } },
+          { name: { en: '30-Day Architectural Reset', ar: 'إعادة الضبط المعماري' }, desc: { en: 'Correct structural design errors and prevent relapse.', ar: 'صحح أخطاء التصميم وامنع الانتكاس.' } },
+          { name: { en: '30-Day Accelerator (Advanced)', ar: 'المسرع المتقدم' }, desc: { en: 'Redesign your internal structure for performance under pressure.', ar: 'أعد تصميم هيكلك للأداء تحت الضغط.' } }
+      ]
+  },
+  qualifiers: {
+      forYou: {
+          title: { en: 'This Is For You If:', ar: 'هذا لك إذا:' },
+          items: [
+              { en: 'You’re capable but exhausted', ar: 'أنت قادر لكنك منهك' },
+              { en: 'You want systems, not motivation', ar: 'تريد أنظمة، لا تحفيز' },
+              { en: 'You respect logic over hype', ar: 'تحترم المنطق أكثر من الضجيج' },
+              { en: 'You’re ready for responsibility', ar: 'أنت مستعد للمسؤولية' }
+          ]
       },
-      cta: { en: 'Begin Your Reconstruction Today →', ar: 'ابدأ عملية إعادة البناء اليوم ←' },
-      trust: { en: 'Secure Checkout | Lifetime Access | 2,300+ Builders Worldwide', ar: 'دفع آمن | وصول مدى الحياة | ٢٣٠٠+ بناء حول العالم' }
+      notForYou: {
+          title: { en: 'This Is NOT For You If:', ar: 'هذا ليس لك إذا:' },
+          items: [
+              { en: 'You want quick fixes', ar: 'تريد حلولاً سريعة' },
+              { en: 'You avoid discomfort', ar: 'تتجنب عدم الراحة' },
+              { en: 'You want inspiration without structure', ar: 'تريد إلهاماً بدون هيكل' }
+          ]
+      }
+  },
+  finalCta: {
+      headline: { en: 'You Don’t Need to Change Your Life.\nYou Need a Structure That Can Hold It.', ar: 'لا تحتاج لتغيير حياتك.\nتحتاج لهيكل يمكنه حملها.' },
+      button: { en: 'BEGIN THE REBUILD', ar: 'ابدأ إعادة البناء' },
+      trust: { en: 'Secure Checkout • Instant Access • 30-Day Guarantee', ar: 'دفع آمن • وصول فوري • ضمان 30 يوم' }
   }
 };
 
@@ -262,7 +335,6 @@ export const PHASES = [
     }
 ];
 
-// --- 🏛️ UPDATED ART CATALOG (High-Concept Philosophical Pieces) ---
 export const ART_PRODUCTS: Product[] = [
     {
       id: 'art-new-01',
@@ -278,7 +350,6 @@ export const ART_PRODUCTS: Product[] = [
       image: 'https://images.unsplash.com/photo-1597113366853-fea190b6cd82?q=80&w=2070&auto=format&fit=crop', 
       status: 'available',
       panels: 1,
-      // 🧠 HIGH QUALITY PROMPT: Explicit texture, lighting, and materials
       aiPrompt: "A hyper-realistic, 8k resolution close-up art photography of a massive, rough grey concrete architectural pillar standing in a dark void. The pillar has a deep, jagged structural crack running vertically. This crack is filled with glowing, molten liquid gold (Kintsugi style). The contrast between the cold, brutalist concrete and the warm, luminous gold is striking. Dramatic rim lighting, museum quality, black background."
     },
     {
@@ -295,7 +366,6 @@ export const ART_PRODUCTS: Product[] = [
       image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop',
       status: 'available',
       panels: 1,
-      // 🧠 HIGH QUALITY PROMPT: Concept Art, Mixed Media
       aiPrompt: "A conceptual masterpiece art print. A dark background filled with chaotic, scribbled black charcoal lines representing a messy mind. Superimposed over this chaos are sharp, glowing cyan blue architectural blueprint lines—grid systems, measurements, and straight vectors—that are actively organizing the scribbles into a perfect geometric structure. High contrast, merging psychology with engineering."
     },
     {
@@ -312,7 +382,6 @@ export const ART_PRODUCTS: Product[] = [
       image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop',
       status: 'available',
       panels: 1,
-      // 🧠 HIGH QUALITY PROMPT: Atmospheric, Interior Design
       aiPrompt: "A breathtaking architectural photography shot of a vast, empty, dark concrete room with high ceilings (Brutalist style). The room is in shadow, except for a single, sharp, dramatic beam of sunlight cutting through dust motes in the air to illuminate a solitary, simple wooden chair in the center. The mood is silent, sacred, and introspective. Cinematic lighting, 8k."
     },
     {
@@ -329,7 +398,6 @@ export const ART_PRODUCTS: Product[] = [
       image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80',
       status: 'available',
       panels: 1,
-      // 🧠 HIGH QUALITY PROMPT: Da Vinci meets Matrix/CAD
       aiPrompt: "A highly detailed art illustration. A reimagining of Da Vinci's Vitruvian Man on old parchment paper background. The left side of the man is classic anatomical muscle and bone sketch. The right side transitions seamlessly into a complex 3D blue wireframe architectural schematic (CAD style) made of steel beams and grid lines. The merger of biology and structure. text annotations in Latin and Binary."
     },
     {
@@ -346,12 +414,10 @@ export const ART_PRODUCTS: Product[] = [
       image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=2070&auto=format&fit=crop',
       status: 'available',
       panels: 1,
-      // 🧠 HIGH QUALITY PROMPT: Contrast, Weather, Mood
       aiPrompt: "Cinematic close-up photography of a modern glass skyscraper window at night. On the OUTSIDE glass reflection, there is a chaotic, dark thunderstorm with rain streaking down. On the INSIDE (visible through the glass), there is a warm, cozy library room lit by golden candlelight and a fireplace, completely peaceful. The contrast between the cold external storm and the warm internal peace is the focus. 8k, photorealistic."
     }
 ];
 
-// ... (Rest of PRODUCTS, BOOK_CHAPTERS, BLOG_POSTS, etc. remain unchanged) ...
 export const PRODUCTS: Product[] = [
   // --- INDIVIDUAL ITEMS (A LA CARTE) ---
   {

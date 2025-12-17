@@ -2,10 +2,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Language, View, Product } from '../types';
-import { Hero } from './Hero';
-import { Assessment } from './Assessment';
-import { PILLARS, RESTORATION_LOGS, BLOG_POSTS, TRANSLATIONS } from '../constants';
-import { ArrowLeft, ArrowRight, Layers, Activity, Quote, QrCode, Plus } from './Icons';
+import { LANDING_CONTENT } from '../constants';
+import { ArrowRight, Play, Check, AlertTriangle, Layers, Shield, Zap, Target, ArrowLeft, Layout } from './Icons';
 
 interface LandingPageProps {
   lang: Language;
@@ -13,181 +11,349 @@ interface LandingPageProps {
   onCheckout?: (items: Product[]) => void;
 }
 
-export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheckout }) => {
   const isAr = lang === 'ar';
   const headingFont = isAr ? 'font-amiri' : 'font-serif';
   const bodyFont = isAr ? 'font-ibm' : 'font-sans';
+  const dir = isAr ? 'rtl' : 'ltr';
+  const content = LANDING_CONTENT;
+
+  // Scroll to offer stack
+  const scrollToOffer = () => {
+      const el = document.getElementById('offer-stack');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="bg-[#050505] text-alabaster"
-    >
-      {/* 1. HERO SECTION (The X-Ray Experience) */}
-      <Hero lang={lang} setView={setView} />
+    <div dir={dir} className="bg-[#050505] min-h-screen text-white overflow-x-hidden selection:bg-bronze selection:text-black font-sans">
       
-      {/* 2. DIAGNOSTICS (The Interactive Assessment) */}
-      <div id="assessment-section" className="relative z-10 border-t border-white/10">
-        <Assessment lang={lang} setView={setView} />
-      </div>
-
-      {/* 3. STRUCTURAL PREVIEW (The Pillars) */}
-      <section id="xray-section" className="py-24 bg-[#080808] relative overflow-hidden border-t border-white/10">
-         <div className="container mx-auto px-6 relative z-10">
-            <div className="text-center mb-16">
-                <span className="text-bronze text-xs uppercase tracking-[0.3em] flex items-center justify-center gap-2 mb-4">
-                <Layers size={14} /> {isAr ? 'الهيكل الداخلي' : 'Internal Structure'}
-                </span>
-                <h2 className={`text-4xl md:text-5xl text-alabaster ${headingFont}`}>
-                {isAr ? 'الأعمدة الأربعة' : 'The Four Pillars'}
-                </h2>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-4 border-t border-b border-white/10 divide-y lg:divide-y-0 lg:divide-x divide-white/10 bg-[#050505]">
-                {PILLARS.map((pillar, idx) => (
-                <div 
-                    key={pillar.id} 
-                    onClick={() => setView('library')} // Direct to the Blueprint Funnel
-                    className="group relative h-[400px] overflow-hidden cursor-pointer bg-black/20 hover:bg-black/40 transition-colors"
-                >
-                    {/* Image Layer */}
-                    <div className="absolute inset-0 opacity-40 group-hover:opacity-20 transition-opacity duration-700">
-                        <img src={pillar.image} className="w-full h-full object-cover grayscale" />
-                    </div>
-                    
-                    {/* Content */}
-                    <div className="absolute inset-0 p-8 flex flex-col justify-between z-10">
-                        <div className="flex justify-between">
-                            <span className="text-[0.6rem] text-bronze uppercase tracking-widest border border-bronze/30 px-2 py-1">SEC-0{idx + 1}</span>
-                            <span className="text-4xl font-serif text-white/10 font-bold">0{idx+1}</span>
-                        </div>
-                        <div>
-                            <h3 className={`text-2xl text-white mb-2 ${headingFont} group-hover:text-bronze transition-colors`}>{pillar.title[lang]}</h3>
-                            <div className="w-8 h-1 bg-white/10 group-hover:bg-bronze transition-colors"></div>
-                        </div>
-                    </div>
-                    
-                    {/* Scan Line Hover */}
-                    <div className="absolute top-0 left-0 w-full h-[2px] bg-cyan-400 shadow-[0_0_15px_rgba(0,255,255,0.8)] z-20 opacity-0 group-hover:opacity-100 group-hover:animate-scan pointer-events-none"></div>
-                </div>
-                ))}
-            </div>
-         </div>
-      </section>
-
-      {/* 4. CASE STUDIES (Restoration Logs) */}
-      <section className="py-24 bg-[#0a0a0a] border-t border-white/10">
-          <div className="container mx-auto px-6">
-              <div className="flex flex-col items-center mb-16">
-                  <span className="text-bronze text-xs uppercase tracking-[0.3em] mb-2">
-                      {isAr ? 'قصص الترميم' : 'Restoration Logs'}
-                  </span>
-                  <h2 className={`text-4xl md:text-5xl text-white ${headingFont}`}>
-                      {isAr ? 'قبل وبعد الهندسة' : 'Before & After Architecture'}
-                  </h2>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {RESTORATION_LOGS.map((log) => (
-                      <div 
-                        key={log.id} 
-                        className="bg-[#111] p-8 border border-white/10 shadow-lg transition-colors hover:border-bronze/30 relative group"
-                      >
-                          <div className="absolute top-4 right-4 text-white/5 group-hover:text-bronze/10 transition-colors">
-                              <Quote size={48} />
-                          </div>
-                          <div className="flex items-center gap-2 mb-6">
-                              <span className={`text-xs px-2 py-1 border border-bronze text-bronze uppercase ${isAr ? 'font-ibm' : 'font-montserrat'} bg-bronze/10`}>
-                                  {log.status[lang]}
-                              </span>
-                              <span className="text-xs text-slate uppercase tracking-widest">{log.role[lang]}</span>
-                          </div>
-                          <div className="min-h-[80px]">
-                            <p className={`text-lg text-slate group-hover:text-white transition-colors italic mb-6 leading-relaxed ${bodyFont}`}>
-                                "{log.report[lang]}"
-                            </p>
-                          </div>
-                          <div className="border-t border-white/5 pt-4 flex justify-between items-center">
-                              <h4 className={`font-bold text-white ${headingFont}`}>{log.name[lang]}</h4>
-                              <span className="text-xs text-slate/50 uppercase tracking-widest">Ref: {log.id}</span>
-                          </div>
-                      </div>
-                  ))}
-              </div>
-          </div>
-      </section>
-
-      {/* 5. JOURNAL PREVIEW (SITE LOG) - REFINED DESIGN */}
-      <section className="py-24 bg-[#050505] border-t border-white/10 relative overflow-hidden">
-        <div className="container mx-auto px-6 relative z-10">
-           {/* Header with Watermark */}
-           <div className="flex items-end justify-between mb-16">
-             <div className="relative">
-                <span className={`absolute -top-12 -left-4 text-[6rem] md:text-[8rem] text-white/[0.03] font-bold pointer-events-none select-none leading-none ${headingFont}`}>
-                    LOG
-                </span>
-                <h2 className={`text-3xl md:text-5xl text-white uppercase ${headingFont} relative z-10 tracking-tight`}>
-                    {TRANSLATIONS.nav.journal[lang]}
-                </h2>
+      {/* 1️⃣ HEADER (Minimal – No Distractions) */}
+      <header className="absolute top-0 left-0 w-full z-50 px-6 py-6 md:px-12 flex justify-between items-center pointer-events-none">
+          {/* Logo / Home Link */}
+          <button 
+            onClick={() => setView('home')} 
+            className="pointer-events-auto group flex items-center gap-3 opacity-50 hover:opacity-100 transition-opacity duration-300"
+          >
+             <div className="w-8 h-8 border border-white/30 flex items-center justify-center group-hover:border-bronze group-hover:text-bronze transition-colors">
+                 <Layout size={14} />
              </div>
-             
-             <button 
-                onClick={() => setView('journal')} 
-                className="group flex items-center gap-2 text-white/50 hover:text-white transition-colors pb-2"
-             >
-                <Plus size={24} strokeWidth={1} className="group-hover:rotate-90 transition-transform duration-300" />
-             </button>
-          </div>
-
-          {/* Blog Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {BLOG_POSTS.slice(0, 2).map((post) => (
-              <article key={post.id} className="group cursor-pointer" onClick={() => setView('journal')}>
-                <div className="relative overflow-hidden mb-6 aspect-video border border-white/10">
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                    <img 
-                        src={post.image} 
-                        alt={post.title[lang]} 
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105" 
-                    />
-                </div>
-                
-                <div className="flex justify-between items-center text-[0.6rem] text-slate/60 uppercase tracking-[0.2em] mb-3">
-                    <span className="text-bronze">{post.category}</span>
-                    <span>{post.date}</span>
-                </div>
-                
-                <h3 className={`text-2xl text-white group-hover:text-bronze transition-colors mb-3 leading-tight ${headingFont}`}>
-                  {post.title[lang]}
-                </h3>
-                
-                <p className={`text-slate text-sm line-clamp-2 leading-relaxed ${bodyFont}`}>
-                    {post.excerpt[lang]}
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 6. CTA TO BLUEPRINT */}
-      <section className="py-24 bg-[#F2F0EB] text-[#050505] border-t border-white/10 text-center">
-          <div className="container mx-auto px-6">
-              <h2 className={`text-4xl md:text-6xl mb-6 ${headingFont}`}>
-                  {isAr ? 'هل أنت جاهز لإعادة البناء؟' : 'Ready to Rebuild?'}
-              </h2>
-              <p className={`text-[#2B2B2B] mb-10 max-w-2xl mx-auto ${bodyFont} text-lg opacity-80`}>
-                  {isAr ? 'احصل على المخطط الهندسي الكامل وابدأ التنفيذ.' : 'Acquire the Master Blueprint and begin execution.'}
-              </p>
-              <button 
-                onClick={() => setView('library')}
-                className="px-12 py-5 bg-bronze text-white uppercase tracking-[0.2em] font-bold hover:bg-[#050505] transition-all shadow-2xl"
-              >
-                  {isAr ? 'دخول غرفة المخطط' : 'ENTER BLUEPRINT ROOM'}
+             <span className={`text-[0.6rem] uppercase tracking-[0.2em] font-bold ${bodyFont} hidden md:block`}>
+                 {content.header.left[lang]}
+             </span>
+          </button>
+          
+          <div className="flex gap-6 pointer-events-auto">
+              <button onClick={() => setView('home')} className="text-[0.6rem] uppercase tracking-widest text-slate hover:text-white transition-colors">
+                  {content.header.right[lang]}
+              </button>
+              <button onClick={() => setView('register')} className="text-[0.6rem] uppercase tracking-widest font-bold text-bronze border border-bronze/30 px-4 py-1 hover:bg-bronze hover:text-black transition-colors">
+                  {content.header.join[lang]}
               </button>
           </div>
+      </header>
+
+      {/* 2️⃣ PRE-HEADLINE (Authority + Differentiation) */}
+      <div className="pt-32 pb-8 text-center px-4">
+           <div className="inline-flex items-center gap-2 bg-red-900/10 border border-red-900/30 px-4 py-2 rounded-full">
+               <AlertTriangle size={12} className="text-red-500" />
+               <span className="text-[0.6rem] text-red-400 uppercase tracking-widest font-bold">
+                   {content.warning[lang]}
+               </span>
+           </div>
+      </div>
+
+      {/* 3️⃣ HERO SECTION (Primary Hook) */}
+      <section className="relative container mx-auto px-6 text-center pb-24">
+           <motion.h1 
+             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}
+             className={`text-5xl md:text-7xl lg:text-8xl leading-[1.1] font-bold text-white mb-8 ${headingFont} whitespace-pre-line`}
+           >
+               {content.hero.headline[lang]}
+           </motion.h1>
+           
+           <motion.p 
+             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
+             className={`text-lg md:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed mb-6 ${bodyFont}`}
+           >
+               {content.hero.subheadline[lang]}
+           </motion.p>
+
+           <motion.div 
+             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
+             className="text-xs text-bronze uppercase tracking-widest mb-16 border-b border-bronze/20 inline-block pb-1"
+           >
+               {content.hero.support[lang]}
+           </motion.div>
+
+           {/* 4️⃣ HERO VISUAL / VIDEO */}
+           <motion.div 
+             initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }}
+             className="relative max-w-4xl mx-auto aspect-video bg-[#111] border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] flex items-center justify-center group cursor-pointer overflow-hidden mb-12"
+           >
+               {/* Placeholder Grid */}
+               <div className="absolute inset-0 opacity-10 architectural-grid pointer-events-none"></div>
+               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-60"></div>
+               
+               {/* Play Button */}
+               <div className="w-20 h-20 rounded-full border border-bronze/50 flex items-center justify-center group-hover:scale-110 transition-transform relative z-10 bg-black/50 backdrop-blur-sm">
+                   <Play size={30} className="text-bronze ml-1" fill="currentColor" />
+               </div>
+               
+               <div className="absolute bottom-6 left-6 text-left z-10">
+                   <span className="block text-white font-bold text-sm tracking-wide mb-1">{content.hero.videoLabel[lang]}</span>
+                   <span className="block text-slate-500 text-xs font-mono uppercase">{content.hero.videoDuration[lang]}</span>
+               </div>
+           </motion.div>
+
+           {/* 5️⃣ PRIMARY CTA */}
+           <motion.div 
+             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+             className="flex flex-col items-center"
+           >
+               <button 
+                  onClick={scrollToOffer}
+                  className="bg-bronze text-white px-10 py-5 text-sm md:text-base font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300 shadow-[0_0_30px_rgba(197,160,101,0.3)] mb-4"
+               >
+                   {content.hero.cta[lang]}
+               </button>
+               <span className="text-[0.65rem] text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                   <Shield size={10} /> {content.hero.guarantee[lang]}
+               </span>
+           </motion.div>
       </section>
 
-    </motion.div>
+      {/* 6️⃣ PROBLEM IDENTIFICATION SECTION */}
+      <section className="py-24 bg-[#0a0a0a] border-t border-white/5 relative overflow-hidden">
+           <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-bronze/5 to-transparent pointer-events-none"></div>
+           <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
+               <h2 className={`text-3xl md:text-5xl text-white mb-8 leading-tight ${headingFont} whitespace-pre-line`}>
+                   {content.problem.headline[lang]}
+               </h2>
+               <p className={`text-lg text-slate-400 leading-relaxed mb-10 ${bodyFont}`}>
+                   {content.problem.body[lang]}
+               </p>
+               <div className="inline-block border-l-4 border-bronze pl-6 text-left">
+                   <p className={`text-xl md:text-2xl text-white italic ${headingFont}`}>
+                       "{content.problem.emphasis[lang]}"
+                   </p>
+               </div>
+           </div>
+      </section>
+
+      {/* 7️⃣ WHY SELF-HELP FAILS (FRAME SHIFT) */}
+      <section className="py-24 bg-[#050505]">
+           <div className="container mx-auto px-6 max-w-5xl">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                   <div>
+                       <span className="text-red-500 font-bold text-xs uppercase tracking-widest mb-4 block">{isAr ? 'التشخيص' : 'THE DIAGNOSIS'}</span>
+                       <h2 className={`text-3xl md:text-4xl text-white mb-8 ${headingFont}`}>
+                           {content.failure.headline[lang]}
+                       </h2>
+                       <ul className="space-y-4 mb-8">
+                           {content.failure.bullets.map((bullet, idx) => (
+                               <li key={idx} className="flex items-center gap-4 text-slate-400">
+                                   <div className="w-1.5 h-1.5 bg-red-500 rounded-full"></div>
+                                   <span className={bodyFont}>{bullet[lang]}</span>
+                               </li>
+                           ))}
+                       </ul>
+                       <p className={`text-lg text-white font-bold border-t border-white/10 pt-6 ${headingFont}`}>
+                           {content.failure.closing[lang]}
+                       </p>
+                   </div>
+                   {/* Abstract Visual of Collapse */}
+                   <div className="relative aspect-square bg-[#0a0a0a] border border-white/5 flex items-center justify-center p-8">
+                       <div className="w-full h-full border border-dashed border-slate/20 relative">
+                           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-slate/20 font-bold text-6xl rotate-45 pointer-events-none">FAIL</div>
+                           {/* Structural Collapse Graphic (CSS) */}
+                           <div className="absolute bottom-0 left-10 w-4 h-32 bg-red-900/20 transform -rotate-6 origin-bottom"></div>
+                           <div className="absolute bottom-0 right-10 w-4 h-32 bg-red-900/20 transform rotate-6 origin-bottom"></div>
+                           <div className="absolute top-10 left-1/2 -translate-x-1/2 w-32 h-4 bg-red-900/20 transform rotate-12"></div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+      </section>
+
+      {/* 8️⃣ THE BIG IDEA — HUMAN ARCHITECTURE */}
+      <section className="py-32 bg-white text-black relative">
+           <div className="container mx-auto px-6 text-center max-w-4xl">
+               <div className="mb-4">
+                   <Layers size={48} className="mx-auto text-bronze mb-6" strokeWidth={1} />
+               </div>
+               <h2 className={`text-4xl md:text-6xl mb-8 ${headingFont} font-bold`}>
+                   {content.solution.headline[lang]}
+               </h2>
+               <p className={`text-xl md:text-2xl text-charcoal/80 leading-relaxed ${bodyFont}`}>
+                   {content.solution.body[lang]}
+               </p>
+           </div>
+      </section>
+
+      {/* 9️⃣ THE FOUR PILLARS (Framework) */}
+      <section className="py-24 bg-[#080808] border-y border-white/10">
+           <div className="container mx-auto px-6">
+               <div className="text-center mb-16">
+                   <h2 className={`text-3xl md:text-4xl text-white ${headingFont}`}>{content.pillars.title[lang]}</h2>
+               </div>
+               
+               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                   {content.pillars.items.map((pillar, idx) => (
+                       <div key={idx} className="bg-[#111] border border-white/5 p-8 text-center group hover:border-bronze/50 transition-colors">
+                           <div className="text-6xl text-white/5 font-serif font-bold mb-4 group-hover:text-bronze/10 transition-colors">0{idx + 1}</div>
+                           <h3 className={`text-xl text-white mb-2 ${headingFont}`}>{pillar.title[lang]}</h3>
+                           <span className="text-xs uppercase tracking-widest text-bronze">{pillar.desc[lang]}</span>
+                       </div>
+                   ))}
+               </div>
+
+               <div className="text-center mt-12 max-w-2xl mx-auto">
+                   <p className="text-slate-500 italic text-sm">
+                       "{content.pillars.insight[lang]}"
+                   </p>
+               </div>
+           </div>
+      </section>
+
+      {/* 🔟 JOURNEY MAP (Very Important) */}
+      <section className="py-24 bg-[#050505]">
+           <div className="container mx-auto px-6 max-w-4xl">
+               <div className="text-center mb-20">
+                   <h2 className={`text-3xl md:text-5xl text-white mb-6 ${headingFont}`}>{content.journey.title[lang]}</h2>
+                   <p className="text-slate-400 text-lg">{content.journey.intro[lang]}</p>
+               </div>
+
+               <div className="space-y-0 relative">
+                   {/* Vertical Line */}
+                   <div className="absolute left-[19px] md:left-1/2 top-0 bottom-0 w-px bg-white/10 transform md:-translate-x-1/2"></div>
+
+                   {content.journey.steps.map((step, idx) => (
+                       <div key={idx} className={`relative flex flex-col md:flex-row gap-8 pb-16 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                           {/* Marker */}
+                           <div className="absolute left-0 md:left-1/2 w-10 h-10 bg-[#050505] border border-white/20 rounded-full flex items-center justify-center text-xs font-mono text-bronze z-10 transform md:-translate-x-1/2">
+                               {step.step}
+                           </div>
+
+                           <div className="pl-16 md:pl-0 w-full md:w-1/2 md:px-12 text-left md:text-right">
+                               {idx % 2 !== 0 && (
+                                   <div className="md:text-left">
+                                       <span className="text-[0.6rem] uppercase tracking-widest text-bronze mb-2 block">{step.name[lang]}</span>
+                                       <h3 className={`text-2xl text-white mb-2 ${headingFont}`}>{step.product[lang]}</h3>
+                                       <div className="bg-[#111] p-6 border-l-2 border-bronze mt-4">
+                                            <p className="text-xs uppercase tracking-widest text-slate-500 mb-2">{isAr ? 'الغرض' : 'Purpose'}: <span className="text-white">{step.purpose[lang]}</span></p>
+                                            <p className="text-sm text-slate-400 mb-4">{step.why[lang]}</p>
+                                            <p className="text-xs font-bold text-bronze flex items-center gap-2 md:justify-start">
+                                                <Target size={12} /> {step.outcome[lang]}
+                                            </p>
+                                       </div>
+                                   </div>
+                               )}
+                               {idx % 2 === 0 && (
+                                   <div className="md:text-right">
+                                       <span className="text-[0.6rem] uppercase tracking-widest text-bronze mb-2 block">{step.name[lang]}</span>
+                                       <h3 className={`text-2xl text-white mb-2 ${headingFont}`}>{step.product[lang]}</h3>
+                                       <div className="bg-[#111] p-6 border-l-2 border-bronze mt-4 text-left">
+                                            <p className="text-xs uppercase tracking-widest text-slate-500 mb-2">{isAr ? 'الغرض' : 'Purpose'}: <span className="text-white">{step.purpose[lang]}</span></p>
+                                            <p className="text-sm text-slate-400 mb-4">{step.why[lang]}</p>
+                                            <p className="text-xs font-bold text-bronze flex items-center gap-2">
+                                                <Target size={12} /> {step.outcome[lang]}
+                                            </p>
+                                       </div>
+                                   </div>
+                               )}
+                           </div>
+                           <div className="hidden md:block w-1/2"></div>
+                       </div>
+                   ))}
+               </div>
+           </div>
+      </section>
+
+      {/* 1️⃣1️⃣ WHAT YOU GET (Offer Stack) */}
+      <section id="offer-stack" className="py-24 bg-[#080808] border-t border-white/5">
+           <div className="container mx-auto px-6 max-w-3xl">
+               <div className="text-center mb-12">
+                   <h2 className={`text-3xl md:text-4xl text-white mb-4 ${headingFont}`}>{content.stack.headline[lang]}</h2>
+               </div>
+               
+               <div className="space-y-4">
+                   {content.stack.items.map((item, idx) => (
+                       <div key={idx} className="flex items-start gap-4 p-6 bg-[#111] border border-white/5 hover:border-bronze/30 transition-colors">
+                           <div className="mt-1 text-bronze">
+                               <Check size={20} />
+                           </div>
+                           <div>
+                               <h3 className={`text-lg text-white font-bold mb-1 ${headingFont}`}>{item.name[lang]}</h3>
+                               <p className={`text-sm text-slate-400 ${bodyFont}`}>{item.desc[lang]}</p>
+                           </div>
+                       </div>
+                   ))}
+               </div>
+           </div>
+      </section>
+
+      {/* 1️⃣2️⃣ WHO THIS IS FOR */}
+      <section className="py-24 bg-[#050505]">
+           <div className="container mx-auto px-6 max-w-5xl">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                   
+                   {/* FOR YOU */}
+                   <div className="bg-green-900/5 border border-green-900/20 p-8 md:p-10">
+                       <h3 className={`text-xl text-green-400 mb-6 font-bold ${headingFont}`}>{content.qualifiers.forYou.title[lang]}</h3>
+                       <ul className="space-y-4">
+                           {content.qualifiers.forYou.items.map((item, i) => (
+                               <li key={i} className="flex items-center gap-3 text-slate-300">
+                                   <Check size={16} className="text-green-500 shrink-0" />
+                                   <span className={bodyFont}>{item[lang]}</span>
+                               </li>
+                           ))}
+                       </ul>
+                   </div>
+
+                   {/* NOT FOR YOU */}
+                   <div className="bg-red-900/5 border border-red-900/20 p-8 md:p-10">
+                       <h3 className={`text-xl text-red-400 mb-6 font-bold ${headingFont}`}>{content.qualifiers.notForYou.title[lang]}</h3>
+                       <ul className="space-y-4">
+                           {content.qualifiers.notForYou.items.map((item, i) => (
+                               <li key={i} className="flex items-center gap-3 text-slate-300">
+                                   <div className="text-red-500 font-bold text-xs shrink-0">✕</div>
+                                   <span className={bodyFont}>{item[lang]}</span>
+                               </li>
+                           ))}
+                       </ul>
+                   </div>
+
+               </div>
+           </div>
+      </section>
+
+      {/* 1️⃣3️⃣ FINAL CTA (Decisive) */}
+      <section className="py-32 bg-white text-black text-center px-6">
+           <div className="max-w-4xl mx-auto">
+               <h2 className={`text-4xl md:text-6xl font-bold mb-10 leading-tight ${headingFont} whitespace-pre-line`}>
+                   {content.finalCta.headline[lang]}
+               </h2>
+               
+               <button 
+                  onClick={() => onCheckout && onCheckout([])}
+                  className="bg-black text-white px-12 py-6 text-lg md:text-xl font-bold uppercase tracking-[0.2em] hover:bg-bronze transition-colors shadow-2xl mb-6"
+               >
+                   {content.finalCta.button[lang]}
+               </button>
+               
+               <p className="text-xs uppercase tracking-widest text-slate-500 font-bold flex items-center justify-center gap-2">
+                   <Shield size={12} /> {content.finalCta.trust[lang]}
+               </p>
+           </div>
+      </section>
+
+      {/* 1️⃣4️⃣ FOOTER (Minimal) */}
+      <footer className="bg-[#050505] py-12 text-center border-t border-white/5">
+           <div className="text-[0.6rem] uppercase tracking-[0.2em] text-slate-600">
+               © HUMAN ARCHITECTURE™ • ALL RIGHTS RESERVED
+           </div>
+      </footer>
+
+    </div>
   );
 };
