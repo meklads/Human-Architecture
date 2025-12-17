@@ -213,7 +213,7 @@ function App() {
   const isFunnelMode = currentView === 'landing';
 
   return (
-    <div className={`min-h-screen transition-colors duration-700 bg-darkBg text-concrete`} dir={direction}>
+    <div className={`min-h-screen w-full overflow-x-hidden transition-colors duration-700 bg-darkBg text-concrete`} dir={direction}>
       <CustomCursor />
       
       {/* GLOBAL BLUEPRINT OVERLAY */}
