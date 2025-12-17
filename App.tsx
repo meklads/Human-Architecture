@@ -19,6 +19,7 @@ import { AboutPage } from './components/AboutPage';
 import { CustomCursor } from './components/CustomCursor';
 import { Magnetic } from './components/Magnetic';
 import { BlueprintOverlay } from './components/BlueprintOverlay';
+import { PasswordGate } from './components/PasswordGate'; // Import the Gate
 
 function App() {
   const [lang, setLang] = useState<Language>('en');
@@ -27,6 +28,9 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   
+  // SITE LOCK STATE
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
   // User Authentication State
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
 
@@ -51,6 +55,12 @@ function App() {
 
   // Initial Load Simulation & Deep Link Handler & User Restore
   useEffect(() => {
+    // 0. Check Authorization
+    const authorized = sessionStorage.getItem('site_access_token');
+    if (authorized === 'granted') {
+        setIsAuthorized(true);
+    }
+
     // 1. Architectural Boot Sequence
     const phaseInterval = setInterval(() => {
       setLoadingPhase(prev => {
@@ -165,6 +175,16 @@ function App() {
     { id: 'art-store', label: TRANSLATIONS.nav.gallery[lang] }, 
     { id: 'contact', label: TRANSLATIONS.nav.contact[lang] },
   ];
+
+  // --- PASSWORD GATE CHECK ---
+  if (!isAuthorized) {
+      return (
+          <>
+            <CustomCursor />
+            <PasswordGate onUnlock={() => setIsAuthorized(true)} />
+          </>
+      );
+  }
 
   if (loading) {
     return (
