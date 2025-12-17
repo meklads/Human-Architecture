@@ -309,7 +309,8 @@ export const PILLARS: PillarData[] = [
       en: 'Pouring concrete bases for bio-energy.', 
       fr: 'Coulage des bases.' 
     },
-    image: 'https://images.unsplash.com/photo-1518005052354-a36d6956e43d?q=80&w=2088&auto=format&fit=crop',
+    // Updated image to a reliable concrete structure
+    image: 'https://images.unsplash.com/photo-1588557132645-ff567110cafd?q=80&w=2070&auto=format&fit=crop',
     blueprintImage: 'https://images.unsplash.com/photo-1534970028765-38ce47ef7d8d?q=80&w=2070&auto=format&fit=crop'
   },
   {
