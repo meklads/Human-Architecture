@@ -177,6 +177,42 @@ export const LANDING_CONTENT = {
           }
       ]
   },
+  testimonials: {
+      headline: { en: 'Field Inspection Reports', ar: 'تقارير ما بعد الترميم' },
+      list: [
+          {
+              id: 'rep-01',
+              name: { en: 'Sarah K. - Senior Executive', ar: 'سارة ك. - مديرة تنفيذية' },
+              before: { en: 'Structural Fatigue: Near Collapse.', ar: 'الحالة السابقة: إجهاد هيكلي وانهيار وشيك.' },
+              after: { en: 'Reinforced foundation handled 2x workload this quarter.', ar: 'النتيجة: القواعد المدعمة تحملت ضعف العمل هذا الربع.' },
+              status: { en: 'STABLE', ar: 'مستقر' }
+          },
+          {
+              id: 'rep-02',
+              name: { en: 'Ahmed M. - Entrepreneur', ar: 'أحمد م. - رائد أعمال' },
+              before: { en: 'Foundation cracks due to chronic stress.', ar: 'الحالة السابقة: شروخ في الأساس بسبب الضغط المزمن.' },
+              after: { en: 'Repoured foundation. Stress now converting to kinetic energy.', ar: 'النتيجة: تم إعادة الصب. الضغط يتحول الآن لطاقة حركية.' },
+              status: { en: 'OPTIMIZED', ar: 'أداء عالي' }
+          }
+      ]
+  },
+  faq: {
+      headline: { en: 'Technical Specifications (FAQ)', ar: 'المواصفات التقنية (أسئلة شائعة)' },
+      items: [
+          {
+              q: { en: 'Is this suitable for beginners?', ar: 'هل هذا مناسب للمبتدئين؟' },
+              a: { en: 'Yes. The Blueprint assumes no prior structural knowledge. It starts from ground zero.', ar: 'نعم. المخطط يفترض عدم وجود معرفة سابقة. نبدأ من نقطة الصفر (الحفر).' }
+          },
+          {
+              q: { en: 'Digital vs Print: Which is better?', ar: 'أيهما أفضل: الديجيتال أم المطبوع؟' },
+              a: { en: 'The printed book is designed as a physical artifact for deep work. Digital is for quick reference.', ar: 'الكتاب المطبوع مصمم كأداة مادية للعمل العميق. الديجيتال للمراجع السريعة.' }
+          },
+          {
+              q: { en: 'How much time is required daily?', ar: 'كم من الوقت يتطلب يومياً؟' },
+              a: { en: 'The Maintenance Protocol requires 15 minutes AM and 15 minutes PM.', ar: 'بروتوكول الصيانة يتطلب 15 دقيقة صباحاً و 15 دقيقة مساءً.' }
+          }
+      ]
+  },
   stack: {
       headline: { en: 'What’s Included in the Complete System', ar: 'ماذا يتضمن النظام الكامل' },
       items: [

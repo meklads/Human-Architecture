@@ -1,9 +1,8 @@
-
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Language, View, Product } from '../types';
 import { LANDING_CONTENT } from '../constants';
-import { ArrowRight, Play, Check, AlertTriangle, Layers, Shield, Zap, Target, ArrowLeft, Layout } from './Icons';
+import { ArrowRight, Play, Check, AlertTriangle, Layers, Shield, Zap, Target, ArrowLeft, Layout, FileText, Plus, X, Maximize2, Box, CreditCard, Star, Gift, Users } from './Icons';
 
 interface LandingPageProps {
   lang: Language;
@@ -18,9 +17,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
   const dir = isAr ? 'rtl' : 'ltr';
   const content = LANDING_CONTENT;
 
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [pricingMode, setPricingMode] = useState<'digital' | 'physical'>('physical');
+
   // Scroll to offer stack
   const scrollToOffer = () => {
-      const el = document.getElementById('offer-stack');
+      const el = document.getElementById('pricing-table');
       if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -215,6 +217,35 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
            </div>
       </section>
 
+      {/* --- NEW SECTION: BLUEPRINT INSIDE LOOK --- */}
+      <section className="py-24 bg-[#050505] overflow-hidden">
+          <div className="container mx-auto px-6 max-w-6xl">
+              <div className="text-center mb-16">
+                  <span className="text-bronze text-xs uppercase tracking-[0.3em] font-bold mb-2 block">{isAr ? 'معاينة' : 'PREVIEW'}</span>
+                  <h2 className={`text-3xl md:text-4xl text-white ${headingFont}`}>{isAr ? 'داخل المخطط' : 'Inside The Blueprint'}</h2>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {[1, 2, 3].map((i) => (
+                      <div key={i} className="group relative aspect-[3/4] bg-[#111] border border-white/10 overflow-hidden cursor-zoom-in">
+                          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')] opacity-20"></div>
+                          {/* Placeholder for Book Pages - Using CSS shapes for abstract representation */}
+                          <div className="absolute inset-8 border border-white/20 p-4 flex flex-col items-center justify-center opacity-50 group-hover:opacity-100 transition-opacity">
+                              <div className="w-16 h-16 border-2 border-white/30 rounded-full mb-4"></div>
+                              <div className="w-full h-2 bg-white/10 mb-2"></div>
+                              <div className="w-3/4 h-2 bg-white/10 mb-2"></div>
+                              <div className="w-full h-2 bg-white/10"></div>
+                          </div>
+                          <div className="absolute bottom-4 left-4 text-[0.6rem] font-mono text-bronze">FIG-0{i}</div>
+                          <div className="absolute inset-0 bg-black/50 group-hover:bg-transparent transition-colors flex items-center justify-center">
+                              <Maximize2 className="text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-lg" />
+                          </div>
+                      </div>
+                  ))}
+              </div>
+          </div>
+      </section>
+
       {/* 🔟 JOURNEY MAP (Very Important) */}
       <section className="py-24 bg-[#050505]">
            <div className="container mx-auto px-6 max-w-4xl">
@@ -269,27 +300,212 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
            </div>
       </section>
 
-      {/* 1️⃣1️⃣ WHAT YOU GET (Offer Stack) */}
+      {/* --- NEW SECTION: TESTIMONIALS (Field Reports) --- */}
+      <section className="py-24 bg-[#0a0a0a] border-t border-white/5">
+          <div className="container mx-auto px-6 max-w-5xl">
+              <div className="text-center mb-16">
+                  <span className="text-bronze text-xs uppercase tracking-[0.3em] font-bold mb-4 block">{content.testimonials.headline[lang]}</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {content.testimonials.list.map((report) => (
+                      <div key={report.id} className="bg-[#111] border border-white/10 p-8 relative">
+                          <div className="absolute top-4 right-4 text-[0.5rem] font-mono text-slate/50 border border-slate/20 px-2 py-1">
+                              ID: {report.id}
+                          </div>
+                          <h4 className={`text-lg text-white mb-4 ${headingFont}`}>{report.name[lang]}</h4>
+                          <div className="space-y-3 mb-6">
+                              <div className="flex gap-2">
+                                  <span className="text-xs text-red-400 uppercase font-bold min-w-[60px]">{isAr ? 'قبل:' : 'PRE:'}</span>
+                                  <span className="text-xs text-slate-400">{report.before[lang]}</span>
+                              </div>
+                              <div className="flex gap-2">
+                                  <span className="text-xs text-green-400 uppercase font-bold min-w-[60px]">{isAr ? 'بعد:' : 'POST:'}</span>
+                                  <span className="text-xs text-white">{report.after[lang]}</span>
+                              </div>
+                          </div>
+                          <div className="border-t border-white/10 pt-4 flex justify-between items-center">
+                              <span className="text-[0.6rem] text-slate uppercase tracking-widest">{isAr ? 'الحالة الحالية:' : 'Current Status:'}</span>
+                              <span className="text-xs font-bold text-bronze uppercase tracking-widest flex items-center gap-2">
+                                  <Check size={12} /> {report.status[lang]}
+                              </span>
+                          </div>
+                      </div>
+                  ))}
+              </div>
+          </div>
+      </section>
+
+      {/* 1️⃣1️⃣ WHAT YOU GET (Offer Stack - UPDATED with Book Frames) */}
       <section id="offer-stack" className="py-24 bg-[#080808] border-t border-white/5">
-           <div className="container mx-auto px-6 max-w-3xl">
-               <div className="text-center mb-12">
+           <div className="container mx-auto px-6 max-w-5xl">
+               <div className="text-center mb-16">
                    <h2 className={`text-3xl md:text-4xl text-white mb-4 ${headingFont}`}>{content.stack.headline[lang]}</h2>
                </div>
                
-               <div className="space-y-4">
+               {/* Updated to Grid Layout with Book Frames */}
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                    {content.stack.items.map((item, idx) => (
-                       <div key={idx} className="flex items-start gap-4 p-6 bg-[#111] border border-white/5 hover:border-bronze/30 transition-colors">
-                           <div className="mt-1 text-bronze">
-                               <Check size={20} />
+                       <div key={idx} className="flex items-start gap-6 p-6 bg-[#111] border border-white/5 hover:border-bronze/30 transition-colors group">
+                           {/* THE BOOK FRAME PLACEHOLDER */}
+                           <div className="w-24 shrink-0 aspect-[3/4] bg-[#050505] border border-white/10 relative overflow-hidden group-hover:border-bronze/50 transition-colors">
+                               <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')] opacity-10"></div>
+                               
+                               {/* Placeholder Geometry */}
+                               <div className="absolute inset-4 border border-dashed border-white/10 flex items-center justify-center">
+                                   {/* Icon representation inside frame */}
+                                   <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/20">
+                                       <Box size={12} />
+                                   </div>
+                               </div>
+                               
+                               {/* Tech Label */}
+                               <div className="absolute bottom-2 left-2 text-[0.4rem] text-bronze font-mono uppercase tracking-widest">
+                                   ITEM-0{idx+1}
+                               </div>
+                               <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-bronze/50"></div>
                            </div>
+
+                           {/* Content */}
                            <div>
-                               <h3 className={`text-lg text-white font-bold mb-1 ${headingFont}`}>{item.name[lang]}</h3>
-                               <p className={`text-sm text-slate-400 ${bodyFont}`}>{item.desc[lang]}</p>
+                               <h3 className={`text-lg text-white font-bold mb-2 ${headingFont} group-hover:text-bronze transition-colors`}>{item.name[lang]}</h3>
+                               <p className={`text-sm text-slate-400 leading-relaxed ${bodyFont}`}>{item.desc[lang]}</p>
+                               <div className="mt-3 flex items-center gap-2 text-[0.6rem] uppercase tracking-widest text-slate/50 group-hover:text-white transition-colors">
+                                   <Check size={10} className="text-bronze" /> {isAr ? 'متضمن في الباقة' : 'Included'}
+                               </div>
                            </div>
                        </div>
                    ))}
                </div>
            </div>
+      </section>
+
+      {/* --- 🆕 PRICING SECTION (Replacing the old CTA) --- */}
+      <section id="pricing-table" className="py-32 bg-[#050505] relative border-t border-white/10">
+          <div className="container mx-auto px-6 max-w-5xl">
+              <div className="text-center mb-16">
+                  <span className="text-bronze text-xs uppercase tracking-[0.3em] font-bold mb-4 block flex items-center justify-center gap-2">
+                      <CreditCard size={14} /> {isAr ? 'عقد التوريد' : 'Procurement Contract'}
+                  </span>
+                  <h2 className={`text-3xl md:text-5xl text-white mb-8 ${headingFont}`}>{isAr ? 'اختر خطة البناء' : 'Select Construction Plan'}</h2>
+                  
+                  {/* MODE TOGGLE */}
+                  <div className="inline-flex bg-[#111] p-1 border border-white/10 rounded-full">
+                      <button 
+                        onClick={() => setPricingMode('physical')}
+                        className={`px-6 py-2 text-xs uppercase tracking-widest rounded-full transition-all ${pricingMode === 'physical' ? 'bg-bronze text-black font-bold' : 'text-slate hover:text-white'}`}
+                      >
+                          {isAr ? 'مطبوع (شحن)' : 'Physical (Shipped)'}
+                      </button>
+                      <button 
+                        onClick={() => setPricingMode('digital')}
+                        className={`px-6 py-2 text-xs uppercase tracking-widest rounded-full transition-all ${pricingMode === 'digital' ? 'bg-white text-black font-bold' : 'text-slate hover:text-white'}`}
+                      >
+                          {isAr ? 'ديجيتال (فوري)' : 'Digital (Instant)'}
+                      </button>
+                  </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                  
+                  {/* OPTION 1: THE BLUEPRINT (Entry) */}
+                  <div className="bg-[#0a0a0a] border border-white/10 p-8 md:p-12 relative group hover:border-white/30 transition-colors">
+                      <div className="absolute top-0 left-0 w-full h-1 bg-slate/20 group-hover:bg-white transition-colors"></div>
+                      <h3 className={`text-2xl text-white mb-2 ${headingFont}`}>{isAr ? 'المخطط الأساسي' : 'The Schematic'}</h3>
+                      <p className="text-slate text-sm mb-8 h-10">{isAr ? 'كتاب المبادئ + المفاهيم الأساسية.' : 'Core principles book + foundational concepts.'}</p>
+                      
+                      <div className="text-4xl font-mono text-white mb-8">
+                          ${pricingMode === 'physical' ? '49' : '29'}
+                      </div>
+
+                      <ul className="space-y-4 mb-8 text-sm text-slate-300">
+                          <li className="flex gap-3"><Check size={14} className="text-slate shrink-0" /> {isAr ? 'الكتاب (المخطط)' : 'The Blueprint Book'}</li>
+                          <li className="flex gap-3"><Check size={14} className="text-slate shrink-0" /> {pricingMode === 'physical' ? (isAr ? 'نسخة ورقية فاخرة' : 'Premium Hardcover') : (isAr ? 'نسخة PDF عالية الدقة' : 'High-Res PDF')}</li>
+                          {/* BONUS ITEM */}
+                          <li className="flex gap-3 text-white font-bold"><Gift size={14} className="text-bronze shrink-0" /> {isAr ? 'هدية: الوورك بوك (PDF)' : 'BONUS: 28-Day Workbook (PDF)'}</li>
+                          
+                          <li className="flex gap-3 text-slate/50"><X size={14} className="shrink-0" /> {isAr ? 'بدون البرنامج التفاعلي' : 'No Interactive Dashboard'}</li>
+                      </ul>
+
+                      <button 
+                        onClick={() => onCheckout && onCheckout([])}
+                        className="w-full py-4 border border-white/20 text-white text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-colors"
+                      >
+                          {isAr ? 'شراء الكتاب فقط' : 'Purchase Book Only'}
+                      </button>
+                  </div>
+
+                  {/* OPTION 2: THE SYSTEM (Full) - HIGHLIGHTED */}
+                  <div className="bg-[#111] border-2 border-bronze p-8 md:p-12 relative shadow-[0_0_50px_rgba(197,160,101,0.1)] scale-105 z-10">
+                      <div className="absolute top-0 right-0 bg-bronze text-black text-[0.6rem] font-bold px-3 py-1 uppercase tracking-widest">
+                          {isAr ? 'خيار المعماري' : 'Architect\'s Choice'}
+                      </div>
+                      <h3 className={`text-3xl text-white mb-2 ${headingFont}`}>{isAr ? 'النظام المتكامل' : 'The Master Plan'}</h3>
+                      <p className="text-bronze text-sm mb-8 h-10">{isAr ? 'الحل الجذري: 30 يوماً من التنفيذ.' : 'The radical solution: 30 Days of Execution.'}</p>
+                      
+                      <div className="flex items-end gap-3 mb-8">
+                          <div className="text-5xl font-mono text-white font-bold">
+                              ${pricingMode === 'physical' ? '197' : '97'}
+                          </div>
+                          <span className="text-slate line-through mb-2 decoration-red-500">${pricingMode === 'physical' ? '350' : '150'}</span>
+                      </div>
+
+                      <ul className="space-y-4 mb-8 text-sm text-white">
+                          <li className="flex gap-3"><Check size={14} className="text-bronze shrink-0" /> <span className="font-bold">{isAr ? 'الكتاب (المخطط)' : 'The Blueprint Book'}</span></li>
+                          <li className="flex gap-3"><Check size={14} className="text-bronze shrink-0" /> <span>{isAr ? 'الوورك بوك (28 يوم)' : '28-Day Workbook'}</span></li>
+                          {/* UPGRADES */}
+                          <li className="flex gap-3"><Zap size={14} className="text-bronze shrink-0" /> <span>{isAr ? 'البرنامج التفاعلي (Dashboard)' : 'Interactive 30-Day Dashboard'}</span></li>
+                          <li className="flex gap-3"><Users size={14} className="text-bronze shrink-0" /> <span>{isAr ? 'عضوية النقابة (مجتمع خاص)' : 'Private Guild Community Access'}</span></li>
+                      </ul>
+
+                      <button 
+                        onClick={() => onCheckout && onCheckout([])}
+                        className="w-full py-5 bg-bronze text-white text-sm font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-colors shadow-lg flex items-center justify-center gap-2"
+                      >
+                          {isAr ? 'ابدأ إعادة البناء' : 'START REBUILDING'} <ArrowRight size={16} />
+                      </button>
+                      <p className="text-[0.6rem] text-center mt-4 text-slate uppercase tracking-wider">
+                          {isAr ? 'ضمان استرجاع الأموال 30 يوماً' : '30-Day Money Back Guarantee'}
+                      </p>
+                  </div>
+
+              </div>
+          </div>
+      </section>
+
+      {/* --- NEW SECTION: FAQ (Technical Specs) --- */}
+      <section className="py-24 bg-[#050505]">
+          <div className="container mx-auto px-6 max-w-3xl">
+              <div className="text-center mb-12">
+                  <h2 className={`text-2xl text-white mb-8 ${headingFont}`}>{content.faq.headline[lang]}</h2>
+              </div>
+              <div className="space-y-2">
+                  {content.faq.items.map((item, idx) => (
+                      <div key={idx} className="border border-white/10 bg-[#111]">
+                          <button 
+                            onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
+                            className="w-full flex justify-between items-center p-6 text-left"
+                          >
+                              <span className={`text-sm text-white font-bold ${bodyFont}`}>{item.q[lang]}</span>
+                              {activeFaq === idx ? <X size={16} className="text-bronze" /> : <Plus size={16} className="text-slate" />}
+                          </button>
+                          <AnimatePresence>
+                              {activeFaq === idx && (
+                                  <motion.div 
+                                    initial={{ height: 0, opacity: 0 }} 
+                                    animate={{ height: 'auto', opacity: 1 }} 
+                                    exit={{ height: 0, opacity: 0 }}
+                                    className="overflow-hidden"
+                                  >
+                                      <div className="p-6 pt-0 text-slate-400 text-sm leading-relaxed border-t border-white/5">
+                                          {item.a[lang]}
+                                      </div>
+                                  </motion.div>
+                              )}
+                          </AnimatePresence>
+                      </div>
+                  ))}
+              </div>
+          </div>
       </section>
 
       {/* 1️⃣2️⃣ WHO THIS IS FOR */}
@@ -324,26 +540,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
                    </div>
 
                </div>
-           </div>
-      </section>
-
-      {/* 1️⃣3️⃣ FINAL CTA (Decisive) */}
-      <section className="py-32 bg-white text-black text-center px-6">
-           <div className="max-w-4xl mx-auto">
-               <h2 className={`text-4xl md:text-6xl font-bold mb-10 leading-tight ${headingFont} whitespace-pre-line`}>
-                   {content.finalCta.headline[lang]}
-               </h2>
-               
-               <button 
-                  onClick={() => onCheckout && onCheckout([])}
-                  className="bg-black text-white px-12 py-6 text-lg md:text-xl font-bold uppercase tracking-[0.2em] hover:bg-bronze transition-colors shadow-2xl mb-6"
-               >
-                   {content.finalCta.button[lang]}
-               </button>
-               
-               <p className="text-xs uppercase tracking-widest text-slate-500 font-bold flex items-center justify-center gap-2">
-                   <Shield size={12} /> {content.finalCta.trust[lang]}
-               </p>
            </div>
       </section>
 

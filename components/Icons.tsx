@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Menu, 
@@ -70,7 +69,8 @@ import {
   Instagram,
   Twitter,
   Linkedin,
-  Facebook
+  Facebook,
+  Gift
 } from 'lucide-react';
 
 export { 
@@ -143,5 +143,6 @@ export {
   Instagram,
   Twitter,
   Linkedin,
-  Facebook
+  Facebook,
+  Gift
 };
