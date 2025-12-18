@@ -64,13 +64,13 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
   const bodyFont = isAr ? 'font-ibm' : 'font-sans';
   
   const [selectedArt, setSelectedArt] = useState<Product | null>(null);
-  const [activeView, setActiveView] = useState<'original' | 'ai_mockup'>('original');
+  const [activeView, setActiveView] = useState<'original' | 'default_mockup' | 'ai_custom'>('original');
   
   const [selectedSize, setSelectedSize] = useState('Gallery (100x150cm)'); 
   const [selectedMaterial, setSelectedMaterial] = useState('Museum Canvas');
   
-  // AI State - Store generated images per product ID to avoid re-generating
-  const [generatedMockups, setGeneratedMockups] = useState<Record<string, string>>({});
+  // نظام التخزين المؤقت (Cache) للمحاكاة لتجنب التوليد المتكرر
+  const [sessionMockups, setSessionMockups] = useState<Record<string, string>>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState<string>("");
   const [genError, setGenError] = useState<{message: string, code?: string} | null>(null);
@@ -80,7 +80,7 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
 
   const handleOpenArt = (art: Product) => {
     setSelectedArt(art);
-    setActiveView('original');
+    setActiveView('original'); // البدء دائماً بالأصل
     setGenError(null);
   };
 
@@ -89,15 +89,16 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
       await window.aistudio.openSelectKey();
       initiateAiGeneration(true); 
     } catch (e) {
-      console.error("Key selection UI failed", e);
+      console.error("Key selection failed", e);
     }
   };
 
   const initiateAiGeneration = async (forceBypassKeyCheck = false) => {
       if (!selectedArt) return;
       setIsGenerating(true);
+      setActiveView('ai_custom');
       setGenError(null);
-      setGenerationStep(isAr ? "جاري تحضير المحرك..." : "INITIALIZING...");
+      setGenerationStep(isAr ? "جاري تحضير المحرك الذكي..." : "INITIALIZING AI ENGINE...");
 
       try {
           const hasSelectedKey = await window.aistudio.hasSelectedApiKey();
@@ -105,16 +106,16 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
 
           if (!forceBypassKeyCheck && !hasSelectedKey && !hasEnvKey) {
             setGenError({ 
-                message: isAr ? "يرجى تحديد مفتاح API للمتابعة." : "PLEASE SELECT A VALID API KEY TO PROCEED.",
+                message: isAr ? "يرجى اختيار مفتاح API للمتابعة." : "PLEASE SELECT AN API KEY TO PROCEED.",
                 code: "KEY_REQUIRED" 
             });
             setIsGenerating(false);
             return;
           }
 
-          setGenerationStep(isAr ? "تحليل القطعة الفنية..." : "ANALYZING ARTWORK...");
+          setGenerationStep(isAr ? "تحليل المخطط الفني..." : "ANALYZING SCHEMATICS...");
           const base64Image = await urlToBase64(selectedArt.image);
-          setGenerationStep(isAr ? "توليد المحاكاة المعمارية..." : "GENERATING ARCHITECTURAL MOCKUP...");
+          setGenerationStep(isAr ? "توليد فضاء معماري فريد..." : "GENERATING UNIQUE SPACE...");
 
           const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
           
@@ -123,7 +124,7 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
               contents: {
                   parts: [
                       base64Image ? { inlineData: { mimeType: 'image/jpeg', data: base64Image } } : { text: selectedArt.name.en },
-                      { text: `Create a professional architectural interior design mockup. The artwork should be elegantly framed and hung on a minimalist concrete or high-end gallery wall in a luxury modern room. Ensure the art is the focus and looks perfectly installed. Cinematic lighting, 8k.` }
+                      { text: `Generate a photorealistic interior design mockup. The artwork provided must be the central focus, framed and hung elegantly on a massive minimalist concrete wall in a high-luxury museum gallery. Night atmosphere, warm spotlighting, 8k.` }
                   ]
               }
           });
@@ -132,9 +133,8 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
           if (response.candidates?.[0]?.content?.parts) {
               for (const part of response.candidates[0].content.parts) {
                   if (part.inlineData) {
-                      const newImageUrl = `data:image/png;base64,${part.inlineData.data}`;
-                      setGeneratedMockups(prev => ({ ...prev, [selectedArt.id]: newImageUrl }));
-                      setActiveView('ai_mockup');
+                      const newUrl = `data:image/png;base64,${part.inlineData.data}`;
+                      setSessionMockups(prev => ({ ...prev, [selectedArt.id]: newUrl }));
                       foundImage = true;
                       break;
                   }
@@ -143,16 +143,13 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
           if (!foundImage) throw new Error("API_REJECTED");
 
       } catch (error: any) {
-          const errorMsg = error.message || "";
-          if (errorMsg.includes("Requested entity was not found")) {
+          if (error.message?.includes("Requested entity was not found")) {
               setGenError({ 
-                message: isAr ? "خطأ في المفتاح. يرجى إعادة الاختيار." : "API KEY ERROR. PLEASE RE-SELECT.",
+                message: isAr ? "مفتاح API غير صالح. يرجى إعادة الاختيار." : "INVALID API KEY. PLEASE RE-SELECT.",
                 code: "KEY_REQUIRED"
               });
           } else {
-              setGenError({ 
-                message: isAr ? "فشلت عملية التوليد." : "GENERATION FAILED."
-              });
+              setGenError({ message: isAr ? "فشلت المحاكاة المخصصة." : "CUSTOM SIMULATION FAILED." });
           }
       } finally {
           setIsGenerating(false);
@@ -199,15 +196,15 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
                   
                   <motion.div layoutId={selectedArt.id} className="bg-[#050505] w-full max-w-7xl min-h-screen lg:min-h-0 lg:h-[90vh] border border-[#222] shadow-2xl relative flex flex-col lg:flex-row lg:overflow-hidden" onClick={(e) => e.stopPropagation()}>
                       
-                      {/* --- LEFT: MAIN VIEWER AREA --- */}
+                      {/* --- LEFT: DYNAMIC VIEWER --- */}
                       <div className="w-full lg:w-2/3 bg-[#020202] relative h-[60vh] lg:h-full flex items-center justify-center overflow-hidden border-b border-[#222] lg:border-b-0 lg:border-r">
                           
-                          {/* 🖼️ THUMBNAIL REEL (Beside main photo) */}
+                          {/* 🖼️ THUMBNAIL REEL (Fixed side position as requested) */}
                           <div className={`absolute ${isAr ? 'right-6' : 'left-6'} top-1/2 -translate-y-1/2 z-50 flex flex-col gap-4 p-2 bg-black/40 backdrop-blur-md border border-white/5 rounded-sm`}>
-                              {/* Original Thumbnail */}
+                              {/* 1. Original Art Thumbnail */}
                               <button 
                                 onClick={() => setActiveView('original')}
-                                className={`group relative w-16 h-20 border-2 transition-all overflow-hidden ${activeView === 'original' ? 'border-bronze scale-105' : 'border-white/10 opacity-50 hover:opacity-100'}`}
+                                className={`group relative w-16 h-20 border-2 transition-all overflow-hidden ${activeView === 'original' ? 'border-bronze scale-105 shadow-[0_0_15px_rgba(197,160,101,0.3)]' : 'border-white/10 opacity-50 hover:opacity-100'}`}
                               >
                                   <img src={selectedArt.image} className="w-full h-full object-cover" alt="Original" />
                                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -216,33 +213,45 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
                                   </div>
                               </button>
 
-                              {/* AI Mockup Thumbnail / Trigger */}
+                              {/* 2. Default Mockup Thumbnail (INSTANT) */}
                               <button 
-                                onClick={() => generatedMockups[selectedArt.id] ? setActiveView('ai_mockup') : initiateAiGeneration()}
+                                onClick={() => setActiveView('default_mockup')}
+                                className={`group relative w-16 h-20 border-2 transition-all overflow-hidden ${activeView === 'default_mockup' ? 'border-bronze scale-105 shadow-[0_0_15px_rgba(197,160,101,0.3)]' : 'border-white/10 opacity-50 hover:opacity-100'}`}
+                              >
+                                  <img src={selectedArt.defaultMockup || selectedArt.image} className="w-full h-full object-cover" alt="Mockup" />
+                                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                                      <Layout size={14} className="text-white" />
+                                      <span className="text-[0.4rem] uppercase text-white font-bold mt-1">Study</span>
+                                  </div>
+                              </button>
+
+                              {/* 3. Custom AI Simulation Thumbnail (Generated / Trigger) */}
+                              <button 
+                                onClick={() => sessionMockups[selectedArt.id] ? setActiveView('ai_custom') : initiateAiGeneration()}
                                 disabled={isGenerating}
-                                className={`group relative w-16 h-20 border-2 transition-all overflow-hidden flex flex-col items-center justify-center ${activeView === 'ai_mockup' ? 'border-bronze scale-105' : 'border-white/10 opacity-50 hover:opacity-100'} ${isGenerating ? 'cursor-wait' : ''}`}
+                                className={`group relative w-16 h-20 border-2 transition-all overflow-hidden flex flex-col items-center justify-center ${activeView === 'ai_custom' ? 'border-bronze scale-105' : 'border-white/10 opacity-50 hover:opacity-100'} ${isGenerating ? 'cursor-wait' : ''}`}
                               >
                                   {isGenerating ? (
                                       <Loader2 size={16} className="animate-spin text-bronze" />
-                                  ) : generatedMockups[selectedArt.id] ? (
+                                  ) : sessionMockups[selectedArt.id] ? (
                                       <>
-                                          <img src={generatedMockups[selectedArt.id]} className="w-full h-full object-cover" alt="Mockup" />
+                                          <img src={sessionMockups[selectedArt.id]} className="w-full h-full object-cover" alt="AI Generated" />
                                           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                                              <Layout size={14} className="text-white" />
-                                              <span className="text-[0.4rem] uppercase text-white font-bold mt-1">Mockup</span>
+                                              <Sparkles size={14} className="text-white" />
+                                              <span className="text-[0.4rem] uppercase text-white font-bold mt-1">AI</span>
                                           </div>
                                       </>
                                   ) : (
                                       <div className="flex flex-col items-center gap-1">
-                                          <Sparkles size={16} className="text-bronze animate-pulse" />
-                                          <span className="text-[0.35rem] uppercase text-slate-400 font-bold text-center px-1">Generate Mockup</span>
+                                          <Wand2 size={16} className="text-bronze" />
+                                          <span className="text-[0.3rem] uppercase text-slate-400 font-bold text-center leading-tight">Generate Custom</span>
                                       </div>
                                   )}
                               </button>
                           </div>
 
-                          {/* LARGE MAIN IMAGE DISPLAY */}
-                          <div className="w-full h-full flex items-center justify-center bg-black">
+                          {/* LARGE VIEWER DISPLAY */}
+                          <div className="w-full h-full flex items-center justify-center bg-[#020202]">
                             <AnimatePresence mode="wait">
                                 {isGenerating ? (
                                     <motion.div 
@@ -273,14 +282,20 @@ export const ArtStorePage: React.FC<ArtStorePageProps> = ({ lang, onCheckout }) 
                                         className="w-full h-full flex items-center justify-center p-4 md:p-12"
                                     >
                                         <img 
-                                            src={activeView === 'ai_mockup' ? generatedMockups[selectedArt.id] : selectedArt.image} 
-                                            className="max-w-full max-h-full object-contain shadow-[0_30px_60px_-12px_rgba(0,0,0,0.7)]" 
+                                            src={
+                                                activeView === 'ai_custom' && sessionMockups[selectedArt.id] 
+                                                  ? sessionMockups[selectedArt.id] 
+                                                  : activeView === 'default_mockup' 
+                                                    ? (selectedArt.defaultMockup || selectedArt.image) 
+                                                    : selectedArt.image
+                                            } 
+                                            className="max-w-full max-h-full object-contain shadow-2xl" 
                                             alt="Enlarged View" 
                                         />
                                         
-                                        {/* Status Tag */}
+                                        {/* Status Label Overlay */}
                                         <div className="absolute top-8 right-8 bg-black/60 backdrop-blur px-3 py-1 text-[0.5rem] text-white/50 border border-white/10 uppercase tracking-[0.2em] font-mono">
-                                            {activeView === 'original' ? 'Artifact: Raw' : 'Architectural Projection'}
+                                            {activeView === 'original' ? 'Artifact: Original' : activeView === 'default_mockup' ? 'Architectural Study' : 'AI Simulation: Custom'}
                                         </div>
                                     </motion.div>
                                 )}
