@@ -13,9 +13,9 @@ export interface UserProfile {
   name: string;
   handle: string;
   email: string;
-  rank: string; // Dynamic Rank Title
-  rankColor?: string; // Hex Code for Badge
-  level: number; // Current Day Level
+  rank: string; 
+  rankColor?: string; 
+  level: number; 
   xp: number;
   projects: number;
   endorsed: number;
@@ -24,13 +24,12 @@ export interface UserProfile {
   avatarImage?: string; 
 }
 
-// New Interface for the Feed
 export interface SiteLogEntry {
     id: string;
     author: string;
     authorAvatar?: string;
     authorChar: string;
-    dayNumber: number; // Which day they are on
+    dayNumber: number; 
     content: string;
     timestamp: string;
     likes: number;
@@ -65,6 +64,7 @@ export interface Product {
   originalPrice?: number; 
   type: 'physical' | 'digital' | 'hybrid';
   image: string;
+  defaultMockup?: string; // ADDED: Pre-rendered visualization
   specs?: { label: ContentText; value: ContentText }[];
   status?: 'available' | 'coming_soon' | 'in_dev';
   panels?: number; 
@@ -87,7 +87,7 @@ export interface DayPlan {
   visualConcept?: ContentText;
   aiPrompt?: string;
   isLocked: boolean;
-  bookPageRef?: number; // ADDED: Link to physical book page
+  bookPageRef?: number; 
 }
 
 export interface WeekPlan {
