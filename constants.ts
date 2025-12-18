@@ -91,8 +91,8 @@ export const PILLARS: PillarData[] = [
       en: 'Reprogramming cognitive operating systems to handle modern life pressures.', 
       fr: 'Reprogrammation cognitive.' 
     },
-    image: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=2068&auto=format&fit=crop',
-    blueprintImage: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop',
+    blueprintImage: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=2068&auto=format&fit=crop'
   },
   {
     id: 'body',
@@ -103,7 +103,7 @@ export const PILLARS: PillarData[] = [
       en: 'Pouring concrete bases for bio-energy and physical restoration.', 
       fr: 'Coulage des bases.' 
     },
-    image: 'https://images.unsplash.com/photo-1590004953392-5aba2e78b336?q=80&w=2070&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1510673398445-94f476ef2cbc?q=80&w=2070&auto=format&fit=crop',
     blueprintImage: 'https://images.unsplash.com/photo-1503387762-592dea58ef21?q=80&w=2070&auto=format&fit=crop'
   },
   {
@@ -116,7 +116,7 @@ export const PILLARS: PillarData[] = [
       fr: 'Orientation vers le Nord.' 
     },
     image: 'https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?q=80&w=2070&auto=format&fit=crop',
-    blueprintImage: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?q=80&w=2070&auto=format&fit=crop'
+    blueprintImage: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=2070&auto=format&fit=crop'
   },
   {
     id: 'social',

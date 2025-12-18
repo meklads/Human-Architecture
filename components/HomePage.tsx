@@ -5,7 +5,7 @@ import { Language, View } from '../types';
 import { Hero } from './Hero';
 import { Assessment } from './Assessment';
 import { PILLARS, BLOG_POSTS, RESTORATION_LOGS, TRANSLATIONS } from '../constants';
-import { ArrowLeft, ArrowRight, Quote, Compass, QrCode, X, ScanLine, Layers, Activity } from './Icons';
+import { ArrowLeft, ArrowRight, Quote, Compass, QrCode, X, ScanLine, Layers, Activity, Plus } from './Icons';
 
 interface HomePageProps {
   lang: Language;
@@ -52,8 +52,12 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
       </div>
 
       {/* Pillars Preview - X-RAY ARCHITECTURE GALLERY */}
-      {/* Added ID 'xray-section' for the Diagnostics button scroll target */}
       <section id="xray-section" className="py-24 bg-[#080808] relative overflow-hidden">
+         {/* Top Decoration */}
+         <div className="absolute top-10 left-10 text-white/20 z-20">
+             <Plus size={24} strokeWidth={1} />
+         </div>
+         
          {/* Background Watermark */}
          <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 text-[10rem] md:text-[15rem] text-white/5 pointer-events-none whitespace-nowrap ${headingFont} z-0 opacity-10`}>
             STRUCTURE
@@ -70,44 +74,46 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
             <p className="text-slate/50 text-sm mt-4">{isAr ? 'مرر الماوس لكشف المخطط الداخلي' : 'Hover to reveal internal blueprint'}</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 border-t border-b border-white/10 divide-y lg:divide-y-0 lg:divide-x divide-white/10 bg-[#050505]">
+          <div className="grid grid-cols-1 lg:grid-cols-4 border-t border-b border-white/10 divide-y lg:divide-y-0 lg:divide-x divide-white/10 bg-[#0a0a0a]">
             {PILLARS.map((pillar, idx) => (
               <div 
                 key={pillar.id} 
                 onClick={() => setView('philosophy')}
-                className="group relative h-[500px] lg:h-[650px] overflow-hidden cursor-pointer"
+                className="group relative h-[500px] lg:h-[650px] overflow-hidden cursor-pointer bg-[#111]"
               >
                 {/* 1. LAYER A: STANDARD IMAGE (Exterior) */}
                 <div className="absolute inset-0 z-10 transition-all duration-700 group-hover:opacity-0 group-hover:scale-105">
                    <img 
                     src={pillar.image} 
                     alt={pillar.title[lang]} 
-                    className="w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0"
+                    className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 transition-opacity"
+                    loading="lazy"
                    />
-                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                 </div>
 
                 {/* 2. LAYER B: BLUEPRINT IMAGE (Interior / X-Ray) */}
-                <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-all duration-700 delay-100 bg-[#050505]">
                     {/* The Blueprint Image with Technical Filters */}
                     <img 
                         src={pillar.blueprintImage || pillar.image} 
                         alt="Blueprint"
-                        className="w-full h-full object-cover filter contrast-125 brightness-75 sepia-[100%] hue-rotate-[190deg] saturate-[300%]"
+                        className="w-full h-full object-cover filter contrast-[1.4] brightness-[0.6] sepia-[100%] hue-rotate-[185deg] saturate-[400%]"
+                        loading="lazy"
                     />
                     
                     {/* Technical Grid Overlay */}
-                    <div className="absolute inset-0 architectural-grid opacity-30 mix-blend-overlay"></div>
+                    <div className="absolute inset-0 architectural-grid opacity-20 mix-blend-screen"></div>
                     
                     {/* Measurement Lines (Decorations) */}
-                    <div className="absolute top-10 left-0 w-full h-[1px] bg-cyan-500/30"></div>
-                    <div className="absolute bottom-10 left-0 w-full h-[1px] bg-cyan-500/30"></div>
-                    <div className="absolute top-0 left-10 h-full w-[1px] bg-cyan-500/30"></div>
-                    <div className="absolute top-0 right-10 h-full w-[1px] bg-cyan-500/30"></div>
+                    <div className="absolute top-10 left-0 w-full h-[1px] bg-cyan-500/20"></div>
+                    <div className="absolute bottom-10 left-0 w-full h-[1px] bg-cyan-500/20"></div>
+                    <div className="absolute top-0 left-10 h-full w-[1px] bg-cyan-500/20"></div>
+                    <div className="absolute top-0 right-10 h-full w-[1px] bg-cyan-500/20"></div>
                 </div>
 
                 {/* 3. SCANNING LINE EFFECT */}
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-cyan-400 shadow-[0_0_15px_rgba(0,255,255,0.8)] z-20 opacity-0 group-hover:opacity-100 group-hover:animate-scan pointer-events-none"></div>
+                <div className="absolute top-0 left-0 w-full h-[2px] bg-cyan-400 shadow-[0_0_20px_rgba(0,255,255,0.8)] z-20 opacity-0 group-hover:opacity-100 group-hover:animate-scan pointer-events-none"></div>
 
                 {/* 4. CONTENT & UI */}
                 <div className="absolute inset-0 p-8 flex flex-col justify-between z-30">
@@ -146,14 +152,14 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
 
                    {/* Bottom: Info */}
                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                      <h3 className={`text-3xl text-slate/50 group-hover:text-white mb-2 ${headingFont} transition-colors duration-300 relative inline-block`}>
+                      <h3 className={`text-3xl text-slate/40 group-hover:text-white mb-2 ${headingFont} transition-colors duration-300 relative inline-block`}>
                          {pillar.title[lang]}
                       </h3>
                       
                       {/* Description Reveal */}
                       <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 ease-in-out">
                           <div className="overflow-hidden">
-                              <p className={`text-cyan-100/70 text-sm leading-relaxed pt-2 ${bodyFont} font-mono text-xs opacity-0 group-hover:opacity-100 transition-opacity delay-150`}>
+                              <p className={`text-cyan-100/70 text-sm leading-relaxed pt-2 ${bodyFont} font-mono text-[0.65rem] opacity-0 group-hover:opacity-100 transition-opacity delay-150`}>
                                   [{isAr ? 'حالة النظام' : 'SYSTEM STATUS'}]: {pillar.description[lang]}
                               </p>
                               <div className="mt-4 flex items-center gap-2 text-bronze text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity delay-200">
