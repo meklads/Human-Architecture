@@ -338,7 +338,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
       </section>
 
       {/* =====================================================================================
-          5. A LA CARTE (Individual Items) - NEW SECTION
+          5. A LA CARTE (Individual Items)
       ===================================================================================== */}
       <section className="py-24 bg-[#0a0a0a] border-t border-white/5">
           <div className="container mx-auto px-6">
@@ -358,7 +358,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                           <BookOpen size={48} className="text-slate group-hover:text-white transition-colors" />
                           <div className="absolute top-2 right-2 bg-slate/20 text-slate text-[0.6rem] px-2 py-1 uppercase font-bold">Digital</div>
                       </div>
-                      <h4 className={`text-lg text-white mb-1 ${headingFont}`}>{bookDigital?.name[lang]}</h4>
+                      <h4 className={`text-lg text-white mb-1 ${headingFont}`}>{bookDigital?.name?.[lang]}</h4>
                       <p className="text-xs text-slate mb-4 flex-1">{bookDigital?.description?.[lang]}</p>
                       <div className="flex justify-between items-center pt-4 border-t border-white/5">
                           <span className="text-white font-mono font-bold">${bookDigital?.price}</span>
@@ -372,7 +372,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                           <Box size={48} className="text-bronze group-hover:text-white transition-colors" />
                           <div className="absolute top-2 right-2 bg-bronze/20 text-bronze text-[0.6rem] px-2 py-1 uppercase font-bold">Print</div>
                       </div>
-                      <h4 className={`text-lg text-white mb-1 ${headingFont}`}>{bookPrint?.name[lang]}</h4>
+                      <h4 className={`text-lg text-white mb-1 ${headingFont}`}>{bookPrint?.name?.[lang]}</h4>
                       <p className="text-xs text-slate mb-4 flex-1">{bookPrint?.description?.[lang]}</p>
                       <div className="flex justify-between items-center pt-4 border-t border-white/5">
                           <span className="text-white font-mono font-bold">${bookPrint?.price}</span>
@@ -386,7 +386,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                           <PenTool size={48} className="text-bronze group-hover:text-white transition-colors" />
                           <div className="absolute top-2 right-2 bg-bronze/20 text-bronze text-[0.6rem] px-2 py-1 uppercase font-bold">Print</div>
                       </div>
-                      <h4 className={`text-lg text-white mb-1 ${headingFont}`}>{workbookPrint?.name[lang]}</h4>
+                      <h4 className={`text-lg text-white mb-1 ${headingFont}`}>{workbookPrint?.name?.[lang]}</h4>
                       <p className="text-xs text-slate mb-4 flex-1">{workbookPrint?.description?.[lang]}</p>
                       <div className="flex justify-between items-center pt-4 border-t border-white/5">
                           <span className="text-white font-mono font-bold">${workbookPrint?.price}</span>
@@ -401,7 +401,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
                           <Activity size={48} className="text-bronze group-hover:text-white transition-colors" />
                           <div className="absolute top-2 left-2 bg-blue-900/50 text-blue-300 text-[0.6rem] px-2 py-1 uppercase font-bold">Hybrid</div>
                       </div>
-                      <h4 className={`text-lg text-white mb-1 ${headingFont}`}>{systemHybrid?.name[lang]}</h4>
+                      <h4 className={`text-lg text-white mb-1 ${headingFont}`}>{systemHybrid?.name?.[lang]}</h4>
                       <p className="text-xs text-slate mb-4 flex-1">{systemHybrid?.description?.[lang]}</p>
                       <div className="flex justify-between items-center pt-4 border-t border-white/5">
                           <span className="text-white font-mono font-bold">${systemHybrid?.price}</span>
@@ -471,7 +471,6 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({ lang, onCheckout }) =>
               </button>
               
               <div className="flex justify-center gap-8 opacity-50 grayscale">
-                  {/* Logos placeholder */}
                   <span className="font-serif font-bold text-xl">VISA</span>
                   <span className="font-serif font-bold text-xl">Mastercard</span>
                   <span className="font-serif font-bold text-xl">PayPal</span>

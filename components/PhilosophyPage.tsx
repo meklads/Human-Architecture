@@ -1,5 +1,5 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, View } from '../types';
 import { PILLARS, TRANSLATIONS, THIRTY_DAY_PROGRAM, THEORY_CARDS, ART_PRODUCTS } from '../constants';
@@ -18,8 +18,15 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
   const [activeWeek, setActiveWeek] = useState(1);
   const [activePillar, setActivePillar] = useState(() => (PILLARS && PILLARS.length > 0 ? PILLARS[0].id : ''));
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Safe translation helper
+  const getTxt = useCallback((obj: any): string => {
+      if (!obj) return '';
+      if (typeof obj === 'string') return obj;
+      return obj[lang] || obj['en'] || obj['ar'] || '';
+  }, [lang]);
   
-  // Safe data retrieval to prevent "Uncaught TypeError"
+  // Safe data retrieval
   const currentWeekData = THIRTY_DAY_PROGRAM?.find(w => w.id === activeWeek) || (THIRTY_DAY_PROGRAM?.length > 0 ? THIRTY_DAY_PROGRAM[0] : null);
 
   const handleAcquire = () => {
@@ -61,7 +68,7 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
           <motion.h1 
              className={`text-6xl md:text-9xl mb-8 ${headingFont} text-white leading-tight font-bold tracking-tighter`}
           >
-            {TRANSLATIONS.nav.philosophy?.[lang] || 'THE CODE'}
+            {getTxt(TRANSLATIONS.nav.philosophy)}
           </motion.h1>
           
           <motion.p 
@@ -90,7 +97,7 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
                             onClick={() => setActivePillar(p.id)}
                             className={`px-4 py-2 text-[0.6rem] uppercase tracking-widest transition-all whitespace-nowrap ${activePillar === p.id ? 'bg-bronze text-white font-bold' : 'text-slate hover:text-white'}`}
                           >
-                              {p.title?.[lang]?.split(' ')[0] || 'Sector'}
+                              {getTxt(p.title).split(' ')[0] || 'Sector'}
                           </button>
                       ))}
                   </div>
@@ -116,7 +123,7 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
                                         className="w-full h-full object-cover grayscale contrast-125 opacity-40 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                                    <div className="absolute top-0 left-0 w-full h-1 bg-cyan-400 shadow-[0_0_15px_rgba(0,255,255,0.5)] animate-scan opacity-0 group-hover:opacity-100"></div>
+                                    <div className="absolute top-0 left-0 w-full h-[2px] bg-cyan-400 shadow-[0_0_15px_rgba(0,255,255,0.5)] animate-scan opacity-0 group-hover:opacity-100"></div>
                                     
                                     <button 
                                         onClick={handleAcquire}
@@ -129,9 +136,9 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
 
                           <div className="lg:col-span-5">
                               <span className="text-bronze font-mono text-xs mb-4 block">SECTOR_0{PILLARS.indexOf(pillar)+1}</span>
-                              <h3 className={`text-4xl text-white mb-6 ${headingFont}`}>{pillar.title?.[lang] || 'Pillar'}</h3>
+                              <h3 className={`text-4xl text-white mb-6 ${headingFont}`}>{getTxt(pillar.title)}</h3>
                               <p className={`text-slate text-lg leading-relaxed mb-8 ${bodyFont}`}>
-                                  {pillar.description?.[lang] || ''}
+                                  {getTxt(pillar.description)}
                               </p>
                               
                               <div className="space-y-6">
@@ -179,8 +186,8 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
                             <span className="text-[0.6rem] font-mono text-bronze border border-bronze/20 px-2 py-1 bg-bronze/5">STD_0{card.day}</span>
                             <Shield size={20} className="text-slate/20 group-hover:text-bronze transition-colors" />
                         </div>
-                        <h3 className={`text-2xl mb-6 ${headingFont} text-white group-hover:text-bronze transition-colors leading-tight`}>{card.title?.[lang] || ''}</h3>
-                        <p className={`text-slate/60 text-sm leading-loose ${bodyFont}`}>{card.task?.[lang] || ''}</p>
+                        <h3 className={`text-2xl mb-6 ${headingFont} text-white group-hover:text-bronze transition-colors leading-tight`}>{getTxt(card.title)}</h3>
+                        <p className={`text-slate/60 text-sm leading-loose ${bodyFont}`}>{getTxt(card.task)}</p>
                      </div>
                  </motion.div>
              ))}
@@ -198,7 +205,7 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
               {ART_PRODUCTS?.slice(0, 3).map(art => (
                   <div key={art.id} className="group relative">
                       <div className="aspect-[4/5] bg-black border border-white/10 overflow-hidden relative mb-6">
-                          <img src={art.image} alt={art.name?.[lang] || 'Art'} className="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700" />
+                          <img src={art.image} alt={getTxt(art.name)} className="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700" />
                           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                               <button 
                                 onClick={handleAcquire}
@@ -208,7 +215,7 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
                               </button>
                           </div>
                       </div>
-                      <h4 className={`text-xl text-white mb-2 ${headingFont}`}>{art.name?.[lang] || ''}</h4>
+                      <h4 className={`text-xl text-white mb-2 ${headingFont}`}>{getTxt(art.name)}</h4>
                       <span className="text-bronze font-mono text-xs">${art.price}</span>
                   </div>
               ))}
@@ -233,7 +240,7 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
                                     className={`w-full text-start p-8 border-l-4 transition-all duration-500 relative overflow-hidden group ${activeWeek === week.id ? 'border-bronze bg-white/5 shadow-2xl' : 'border-white/5 hover:border-bronze/30 hover:bg-white/5'}`}
                                 >
                                     <span className={`text-2xl font-bold ${headingFont} ${activeWeek === week.id ? 'text-white' : 'text-slate/30'}`}>
-                                        {week.focus?.[lang] || ''}
+                                        {getTxt(week.focus)}
                                     </span>
                                 </button>
                             ))}
@@ -258,7 +265,7 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
                                       <div className="w-16 h-16 rounded-full border-2 border-bronze flex items-center justify-center text-bronze text-2xl font-serif">
                                           {activeWeek}
                                       </div>
-                                      <h3 className={`text-4xl ${headingFont} text-white mb-1`}>{currentWeekData.focus?.[lang] || ''}</h3>
+                                      <h3 className={`text-4xl ${headingFont} text-white mb-1`}>{getTxt(currentWeekData.focus)}</h3>
                                   </div>
 
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -271,8 +278,8 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
                                                   <span className="text-[0.6rem] font-mono uppercase text-slate/40">Phase_Entry_{day.day}</span>
                                                   {day.isLocked ? <Lock size={14} className="text-slate/30" /> : <Check size={14} className="text-bronze" />}
                                               </div>
-                                              <h4 className={`text-2xl mb-4 ${headingFont} text-white leading-tight`}>{day.title?.[lang] || ''}</h4>
-                                              <p className="text-sm text-slate/50 leading-relaxed mb-6">{day.task?.[lang] || ''}</p>
+                                              <h4 className={`text-2xl mb-4 ${headingFont} text-white leading-tight`}>{getTxt(day.title)}</h4>
+                                              <p className="text-sm text-slate/50 leading-relaxed mb-6">{getTxt(day.task)}</p>
                                               
                                               {day.bookPageRef && (
                                                   <div className="flex items-center gap-2 text-[0.5rem] text-bronze/60 uppercase tracking-widest font-mono">

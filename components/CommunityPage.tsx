@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, CommunityPost, View, UserProfile } from '../types';
 import { COMMUNITY_POSTS, TRANSLATIONS } from '../constants';
@@ -32,7 +32,14 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
   const isAr = lang === 'ar';
   const headingFont = isAr ? 'font-amiri' : 'font-playfair';
   const bodyFont = isAr ? 'font-ibm' : 'font-sans';
-  const t = TRANSLATIONS.community;
+  
+  // Robust translation selector to prevent "Uncaught TypeError: Cannot read properties of undefined (reading 'ar')"
+  const getTxt = useCallback((obj: any): string => {
+      if (!obj) return '';
+      if (typeof obj === 'string') return obj;
+      // Added safety check for the language property
+      return obj[lang] || obj['en'] || obj['ar'] || '';
+  }, [lang]);
 
   // Extract all unique tags
   const allTags = Array.from(new Set(posts.flatMap(p => p.tags || [])));
@@ -304,14 +311,14 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                         </div>
                         
                         <div className="flex items-center gap-4 mb-6">
-                            <div className="w-12 h-12 bg-[#1a1a1a] border border-white/10 rounded-full flex items-center justify-center font-serif text-white group-hover:border-bronze transition-colors overflow-hidden">
+                            <div className="w-12 h-12 bg-[#1a1a1a] border border-white/10 rounded-full flex items-center justify-center font-serif text-white group-hover:border-bronze transition-colors overflow-hidden text-lg">
                                 {post.author.charAt(0)}
                             </div>
                             <div>
                                 <h4 className={`text-base font-bold text-white group-hover:text-bronze transition-colors ${headingFont}`}>{post.author}</h4>
                                 <div className="flex items-center gap-2">
                                     <span className="text-[0.6rem] text-bronze uppercase tracking-widest font-mono">
-                                        {typeof post.role === 'string' ? post.role : post.role[lang] || post.role['en'] || 'Builder'}
+                                        {getTxt(post.role) || 'Builder'}
                                     </span>
                                     <span className="w-1 h-1 bg-white/10 rounded-full"></span>
                                     <span className="text-[0.6rem] text-slate font-mono">{post.timestamp}</span>
@@ -320,11 +327,11 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                         </div>
 
                         <h3 className={`text-2xl mb-4 ${headingFont} text-white group-hover:pl-2 transition-all leading-tight`}>
-                            {typeof post.title === 'string' ? post.title : post.title[lang] || post.title['en']}
+                            {getTxt(post.title)}
                         </h3>
                         
                         <p className={`text-sm text-slate/70 line-clamp-3 mb-8 ${bodyFont} leading-relaxed`}>
-                            {typeof post.content === 'string' ? post.content : post.content[lang] || post.content['en']}
+                            {getTxt(post.content)}
                         </p>
 
                         {/* Display Tags */}
@@ -451,17 +458,17 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                             <div>
                                 <h4 className={`text-2xl font-bold text-white ${headingFont}`}>{selectedPost.author}</h4>
                                 <span className="text-xs text-bronze uppercase tracking-[0.2em] font-mono">
-                                    {typeof selectedPost.role === 'string' ? selectedPost.role : (selectedPost.role[lang] || selectedPost.role['en'] || 'Builder')}
+                                    {getTxt(selectedPost.role) || 'Builder'}
                                 </span>
                             </div>
                         </div>
 
                         <h2 className={`text-3xl md:text-5xl mb-8 leading-tight text-white ${headingFont}`}>
-                            {typeof selectedPost.title === 'string' ? selectedPost.title : (selectedPost.title[lang] || selectedPost.title['en'])}
+                            {getTxt(selectedPost.title)}
                         </h2>
                         
                         <div className={`prose prose-invert prose-lg max-w-none mb-12 text-slate/80 leading-loose ${bodyFont}`}>
-                            {typeof selectedPost.content === 'string' ? selectedPost.content : (selectedPost.content[lang] || selectedPost.content['en'])}
+                            {getTxt(selectedPost.content)}
                         </div>
 
                         <div className="flex flex-wrap gap-4 pt-8 border-t border-white/5">

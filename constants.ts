@@ -146,6 +146,7 @@ export const PRODUCTS: Product[] = [
     id: 'book_digital',
     category: 'book',
     name: { ar: 'المخطط (PDF)', en: 'The Blueprint (Digital)', fr: 'Le Plan (Digital)' },
+    description: { ar: 'نسخة رقمية عالية الدقة من المخطط الأصلي.', en: 'High-res digital copy of the original blueprint.', fr: 'Copie numérique haute résolution.' },
     price: 29,
     type: 'digital',
     image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=1974&auto=format&fit=crop'
@@ -154,9 +155,28 @@ export const PRODUCTS: Product[] = [
     id: 'book_print',
     category: 'book',
     name: { ar: 'المخطط (مطبوع)', en: 'The Blueprint (Hardcover)', fr: 'Le Plan (Livre)' },
+    description: { ar: 'نسخة ورقية فاخرة تجلد يدوياً.', en: 'Premium handcrafted hardcover edition.', fr: 'Édition reliée de luxe.' },
     price: 49,
     type: 'physical',
     image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2112&auto=format&fit=crop'
+  },
+  {
+      id: 'workbook_print',
+      category: 'book',
+      name: { ar: 'الوورك بوك 28 يوم', en: '28-Day Workbook', fr: 'Cahier 28 Jours' },
+      description: { ar: 'دليل التطبيق العملي اليومي للهدم والبناء.', en: 'Daily practical guide for demolition and construction.', fr: 'Guide pratique quotidien.' },
+      price: 27,
+      type: 'physical',
+      image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=2070&auto=format&fit=crop'
+  },
+  {
+      id: 'system_hybrid',
+      category: 'bundle',
+      name: { ar: 'النظام الهجين المتكامل', en: 'Complete Hybrid System', fr: 'Système Hybride Complet' },
+      description: { ar: 'الباقة التي تجمع بين الكتاب والداشبورد التفاعلي.', en: 'The bundle combining the book and interactive dashboard.', fr: 'Pack livre et tableau de bord.' },
+      price: 197,
+      type: 'hybrid',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop'
   }
 ];
 
@@ -456,27 +476,27 @@ export const PHASES = [
 
 export const REPAIR_PROTOCOLS = {
     [AssessmentCategory.FOUNDATION]: {
-        severity: { ar: 'تصدع في القواعد', en: 'Foundation Cracks' },
-        prescription: { ar: 'الجسد هو الأرضية التي تحمل المبنى. أنت بحاجة لتدعيم الخرسانة فوراً.', en: 'The body is the bedrock. Immediate concrete reinforcement required.' },
-        action: { ar: 'تطبيق بروتوكول النوم 10-3-2-1.', en: 'Deploy 10-3-2-1 Sleep Protocol.' },
+        severity: { ar: 'تصدع في القواعد', en: 'Foundation Cracks', fr: 'Fissures de fondation' },
+        prescription: { ar: 'الجسد هو الأرضية التي تحمل المبنى. أنت بحاجة لتدعيم الخرسانة فوراً.', en: 'The body is the bedrock. Immediate concrete reinforcement required.', fr: 'Le corps est le socle. Renforcement immédiat.' },
+        action: { ar: 'تطبيق بروتوكول النوم 10-3-2-1.', en: 'Deploy 10-3-2-1 Sleep Protocol.', fr: 'Déployer le protocole de sommeil 10-3-2-1.' },
         ref: 'Spec: Chapter 04'
     },
     [AssessmentCategory.STRUCTURE]: {
-        severity: { ar: 'إجهاد في الأعمدة', en: 'Column Fatigue' },
-        prescription: { ar: 'الأعمدة العقلية تحت ضغط عالٍ. خطر الانهيار الوشيك.', en: 'Cognitive load exceeds capacity. Imminent risk of collapse.' },
-        action: { ar: 'تفعيل نظام "عزل الضوضاء".', en: 'Activate Noise Insulation Systems.' },
+        severity: { ar: 'إجهاد في الأعمدة', en: 'Column Fatigue', fr: 'Fatigue des colonnes' },
+        prescription: { ar: 'الأعمدة العقلية تحت ضغط عالٍ. خطر الانهيار الوشيك.', en: 'Cognitive load exceeds capacity. Imminent risk of collapse.', fr: 'La charge cognitive dépasse la capacité.' },
+        action: { ar: 'تفعيل نظام "عزل الضوضاء".', en: 'Activate Noise Insulation Systems.', fr: 'Activer l\'isolation phonique.' },
         ref: 'Spec: Chapter 05'
     },
     [AssessmentCategory.INTERIOR]: {
-        severity: { ar: 'عتمة داخلية', en: 'Interior Void' },
-        prescription: { ar: 'النظام الروحي معطل. الضوء لا يدخل.', en: 'Spiritual HVAC malfunction. Lack of light causing internal decay.' },
-        action: { ar: 'فتح "منافذ المعنى" يومياً.', en: 'Open Meaning Vents daily.' },
+        severity: { ar: 'عتمة داخلية', en: 'Interior Void', fr: 'Vide intérieur' },
+        prescription: { ar: 'النظام الروحي معطل. الضوء لا يدخل.', en: 'Spiritual HVAC malfunction. Lack of light causing internal decay.', fr: 'Dysfonctionnement spirituel. Manque de lumière.' },
+        action: { ar: 'فتح "منافذ المعنى" يومياً.', en: 'Open Meaning Vents daily.', fr: 'Ouvrir les évents de sens.' },
         ref: 'Spec: Chapter 07'
     },
     [AssessmentCategory.EXTERIOR]: {
-        severity: { ar: 'واجهة متآكلة', en: 'Facade Erosion' },
-        prescription: { ar: 'الحدود الخارجية متهالكة.', en: 'Perimeter fence compromised. Unauthorized entry detected.' },
-        action: { ar: 'إعادة رسم حدود الملكية.', en: 'Reinforce Perimeter Walls.' },
+        severity: { ar: 'واجهة متآكلة', en: 'Facade Erosion', fr: 'Érosion de façade' },
+        prescription: { ar: 'الحدود الخارجية متهالكة.', en: 'Perimeter fence compromised. Unauthorized entry detected.', fr: 'Clôture compromise. Entrée non autorisée.' },
+        action: { ar: 'إعادة رسم حدود الملكية.', en: 'Reinforce Perimeter Walls.', fr: 'Renforcer les murs périmétriques.' },
         ref: 'Spec: Chapter 08'
     }
 };

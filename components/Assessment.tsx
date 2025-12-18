@@ -36,40 +36,34 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
   const handleStart = () => setStep(1);
 
   const handleAnswer = async (value: number) => {
-    // Prevent double clicking
     if (isProcessing) return;
 
-    // 1. Shake Effect based on severity (value 1-5)
     const shakeIntensity = value * 2;
     containerControls.start({
         x: [0, -shakeIntensity, shakeIntensity, -shakeIntensity, shakeIntensity, 0],
         transition: { duration: 0.3 }
     });
 
-    // 2. Accumulate Pressure (Visual Gauge)
     const pressureIncrease = (value / 30) * 100;
     setPressure(prev => Math.min(prev + pressureIncrease, 100));
 
-    // 3. Logic
     const newAnswers = { ...answers, [QUESTIONS[step - 1].id]: value };
     setAnswers(newAnswers);
     
-    // Artificial Delay for "Mechanical Processing" feel
     await new Promise(r => setTimeout(r, 400));
 
     if (step < QUESTIONS.length) {
       setStep(step + 1);
     } else {
-      setStep(step + 1); // Go to processing
+      setStep(step + 1); 
       setIsProcessing(true);
       setTimeout(() => {
         setIsProcessing(false);
-        setStep(step + 2); // Show result
+        setStep(step + 2); 
       }, 2500);
     }
   };
 
-  // Aggregate results
   const calculateData = () => {
     const dataMap: Record<string, number> = {
       [AssessmentCategory.FOUNDATION]: 0,
@@ -93,9 +87,9 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
 
     return Object.keys(dataMap).map(key => ({
       subject: key,
-      A: 100 - ((dataMap[key] / maxMap[key]) * 100), // Invert to show Health
+      A: 100 - ((dataMap[key] / maxMap[key]) * 100), 
       fullMark: 100,
-      rawValue: (dataMap[key] / maxMap[key]) * 100 // Raw problem score for diagnosis
+      rawValue: (dataMap[key] / maxMap[key]) * 100 
     }));
   };
 
@@ -126,16 +120,12 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
   );
 
   const PressureGauge = () => {
-      // Rotate -90deg (start) to 90deg (end)
       const rotation = -90 + (pressure * 1.8);
       return (
           <div className="absolute top-8 right-8 w-24 h-24 hidden md:block">
               <div className="relative w-full h-full">
-                  {/* Gauge Background */}
                   <div className="absolute inset-0 rounded-full border-4 border-slate/10 border-b-transparent rotate-45"></div>
-                  {/* Ticks */}
                   <div className="absolute inset-2 rounded-full border border-dashed border-slate/20"></div>
-                  {/* Needle */}
                   <div 
                     className="absolute top-1/2 left-1/2 w-1/2 h-1 bg-bronze origin-left transition-transform duration-500 ease-out"
                     style={{ transform: `rotate(${rotation}deg)` }}
@@ -162,7 +152,6 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
       >
         <PressureGauge />
         
-        {/* Step Indicator */}
         <div className="mb-12 flex items-center justify-center gap-4">
              <div className="h-px w-12 bg-bronze/50"></div>
              <span className="text-bronze text-xs tracking-widest font-mono">
@@ -175,7 +164,6 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
           {q.text[lang]}
         </h4>
         
-        {/* Mechanical Input Buttons */}
         <div className="grid grid-cols-5 gap-4 md:gap-8 max-w-2xl mx-auto w-full">
           {[1, 2, 3, 4, 5].map((val) => (
             <button
@@ -184,7 +172,6 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
               disabled={isProcessing}
               className="group relative flex flex-col items-center gap-4 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             >
-                {/* The "Switch" */}
                 <div className="w-16 h-24 bg-white/5 border border-slate/20 rounded-sm relative overflow-hidden group-hover:border-bronze transition-colors shadow-inner">
                     <div className="absolute inset-0 flex flex-col justify-between p-2 pointer-events-none">
                         <span className="w-full h-px bg-slate/10"></span>
@@ -192,16 +179,11 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
                         <span className="w-full h-px bg-slate/10"></span>
                         <span className="w-full h-px bg-slate/10"></span>
                     </div>
-                    {/* Active Indicator */}
                     <div className="absolute bottom-0 left-0 w-full h-1 bg-transparent group-hover:bg-bronze transition-colors"></div>
-                    
-                    {/* Number */}
                     <div className="absolute inset-0 flex items-center justify-center text-xl font-mono text-slate/50 group-hover:text-white transition-colors">
                         {val}
                     </div>
                 </div>
-                
-                {/* Label */}
                 <span className="text-[0.6rem] uppercase tracking-widest text-slate/40 group-hover:text-bronze transition-colors">
                     {val === 1 ? (isAr ? 'منعدم' : 'None') : val === 5 ? (isAr ? 'شديد' : 'Critical') : ''}
                 </span>
@@ -214,7 +196,6 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
 
   const renderProcessing = () => (
       <div className="min-h-[60vh] flex flex-col items-center justify-center relative overflow-hidden">
-          {/* Scanning Line Background */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent animate-scan pointer-events-none"></div>
           
           <motion.div 
@@ -227,18 +208,12 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
           
           <div className="text-center relative z-10 bg-darkBg/80 p-6 backdrop-blur-sm border border-white/5">
               <h4 className={`text-2xl mb-2 ${headingFont} text-white`}>{isAr ? 'جاري محاكاة الأحمال...' : 'Simulating Structural Loads...'}</h4>
-              <div className="space-y-1 text-xs text-bronze uppercase tracking-widest font-mono">
-                  <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>Calculating stress points...</motion.div>
-                  <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }}>Checking foundation integrity...</motion.div>
-                  <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.4 }}>Finalizing blueprint report...</motion.div>
-              </div>
           </div>
       </div>
   );
 
   const renderResult = () => {
     const data = calculateData();
-    // Identify weakest pillars (Health score < 60)
     const criticalIssues = data.filter(d => d.A < 60);
 
     return (
@@ -257,7 +232,6 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
         </div>
         
         <div className="flex flex-col lg:flex-row gap-16 items-start">
-            {/* Left: Visual Chart */}
             <div className="w-full lg:w-1/2 bg-white dark:bg-white/5 p-8 border border-slate/10 shadow-xl relative">
                 <div className="absolute top-4 left-4 text-xs text-slate font-mono">FIG-1: INTEGRITY SCAN</div>
                 <div className="h-[300px] md:h-[400px] w-full">
@@ -277,17 +251,8 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
                         </RadarChart>
                     </ResponsiveContainer>
                 </div>
-                <div className="text-center mt-4">
-                    <div className="text-3xl font-bold text-charcoal dark:text-concrete font-mono">
-                        {Math.round(data.reduce((acc, curr) => acc + curr.A, 0) / 4)}%
-                    </div>
-                    <div className="text-[0.6rem] uppercase tracking-widest text-slate">
-                        {isAr ? 'نسبة السلامة العامة' : 'Overall Integrity'}
-                    </div>
-                </div>
             </div>
 
-            {/* Right: The Diagnosis & Prescription */}
             <div className="w-full lg:w-1/2">
                 <div className="mb-8 pb-6 border-b border-slate/20">
                     <h4 className={`text-2xl mb-6 flex items-center gap-3 ${headingFont}`}>
@@ -298,20 +263,20 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
                     {criticalIssues.length > 0 ? (
                         <div className="space-y-6">
                             {criticalIssues.map((issue) => {
-                                const protocol = REPAIR_PROTOCOLS[issue.subject as AssessmentCategory];
+                                // Added optional chaining to prevent undefined access
+                                const protocol = (REPAIR_PROTOCOLS as any)[issue.subject];
                                 return (
                                     <div key={issue.subject} className="bg-red-500/5 border-l-4 border-red-500 p-4">
                                         <div className="flex justify-between items-start mb-2">
                                             <h5 className="font-bold text-red-500 uppercase tracking-wider text-sm">{issue.subject} ({Math.round(issue.A)}%)</h5>
                                             <span className="text-[0.6rem] bg-red-500 text-white px-2 py-1 uppercase">{isAr ? 'خطر' : 'Risk'}</span>
                                         </div>
-                                        <p className={`text-sm text-slate mb-3 ${bodyFont}`}>{protocol?.prescription[lang]}</p>
+                                        <p className={`text-sm text-slate mb-3 ${bodyFont}`}>{protocol?.prescription?.[lang] || ''}</p>
                                         <div className="bg-white dark:bg-charcoal p-3 border border-slate/10 flex items-start gap-3">
                                             <Check className="text-bronze mt-1 flex-shrink-0" size={14} />
                                             <div>
                                                 <span className="text-[0.6rem] uppercase tracking-widest text-slate block mb-1">{isAr ? 'بروتوكول العلاج:' : 'Repair Protocol:'}</span>
-                                                <span className={`text-sm font-bold text-charcoal dark:text-concrete ${headingFont}`}>{protocol?.action[lang]}</span>
-                                                <span className="text-[0.6rem] text-bronze block mt-1">{protocol?.ref}</span>
+                                                <span className={`text-sm font-bold text-charcoal dark:text-concrete ${headingFont}`}>{protocol?.action?.[lang] || ''}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -326,29 +291,6 @@ export const Assessment: React.FC<AssessmentProps> = ({ lang, setView }) => {
                             </p>
                         </div>
                     )}
-                </div>
-
-                <div>
-                    <h4 className={`text-xl mb-4 ${headingFont}`}>{isAr ? 'الخطوة التالية' : 'Next Step'}</h4>
-                    <p className={`text-slate mb-6 ${bodyFont}`}>
-                        {isAr 
-                         ? 'هذا التقرير هو مجرد تشخيص. الحل الجذري يكمن في استلام "المخطط الأصلي" والبدء في التنفيذ.'
-                         : 'This report is just a diagnosis. The radical solution lies in acquiring the "Master Blueprint" and starting execution.'}
-                    </p>
-                    <button 
-                        onClick={() => setView('landing')} // DIRECT FUNNEL LINK
-                        className="w-full py-4 bg-bronze text-white uppercase tracking-[0.2em] font-bold hover:bg-charcoal transition-colors shadow-lg flex items-center justify-center gap-3 animate-pulse"
-                    >
-                         {isAr ? 'استلام خطة العمل (الكتاب)' : 'Get Action Plan (The Book)'} <ArrowRight size={16} />
-                    </button>
-                    <div className="mt-4 text-center">
-                         <button 
-                            onClick={() => { setStep(0); setPressure(0); setAnswers({}); }}
-                            className="text-slate hover:text-bronze transition-colors underline text-xs uppercase tracking-widest flex items-center justify-center gap-2 mx-auto"
-                        >
-                            <RefreshCw size={12} /> {isAr ? 'إعادة الفحص' : 'Re-Audit'}
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
