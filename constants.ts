@@ -65,7 +65,7 @@ export const TRANSLATIONS = {
 };
 
 export const ABOUT_CONTENT = {
-    title: { ar: 'عن المعماري', en: 'The Architect', fr: 'L\'Architecte' },
+    title: { ar: 'عن المعماري', en: 'The Architect', fr: 'L\'Architectه' },
     name: { ar: 'أ. مقلد', en: 'A. Meklad', fr: 'A. Meklad' },
     titles: { ar: 'مؤسس Graphics House | معماري وفنان', en: 'Founder of Graphics House | Architect & Artist', fr: 'Architecte | Artiste | CEO Graphics House' },
     bio: {
@@ -340,7 +340,7 @@ export const COMMUNITY_POSTS: CommunityPost[] = [
     rankLevel: 8,
     phase: 'Foundation',
     title: { ar: 'نجاح في صب القواعد الجسدية', en: 'Physical Foundation Pour Successful', fr: 'Fondation Physique Réussie' },
-    content: { ar: 'بعد 14 يوماً من الالتزام ببروتوكول النوم 10-3-2-1، انخفض معدل ضربات القلب أثناء الراحة بمقدار 15 نقطة. الهيكل أصبح أكثر ثباتاً.', en: 'After 14 days of adhering to the 10-3-2-1 sleep protocol, my resting HR dropped by 15 points. The structure is feeling significantly more stable.', fr: 'Sommeil amélioré, structure stable.' },
+    content: { ar: 'بعد 14 يوماً من الالتزام بروتوكول النوم 10-3-2-1، انخفض معدل ضربات القلب أثناء الراحة بمقدار 15 نقطة. الهيكل أصبح أكثر ثباتاً.', en: 'After 14 days of adhering to the 10-3-2-1 sleep protocol, my resting HR dropped by 15 points. The structure is feeling significantly more stable.', fr: 'Sommeil amélioré, structure stable.' },
     endorsements: 24,
     reviews: [],
     tags: ['Sleep', 'Success'],

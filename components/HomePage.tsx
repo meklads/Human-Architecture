@@ -19,6 +19,12 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
   const headingFont = isAr ? 'font-amiri' : 'font-playfair';
   const bodyFont = isAr ? 'font-ibm' : 'font-montserrat';
 
+  // Helper to safely get translations to prevent "Cannot read properties of undefined"
+  const getTxt = (obj: any, key: string = lang) => {
+    if (!obj) return '';
+    return obj[key] || obj['en'] || obj['ar'] || '';
+  };
+
   // Use Query Params for Bulletproof SPA Linking
   const generateQrUrl = (data: string) => {
     return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(data)}&color=2B2B2B&bgcolor=F2F0EB`;
@@ -59,7 +65,7 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
          </div>
          
          {/* Background Watermark */}
-         <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 text-[10rem] md:text-[15rem] text-white/5 pointer-events-none whitespace-nowrap ${headingFont} z-0 opacity-10`}>
+         <div className={`absolute top-0 left-1/2 transform -translate-x-1/2 text-[10rem] md:text-[15rem] text-white/5 pointer-events-none whitespace-nowrap ${headingFont} z-0 opacity-10 uppercase`}>
             STRUCTURE
          </div>
 
@@ -85,9 +91,13 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                 <div className="absolute inset-0 z-10 transition-all duration-700 group-hover:opacity-0 group-hover:scale-105">
                    <img 
                     src={pillar.image} 
-                    alt={pillar.title[lang]} 
+                    alt={getTxt(pillar.title)} 
                     className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 transition-opacity"
                     loading="lazy"
+                    onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop'; // Technical fallback
+                    }}
                    />
                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                 </div>
@@ -134,7 +144,7 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                             e.stopPropagation();
                             setQrItem({
                                 id: pillar.id,
-                                title: pillar.title[lang],
+                                title: getTxt(pillar.title),
                                 desc: isAr 
                                     ? 'امسح الرمز للوصول إلى الشرح الصوتي والمخططات التفصيلية لهذا العمود.' 
                                     : 'Scan to access Audio Commentary & Detailed Schematics for this Pillar.'
@@ -153,14 +163,14 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                    {/* Bottom: Info */}
                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                       <h3 className={`text-3xl text-slate/40 group-hover:text-white mb-2 ${headingFont} transition-colors duration-300 relative inline-block`}>
-                         {pillar.title[lang]}
+                         {getTxt(pillar.title)}
                       </h3>
                       
                       {/* Description Reveal */}
                       <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 ease-in-out">
                           <div className="overflow-hidden">
                               <p className={`text-cyan-100/70 text-sm leading-relaxed pt-2 ${bodyFont} font-mono text-[0.65rem] opacity-0 group-hover:opacity-100 transition-opacity delay-150`}>
-                                  [{isAr ? 'حالة النظام' : 'SYSTEM STATUS'}]: {pillar.description[lang]}
+                                  [{isAr ? 'حالة النظام' : 'SYSTEM STATUS'}]: {getTxt(pillar.description)}
                               </p>
                               <div className="mt-4 flex items-center gap-2 text-bronze text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity delay-200">
                                   <span>{isAr ? 'تحليل المخطط' : 'Analyze Blueprint'}</span>
@@ -208,17 +218,17 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                           </div>
                           <div className="flex items-center gap-2 mb-4">
                               <span className={`text-xs px-2 py-1 border border-bronze text-bronze uppercase ${isAr ? 'font-ibm' : 'font-montserrat'} ${log.status.en === 'Restored' ? 'bg-bronze/10' : 'bg-slate/10 text-slate border-slate'}`}>
-                                  {log.status[lang]}
+                                  {getTxt(log.status)}
                               </span>
-                              <span className="text-xs text-slate uppercase tracking-widest">{log.role[lang]}</span>
+                              <span className="text-xs text-slate uppercase tracking-widest">{getTxt(log.role)}</span>
                           </div>
                           <div className="min-h-[100px]">
                             <p className={`text-lg text-charcoal dark:text-concrete/90 italic mb-6 leading-relaxed ${bodyFont}`}>
-                                "{log.report[lang]}"
+                                "{getTxt(log.report)}"
                             </p>
                           </div>
                           <div className="border-t border-slate/10 pt-4 flex justify-between items-center">
-                              <h4 className={`font-bold ${headingFont}`}>{log.name[lang]}</h4>
+                              <h4 className={`font-bold ${headingFont}`}>{getTxt(log.name)}</h4>
                               <span className="text-xs text-slate uppercase tracking-widest">Ref: {log.id}</span>
                           </div>
                           <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-bronze opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -234,7 +244,7 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
         <div className="container mx-auto px-6">
            <div className="flex items-end justify-between mb-16 border-b border-charcoal dark:border-concrete pb-6">
              <h2 className={`text-4xl md:text-6xl text-charcoal dark:text-concrete ${headingFont}`}>
-               {TRANSLATIONS.nav.journal[lang]}
+               {getTxt(TRANSLATIONS.nav.journal)}
              </h2>
              <button onClick={() => setView('journal')} className="flex items-center gap-2 text-bronze hover:text-charcoal dark:hover:text-white transition-colors cursor-pointer">
                 <span className="uppercase tracking-widest text-xs">{isAr ? 'عرض الكل' : 'View All'}</span>
@@ -246,13 +256,13 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
               <article key={post.id} className="group cursor-pointer" onClick={() => setView('journal')}>
                 <div className="overflow-hidden mb-6 aspect-[4/3] relative">
                   <div className="absolute inset-0 border border-slate/20 z-10 pointer-events-none"></div>
-                  <img src={post.image} alt={post.title[lang]} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0" />
+                  <img src={post.image} alt={getTxt(post.title)} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0" />
                 </div>
                 <div className="flex justify-between items-center text-xs text-slate tracking-widest uppercase mb-2">
                     <span>{post.date}</span>
                 </div>
                 <h3 className={`text-2xl mb-2 text-charcoal dark:text-alabaster group-hover:text-bronze transition-colors ${headingFont}`}>
-                  {post.title[lang]}
+                  {getTxt(post.title)}
                 </h3>
               </article>
             ))}
@@ -281,7 +291,6 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
                     </span>
 
                     <div className="bg-white p-4 border border-charcoal/10 inline-block mb-6 shadow-inner">
-                        {/* Generate Dynamic Safe URL */}
                         <img 
                             src={generateQrUrl(`https://thehumanarchitecture.com/?view=philosophy&id=${qrItem.id}`)} 
                             alt="QR Code" 
