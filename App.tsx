@@ -19,7 +19,6 @@ import { AboutPage } from './components/AboutPage';
 import { CustomCursor } from './components/CustomCursor';
 import { Magnetic } from './components/Magnetic';
 import { BlueprintOverlay } from './components/BlueprintOverlay';
-import { PasswordGate } from './components/PasswordGate'; // Import the Gate
 
 function App() {
   const [lang, setLang] = useState<Language>('en');
@@ -28,9 +27,6 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   
-  // SITE LOCK STATE
-  const [isAuthorized, setIsAuthorized] = useState(false);
-
   // User Authentication State
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
 
@@ -55,12 +51,6 @@ function App() {
 
   // Initial Load Simulation & Deep Link Handler & User Restore
   useEffect(() => {
-    // 0. Check Authorization
-    const authorized = sessionStorage.getItem('site_access_token');
-    if (authorized === 'granted') {
-        setIsAuthorized(true);
-    }
-
     // 1. Architectural Boot Sequence
     const phaseInterval = setInterval(() => {
       setLoadingPhase(prev => {
@@ -176,16 +166,6 @@ function App() {
     { id: 'contact', label: TRANSLATIONS.nav.contact[lang] },
   ];
 
-  // --- PASSWORD GATE CHECK ---
-  if (!isAuthorized) {
-      return (
-          <>
-            <CustomCursor />
-            <PasswordGate onUnlock={() => setIsAuthorized(true)} />
-          </>
-      );
-  }
-
   if (loading) {
     return (
       <div className="fixed inset-0 bg-[#050505] text-bronze flex flex-col items-center justify-center z-[9999]">
@@ -213,7 +193,7 @@ function App() {
   const isFunnelMode = currentView === 'landing';
 
   return (
-    <div className={`min-h-screen w-full overflow-x-hidden transition-colors duration-700 bg-darkBg text-concrete`} dir={direction}>
+    <div className={`min-h-screen transition-colors duration-700 bg-darkBg text-concrete`} dir={direction}>
       <CustomCursor />
       
       {/* GLOBAL BLUEPRINT OVERLAY */}

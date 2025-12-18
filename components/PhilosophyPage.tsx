@@ -404,9 +404,9 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
                       </button>
                   </div>
 
-                  {/* Option 2: Enter Gallery - Links to Art Store (Gallery) */}
+                  {/* Option 2: Enter Gallery - Links to Library */}
                   <div 
-                    onClick={() => handleNavigate('art-store')}
+                    onClick={() => handleNavigate('library')}
                     className="flex-1 bg-charcoal text-white p-10 group text-center md:text-start relative overflow-hidden shadow-2xl cursor-pointer"
                   >
                       <div className="absolute top-0 right-0 w-48 h-48 bg-bronze/10 rounded-full blur-3xl group-hover:bg-bronze/20 transition-colors"></div>
