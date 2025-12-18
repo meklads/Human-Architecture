@@ -13,16 +13,18 @@ export const PasswordGate: React.FC<PasswordGateProps> = ({ onUnlock }) => {
   const [loading, setLoading] = useState(false);
 
   // --- CONFIGURATION ---
-  const PASSWORD = "ARCHITECT"; // Change this to your desired password
+  const PASSWORD = "ARCHITECT"; 
   // ---------------------
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const cleanInput = input.trim().toUpperCase();
+    
     setLoading(true);
     setError(false);
 
     setTimeout(() => {
-      if (input.toUpperCase() === PASSWORD) {
+      if (cleanInput === PASSWORD) {
         // Save to session storage so refresh doesn't lock them out again immediately
         sessionStorage.setItem('site_access_token', 'granted');
         onUnlock();
@@ -102,7 +104,7 @@ export const PasswordGate: React.FC<PasswordGateProps> = ({ onUnlock }) => {
                 <button 
                     type="submit" 
                     disabled={loading || !input}
-                    className="w-full bg-white text-black py-4 uppercase tracking-[0.2em] text-xs font-bold hover:bg-bronze hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full bg-white text-black py-4 uppercase tracking-[0.2em] text-xs font-bold hover:bg-bronze hover:text-white transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                     {loading ? <Loader2 className="animate-spin" size={14} /> : <>Enter Site <ArrowRight size={14} /></>}
                 </button>
