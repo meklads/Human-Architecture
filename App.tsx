@@ -53,9 +53,9 @@ function App() {
   }, [lang]);
 
   const LOAD_PHASES = [
-    { ar: 'جاري فحص التربة والأساسات...', en: 'ANALYZING SOIL CONDITIONS...' },
-    { ar: 'رفع الأعمدة الإنشائية...', en: 'ERECTING PILLARS...' },
-    { ar: 'المبنى جاهز للإشغال.', en: 'READY FOR OCCUPANCY.' }
+    { ar: 'جاري فحص التربة والأساسات...', en: 'ANALYZING SOIL CONDITIONS...', fr: 'ANALYSE DU SOL...' },
+    { ar: 'رفع الأعمدة الإنشائية...', en: 'ERECTING PILLARS...', fr: 'ÉRECTION DES PILIERS...' },
+    { ar: 'المبنى جاهز للإشغال.', en: 'READY FOR OCCUPANCY.', fr: 'PRÊT POUR OCCUPATION.' }
   ];
 
   useEffect(() => {

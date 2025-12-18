@@ -14,15 +14,16 @@ export const TRANSLATIONS = {
     architect: { ar: 'عن المعماري', en: 'THE ARCHITECT', fr: "L'ARCHITECTE" },
   },
   hero: {
-    headline: { ar: 'أنت لست مكسوراً. أنت سيء التصميم.', en: 'You Are Not Broken. You Are Poorly Designed.' },
-    line1: { ar: 'أنت لست مكسوراً.', en: 'You Are Not Broken.' },
-    line2: { ar: 'أنت سيء التصميم.', en: 'You Are Poorly Designed.' },
+    headline: { ar: 'أنت لست مكسوراً. أنت سيء التصميم.', en: 'You Are Not Broken. You Are Poorly Designed.', fr: 'Vous n\'êtes pas brisé. Vous êtes mal conçu.' },
+    line1: { ar: 'أنت لست مكسوراً.', en: 'You Are Not Broken.', fr: 'Vous n\'êtes pas brisé.' },
+    line2: { ar: 'أنت سيء التصميم.', en: 'You Are Poorly Designed.', fr: 'Vous êtes mal conçu.' },
     desc: { 
         ar: 'البشر لا ينهارون عشوائياً، بل إنشائياً. أنت بحاجة لهندسة هيكلية—وليس ديكوراً داخلياً—لإعادة بناء حياتك من الأساس.', 
-        en: 'Human beings don\'t break randomly. They collapse architecturally.\nYou need structural engineering—not interior decoration—to rebuild your life from the foundation up.' 
+        en: 'Human beings don\'t break randomly. They collapse architecturally.\nYou need structural engineering—not interior decoration—to rebuild your life from the foundation up.',
+        fr: 'Les êtres humains ne s\'effondrent pas au hasard. Ils s\'effondrent architecturalement.\nVous avez besoin d\'ingénierie structurelle.'
     },
-    cta: { ar: 'ابدأ فحص السلامة الإنشائية', en: 'TAKE YOUR STRUCTURAL INTEGRITY AUDIT' },
-    subCta: { ar: 'شاهد قصة سارة', en: "WATCH SARAH'S STORY" }
+    cta: { ar: 'ابدأ فحص السلامة الإنشائية', en: 'TAKE YOUR STRUCTURAL INTEGRITY AUDIT', fr: 'DÉBUTER L\'AUDIT D\'INTÉGRITÉ' },
+    subCta: { ar: 'شاهد قصة سارة', en: "WATCH SARAH'S STORY", fr: 'VOIR L\'HISTOIRE DE SARAH' }
   },
   assessment: {
     title: { ar: 'اختبار الإجهاد الهيكلي', en: 'Structural Stress Test', fr: 'Test de Stress Structurel' },
@@ -65,7 +66,7 @@ export const TRANSLATIONS = {
 };
 
 export const ABOUT_CONTENT = {
-    title: { ar: 'عن المعماري', en: 'The Architect', fr: 'L\'Architectه' },
+    title: { ar: 'عن المعماري', en: 'The Architect', fr: 'L\'Architecte' },
     name: { ar: 'أ. مقلد', en: 'A. Meklad', fr: 'A. Meklad' },
     titles: { ar: 'مؤسس Graphics House | معماري وفنان', en: 'Founder of Graphics House | Architect & Artist', fr: 'Architecte | Artiste | CEO Graphics House' },
     bio: {
@@ -73,11 +74,11 @@ export const ABOUT_CONTENT = {
         en: 'I am an architect and artist devoted to beauty. I have spent a lifetime in the fields of engineering and architecture, with a deep passion for medicine and health in general. I founded the creative firm "Graphics House" and have executed numerous major projects.',
         fr: 'Architecte et artiste multidisciplinaire, CEO de Graphics House.'
     },
-    philosophyTitle: { ar: 'الرؤية: دمج العمارة بالطب', en: 'The Vision: Merging Architecture & Health', fr: 'Pourquoi?' },
+    philosophyTitle: { ar: 'الرؤية: دمج العمارة بالطب', en: 'The Vision: Merging Architecture & Health', fr: 'La Vision: Architecture et Santé' },
     philosophy: {
         ar: 'هذا المشروع هو نتاج دمج خبرتي الطويلة في العمارة مع شغفي بالطب. "عمارة الإنسان" ليست مجرد فلسفة، بل هي تطبيق للمبادئ الهندسية الصارمة على الصحة النفسية والجسدية. كما يُبنى ناطحات السحاب على أسس متينة، يجب أن يُبنى الإنسان. أنا هنا لا لأقدم نصائح، بل لأعطيك "المخطط التنفيذي" لإعادة بناء ذاتك كتحفة معمارية.',
         en: 'This project is the result of merging my lifetime experience in architecture with my passion for medicine. "Human Architecture" is not just a philosophy; it is the application of strict engineering principles to mental and physical health. Just as skyscrapers are built on solid foundations, so must the human being. I am not here to offer advice, but to hand you the "Execution Blueprint" to rebuild yourself as a structural masterpiece.',
-        fr: 'Ce projet est un plan\'exécution pour la restructuration.'
+        fr: 'Ce projet est un plan d\'exécution pour la restructuration.'
     }
 };
 
@@ -382,76 +383,76 @@ export const COMMUNITY_POSTS: CommunityPost[] = [
 
 export const LANDING_CONTENT = {
   header: {
-    left: { ar: 'عمارة الإنسان', en: 'HUMAN ARCHITECTURE' },
-    right: { ar: 'العودة للمقر', en: 'BACK TO HQ' },
-    join: { ar: 'انضم للنقابة', en: 'JOIN THE GUILD' }
+    left: { ar: 'عمارة الإنسان', en: 'HUMAN ARCHITECTURE', fr: 'ARCHITECTURE HUMAINE' },
+    right: { ar: 'العودة للمقر', en: 'BACK TO HQ', fr: 'RETOUR AU QG' },
+    join: { ar: 'انضم للنقابة', en: 'JOIN THE GUILD', fr: 'REJOINDRE LA GUILDE' }
   },
-  warning: { ar: 'تحذير: هذا ليس تطوير ذات تقليدي', en: 'WARNING: NOT TRADITIONAL SELF-HELP' },
+  warning: { ar: 'تحذير: هذا ليس تطوير ذات تقليدي', en: 'WARNING: NOT TRADITIONAL SELF-HELP', fr: 'ATTENTION: PAS DE DÉVELOPPEMENT PERSONNEL CLASSIQUE' },
   hero: {
-    headline: { ar: 'توقف عن ترميم الشقوق.\nأعد صب الأساسات.', en: 'Stop Fixing Cracks.\nRe-Pour The Foundation.' },
-    subheadline: { ar: 'النظام الهندسي الوحيد الذي يعيد هيكلة عقلك، جسدك، وروحك باستخدام بروتوكولات العمارة البشرية.', en: 'The only engineering-grade system to restructure your mind, body, and soul using Human Architecture protocols.' },
-    support: { ar: 'مدعوم بمبادئ الهندسة الإنشائية', en: 'BACKED BY STRUCTURAL ENGINEERING PRINCIPLES' },
-    videoLabel: { ar: 'شاهد العرض الهندسي', en: 'WATCH THE ARCHITECTURAL PRESENTATION' },
-    videoDuration: { ar: 'المدة: 03:45', en: 'Duration: 03:45' },
-    cta: { ar: 'أريد إعادة بناء حياتي الآن', en: 'I WANT TO REBUILD MY LIFE NOW' },
-    guarantee: { ar: 'ضمان استرجاع 100%', en: '100% MONEY BACK GUARANTEE' }
+    headline: { ar: 'توقف عن ترميم الشقوق.\nأعد صب الأساسات.', en: 'Stop Fixing Cracks.\nRe-Pour The Foundation.', fr: 'Arrêtez de colmater.\nRefaites les fondations.' },
+    subheadline: { ar: 'النظام الهندسي الوحيد الذي يعيد هيكلة عقلك، جسدك، وروحك باستخدام بروتوكولات العمارة البشرية.', en: 'The only engineering-grade system to restructure your mind, body, and soul using Human Architecture protocols.', fr: 'Le seul système de restructuration mentale et physique.' },
+    support: { ar: 'مدعوم بمبادئ الهندسة الإنشائية', en: 'BACKED BY STRUCTURAL ENGINEERING PRINCIPLES', fr: 'INGÉNIERIE STRUCTURELLE' },
+    videoLabel: { ar: 'شاهد العرض الهندسي', en: 'WATCH THE ARCHITECTURAL PRESENTATION', fr: 'VOIR LA PRÉSENTATION' },
+    videoDuration: { ar: 'المدة: 03:45', en: 'Duration: 03:45', fr: 'Durée: 03:45' },
+    cta: { ar: 'أريد إعادة بناء حياتي الآن', en: 'I WANT TO REBUILD MY LIFE NOW', fr: 'RECONSTRUIRE MA VIE' },
+    guarantee: { ar: 'ضمان استرجاع 100%', en: '100% MONEY BACK GUARANTEE', fr: 'GARANTIE 100%' }
   },
   problem: {
-    headline: { ar: 'أنت تحاول "تزيين" مبنى ينهار.', en: 'You Are Decorating a\nCollapsing Building.' },
-    body: { ar: 'التفكير الإيجابي والتوكيدات مثل طلاء الجدران في منزل أساساته متآكلة.', en: 'Positive thinking and affirmations are like painting the walls of a house with a rotting foundation.' },
-    emphasis: { ar: 'إذا لم تصلح الأساس، فكل ما تبنيه فوقه سيزيد من سرعة الانهيار.', en: 'If you do not fix the foundation, everything you build on top only accelerates the collapse.' }
+    headline: { ar: 'أنت تحاول "تزيين" مبنى ينهار.', en: 'You Are Decorating a\nCollapsing Building.', fr: 'Vous décorez un édifice\nqui s\'effondre.' },
+    body: { ar: 'التفكير الإيجابي والتوكيدات مثل طلاء الجدران في منزل أساساته متآكلة.', en: 'Positive thinking and affirmations are like painting the walls of a house with a rotting foundation.', fr: 'La pensée positive est comme de la peinture sur des fondations pourries.' },
+    emphasis: { ar: 'إذا لم تصلح الأساس، فكل ما تبنيه فوقه سيزيد من سرعة الانهيار.', en: 'If you do not fix the foundation, everything you build on top only accelerates the collapse.', fr: 'Sans fondation solide, tout s\'accélère.' }
   },
   failure: {
-    headline: { ar: 'لماذا تفشل التنمية البشرية؟', en: 'Why Traditional Self-Help Fails' },
+    headline: { ar: 'لماذا تفشل التنمية البشرية؟', en: 'Why Traditional Self-Help Fails', fr: 'Pourquoi le self-help échoue?' },
     bullets: [
-      { ar: 'تعالج الأعراض وليس الجذور', en: 'Treats symptoms, not roots' },
-      { ar: 'تعتمد على التحفيز اللحظي', en: 'Relies on temporary motivation' },
-      { ar: 'تفتقر للمخطط الإنشائي', en: 'Lacks a structural blueprint' }
+      { ar: 'تعالج الأعراض وليس الجذور', en: 'Treats symptoms, not roots', fr: 'Soigne les symptômes' },
+      { ar: 'تعتمد على التحفيز اللحظي', en: 'Relies on temporary motivation', fr: 'Motivation temporaire' },
+      { ar: 'تفتقر للمخطط الإنشائي', en: 'Lacks a structural blueprint', fr: 'Pas de plan structurel' }
     ],
-    closing: { ar: 'أنت لا تحتاج لتحفيز، أنت تحتاج لهندسة.', en: 'You don\'t need motivation. You need engineering.' }
+    closing: { ar: 'أنت لا تحتاج لتحفيز، أنت تحتاج لهندسة.', en: 'You don\'t need motivation. You need engineering.', fr: 'Besoin d\'ingénierie.' }
   },
   solution: {
-    headline: { ar: 'الحل: عمارة الإنسان', en: 'The Solution: Human Architecture' },
-    body: { ar: 'تطبيق قوانين الفيزياء والهندسة على الكيان البشري لتحقيق استقرار إنشائي حقيقي.', en: 'Applying laws of physics and engineering to the human entity for true structural stability.' }
+    headline: { ar: 'الحل: عمارة الإنسان', en: 'The Solution: Human Architecture', fr: 'Solution: Architecture Humaine' },
+    body: { ar: 'تطبيق قوانين الفيزياء والهندسة على الكيان البشري لتحقيق استقرار إنشائي حقيقي.', en: 'Applying laws of physics and engineering to the human entity for true structural stability.', fr: 'Physique et ingénierie appliquées.' }
   },
   pillars: {
-    title: { ar: 'الأعمدة الأربعة للاستقرار', en: 'The 4 Pillars of Stability' },
+    title: { ar: 'الأعمدة الأربعة للاستقرار', en: 'The 4 Pillars of Stability', fr: 'Les 4 Piliers' },
     items: [
-      { title: { ar: 'العقل', en: 'The Mind' }, desc: { ar: 'غرفة التحكم', en: 'Control Room' } },
-      { title: { ar: 'الجسد', en: 'The Body' }, desc: { ar: 'الأساسات', en: 'Foundations' } },
-      { title: { ar: 'الروح', en: 'The Spirit' }, desc: { ar: 'التصميم الداخلي', en: 'Interiors' } },
-      { title: { ar: 'العلاقات', en: 'Social' }, desc: { ar: 'الواجهة', en: 'Facade' } }
+      { title: { ar: 'العقل', en: 'The Mind', fr: 'L\'Esprit' }, desc: { ar: 'غرفة التحكم', en: 'Control Room', fr: 'Contrôle' } },
+      { title: { ar: 'الجسد', en: 'The Body', fr: 'Le Corps' }, desc: { ar: 'الأساسات', en: 'Foundations', fr: 'Fondation' } },
+      { title: { ar: 'الروح', en: 'The Spirit', fr: 'L\'Âme' }, desc: { ar: 'التصميم الداخلي', en: 'Interiors', fr: 'Intérieur' } },
+      { title: { ar: 'العلاقات', en: 'Social', fr: 'Social' }, desc: { ar: 'الواجهة', en: 'Facade', fr: 'Façade' } }
     ],
-    insight: { ar: 'انهيار عمود واحد يهدد سلامة الهيكل بالكامل.', en: 'The collapse of one pillar threatens the integrity of the entire structure.' }
+    insight: { ar: 'انهيار عمود واحد يهدد سلامة الهيكل بالكامل.', en: 'The collapse of one pillar threatens the integrity of the entire structure.', fr: 'Un seul pilier menace tout.' }
   },
   journey: {
-    title: { ar: 'خارطة الطريق الإنشائية', en: 'The Structural Roadmap' },
-    intro: { ar: 'من التشخيص إلى التسليم النهائي.', en: 'From diagnosis to final delivery.' },
+    title: { ar: 'خارطة الطريق الإنشائية', en: 'The Structural Roadmap', fr: 'La Feuille de Route' },
+    intro: { ar: 'من التشخيص إلى التسليم النهائي.', en: 'From diagnosis to final delivery.', fr: 'Du diagnostic à la livraison.' },
     steps: [
-      { step: '01', name: { ar: 'التشخيص', en: 'Diagnosis' }, product: { ar: 'اختبار الإجهاد', en: 'Stress Test' }, purpose: { ar: 'تحديد الكسور', en: 'Identify Cracks' }, why: { ar: 'لا يمكن البدء دون مسح الموقع.', en: 'Cannot start without a site survey.' }, outcome: { ar: 'تقرير الحالة الإنشائية', en: 'Integrity Report' } }
+      { step: '01', name: { ar: 'التشخيص', en: 'Diagnosis', fr: 'Diagnostic' }, product: { ar: 'اختبار الإجهاد', en: 'Stress Test', fr: 'Test de Stress' }, purpose: { ar: 'تحديد الكسور', en: 'Identify Cracks', fr: 'Fissures' }, why: { ar: 'لا يمكن البدء دون مسح الموقع.', en: 'Cannot start without a site survey.', fr: 'L\'enquête est vitale.' }, outcome: { ar: 'تقرير الحالة الإنشائية', en: 'Integrity Report', fr: 'Rapport' } }
     ]
   },
   testimonials: {
-    headline: { ar: 'تقارير الميدان من البنائين', en: 'FIELD REPORTS FROM BUILDERS' },
+    headline: { ar: 'تقارير الميدان من البنائين', en: 'FIELD REPORTS FROM BUILDERS', fr: 'RAPPORTS DE TERRAIN' },
     list: [
-      { id: 'R-101', name: { ar: 'أحمد م.', en: 'Ahmed M.' }, before: { ar: 'إرهاق مزمن', en: 'Chronic Fatigue' }, after: { ar: 'طاقة مستقرة', en: 'Stable Energy' }, status: { ar: 'تم الترميم', en: 'Restored' } }
+      { id: 'R-101', name: { ar: 'أحمد م.', en: 'Ahmed M.', fr: 'Ahmed M.' }, before: { ar: 'إرهاق مزمن', en: 'Chronic Fatigue', fr: 'Fatigue Chronique' }, after: { ar: 'طاقة مستقرة', en: 'Stable Energy', fr: 'Énergie Stable' }, status: { ar: 'تم الترميم', en: 'Restored', fr: 'Restauré' } }
     ]
   },
   stack: {
-    headline: { ar: 'ماذا تتضمن حزمة الترسانة؟', en: 'The Arsenal Stack' },
+    headline: { ar: 'ماذا تتضمن حزمة الترسانة؟', en: 'The Arsenal Stack', fr: 'Le Pack Arsenal' },
     items: [
-      { name: { ar: 'كتاب المخطط', en: 'The Blueprint Book' }, desc: { ar: 'الدليل الهندسي الكامل.', en: 'The complete engineering guide.' } }
+      { name: { ar: 'كتاب المخطط', en: 'The Blueprint Book', fr: 'Le Livre Plan' }, desc: { ar: 'الدليل الهندسي الكامل.', en: 'The complete engineering guide.', fr: 'Guide complet.' } }
     ]
   },
   faq: {
-    headline: { ar: 'المواصفات الفنية (الأسئلة)', en: 'Technical Specifications (FAQ)' },
+    headline: { ar: 'المواصفات الفنية (الأسئلة)', en: 'Technical Specifications (FAQ)', fr: 'Spécifications (FAQ)' },
     items: [
-      { q: { ar: 'هل أحتاج لخبرة هندسية؟', en: 'Do I need engineering experience?' }, a: { ar: 'لا، المبادئ مشروحة ببساطة للتطبيق الشخصي.', en: 'No, principles are explained simply for personal application.' } }
+      { q: { ar: 'هل أحتاج لخبرة هندسية؟', en: 'Do I need engineering experience?', fr: 'Expérience requise?' }, a: { ar: 'لا، المبادئ مشروحة ببساطة للتطبيق الشخصي.', en: 'No, principles are explained simply for personal application.', fr: 'Non, c\'est simple.' } }
     ]
   },
   qualifiers: {
-    forYou: { title: { ar: 'هذا النظام لك إذا:', en: 'This is for you if:' }, items: [{ ar: 'تريد نتائج قابلة للقياس', en: 'You want measurable results' }] },
-    notForYou: { title: { ar: 'هذا النظام ليس لك إذا:', en: 'Not for you if:' }, items: [{ ar: 'تبحث عن حلول سحرية سريعة', en: 'Looking for quick magic fixes' }] }
+    forYou: { title: { ar: 'هذا النظام لك إذا:', en: 'This is for you if:', fr: 'Pour vous si:' }, items: [{ ar: 'تريد نتائج قابلة للقياس', en: 'You want measurable results', fr: 'Résultats mesurables' }] },
+    notForYou: { title: { ar: 'هذا النظام ليس لك إذا:', en: 'Not for you if:', fr: 'Pas pour vous si:' }, items: [{ ar: 'تبحث عن حلول سحرية سريعة', en: 'Looking for quick magic fixes', fr: 'Solution magique' }] }
   }
 };
 
@@ -470,7 +471,7 @@ export const PHASES = [
         id: '01',
         title: { ar: 'مسح الموقع', en: 'Site Survey', fr: 'Enquête sur site' },
         desc: { ar: 'تحليل التربة النفسية واكتشاف التصدعات المخفية.', en: 'Analyzing psychological soil and detecting hidden fractures.', fr: 'Analyse du sol.' },
-        suffix: { ar: 'Ref: Specs-01', en: 'Ref: Specs-01' }
+        suffix: { ar: 'Ref: Specs-01', en: 'Ref: Specs-01', fr: 'Ref: Specs-01' }
     }
 ];
 
