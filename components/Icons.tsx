@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   Menu, 
@@ -20,6 +21,8 @@ import {
   Plus,
   Filter,
   Shield,
+  // Added ShieldCheck to support trust markers in landing pages
+  ShieldCheck,
   ScanLine,
   Wand2,
   Image,
@@ -94,6 +97,8 @@ export {
   Plus,
   Filter,
   Shield,
+  // Exporting ShieldCheck for consistency
+  ShieldCheck,
   ScanLine,
   Wand2,
   Image,
