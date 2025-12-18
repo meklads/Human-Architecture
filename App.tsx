@@ -17,7 +17,6 @@ import { RegisterPage } from './components/RegisterPage';
 import { ProgramDashboard } from './components/ProgramDashboard';
 import { AboutPage } from './components/AboutPage';
 import { CustomCursor } from './components/CustomCursor';
-import { SoundController } from './components/SoundController';
 import { PasswordGate } from './components/PasswordGate';
 
 type Theme = 'dark' | 'light' | 'blueprint';
@@ -146,7 +145,6 @@ function App() {
   return (
     <div className="min-h-screen w-full transition-colors duration-500 text-concrete antialiased" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       <CustomCursor />
-      <SoundController />
       
       {!isFunnelMode && (
       <header className="fixed top-0 w-full z-50 bg-[#050505]/95 backdrop-blur-md border-b border-white/5 shadow-2xl">
