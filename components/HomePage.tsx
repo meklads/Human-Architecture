@@ -25,7 +25,7 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
     return obj[key] || obj['en'] || obj['ar'] || '';
   };
 
-  // Use Query Params for Bulletproof SPA Linking
+  // تحديث دالة توليد الـ QR لاستخدام المسارات النظيفة
   const generateQrUrl = (data: string) => {
     return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(data)}&color=2B2B2B&bgcolor=F2F0EB`;
   };
@@ -38,7 +38,7 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
               document.getElementById('assessment-section')?.scrollIntoView({ behavior: 'smooth' });
               // Clear hash to allow re-triggering later
               try {
-                history.replaceState(null, '', window.location.pathname + window.location.search); 
+                history.replaceState(null, '', window.location.pathname); 
               } catch (e) {
                 console.debug('Hash clear skipped', e);
               }
@@ -292,7 +292,7 @@ export const HomePage: React.FC<HomePageProps> = ({ lang, setView }) => {
 
                     <div className="bg-white p-4 border border-charcoal/10 inline-block mb-6 shadow-inner">
                         <img 
-                            src={generateQrUrl(`https://thehumanarchitecture.com/?view=philosophy&id=${qrItem.id}`)} 
+                            src={generateQrUrl(`${window.location.origin}/philosophy?id=${qrItem.id}`)} 
                             alt="QR Code" 
                             className="w-48 h-48 mix-blend-multiply"
                         />

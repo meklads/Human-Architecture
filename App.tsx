@@ -92,9 +92,20 @@ function App() {
         };
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const viewFromUrl = params.get('view') as View;
-    if (viewFromUrl) setCurrentView(viewFromUrl);
+    // التنقل النظيف: قراءة الصفحة الحالية من المسار
+    const path = window.location.pathname.replace(/^\/|\/$/g, '');
+    if (path) {
+      setCurrentView(path as View);
+    } else {
+      setCurrentView('home');
+    }
+
+    // التعامل مع أزرار الرجوع والتقدم في المتصفح
+    const handlePopState = () => {
+      const newPath = window.location.pathname.replace(/^\/|\/$/g, '');
+      setCurrentView((newPath || 'home') as View);
+    };
+    window.addEventListener('popstate', handlePopState);
 
     const savedUser = localStorage.getItem('iham_user_profile');
     if (savedUser) {
@@ -107,14 +118,17 @@ function App() {
         console.error("Profile load failed", e); 
       }
     }
+
+    return () => window.removeEventListener('popstate', handlePopState);
   }, [isAuthorized, theme]);
 
   const navigateTo = (view: View) => {
     setCurrentView(view);
     setMenuOpen(false);
-    const url = new URL(window.location.href);
-    url.searchParams.set('view', view);
-    window.history.pushState({ view }, '', url.toString());
+    
+    // التنقل النظيف: تحديث المسار بدلاً من معاملات الاستعلام
+    const newPath = view === 'home' ? '/' : `/${view}`;
+    window.history.pushState({ view }, '', newPath);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

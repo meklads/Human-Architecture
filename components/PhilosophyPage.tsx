@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, View } from '../types';
 import { PILLARS, TRANSLATIONS, THIRTY_DAY_PROGRAM, THEORY_CARDS, ART_PRODUCTS } from '../constants';
@@ -18,6 +18,15 @@ export const PhilosophyPage: React.FC<PhilosophyPageProps> = ({ lang, setView })
   const [activeWeek, setActiveWeek] = useState(1);
   const [activePillar, setActivePillar] = useState(() => (PILLARS && PILLARS.length > 0 ? PILLARS[0].id : ''));
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // التعامل مع المعاملات العميقة عند التحميل
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (id && PILLARS.some(p => p.id === id)) {
+      setActivePillar(id);
+    }
+  }, []);
 
   // Safe translation helper
   const getTxt = useCallback((obj: any): string => {
