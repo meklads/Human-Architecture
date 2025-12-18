@@ -5,6 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Human Architecture | عمارة الإنسان</title>
+    <script>
+      // تعريف شامل لمنع أخطاء البيئة في المتصفح
+      window.process = { env: { API_KEY: '' } };
+      window.global = window;
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -85,14 +90,15 @@
     <script type="importmap">
     {
       "imports": {
-        "react": "https://aistudiocdn.com/react@^19.2.0",
-        "react/": "https://aistudiocdn.com/react@^19.2.0/",
-        "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0",
-        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-        "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
-        "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-        "recharts": "https://aistudiocdn.com/recharts@^3.5.0",
-        "@google/genai": "https://esm.sh/@google/genai@^1.33.0"
+        "react": "https://esm.sh/react@19.0.0",
+        "react-dom": "https://esm.sh/react-dom@19.0.0",
+        "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+        "framer-motion": "https://esm.sh/framer-motion@11.15.0?external=react,react-dom",
+        "lucide-react": "https://esm.sh/lucide-react@0.468.0?external=react,react-dom",
+        "recharts": "https://esm.sh/recharts@2.15.0?external=react,react-dom",
+        "@google/genai": "https://esm.sh/@google/genai@1.3.0",
+        "react/": "https://esm.sh/react@19.0.0/",
+        "react-dom/": "https://esm.sh/react-dom@19.0.0/"
       }
     }
     </script>
@@ -100,6 +106,6 @@
   <body class="bg-darkBg text-concrete antialiased transition-colors duration-700 overflow-x-hidden">
     <div class="noise-overlay"></div>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+    <script type="module" src="index.tsx"></script>
   </body>
 </html>

@@ -22,9 +22,22 @@ import { PasswordGate } from './components/PasswordGate';
 
 type Theme = 'dark' | 'light' | 'blueprint';
 
+const VALID_VIEWS: View[] = [
+  'home', 'philosophy', 'journal', 'library', 'art-store', 
+  'contact', 'landing', 'checkout', 'community', 
+  'register', 'dashboard', 'about'
+];
+
 function App() {
   const [lang, setLang] = useState<Language>('en');
-  const [currentView, setCurrentView] = useState<View>('home');
+  
+  // تفعيل التوجيه اللحظي عند تحميل المكون لأول مرة
+  const [currentView, setCurrentView] = useState<View>(() => {
+    const path = window.location.pathname.replace(/^\/|\/$/g, '');
+    const mainPath = path.split('/')[0] || 'home';
+    return VALID_VIEWS.includes(mainPath as View) ? (mainPath as View) : 'home';
+  });
+
   const [theme, setTheme] = useState<Theme>('dark');
   const [loading, setLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -54,14 +67,13 @@ function App() {
 
   const LOAD_PHASES = [
     { ar: 'جاري فحص التربة والأساسات...', en: 'ANALYZING SOIL CONDITIONS...', fr: 'ANALYSE DU SOL...' },
-    { ar: 'رفع الأعمدة الإنشائية...', en: 'ERECTING PILLARS...', fr: 'ÉRECTION DES PILIERS...' },
+    { ar: 'رفع الأعمدة الإنشائية...', en: 'ERECTING PILIERS...', fr: 'ÉRECTION DES PILIERS...' },
     { ar: 'المبنى جاهز للإشغال.', en: 'READY FOR OCCUPANCY.', fr: 'PRÊT POUR OCCUPATION.' }
   ];
 
   useEffect(() => {
+    // تحديث الثيم
     document.documentElement.classList.remove('dark', 'light', 'blueprint-mode');
-    document.body.classList.remove('dark', 'light', 'blueprint-mode');
-
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
       document.body.style.backgroundColor = '#050505';
@@ -92,28 +104,20 @@ function App() {
         };
     }
 
-    // التنقل النظيف: قراءة الصفحة الحالية من المسار
-    const path = window.location.pathname.replace(/^\/|\/$/g, '');
-    if (path) {
-      setCurrentView(path as View);
-    } else {
-      setCurrentView('home');
-    }
-
-    // التعامل مع أزرار الرجوع والتقدم في المتصفح
+    // مزامنة العنوان مع الحالة
     const handlePopState = () => {
-      const newPath = window.location.pathname.replace(/^\/|\/$/g, '');
-      setCurrentView((newPath || 'home') as View);
+      const path = window.location.pathname.replace(/^\/|\/$/g, '');
+      const mainPath = path.split('/')[0] || 'home';
+      setCurrentView(VALID_VIEWS.includes(mainPath as View) ? (mainPath as View) : 'home');
     };
+
     window.addEventListener('popstate', handlePopState);
 
     const savedUser = localStorage.getItem('iham_user_profile');
     if (savedUser) {
       try { 
         const parsed = JSON.parse(savedUser);
-        if (parsed && typeof parsed === 'object') {
-          setCurrentUser(parsed);
-        }
+        if (parsed) setCurrentUser(parsed);
       } catch (e) { 
         console.error("Profile load failed", e); 
       }
@@ -123,10 +127,10 @@ function App() {
   }, [isAuthorized, theme]);
 
   const navigateTo = (view: View) => {
+    if (!VALID_VIEWS.includes(view)) view = 'home';
     setCurrentView(view);
     setMenuOpen(false);
     
-    // التنقل النظيف: تحديث المسار بدلاً من معاملات الاستعلام
     const newPath = view === 'home' ? '/' : `/${view}`;
     window.history.pushState({ view }, '', newPath);
     window.scrollTo({ top: 0, behavior: 'smooth' });
