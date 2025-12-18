@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,7 +16,7 @@
               slate: '#8C9598',
               bronze: '#C5A065',
               charcoal: '#2B2B2B',
-              darkBg: '#0F0F0F',
+              darkBg: '#050505',
               blueprint: '#003366',
               blueprintLine: '#4da6ff',
             },
@@ -46,107 +45,60 @@
         },
       }
     </script>
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #0F0F0F; 
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #C5A065; 
-        border-radius: 3px;
-      }
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #050505; }
+      ::-webkit-scrollbar-thumb { background: #C5A065; border-radius: 3px; }
       
       body {
         cursor: none;
         overflow-x: hidden;
+        background-color: #050505;
+        color: #E6E2DD;
       }
 
-      /* Luxury Mode Grid */
       .architectural-grid {
         background-size: 40px 40px;
-        background-image: linear-gradient(to right, rgba(140, 149, 152, 0.1) 1px, transparent 1px),
-                          linear-gradient(to bottom, rgba(140, 149, 152, 0.1) 1px, transparent 1px);
+        background-image: linear-gradient(to right, rgba(140, 149, 152, 0.05) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(140, 149, 152, 0.05) 1px, transparent 1px);
       }
 
-      /* BLUEPRINT MODE STYLES (The High-Impact Feature) */
-      body.blueprint-mode {
-        background-color: #002b4d !important;
-        color: #89cff0 !important;
-      }
-      
-      body.blueprint-mode .architectural-grid {
-        background-size: 20px 20px;
-        background-image: linear-gradient(to right, rgba(137, 207, 240, 0.2) 1px, transparent 1px),
-                          linear-gradient(to bottom, rgba(137, 207, 240, 0.2) 1px, transparent 1px);
-      }
-
-      body.blueprint-mode .bg-alabaster,
-      body.blueprint-mode .bg-white,
-      body.blueprint-mode .bg-concrete {
-        background-color: rgba(0, 43, 77, 0.95) !important;
-        border-color: rgba(137, 207, 240, 0.5) !important;
-        color: #89cff0 !important;
-      }
-
-      body.blueprint-mode .text-charcoal,
-      body.blueprint-mode .text-slate {
-        color: #a8d8f0 !important;
-      }
-      
-      body.blueprint-mode .text-bronze {
-        color: #ffffff !important;
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
-      }
-
-      body.blueprint-mode img {
-        filter: grayscale(100%) sepia(100%) hue-rotate(190deg) saturate(300%) contrast(1.2);
-        opacity: 0.9;
-        mix-blend-mode: screen;
-        border: 1px solid #89cff0;
-      }
-
-      /* Noise Texture */
       .noise-overlay {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 9999;
-        opacity: 0.04;
+        top: 0; left: 0; width: 100%; height: 100%;
+        pointer-events: none; z-index: 9999; opacity: 0.03;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
       }
 
-      ::selection {
-        background: #C5A065;
-        color: #000;
+      ::selection { background: #C5A065; color: #000; }
+
+      body.blueprint-mode { background-color: #002b4d !important; color: #89cff0 !important; }
+      body.blueprint-mode .architectural-grid {
+        background-image: linear-gradient(to right, rgba(137, 207, 240, 0.1) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(137, 207, 240, 0.1) 1px, transparent 1px);
       }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "recharts": "https://aistudiocdn.com/recharts@^3.5.0",
-    "@google/genai": "https://esm.sh/@google/genai@^1.33.0"
-  }
-}
-</script>
-</head>
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
+        "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+        "recharts": "https://aistudiocdn.com/recharts@^3.5.0",
+        "@google/genai": "https://esm.sh/@google/genai@^1.33.0"
+      }
+    }
+    </script>
+  </head>
   <body class="bg-darkBg text-concrete antialiased transition-colors duration-700 overflow-x-hidden">
+    <div class="noise-overlay"></div>
     <div id="root"></div>
-    <!-- CRITICAL: This connects your index.tsx to the HTML -->
-    <script type="module" src="/index.tsx"></script>
+    <script type="module" src="index.tsx"></script>
   </body>
 </html>
