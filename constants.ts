@@ -66,7 +66,7 @@ export const TRANSLATIONS = {
 
 export const ABOUT_CONTENT = {
     title: { ar: 'عن المعماري', en: 'The Architect', fr: 'L\'Architecte' },
-    name: { ar: 'أبراهام مقلد', en: 'Abraham Meklad', fr: 'Abraham Meklad' },
+    name: { ar: 'أ. مقلد', en: 'A. Meklad', fr: 'A. Meklad' },
     titles: { ar: 'مؤسس Graphics House | معماري وفنان', en: 'Founder of Graphics House | Architect & Artist', fr: 'Architecte | Artiste | CEO Graphics House' },
     bio: {
         ar: 'أنا معماري وفنان عاشق للجمال. قضيت عمراً طويلاً في رحاب الهندسة والعمارة، ولي شغف عميق بمجال الطب والصحة العامة. أسست شركة "جرافيكس هاوس" الإبداعية، حيث تشرفت بتنفيذ العديد من المشاريع الكبرى.',
@@ -156,7 +156,7 @@ export const LANDING_CONTENT = {
               name: { en: 'STABILIZE', ar: 'التثبيت' }, 
               product: { en: '28-Day Foundation Program', ar: 'برنامج التأسيس 28 يوم' },
               purpose: { en: 'Stabilization', ar: 'الاستقرار' },
-              why: { en: 'When a system is under stress, optimization makes collapse worse. Stability comes first.', ar: 'عندما يكون النظام تحت الضغط، التحسين يجعل الانهيار أسوأ. الاستقرار يأتي أولاً.' },
+              why: { en: 'When a system is under stress, optimization makes collapse worse. Stability comes first.', ar: 'عندما يكون النظام تحت الضغط, التحسين يجعل الانهيار أسوأ. الاستقرار يأتي أولاً.' },
               outcome: { en: 'Stability fixes the present.', ar: 'الاستقرار يصلح الحاضر.' }
           },
           { 
@@ -309,8 +309,8 @@ export const PILLARS: PillarData[] = [
       en: 'Pouring concrete bases for bio-energy.', 
       fr: 'Coulage des bases.' 
     },
-    image: 'https://images.unsplash.com/photo-1518005052354-a36d6956e43d?q=80&w=2088&auto=format&fit=crop',
-    blueprintImage: 'https://images.unsplash.com/photo-1534970028765-38ce47ef7d8d?q=80&w=2070&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1590004953392-5aba2e78b336?q=80&w=2070&auto=format&fit=crop',
+    blueprintImage: 'https://images.unsplash.com/photo-1503387762-592dea58ef21?q=80&w=2070&auto=format&fit=crop'
   },
   {
     id: 'spirit',
@@ -347,316 +347,7 @@ export const PHASES = [
             en: 'Analyzing psychological soil and detecting hidden fractures.',
             fr: 'Analyse du sol.'
         },
-        ref: 'Specs: 01-03'
-    },
-    {
-        id: '02',
-        title: { ar: 'الهدم والإزالة', en: 'Demolition', fr: 'Démolition' },
-        desc: { 
-            ar: 'إزالة المعتقدات القديمة التي لا يمكن البناء عليها.',
-            en: 'Removing obsolete beliefs that cannot support new load.',
-            fr: 'Suppression des croyances.'
-        },
-        ref: 'Specs: 04-06'
-    },
-    {
-        id: '03',
-        title: { ar: 'الإنشاءات', en: 'Construction', fr: 'Construction' },
-        desc: { 
-            ar: 'تركيب الأعمدة الأربعة وفقاً للمخطط الجديد.',
-            en: 'Installing the four pillars according to the new blueprint.',
-            fr: 'Installation des piliers.'
-        },
-        ref: 'Specs: 07-10'
-    }
-];
-
-export const ART_PRODUCTS: Product[] = [
-    {
-      id: 'art-new-01',
-      category: 'art',
-      name: { ar: 'الترميم الذهبي (Kintsugi Pillar)', en: 'Golden Repair (Kintsugi Pillar)', fr: 'Réparation Dorée' },
-      description: { 
-          ar: 'عمود خرساني ضخم مشقوق، ولكن الشقوق مملوءة بالذهب السائل. تجسد فلسفة أن "مكان الكسر هو مكان القوة". عمل فني يذكرك بأن ترميم ذاتك يجعلك أغلى وأقوى.', 
-          en: 'A massive concrete pillar with cracks filled with liquid gold. Embodying the philosophy that "the site of the break is the site of strength".',
-          fr: 'Pilier Kintsugi.' 
-      },
-      price: 2500,
-      type: 'physical',
-      image: 'https://images.unsplash.com/photo-1597113366853-fea190b6cd82?q=80&w=2070&auto=format&fit=crop', 
-      status: 'available',
-      panels: 1,
-      aiPrompt: "A hyper-realistic, 8k resolution close-up art photography of a massive, rough grey concrete architectural pillar standing in a dark void. The pillar has a deep, jagged structural crack running vertically. This crack is filled with glowing, molten liquid gold (Kintsugi style). The contrast between the cold, brutalist concrete and the warm, luminous gold is striking. Dramatic rim lighting, museum quality, black background."
-    },
-    {
-      id: 'art-new-02',
-      category: 'art',
-      name: { ar: 'فوضى قيد الإنشاء', en: 'Chaos Under Construction', fr: 'Chaos en Construction' },
-      description: { 
-          ar: 'عمل تجريدي يصور عقلاً في حالة فوضى، ولكن تظهر فوقه "خطوط زرقاء هندسية" (Blueprint) تبدأ في تنظيم هذه الفوضى. لوحة تمثل لحظة الوعي والبدء في العلاج.', 
-          en: 'Abstract art depicting a chaotic mind overlayed with strict geometric blue architectural lines organizing the chaos. Represents the moment of awareness.',
-          fr: 'Chaos structuré.' 
-      },
-      price: 1800,
-      type: 'physical',
-      image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop',
-      status: 'available',
-      panels: 1,
-      aiPrompt: "A conceptual masterpiece art print. A dark background filled with chaotic, scribbled black charcoal lines representing a messy mind. Superimposed over this chaos are sharp, glowing cyan blue architectural blueprint lines—grid systems, measurements, and straight vectors—that are actively organizing the scribbles into a perfect geometric structure. High contrast, merging psychology with engineering."
-    },
-    {
-      id: 'art-new-03',
-      category: 'art',
-      name: { ar: 'العزلة المقدسة (الغرفة الداخلية)', en: 'Sacred Solitude (The Inner Room)', fr: 'Solitude Sacrée' },
-      description: { 
-          ar: 'مشهد داخلي لغرفة خرسانية مهيبة ومظلمة (Brutalist)، يخترقها شعاع ضوء واحد فقط يسقط على كرسي وحيد. ترمز لأهمية الخلوة النفسية وترميم الروح بعيداً عن ضجيج العالم.', 
-          en: 'Interior of a majestic dark brutalist concrete room, pierced by a single beam of sunlight hitting a solitary chair. Symbolizes spiritual solitude.',
-          fr: 'Chambre intérieure.' 
-      },
-      price: 2100,
-      type: 'physical',
-      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop',
-      status: 'available',
-      panels: 1,
-      aiPrompt: "A breathtaking architectural photography shot of a vast, empty, dark concrete room with high ceilings (Brutalist style). The room is in shadow, except for a single, sharp, dramatic beam of sunlight cutting through dust motes in the air to illuminate a solitary, simple wooden chair in the center. The mood is silent, sacred, and introspective. Cinematic lighting, 8k."
-    },
-    {
-      id: 'art-new-04',
-      category: 'art',
-      name: { ar: 'المسقط الرأسي للإنسان', en: 'The Vitruvian Structure', fr: 'Structure Vitruvienne' },
-      description: { 
-          ar: 'إعادة تخيل للوحة دافنشي (Vitruvian Man) ولكن بنمط هندسي معاصر. نصف الجسم بشري عضوي، والنصف الآخر هيكل سلكي معماري (Wireframe). ترمز للاندماج الكامل بين البيولوجيا والهندسة.', 
-          en: 'Reimagining Da Vinci\'s Vitruvian Man. Half organic human body, half architectural 3D wireframe structure. Symbolizes the merger of biology and engineering.',
-          fr: 'Homme structurel.' 
-      },
-      price: 3000,
-      type: 'physical',
-      image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80',
-      status: 'available',
-      panels: 1,
-      aiPrompt: "A highly detailed art illustration. A reimagining of Da Vinci's Vitruvian Man on old parchment paper background. The left side of the man is classic anatomical muscle and bone sketch. The right side transitions seamlessly into a complex 3D blue wireframe architectural schematic (CAD style) made of steel beams and grid lines. The merger of biology and structure. text annotations in Latin and Binary."
-    },
-    {
-      id: 'art-new-05',
-      category: 'art',
-      name: { ar: 'الواجهة الزجاجية (الحدود)', en: 'The Glass Facade (Boundaries)', fr: 'Façade de Verre' },
-      description: { 
-          ar: 'ناطحة سحاب زجاجية تعكس عاصفة رعدية في الخارج، بينما يظهر الداخل (من خلال الزجاج) دافئاً وهادئاً ومضاءً بالشموع. تجسد قوة "الحدود النفسية" في حماية السلام الداخلي من عواصف الخارج.', 
-          en: 'A glass skyscraper reflecting a thunderstorm outside, but the interior visible through the glass is warm, calm, and candlelit. Symbolizes the power of boundaries.',
-          fr: 'Limites de verre.' 
-      },
-      price: 2800,
-      type: 'physical',
-      image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=2070&auto=format&fit=crop',
-      status: 'available',
-      panels: 1,
-      aiPrompt: "Cinematic close-up photography of a modern glass skyscraper window at night. On the OUTSIDE glass reflection, there is a chaotic, dark thunderstorm with rain streaking down. On the INSIDE (visible through the glass), there is a warm, cozy library room lit by golden candlelight and a fireplace, completely peaceful. The contrast between the cold external storm and the warm internal peace is the focus. 8k, photorealistic."
-    }
-];
-
-export const PRODUCTS: Product[] = [
-  // --- INDIVIDUAL ITEMS (A LA CARTE) ---
-  {
-    id: 'book_digital',
-    category: 'book',
-    name: { ar: 'الكتاب (PDF)', en: 'The Blueprint (Digital)', fr: 'Livre PDF' },
-    description: { ar: 'نسخة رقمية فورية.', en: 'Instant Digital Download.', fr: 'Téléchargement.' },
-    price: 14.99,
-    type: 'digital',
-    image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80',
-    status: 'available'
-  },
-  {
-    id: 'book_print',
-    category: 'book',
-    name: { ar: 'الكتاب (مطبوع)', en: 'The Blueprint (Print)', fr: 'Livre Imprimé' },
-    description: { ar: 'نسخة ورقية فاخرة تصل لباب بيتك.', en: 'Premium Hardcover shipped to you.', fr: 'Livre relié.' },
-    price: 29.99,
-    type: 'physical',
-    image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80',
-    status: 'available'
-  },
-  {
-    id: 'workbook_print',
-    category: 'tool',
-    name: { ar: 'الوورك بوك (مطبوع)', en: '28-Day Workbook (Print)', fr: 'Cahier Imprimé' },
-    description: { ar: 'دفتر تطبيقات عملي ورقي.', en: 'Physical Construction Log.', fr: 'Journal physique.' },
-    price: 24.99,
-    type: 'physical',
-    image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&q=80',
-    status: 'available'
-  },
-  {
-    id: 'system_hybrid',
-    category: 'course',
-    name: { ar: 'نظام الـ 30 يوم (هجين)', en: '30-Day Hybrid System', fr: 'Système Hybride' },
-    description: { ar: 'كتاب مطبوع + ديجيتال + منصة.', en: 'Print + Digital + Dashboard.', fr: 'Complet.' },
-    price: 197,
-    type: 'hybrid',
-    image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80',
-    status: 'available'
-  },
-
-  // --- BUNDLES ---
-  {
-    id: 'bundle_master',
-    category: 'bundle',
-    name: { ar: 'إعادة البناء الكامل', en: 'The Complete Rebuild', fr: 'Le Système Complet' },
-    description: { 
-      ar: 'الباقة الشاملة: كل الكتب (مطبوع وديجيتال) + النظام + المجتمع.', 
-      en: 'All-in-One: Print/Digital Books + System + Community.',
-      fr: 'Le système complet.' 
-    },
-    price: 397, 
-    originalPrice: 550,
-    type: 'hybrid',
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80',
-    status: 'available',
-    isBestSeller: true,
-    features: [
-        { ar: 'الكتاب (نسخة مطبوعة + PDF)', en: 'The Blueprint Book (Print + PDF)', fr: 'Livre' },
-        { ar: 'الوورك بوك 28 يوم (PDF مجاني)', en: '28-Day Workbook (Free PDF)', fr: 'Cahier PDF' },
-        { ar: 'نظام الـ 30 يوم (كتاب مطبوع + منصة)', en: '30-Day System (Print Book + Dashboard)', fr: 'Système Hybride' },
-        { ar: 'عضوية دائمة في Builders Guild', en: 'Lifetime Access to Builders Guild', fr: 'Accès Guilde' },
-        { ar: 'شهادة إتمام هندسية', en: 'Certificate of Completion', fr: 'Certificat' }
-    ]
-  },
-  {
-    id: 'bundle_coach',
-    category: 'bundle',
-    name: { ar: 'كبير المعماريين', en: 'The Master Architect', fr: 'L\'Architecte Maître' },
-    description: { 
-      ar: 'الباقة الكاملة + توجيه فردي.', 
-      en: 'Complete Bundle + 1:1 Coaching.',
-      fr: 'Tout + Coaching.' 
-    },
-    price: 997, 
-    originalPrice: 1500,
-    type: 'hybrid',
-    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80',
-    status: 'available',
-    features: [
-        { ar: 'كل مميزات باقة "إعادة البناء الكامل"', en: 'Everything in Complete Rebuild', fr: 'Tout inclus' },
-        { ar: 'جلسات توجيه فردية (1:1)', en: '1:1 Private Coaching Sessions', fr: 'Coaching 1:1' },
-        { ar: 'مراجعة شخصية للمخطط', en: 'Personal Blueprint Audit', fr: 'Audit Personnel' }
-    ]
-  }
-];
-
-export const BOOK_CHAPTERS: BookChapterPreview[] = [
-    { 
-        id: 'c1', 
-        number: '01', 
-        title: { ar: 'فيزياء الانهيار', en: 'The Physics of Collapse', fr: 'Physique de l\'Effondrement' }, 
-        desc: { ar: 'تحليل ميكانيكي للفشل البشري.', en: 'Mechanical analysis of human failure.', fr: 'Analyse mécanique.' }, 
-        isLocked: false
-    },
-    { 
-        id: 'c2', 
-        number: '02', 
-        title: { ar: 'المسح الطبوغرافي', en: 'Topographical Survey', fr: 'Levé Topographique' }, 
-        desc: { ar: 'رسم خريطة الذات الحالية.', en: 'Mapping the current self.', fr: 'Cartographie de soi.' }, 
-        isLocked: false
-    },
-    { 
-        id: 'c3', 
-        number: '03', 
-        title: { ar: 'قانون الأحمال', en: 'Load Bearing Laws', fr: 'Lois de Charge' }, 
-        desc: { ar: 'كيفية توزيع الضغط النفسي.', en: 'Distributing psychological pressure.', fr: 'Distribution de pression.' }, 
-        isLocked: true
-    }
-];
-
-export const BLOG_POSTS: BlogPost[] = [
-  {
-    id: '1',
-    category: 'mind',
-    title: { ar: 'لماذا تفشل الحلول السطحية؟', en: 'Why Surface Solutions Fail', fr: 'Pourquoi les solutions superficielles échouent' },
-    date: 'OCT 12, 2024',
-    excerpt: { 
-      ar: 'محاولة إصلاح التفكير بإيجابية زائفة تشبه طلاء جدار متصدع. الحل في ترميم الأساس.', 
-      en: 'Trying to fix thinking with toxic positivity is like painting a cracked wall. The solution is foundation repair.',
-      fr: 'Réparer la pensée.' 
-    },
-    content: {
-        ar: '<p>المحتوى الكامل هنا...</p>',
-        en: '<p>Full content here...</p>',
-        fr: '<p>Contenu complet...</p>'
-    },
-    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80'
-  },
-  {
-    id: '2',
-    category: 'body',
-    title: { ar: 'هندسة النوم', en: 'The Architecture of Sleep', fr: 'L\'architecture du sommeil' },
-    date: 'OCT 20, 2024',
-    excerpt: { 
-      ar: 'النوم ليس توقفاً عن العمل، بل هو وقت صيانة الهيكل الخرساني للجسد.', 
-      en: 'Sleep is not stopping work, it is maintenance time for the body\'s concrete structure.',
-      fr: 'Le sommeil est maintenance.' 
-    },
-    content: {
-        ar: '<p>المحتوى الكامل هنا...</p>',
-        en: '<p>Full content here...</p>',
-        fr: '<p>Contenu complet...</p>'
-    },
-    image: 'https://images.unsplash.com/photo-1517672651691-24622a91b550?auto=format&fit=crop&q=80'
-  }
-];
-
-export const THEORY_CARDS: DayPlan[] = [
-    {
-        day: 1,
-        title: { ar: 'قانون الجاذبية النفسية', en: 'Law of Psych-Gravity', fr: 'Loi de la Gravité' },
-        task: { ar: 'ما تقاومه يزداد ثقلاً. تعلم فن تحويل الأحمال بدلاً من حملها.', en: 'What you resist persists. Learn to distribute loads instead of carrying them.', fr: 'Ce que vous résistez persiste.' },
-        visualConcept: { ar: 'الرافعة', en: 'The Lever', fr: 'Le Levier' },
-        isLocked: false
-    }
-];
-
-// NOTE: Replace these placeholder tasks with your specific book content!
-export const THIRTY_DAY_PROGRAM: WeekPlan[] = [
-    // ... (This section remains unchanged, just ensuring structure is kept) ...
-    {
-        id: 1,
-        title: { ar: 'المرحلة 1: الأساسات', en: 'Phase 1: Foundation', fr: 'Fondation' },
-        focus: { ar: 'الترميم الجسدي', en: 'Physical Restoration', fr: 'Restauration Physique' },
-        days: [
-            {
-                day: 1,
-                title: { ar: 'فحص التربة', en: 'Soil Testing', fr: 'Test de Sol' },
-                task: { ar: 'سجل كل مدخلاتك اليوم (طعام، معلومات، محادثات).', en: 'Log all inputs today (food, info, chats).', fr: 'Enregistrez tout.' },
-                visualConcept: { ar: 'المصفاة', en: 'The Sieve', fr: 'Le Tamis' },
-                isLocked: false,
-                bookPageRef: 24 
-            },
-            // ... (Days 2-7 omitted for brevity, they are unchanged) ...
-             { day: 2, title: { ar: 'صب الخرسانة', en: 'Pouring Concrete', fr: 'Béton' }, task: { ar: 'تطبيق بروتوكول النوم بدقة (قاعدة 10-3-2-1).', en: 'Strict sleep protocol (10-3-2-1 rule).', fr: 'Sommeil strict.' }, isLocked: true, bookPageRef: 32 },
-             { day: 3, title: { ar: 'حديد التسليح', en: 'Reinforcement', fr: 'Renforcement' }, task: { ar: 'رفع نسبة الماء وحذف السكريات المكررة.', en: 'Increase hydration, remove refined sugars.', fr: 'Hydratation.' }, isLocked: true, bookPageRef: 38 },
-             { day: 4, title: { ar: 'اختبار الأحمال', en: 'Load Bearing', fr: 'Charge' }, task: { ar: 'حركة بدنية لمدة 20 دقيقة (مشي أو تمارين مقاومة).', en: '20 min physical load (walk or resistance).', fr: 'Mouvement.' }, isLocked: true, bookPageRef: 45 },
-             { day: 5, title: { ar: 'عزل الاهتزازات', en: 'Vibration Control', fr: 'Vibrations' }, task: { ar: 'صيام رقمي لمدة 3 ساعات قبل النوم.', en: 'Digital fast 3 hours before bed.', fr: 'Jeûne numérique.' }, isLocked: true, bookPageRef: 51 },
-             { day: 6, title: { ar: 'زمن التصلب', en: 'Curing Time', fr: 'Temps de Prise' }, task: { ar: 'يوم راحة نشطة (تأمل أو قراءة خفيفة).', en: 'Active rest day (meditation or light reading).', fr: 'Repos actif.' }, isLocked: true, bookPageRef: 58 },
-             { day: 7, title: { ar: 'فحص المتانة', en: 'Integrity Audit', fr: 'Audit' }, task: { ar: 'مراجعة الأسبوع وتعديل المخطط للأسبوع القادم.', en: 'Review the week and adjust blueprint.', fr: 'Revue.' }, isLocked: true, bookPageRef: 65 }
-        ]
-    },
-    // ... (Weeks 2-4 omitted for brevity, they are unchanged) ...
-    {
-        id: 2,
-        title: { ar: 'المرحلة 2: الهيكل', en: 'Phase 2: Structure', fr: 'Structure' },
-        focus: { ar: 'النظام العقلي', en: 'Mental Framework', fr: 'Cadre Mental' },
-        days: [] // Populated in full file
-    },
-    {
-        id: 3,
-        title: { ar: 'المرحلة 3: التصميم الداخلي', en: 'Phase 3: Interior', fr: 'Intérieur' },
-        focus: { ar: 'الترميم الروحي', en: 'Spiritual Design', fr: 'Design Spirituel' },
-        days: []
-    },
-    {
-        id: 4,
-        title: { ar: 'المرحلة 4: الواجهة', en: 'Phase 4: Exterior', fr: 'Extérieur' },
-        focus: { ar: 'الأثر الاجتماعي', en: 'Social Impact', fr: 'Impact Social' },
-        days: []
+        suffix: { ar: 'Ref: Specs-01', en: 'Ref: Specs-01' }
     }
 ];
 
@@ -721,4 +412,166 @@ export const RESTORATION_LOGS = [
             fr: 'Démolition en cours.' 
         }
     }
+];
+
+// --- MISSING EXPORTS ADDED BELOW ---
+
+/**
+ * Missing: BLOG_POSTS
+ */
+export const BLOG_POSTS: BlogPost[] = [
+  {
+    id: 'post-1',
+    category: 'mind',
+    title: { ar: 'هندسة النوم', en: 'The Architecture of Sleep', fr: 'Architecture du Sommeil' },
+    date: '2024-03-20',
+    excerpt: { ar: 'كيف تصمم ليلة تعيد بناء خلاياك.', en: 'How to design a night that rebuilds your cells.', fr: 'Concevoir une nuit réparatrice.' },
+    content: { 
+        ar: '<p>النوم ليس مجرد راحة، بل هو عملية ترميم إنشائية مكثفة. في هذا المقال نناقش بروتوكولات تحسين جودة النوم للهيكل البشري.</p>', 
+        en: '<p>Sleep is not merely rest; it is an intensive structural restoration process. In this article, we discuss protocols to optimize sleep quality for the human frame.</p>', 
+        fr: '<p>Le sommeil est une restauration structurelle.</p>' 
+    },
+    image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=2060&auto=format&fit=crop'
+  },
+  {
+    id: 'post-2',
+    category: 'body',
+    title: { ar: 'صب الأساسات', en: 'Pouring the Foundations', fr: 'Coulage des bases' },
+    date: '2024-03-15',
+    excerpt: { ar: 'لماذا يفشل جسدك تحت الضغط؟', en: 'Why does your body fail under pressure?', fr: 'Pourquoi le corps échoue sous pression ?' },
+    content: { 
+        ar: '<p>كلما زاد الحمل، زادت الحاجة لأساس صلب. سنتناول كيفية تقوية القواعد الجسدية لتحمل ضغوط الحياة الحديثة.</p>', 
+        en: '<p>As the load increases, the need for a solid base grows. We explore how to reinforce physical foundations to withstand modern life pressures.</p>', 
+        fr: '<p>Renforcer les bases physiques.</p>' 
+    },
+    image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop'
+  }
+];
+
+/**
+ * Missing: PRODUCTS
+ */
+export const PRODUCTS: Product[] = [
+  {
+    id: 'book_digital',
+    category: 'book',
+    name: { ar: 'المخطط (نسخة رقمية)', en: 'The Blueprint (Digital)', fr: 'Le Plan (Digital)' },
+    description: { ar: 'النسخة الرقمية الكاملة للمخطط لبدء التشخيص فوراً.', en: 'Full digital version of the blueprint to start diagnosis immediately.', fr: 'Version digitale complète.' },
+    price: 29,
+    type: 'digital',
+    image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=1974&auto=format&fit=crop'
+  },
+  {
+    id: 'book_print',
+    category: 'book',
+    name: { ar: 'المخطط (نسخة مطبوعة)', en: 'The Blueprint (Hardcover)', fr: 'Le Plan (Livre)' },
+    description: { ar: 'نسخة فاخرة مجلدة من المخطط للعمل العميق المستمر.', en: 'Premium hardcover edition of the blueprint for sustained deep work.', fr: 'Édition reliée premium.' },
+    price: 49,
+    type: 'physical',
+    image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2112&auto=format&fit=crop'
+  },
+  {
+      id: 'workbook_print',
+      category: 'book',
+      name: { ar: 'كراسة التأسيس 28 يوم', en: '28-Day Workbook', fr: 'Cahier de 28 jours' },
+      description: { ar: 'تمارين عملية يومية لإعادة صب قواعد حياتك.', en: 'Daily practical drills to re-pour your life foundations.', fr: 'Exercices pratiques quotidiens.' },
+      price: 27,
+      type: 'physical',
+      image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=2070&auto=format&fit=crop'
+  },
+  {
+      id: 'system_hybrid',
+      category: 'course',
+      name: { ar: 'النظام الهجين المتكامل', en: 'Hybrid Integration System', fr: 'Système Hybride' },
+      description: { ar: 'الوصول الكامل للنظام التفاعلي والكتب الرقمية والمطبوعة.', en: 'Full access to interactive system, digital and print books.', fr: 'Accès complet au système.' },
+      price: 97,
+      type: 'hybrid',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop'
+  },
+  {
+    id: 'bundle_master',
+    category: 'bundle',
+    name: { ar: 'باقة المعماري الكاملة', en: 'Master Architect Bundle', fr: 'Pack Master' },
+    description: { ar: 'كل شيء تحتاجه لإعادة بناء حياتك من الأساس.', en: 'Everything you need to rebuild your life from the foundation up.', fr: 'Tout pour reconstruire.' },
+    price: 397,
+    type: 'hybrid',
+    image: 'https://images.unsplash.com/photo-1503387762-592dea58ef21?q=80&w=2070&auto=format&fit=crop'
+  }
+];
+
+/**
+ * Missing: ART_PRODUCTS
+ */
+export const ART_PRODUCTS: Product[] = [
+  {
+    id: 'art-new-01',
+    category: 'art',
+    name: { ar: 'السكينة الصامتة', en: 'Silent Serenity', fr: 'Sérénité Silencieuse' },
+    description: { ar: 'لوحة تعبر عن توازن الأساسات العميقة في صمت البناء.', en: 'A painting expressing the balance of deep foundations in construction silence.', fr: 'Équilibre des bases.' },
+    price: 1200,
+    type: 'physical',
+    image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1945&auto=format&fit=crop',
+    aiPrompt: 'A minimalist abstract painting with soft beige, charcoal, and bronze textures representing internal peace and structural stability.'
+  },
+  {
+    id: 'art-new-02',
+    category: 'art',
+    name: { ar: 'هيكل القوة', en: 'Structure of Strength', fr: 'Structure de Force' },
+    description: { ar: 'تمثيل بصري للصلابة العقلية والوضوح الإنشائي.', en: 'Visual representation of mental rigidity and structural clarity.', fr: 'Force mentale.' },
+    price: 1500,
+    type: 'physical',
+    image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2070&auto=format&fit=crop',
+    aiPrompt: 'Geometric abstract art with sharp cerulean blue and grey concrete lines representing mental clarity and structural engineering.'
+  },
+  {
+    id: 'art-new-03',
+    category: 'art',
+    name: { ar: 'تدفق الأحمال', en: 'Load Flow', fr: 'Flux de Charge' },
+    description: { ar: 'توزيع القوى داخل الهيكل الإنساني.', en: 'Distribution of forces within the human structure.', fr: 'Flux de charge.' },
+    price: 1800,
+    type: 'physical',
+    image: 'https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=1974&auto=format&fit=crop',
+    aiPrompt: 'Dynamic abstract painting with flowing lines in gold and black on a textured white background, visualizing the flow of load.'
+  }
+];
+
+/**
+ * Missing: THIRTY_DAY_PROGRAM
+ */
+export const THIRTY_DAY_PROGRAM: WeekPlan[] = [
+  {
+    id: 1,
+    title: { ar: 'الأسبوع 1: فحص التربة', en: 'Week 1: Soil Survey', fr: 'Semaine 1: Enquête' },
+    focus: { ar: 'تحديد التصدعات الأساسية', en: 'Identifying core fractures', fr: 'Identifier les fissures' },
+    days: [
+      { day: 1, title: { ar: 'بداية الهدم', en: 'Demolition Start', fr: 'Début démolition' }, task: { ar: 'حدد 3 عادات تعيق بناءك وهدمها فوراً.', en: 'Identify 3 habits hindering your structure and demolish them immediately.', fr: '3 habitudes à éliminer.' }, isLocked: false, bookPageRef: 12 },
+      { day: 2, title: { ar: 'تحليل الأحمال', en: 'Load Analysis', fr: 'Analyse de charge' }, task: { ar: 'راقب مستويات التوتر اليومية وحدد مصدر الثقل.', en: 'Monitor daily stress levels and identify the source of load.', fr: 'Surveiller le stress.' }, isLocked: false, bookPageRef: 18 }
+    ]
+  },
+  {
+      id: 2,
+      title: { ar: 'الأسبوع 2: صب القواعد', en: 'Week 2: Pouring Base', fr: 'Semaine 2: Coulage' },
+      focus: { ar: 'تثبيت الأساس الجسدي', en: 'Stabilizing physical foundation', fr: 'Stabilisation physique' },
+      days: [
+          { day: 8, title: { ar: 'خرسانة النوم', en: 'Sleep Concrete', fr: 'Béton du sommeil' }, task: { ar: 'تطبيق بروتوكول 10-3-2-1 للنوم العميق.', en: 'Apply 10-3-2-1 protocol for deep sleep.', fr: 'Protocole 10-3-2-1.' }, isLocked: true, bookPageRef: 45 }
+      ]
+  }
+];
+
+/**
+ * Missing: THEORY_CARDS
+ */
+export const THEORY_CARDS: DayPlan[] = [
+  {
+    day: 1,
+    title: { ar: 'قانون الثبات', en: 'Law of Stability', fr: 'Loi de Stabilité' },
+    task: { ar: 'لا يمكن البناء على أرض متحركة. ابدأ بتثبيت موقعك الروحي.', en: 'You cannot build on shifting ground. Start by stabilizing your spiritual site.', fr: 'Pas de construction sur sol mouvant.' },
+    isLocked: false
+  },
+  {
+    day: 2,
+    title: { ar: 'قانون توزيع الأحمال', en: 'Law of Load Distribution', fr: 'Loi de Distribution' },
+    task: { ar: 'الضغط غير الموزع يؤدي للانهيار. تعلم كيف تعزل المهام.', en: 'Undistributed pressure leads to collapse. Learn how to isolate tasks.', fr: 'Pression mal répartie = effondrement.' },
+    isLocked: false
+  }
 ];

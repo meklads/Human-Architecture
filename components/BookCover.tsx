@@ -125,7 +125,7 @@ export const BookCover: React.FC<BookCoverProps> = ({ className }) => {
                        The Architect
                     </p>
                     <p className="text-sm font-bold font-playfair tracking-wide text-[#2B2B2B]">
-                       ABRAHAM MEKLAD
+                       A. MEKLAD
                     </p>
                  </div>
                  

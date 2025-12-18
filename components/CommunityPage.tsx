@@ -1,9 +1,9 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, CommunityPost, View, UserProfile } from '../types';
-import { COMMUNITY_POSTS, TRANSLATIONS, PILLARS, THIRTY_DAY_PROGRAM } from '../constants';
-import { Plus, X, Check, Users, Activity, Award, Lock, ArrowRight, Radio, Target, Zap, Loader2, Send } from './Icons';
+import { COMMUNITY_POSTS, TRANSLATIONS } from '../constants';
+import { Plus, X, Users, Activity, Award, ArrowRight, Zap, Loader2, Send } from './Icons';
 
 interface CommunityPageProps {
   lang: Language;
@@ -63,8 +63,8 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
   const SidebarStats = () => (
     <div className="space-y-4">
         <div className="bg-[#111] border border-white/5 p-5 rounded-sm">
-            <div className="flex justify-between items-center mb-3">
-                <span className="text-[0.6rem] text-slate uppercase tracking-widest">{isAr ? 'إحصائيات النقابة' : 'GUILD STATS'}</span>
+            <div className="flex justify-between items-center mb-3 text-slate">
+                <span className="text-[0.6rem] uppercase tracking-widest">{isAr ? 'إحصائيات النقابة' : 'GUILD STATS'}</span>
                 <Users size={12} className="text-bronze" />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -100,7 +100,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
       if (!user) return;
       setIsSubmitting(true);
       
-      // Simulate API call
       setTimeout(() => {
           const newPost: CommunityPost = {
               id: `cp-${Date.now()}`,
@@ -133,7 +132,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-20 min-h-screen bg-[#050505] text-concrete">
-      {/* Ticker Bar */}
       <div className="border-b border-white/5 bg-[#0a0a0a] sticky top-20 z-40 backdrop-blur-md">
           <LiveTicker />
           <div className="container mx-auto px-6 py-2.5 flex justify-between items-center text-[0.6rem] uppercase tracking-[0.2em] text-slate font-mono">
@@ -145,10 +143,8 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
       <div className="container mx-auto px-6 py-12">
         <div className="flex flex-col lg:flex-row gap-12 max-w-[1400px] mx-auto">
           
-          {/* Sidebar */}
           <div className="w-full lg:w-1/4">
-             <div className="sticky top-40 space-y-8">
-                {/* Profile Widget */}
+             <div className="lg:sticky lg:top-40 space-y-8">
                 <div className="bg-[#111] border border-white/5 p-8 text-center relative group">
                     <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-bronze/30"></div>
                     <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-bronze/30"></div>
@@ -190,7 +186,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                     <Plus size={16} /> {isAr ? 'تدوين ملاحظة' : 'NEW LOG ENTRY'}
                 </button>
 
-                {/* Radar Visual */}
                 <div className="bg-[#111] border border-white/5 p-6 rounded-sm">
                     <div className="flex justify-between items-center mb-4">
                         <span className="text-[0.6rem] text-slate uppercase tracking-widest font-mono">SITE_RADAR</span>
@@ -200,13 +195,12 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,160,101,0.05)_0%,transparent_70%)]"></div>
                          <motion.div 
                             animate={{ rotate: 360 }}
-                            transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+                            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                             className="absolute inset-0 border-r border-bronze/30 origin-center"
                          ></motion.div>
                          <div className="absolute w-full h-[1px] bg-white/5"></div>
                          <div className="absolute h-full w-[1px] bg-white/5"></div>
                          <div className="w-2 h-2 bg-bronze rounded-full animate-pulse"></div>
-                         {/* Random dots to simulate other "builders" */}
                          <div className="absolute top-1/4 right-1/3 w-1 h-1 bg-cyan-400 rounded-full"></div>
                          <div className="absolute bottom-1/3 left-1/4 w-1 h-1 bg-bronze rounded-full"></div>
                     </div>
@@ -214,19 +208,18 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
              </div>
           </div>
 
-          {/* Main Feed */}
           <div className="w-full lg:w-3/4">
-            <div className="flex border-b border-white/10 mb-10">
+            <div className="flex border-b border-white/10 mb-10 overflow-x-auto no-scrollbar">
                 <button 
                     onClick={() => setActiveTab('log')} 
-                    className={`flex-1 py-5 text-center text-xs uppercase tracking-[0.2em] font-bold transition-all relative ${activeTab === 'log' ? 'text-bronze' : 'text-slate hover:text-white'}`}
+                    className={`flex-1 min-w-[120px] py-5 text-center text-xs uppercase tracking-[0.2em] font-bold transition-all relative ${activeTab === 'log' ? 'text-bronze' : 'text-slate hover:text-white'}`}
                 >
                     {isAr ? 'السجل العام' : 'PUBLIC LOG'}
                     {activeTab === 'log' && <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 w-full h-0.5 bg-bronze" />}
                 </button>
                 <button 
                     onClick={() => setActiveTab('sos')} 
-                    className={`flex-1 py-5 text-center text-xs uppercase tracking-[0.2em] font-bold transition-all relative ${activeTab === 'sos' ? 'text-red-500' : 'text-slate hover:text-white'}`}
+                    className={`flex-1 min-w-[120px] py-5 text-center text-xs uppercase tracking-[0.2em] font-bold transition-all relative ${activeTab === 'sos' ? 'text-red-500' : 'text-slate hover:text-white'}`}
                 >
                     {isAr ? 'نداءات الترميم' : 'SOS / REPAIRS'}
                     {activeTab === 'sos' && <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 w-full h-0.5 bg-red-500" />}
@@ -256,7 +249,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                                 <h4 className={`text-base font-bold text-white group-hover:text-bronze transition-colors ${headingFont}`}>{post.author}</h4>
                                 <div className="flex items-center gap-2">
                                     <span className="text-[0.6rem] text-bronze uppercase tracking-widest font-mono">
-                                        {typeof post.role === 'string' ? post.role : post.role[lang] || post.role['en']}
+                                        {typeof post.role === 'string' ? post.role : post.role[lang] || post.role['en'] || 'Builder'}
                                     </span>
                                     <span className="w-1 h-1 bg-white/10 rounded-full"></span>
                                     <span className="text-[0.6rem] text-slate font-mono">{post.timestamp}</span>
@@ -298,9 +291,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
         </div>
       </div>
 
-      {/* --- MODALS --- */}
       <AnimatePresence>
-        {/* NEW POST MODAL */}
         {showPostModal && (
             <div className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-6 overflow-y-auto">
                 <motion.div 
@@ -311,7 +302,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                     onClick={(e) => e.stopPropagation()}
                 >
                     <div className="absolute top-0 left-0 w-full h-[2px] bg-bronze/20 animate-scan"></div>
-                    <button onClick={() => setShowPostModal(false)} className="absolute top-4 right-4 text-slate hover:text-white"><X size={24} /></button>
+                    <button onClick={() => setShowPostModal(false)} className="absolute top-4 right-4 text-slate hover:text-white transition-colors"><X size={24} /></button>
                     
                     <div className="p-8 md:p-12">
                         <div className="mb-10 text-center">
@@ -326,7 +317,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                                     required
                                     value={newPostTitle}
                                     onChange={(e) => setNewPostTitle(e.target.value)}
-                                    className="w-full bg-black border-b border-white/10 py-3 text-white focus:border-bronze outline-none transition-colors"
+                                    className="w-full bg-black border-b border-white/10 py-3 text-white focus:border-bronze outline-none transition-all"
                                     placeholder={isAr ? "عنوان التقرير" : "Log title"}
                                 />
                             </div>
@@ -336,7 +327,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                                 <select 
                                     value={newPostCategory}
                                     onChange={(e) => setNewPostCategory(e.target.value)}
-                                    className="w-full bg-black border-b border-white/10 py-3 text-white focus:border-bronze outline-none appearance-none rounded-none"
+                                    className="w-full bg-black border-b border-white/10 py-3 text-white focus:border-bronze outline-none appearance-none rounded-none cursor-pointer"
                                 >
                                     <option value="Foundation">SECTOR-B: FOUNDATION (Body)</option>
                                     <option value="Structure">SECTOR-A: STRUCTURE (Mind)</option>
@@ -352,7 +343,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                                     rows={5}
                                     value={newPostContent}
                                     onChange={(e) => setNewPostContent(e.target.value)}
-                                    className="w-full bg-black border border-white/5 p-4 text-white focus:border-bronze outline-none transition-colors resize-none text-sm"
+                                    className="w-full bg-black border border-white/5 p-4 text-white focus:border-bronze outline-none transition-all resize-none text-sm"
                                     placeholder={isAr ? "ماذا وثقت اليوم في رحلة بناءك؟" : "Describe your structural findings or progress..."}
                                 />
                             </div>
@@ -360,7 +351,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                             <button 
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full py-5 bg-bronze text-white uppercase tracking-[0.3em] font-bold text-xs flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-all"
+                                className="w-full py-5 bg-bronze text-white uppercase tracking-[0.3em] font-bold text-xs flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-all disabled:opacity-50"
                             >
                                 {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : <><Send size={16} /> {isAr ? 'بث التقرير' : 'TRANSMIT LOG'}</>}
                             </button>
@@ -370,7 +361,6 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
             </div>
         )}
 
-        {/* POST DETAIL MODAL */}
         {selectedPost && (
             <div className="fixed inset-0 z-[200] bg-black/98 flex items-center justify-center p-4 overflow-y-auto" onClick={() => setSelectedPost(null)}>
                 <motion.div 
@@ -380,7 +370,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                     onClick={(e) => e.stopPropagation()}
                 >
                     <div className="absolute top-0 right-0 w-32 h-32 bg-bronze/5 rounded-full -mr-16 -mt-16 pointer-events-none"></div>
-                    <button onClick={() => setSelectedPost(null)} className="absolute top-6 right-6 text-slate hover:text-white z-10"><X size={28} /></button>
+                    <button onClick={() => setSelectedPost(null)} className="absolute top-6 right-6 text-slate hover:text-white z-10 transition-colors"><X size={28} /></button>
                     
                     <div className="p-10 md:p-16">
                         <div className="flex items-center gap-4 mb-10 border-b border-white/5 pb-8">
@@ -390,17 +380,17 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                             <div>
                                 <h4 className={`text-2xl font-bold text-white ${headingFont}`}>{selectedPost.author}</h4>
                                 <span className="text-xs text-bronze uppercase tracking-[0.2em] font-mono">
-                                    {typeof selectedPost.role === 'string' ? selectedPost.role : selectedPost.role[lang] || selectedPost.role['en']}
+                                    {typeof selectedPost.role === 'string' ? selectedPost.role : (selectedPost.role[lang] || selectedPost.role['en'] || 'Builder')}
                                 </span>
                             </div>
                         </div>
 
                         <h2 className={`text-3xl md:text-5xl mb-8 leading-tight text-white ${headingFont}`}>
-                            {typeof selectedPost.title === 'string' ? selectedPost.title : selectedPost.title[lang] || selectedPost.title['en']}
+                            {typeof selectedPost.title === 'string' ? selectedPost.title : (selectedPost.title[lang] || selectedPost.title['en'])}
                         </h2>
                         
                         <div className={`prose prose-invert prose-lg max-w-none mb-12 text-slate/80 leading-loose ${bodyFont}`}>
-                            {typeof selectedPost.content === 'string' ? selectedPost.content : selectedPost.content[lang] || selectedPost.content['en']}
+                            {typeof selectedPost.content === 'string' ? selectedPost.content : (selectedPost.content[lang] || selectedPost.content['en'])}
                         </div>
 
                         <div className="flex flex-wrap gap-4 pt-8 border-t border-white/5">

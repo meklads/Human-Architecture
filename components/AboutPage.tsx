@@ -100,7 +100,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ lang }) => {
                          <div className="absolute inset-0 w-full h-full z-10 pointer-events-none">
                              <img 
                                 src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1287&auto=format&fit=crop" 
-                                alt="Abraham Meklad" 
+                                alt="A. Meklad" 
                                 className="w-full h-full object-cover grayscale-[20%] contrast-[1.2] brightness-[0.8]" 
                              />
                              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80"></div>
@@ -133,7 +133,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ lang }) => {
                              <motion.div 
                                 animate={{ top: ['0%', '100%'] }}
                                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                                className="absolute left-0 right-0 h-[2px] bg-cyan-400 z-30 shadow-[0_0_20px_rgba(0,255,255,0.8)]"
+                                className="absolute left-0 right-0 h-[1px] bg-cyan-400 z-30 shadow-[0_0_20px_rgba(0,255,255,0.8)]"
                              ></motion.div>
 
                              {/* Vector Graphics (Measurements) */}
@@ -260,7 +260,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ lang }) => {
                     <span className="text-[0.6rem] uppercase tracking-[0.4em] text-slate block mb-2">
                         {isAr ? 'رئيس المعماريين' : 'CHIEF ARCHITECT'}
                     </span>
-                    <span className={`text-2xl ${headingFont}`}>Abraham Meklad</span>
+                    <span className={`text-2xl ${headingFont}`}>A. Meklad</span>
                 </div>
             </div>
 

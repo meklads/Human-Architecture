@@ -2,13 +2,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, View, UserProfile } from '../types';
-import { Shield, Lock, Users, ArrowRight, ArrowLeft, Check, Loader2, AlertTriangle, Layers, Key, RefreshCw } from './Icons';
+import { Shield, Lock, Users, ArrowRight, ArrowLeft, Check, Loader2, AlertTriangle, Key, RefreshCw } from './Icons';
 
-// =====================================================================
-// 👇 إعدادات الاتصال بقاعدة البيانات (Google Sheets)
-// =====================================================================
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVHtff-qSt3Gx1lw8r0eQwourNQD4_IqPrZ51m1KQsARIwsqAPvOSz3uc-FULDVCmm/exec';
-// =====================================================================
 
 interface RegisterPageProps {
   lang: Language;
@@ -55,7 +51,6 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
     setStatus('loading');
     setErrorMessage('');
     
-    // ---------------- REGISTER FLOW ----------------
     if (authMode === 'register') {
         if (formData.password !== formData.confirmPassword) {
             setStatus('error');
@@ -71,12 +66,8 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
             formDataToSend.append('path', formData.challengePath);
             formDataToSend.append('password', formData.password); 
 
-            // Attempt to register with backend
-            // Using no-cors because typically we can't read the response from a GAS POST easily without complex setup, 
-            // but we assume success if it doesn't throw network error.
             await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formDataToSend, mode: 'no-cors' });
 
-            // Create Profile locally
             const newProfile: UserProfile = {
                 name: formData.fullName,
                 handle: formData.fullName.split(' ')[0].toLowerCase(),
@@ -100,32 +91,12 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
 
         } catch (error) {
             console.error("Register Error:", error);
-            // Fallback for demo if network fails
-            const newProfile: UserProfile = {
-                name: formData.fullName,
-                handle: formData.fullName.split(' ')[0].toLowerCase(),
-                email: formData.email,
-                rank: isAr ? 'مهندس مبتدئ' : 'Novice Architect',
-                level: 1,
-                xp: 0,
-                projects: 0,
-                endorsed: 0,
-                joinedDate: new Date().toISOString().split('T')[0],
-                avatarChar: formData.fullName.charAt(0).toUpperCase()
-            };
-            setSuccessMessage(isAr ? 'تم التسجيل (وضع غير متصل)' : 'Registered (Offline Mode)');
-            setStatus('success');
-            setTimeout(() => {
-                onRegisterSuccess(newProfile);
-                setView('community');
-            }, 2000);
+            setStatus('error');
+            setErrorMessage(isAr ? 'حدث خطأ في الاتصال بالخادم.' : 'Server connection error.');
         }
     } 
-    
-    // ---------------- LOGIN FLOW (SECURE CHECK) ----------------
     else if (authMode === 'login') {
         try {
-            // Use GET with query params to allow reading the JSON response (CORS-friendly for reading)
             const params = new URLSearchParams();
             params.append('action', 'login');
             params.append('email', formData.email);
@@ -133,18 +104,12 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
 
             const response = await fetch(`${GOOGLE_SCRIPT_URL}?${params.toString()}`, {
                 method: 'GET',
-                // Important: Do NOT use no-cors here, we need to read the body
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
+            if (!response.ok) throw new Error('Network failure');
             const data = await response.json();
 
-            // REAL VALIDATION CHECK
             if (data.result === 'success') {
-                // Create Profile based on returned data or fallback
                 const mockProfile: UserProfile = {
                     name: data.name || "Architect", 
                     handle: "arch_user",
@@ -158,7 +123,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                     avatarChar: formData.email.charAt(0).toUpperCase()
                 };
 
-                setSuccessMessage(isAr ? 'تم التحقق من الهوية بنجاح.' : 'Identity Verified Successfully.');
+                setSuccessMessage(isAr ? 'تم التحقق من الهوية بنجاح.' : 'Identity Verified.');
                 setStatus('success');
                 
                 setTimeout(() => {
@@ -166,16 +131,11 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                     setView('community');
                 }, 1500);
             } else {
-                // FAILED LOGIN
                 setStatus('error');
-                setErrorMessage(isAr ? 'البريد الإلكتروني أو كلمة المرور غير صحيحة' : 'Invalid Email or Password');
+                setErrorMessage(isAr ? 'البريد الإلكتروني أو كلمة المرور غير صحيحة' : 'Invalid Credentials');
             }
-
         } catch (error) {
-             console.error("Login Error:", error);
-             
-             // FALLBACK: If backend is unreachable (Failed to fetch), log in as Demo User
-             // This ensures the user can still experience the app logic.
+             console.warn("Login Offline Fallback triggered");
              const demoProfile: UserProfile = {
                 name: "Architect (Offline)", 
                 handle: "arch_offline",
@@ -188,25 +148,15 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                 joinedDate: new Date().toISOString().split('T')[0],
                 avatarChar: formData.email.charAt(0).toUpperCase()
             };
-
-            setSuccessMessage(isAr ? 'تم الدخول (وضع غير متصل)' : 'Access Granted (Offline Mode)');
+            setSuccessMessage(isAr ? 'تم الدخول (وضع غير متصل)' : 'Access Granted (Offline)');
             setStatus('success');
-            
             setTimeout(() => {
                 onRegisterSuccess(demoProfile);
                 setView('community');
             }, 1500);
         }
     }
-
-    // ---------------- FORGOT PASSWORD FLOW ----------------
     else if (authMode === 'forgot_password') {
-        if (formData.newPassword.length < 6) {
-             setStatus('error');
-             setErrorMessage(isAr ? 'كلمة المرور قصيرة جداً' : 'Password too short');
-             return;
-        }
-
         try {
             const formDataToSend = new FormData();
             formDataToSend.append('action', 'reset_password');
@@ -214,23 +164,12 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
             formDataToSend.append('newPassword', formData.newPassword);
 
             await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formDataToSend, mode: 'no-cors' });
-
-            setSuccessMessage(isAr ? 'تم تحديث كلمة المرور.' : 'Password updated successfully.');
+            setSuccessMessage(isAr ? 'تم تحديث كلمة المرور.' : 'Password updated.');
             setStatus('success');
-            
-            // Return to login after success
-            setTimeout(() => {
-                handleActionSwitch('login');
-            }, 2000);
-
+            setTimeout(() => handleActionSwitch('login'), 2000);
         } catch (error) {
-             console.error("Reset Error:", error);
-             // Fallback success for UX
-             setSuccessMessage(isAr ? 'تم تحديث كلمة المرور (محلياً).' : 'Password updated (Locally).');
-             setStatus('success');
-             setTimeout(() => {
-                handleActionSwitch('login');
-            }, 2000);
+             setStatus('error');
+             setErrorMessage(isAr ? 'فشل التحديث.' : 'Update failed.');
         }
     }
   };
@@ -240,13 +179,10 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="pt-28 min-h-screen bg-[#050505] text-alabaster flex items-center justify-center p-6 relative overflow-hidden"
     >
-      {/* Background Atmosphere */}
       <div className="absolute inset-0 opacity-10 pointer-events-none architectural-grid"></div>
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-bronze/5 rounded-full blur-[120px] pointer-events-none"></div>
 
       <div className="w-full max-w-lg relative z-10">
-        
-        {/* Header */}
         <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 border border-bronze/30 bg-bronze/10 px-4 py-1 mb-6 rounded-full">
                 <Shield size={14} className="text-bronze" />
@@ -259,44 +195,37 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
             </h1>
         </div>
 
-        {/* Form Container */}
         <div className="bg-[#111] border border-white/10 p-8 md:p-12 shadow-2xl relative group transition-all duration-500">
-            
-            {/* Corner Accents */}
             <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-bronze opacity-50"></div>
             <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-bronze opacity-50"></div>
 
-            {/* TAB SWITCHER */}
             {authMode !== 'forgot_password' && (
                 <div className="flex border-b border-white/10 mb-8">
                     <button 
                         onClick={() => handleActionSwitch('register')}
-                        className={`flex-1 pb-4 text-xs uppercase tracking-widest font-bold transition-colors ${authMode === 'register' ? 'text-bronze border-b-2 border-bronze' : 'text-slate hover:text-white'}`}
+                        className={`flex-1 pb-4 text-xs uppercase tracking-widest font-bold transition-all ${authMode === 'register' ? 'text-bronze border-b-2 border-bronze' : 'text-slate hover:text-white'}`}
                     >
                         {isAr ? 'عضوية جديدة' : 'New ID'}
                     </button>
                     <button 
                         onClick={() => handleActionSwitch('login')}
-                        className={`flex-1 pb-4 text-xs uppercase tracking-widest font-bold transition-colors ${authMode === 'login' ? 'text-bronze border-b-2 border-bronze' : 'text-slate hover:text-white'}`}
+                        className={`flex-1 pb-4 text-xs uppercase tracking-widest font-bold transition-all ${authMode === 'login' ? 'text-bronze border-b-2 border-bronze' : 'text-slate hover:text-white'}`}
                     >
                         {isAr ? 'تسجيل دخول' : 'Login'}
                     </button>
                 </div>
             )}
 
-            {/* SUCCESS STATE */}
             {status === 'success' ? (
                 <div className="text-center py-12">
-                    <div className="w-20 h-20 bg-green-900/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/30">
+                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-20 h-20 bg-green-900/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/30">
                         <Check size={40} />
-                    </div>
+                    </motion.div>
                     <h2 className={`text-2xl mb-4 text-white ${headingFont}`}>{successMessage}</h2>
                     <Loader2 className="animate-spin mx-auto text-bronze mt-4" size={24} />
                 </div>
             ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    
-                    {/* Common Field: Email */}
                     <div className="space-y-2">
                         <label className="text-[0.6rem] uppercase tracking-widest text-slate flex items-center gap-2">
                             <span className="font-mono">@</span> {isAr ? 'البريد الإلكتروني' : 'Email Address'}
@@ -305,14 +234,14 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                             type="email" 
                             name="email"
                             required
+                            autoComplete="email"
                             value={formData.email}
                             onChange={handleChange}
-                            className={`w-full bg-transparent border-b ${formData.email ? 'border-bronze' : 'border-slate/30'} py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white placeholder-slate/20`}
+                            className={`w-full bg-transparent border-b ${formData.email ? 'border-bronze' : 'border-slate/30'} py-3 text-lg focus:border-bronze focus:outline-none transition-all text-white placeholder-slate/20`}
                             placeholder="arch@example.com"
                         />
                     </div>
 
-                    {/* REGISTER ONLY FIELDS */}
                     <AnimatePresence>
                         {authMode === 'register' && (
                             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="space-y-6 overflow-hidden">
@@ -324,9 +253,10 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                                         type="text" 
                                         name="fullName"
                                         required
+                                        autoComplete="name"
                                         value={formData.fullName}
                                         onChange={handleChange}
-                                        className="w-full bg-transparent border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white"
+                                        className="w-full bg-transparent border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-all text-white"
                                         placeholder={isAr ? "الاسم المعماري" : "Architect Name"}
                                     />
                                 </div>
@@ -338,7 +268,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                                         name="challengePath"
                                         value={formData.challengePath}
                                         onChange={handleChange}
-                                        className="w-full bg-[#0a0a0a] border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white appearance-none rounded-none cursor-pointer"
+                                        className="w-full bg-[#111] border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-all text-white appearance-none rounded-none cursor-pointer"
                                     >
                                         <option value="Performance">Performance (الأداء العالي)</option>
                                         <option value="Balance">Balance (التوازن الهيكلي)</option>
@@ -349,7 +279,6 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                         )}
                     </AnimatePresence>
 
-                    {/* PASSWORD FIELDS */}
                     {authMode !== 'forgot_password' && (
                         <div className="space-y-2">
                             <label className="text-[0.6rem] uppercase tracking-widest text-slate flex items-center gap-2">
@@ -359,9 +288,10 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                                 type="password" 
                                 name="password"
                                 required
+                                autoComplete={authMode === 'login' ? 'current-password' : 'new-password'}
                                 value={formData.password}
                                 onChange={handleChange}
-                                className="w-full bg-transparent border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white"
+                                className="w-full bg-transparent border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-all text-white"
                             />
                         </div>
                     )}
@@ -375,19 +305,16 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                                 type="password" 
                                 name="confirmPassword"
                                 required
+                                autoComplete="new-password"
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
-                                className="w-full bg-transparent border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white"
+                                className="w-full bg-transparent border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-all text-white"
                             />
                         </div>
                     )}
 
-                    {/* FORGOT PASSWORD FIELDS */}
                     {authMode === 'forgot_password' && (
                          <div className="space-y-2">
-                             <div className="bg-bronze/10 border border-bronze/30 p-3 mb-4 text-xs text-bronze">
-                                 {isAr ? 'أدخل كلمة المرور الجديدة المطلوبة.' : 'Enter your desired new password.'}
-                             </div>
                              <label className="text-[0.6rem] uppercase tracking-widest text-slate flex items-center gap-2">
                                  <Key size={12} /> {isAr ? 'كلمة المرور الجديدة' : 'New Password'}
                              </label>
@@ -397,39 +324,36 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                                  required
                                  value={formData.newPassword}
                                  onChange={handleChange}
-                                 className="w-full bg-transparent border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-colors text-white"
+                                 className="w-full bg-transparent border-b border-slate/30 py-3 text-lg focus:border-bronze focus:outline-none transition-all text-white"
                              />
                          </div>
                     )}
 
-                    {/* Actions & Links */}
                     <div className="flex justify-between items-center text-xs">
                         {authMode === 'login' && (
-                            <button type="button" onClick={() => handleActionSwitch('forgot_password')} className="text-slate hover:text-bronze underline decoration-dotted">
+                            <button type="button" onClick={() => handleActionSwitch('forgot_password')} className="text-slate hover:text-bronze underline decoration-dotted transition-colors">
                                 {isAr ? 'نسيت كلمة المرور؟' : 'Lost Access Key?'}
                             </button>
                         )}
                         {authMode === 'forgot_password' && (
-                            <button type="button" onClick={() => handleActionSwitch('login')} className="text-slate hover:text-white flex items-center gap-1">
+                            <button type="button" onClick={() => handleActionSwitch('login')} className="text-slate hover:text-white flex items-center gap-1 transition-colors">
                                 <ArrowLeft size={12} /> {isAr ? 'عودة للدخول' : 'Back to Login'}
                             </button>
                         )}
                     </div>
 
-                    {/* Error Message */}
                     {status === 'error' && (
-                        <div className="flex items-center gap-2 text-red-400 text-xs bg-red-900/10 p-3 border border-red-900/30">
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 text-red-400 text-xs bg-red-900/10 p-3 border border-red-900/30">
                             <AlertTriangle size={14} />
                             {errorMessage}
-                        </div>
+                        </motion.div>
                     )}
 
-                    {/* Submit Button */}
                     <div className="pt-2">
                         <button 
                             type="submit" 
                             disabled={status === 'loading'}
-                            className="w-full py-5 bg-bronze text-white text-sm uppercase tracking-[0.25em] font-bold hover:bg-white hover:text-black transition-all shadow-[0_0_20px_rgba(197,160,101,0.2)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                            className="w-full py-5 bg-bronze text-white text-sm uppercase tracking-[0.25em] font-bold hover:bg-white hover:text-black transition-all shadow-[0_0_20px_rgba(197,160,101,0.2)] disabled:opacity-50 flex items-center justify-center gap-3"
                         >
                             {status === 'loading' ? (
                                 <Loader2 size={18} className="animate-spin" />
@@ -438,13 +362,11 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ lang, setView, onReg
                                     {authMode === 'register' && (isAr ? 'توقيع العقد' : 'SIGN CONTRACT')}
                                     {authMode === 'login' && (isAr ? 'الدخول للموقع' : 'ENTER SITE')}
                                     {authMode === 'forgot_password' && (isAr ? 'تحديث الرمز' : 'UPDATE KEY')}
-                                    
                                     {authMode === 'forgot_password' ? <RefreshCw size={16} /> : (isAr ? <ArrowLeft size={16} /> : <ArrowRight size={16} />)}
                                 </>
                             )}
                         </button>
                     </div>
-
                 </form>
             )}
         </div>

@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { Language, View, Product, UserProfile } from './types';
 import { TRANSLATIONS } from './constants';
-import { Menu, X, Instagram, Twitter, Linkedin } from './components/Icons';
+import { Menu, X, Instagram, Twitter, Linkedin, Moon, Sun, Box } from './components/Icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HomePage } from './components/HomePage';
 import { PhilosophyPage } from './components/PhilosophyPage';
@@ -19,9 +20,12 @@ import { CustomCursor } from './components/CustomCursor';
 import { SoundController } from './components/SoundController';
 import { PasswordGate } from './components/PasswordGate';
 
+type Theme = 'dark' | 'light' | 'blueprint';
+
 function App() {
   const [lang, setLang] = useState<Language>('en');
   const [currentView, setCurrentView] = useState<View>('home');
+  const [theme, setTheme] = useState<Theme>('dark');
   const [loading, setLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
@@ -29,13 +33,16 @@ function App() {
   const [checkoutItems, setCheckoutItems] = useState<Product[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Safe Translation Utility
+  // Robust Translation Utility with Deep Search & Fallback
   const t = useCallback((path: string): string => {
     try {
       const keys = path.split('.');
       let result: any = TRANSLATIONS;
       for (const key of keys) {
-        if (!result || typeof result !== 'object' || !result[key]) return path;
+        if (!result || typeof result !== 'object' || !result[key]) {
+            console.warn(`Translation path missing: ${path}`);
+            return path;
+        }
         result = result[key];
       }
       if (typeof result === 'string') return result;
@@ -52,9 +59,21 @@ function App() {
   ];
 
   useEffect(() => {
-    // Ensure dark class is applied to html element
-    document.documentElement.classList.add('dark');
-    
+    // Sync theme with document classes
+    document.documentElement.classList.remove('dark', 'light', 'blueprint-mode');
+    document.body.classList.remove('dark', 'light', 'blueprint-mode');
+
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.body.style.backgroundColor = '#050505';
+    } else if (theme === 'blueprint') {
+      document.body.classList.add('blueprint-mode');
+      document.body.style.backgroundColor = '#002b4d';
+    } else {
+      document.documentElement.classList.add('light');
+      document.body.style.backgroundColor = '#F2F0EB';
+    }
+
     const authorized = sessionStorage.getItem('site_access_token');
     if (authorized === 'granted') {
       setIsAuthorized(true);
@@ -82,15 +101,18 @@ function App() {
     if (savedUser) {
       try { setCurrentUser(JSON.parse(savedUser)); } catch (e) {}
     }
-  }, [isAuthorized]);
+  }, [isAuthorized, theme]);
 
+  // Enhanced Navigation with Scroll Management
   const navigateTo = (view: View) => {
     setCurrentView(view);
     setMenuOpen(false);
     const url = new URL(window.location.href);
     url.searchParams.set('view', view);
     window.history.pushState({ view }, '', url.toString());
-    window.scrollTo(0, 0);
+    
+    // Ensure every view starts at the top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (!isAuthorized) {
@@ -118,7 +140,7 @@ function App() {
   const isFunnelMode = currentView === 'landing';
 
   return (
-    <div className="min-h-screen w-full bg-darkBg text-concrete antialiased" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen w-full transition-colors duration-500 text-concrete antialiased" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       <CustomCursor />
       <SoundController />
       
@@ -126,12 +148,12 @@ function App() {
       <header className="fixed top-0 w-full z-50 bg-[#050505]/95 backdrop-blur-md border-b border-white/5 shadow-2xl">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-4 group cursor-pointer shrink-0" onClick={() => navigateTo('home')}>
-             <span className={`text-xl font-bold tracking-tight ${lang === 'ar' ? 'font-amiri' : 'font-serif'}`}>HUMAN ARCHITECTURE</span>
+             <span className={`text-xl font-bold tracking-tight ${lang === 'ar' ? 'font-amiri' : 'font-serif'} hover:text-bronze transition-colors`}>HUMAN ARCHITECTURE</span>
           </div>
 
           <nav className="hidden xl:flex items-center gap-6">
-             {(['home', 'about', 'philosophy', 'journal', 'community', 'art-store', 'contact'] as View[]).map(v => (
-                 <button key={v} onClick={() => navigateTo(v)} className={`text-[0.65rem] uppercase tracking-widest transition-colors ${currentView === v ? 'text-white font-bold border-b border-bronze' : 'text-slate hover:text-white'}`}>
+             {(['about', 'philosophy', 'journal', 'community', 'art-store', 'contact'] as View[]).map(v => (
+                 <button key={v} onClick={() => navigateTo(v)} className={`text-[0.65rem] uppercase tracking-widest transition-all duration-300 ${currentView === v ? 'text-white font-bold border-b border-bronze pb-1' : 'text-slate hover:text-white'}`}>
                      {t(`nav.${v === 'art-store' ? 'gallery' : v === 'about' ? 'architect' : v}`)}
                  </button>
              ))}
@@ -151,9 +173,16 @@ function App() {
                 {t('nav.blueprint')}
               </button>
 
-              <button onClick={() => setLang(l => l === 'en' ? 'ar' : 'en')} className="text-[0.65rem] font-bold hover:text-bronze uppercase text-slate ml-2">{lang === 'en' ? 'AR' : 'EN'}</button>
+              <div className="flex items-center gap-2 border-l border-white/10 pl-3">
+                  <div className="hidden lg:flex items-center gap-1.5">
+                    <button onClick={() => setTheme('dark')} className={`p-1.5 transition-all ${theme === 'dark' ? 'text-bronze' : 'text-slate hover:text-white'}`} title="Dark Mode"><Moon size={14} /></button>
+                    <button onClick={() => setTheme('light')} className={`p-1.5 transition-all ${theme === 'light' ? 'text-bronze' : 'text-slate hover:text-white'}`} title="Light Mode"><Sun size={14} /></button>
+                    <button onClick={() => setTheme('blueprint')} className={`p-1.5 transition-all ${theme === 'blueprint' ? 'text-bronze' : 'text-slate hover:text-white'}`} title="Arch Mode"><Box size={14} /></button>
+                  </div>
+                  <button onClick={() => setLang(l => l === 'en' ? 'ar' : 'en')} className="text-[0.65rem] font-bold hover:text-bronze uppercase text-slate ml-2 transition-colors">{lang === 'en' ? 'AR' : 'EN'}</button>
+              </div>
               
-              <button onClick={() => setMenuOpen(true)} className="xl:hidden text-white"><Menu size={24} /></button>
+              <button onClick={() => setMenuOpen(true)} className="xl:hidden text-white p-2 hover:bg-white/5 rounded-full transition-colors"><Menu size={24} /></button>
           </div>
         </div>
       </header>
@@ -161,11 +190,17 @@ function App() {
 
       <AnimatePresence>
         {menuOpen && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-[#050505] text-white flex flex-col items-center justify-center xl:hidden">
-                <button onClick={() => setMenuOpen(false)} className="absolute top-8 right-8 text-slate"><X size={32} /></button>
-                <nav className="space-y-8 text-center">
-                    {['home', 'about', 'philosophy', 'journal', 'community', 'art-store', 'contact', 'landing'].map(v => (
-                        <button key={v} onClick={() => navigateTo(v as View)} className="block text-2xl font-serif">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-[#050505] text-white flex flex-col items-center justify-center xl:hidden overflow-hidden">
+                <div className="absolute inset-0 architectural-grid opacity-10 pointer-events-none"></div>
+                <button onClick={() => setMenuOpen(false)} className="absolute top-8 right-8 text-slate hover:text-white transition-colors"><X size={32} /></button>
+                <nav className="space-y-8 text-center relative z-10">
+                    <div className="flex justify-center gap-6 mb-8 pb-8 border-b border-white/5">
+                        <button onClick={() => { setTheme('dark'); setMenuOpen(false); }} className={`flex flex-col items-center gap-2 ${theme === 'dark' ? 'text-bronze' : 'text-slate'}`}><Moon size={24} /><span className="text-[0.5rem] uppercase tracking-widest">Dark</span></button>
+                        <button onClick={() => { setTheme('light'); setMenuOpen(false); }} className={`flex flex-col items-center gap-2 ${theme === 'light' ? 'text-bronze' : 'text-slate'}`}><Sun size={24} /><span className="text-[0.5rem] uppercase tracking-widest">Light</span></button>
+                        <button onClick={() => { setTheme('blueprint'); setMenuOpen(false); }} className={`flex flex-col items-center gap-2 ${theme === 'blueprint' ? 'text-bronze' : 'text-slate'}`}><Box size={24} /><span className="text-[0.5rem] uppercase tracking-widest">Arch</span></button>
+                    </div>
+                    {(['home', 'about', 'philosophy', 'journal', 'community', 'art-store', 'contact', 'landing'] as View[]).map(v => (
+                        <button key={v} onClick={() => navigateTo(v)} className={`block text-2xl font-serif transition-colors ${currentView === v ? 'text-bronze' : 'text-white hover:text-bronze'}`}>
                           {t(`nav.${v === 'art-store' ? 'gallery' : v === 'about' ? 'architect' : v === 'landing' ? 'blueprint' : v}`)}
                         </button>
                     ))}
