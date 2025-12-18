@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, CommunityPost, View, UserProfile } from '../types';
 import { COMMUNITY_POSTS, TRANSLATIONS } from '../constants';
-import { Plus, X, Users, Activity, Award, ArrowRight, Zap, Loader2, Send } from './Icons';
+import { Plus, X, Users, Activity, Award, ArrowRight, Zap, Loader2, Send, Filter, Grid } from './Icons';
 
 interface CommunityPageProps {
   lang: Language;
@@ -15,6 +15,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
   const [posts, setPosts] = useState<CommunityPost[]>(COMMUNITY_POSTS);
   const [activeTab, setActiveTab] = useState<'log' | 'sos'>('log'); 
   const [user, setUser] = useState<UserProfile | null>(currentUser);
+  const [activeTag, setActiveTag] = useState<string | null>(null);
   
   useEffect(() => { setUser(currentUser); }, [currentUser]);
 
@@ -32,6 +33,9 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
   const headingFont = isAr ? 'font-amiri' : 'font-playfair';
   const bodyFont = isAr ? 'font-ibm' : 'font-sans';
   const t = TRANSLATIONS.community;
+
+  // Extract all unique tags
+  const allTags = Array.from(new Set(posts.flatMap(p => p.tags || [])));
 
   const LiveTicker = () => {
       const messages = isAr 
@@ -62,6 +66,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
 
   const SidebarStats = () => (
     <div className="space-y-4">
+        {/* Guild Stats */}
         <div className="bg-[#111] border border-white/5 p-5 rounded-sm">
             <div className="flex justify-between items-center mb-3 text-slate">
                 <span className="text-[0.6rem] uppercase tracking-widest">{isAr ? 'إحصائيات النقابة' : 'GUILD STATS'}</span>
@@ -79,6 +84,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
             </div>
         </div>
 
+        {/* Global Health */}
         <div className="bg-[#111] border border-white/5 p-5 rounded-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 w-16 h-16 bg-bronze/5 rounded-full -mr-8 -mt-8"></div>
             <div className="relative z-10">
@@ -90,6 +96,25 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                 <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full bg-bronze w-[82%]"></div>
                 </div>
+            </div>
+        </div>
+
+        {/* Trending Projects Widget */}
+        <div className="bg-[#111] border border-white/5 p-5 rounded-sm">
+            <span className="text-[0.6rem] text-slate uppercase tracking-widest block mb-4">{isAr ? 'مشاريع رائجة' : 'TRENDING BLUEPRINTS'}</span>
+            <div className="space-y-3">
+                {[
+                  { title: isAr ? 'نظام عزل الضوضاء الرقمية' : 'Digital Noise Isolation', meta: 'SEC-A' },
+                  { title: isAr ? 'تدعيم خرسانة النوم' : 'Sleep Concrete Reinf.', meta: 'SEC-B' }
+                ].map((proj, i) => (
+                    <div key={i} className="flex items-center justify-between group cursor-pointer">
+                        <div className="flex flex-col">
+                            <span className="text-xs text-white group-hover:text-bronze transition-colors">{proj.title}</span>
+                            <span className="text-[0.5rem] text-slate uppercase font-mono">{proj.meta}</span>
+                        </div>
+                        <ArrowRight size={10} className="text-slate group-hover:text-white" />
+                    </div>
+                ))}
             </div>
         </div>
     </div>
@@ -127,24 +152,28 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
   const filteredPosts = posts.filter(p => {
       if (activeTab === 'sos' && p.type !== 'emergency') return false;
       if (activeTab === 'log' && p.type === 'emergency') return false;
+      if (activeTag && !(p.tags || []).includes(activeTag)) return false;
       return true;
   });
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-20 min-h-screen bg-[#050505] text-concrete">
+      {/* Community Subheader */}
       <div className="border-b border-white/5 bg-[#0a0a0a] sticky top-20 z-40 backdrop-blur-md">
           <LiveTicker />
           <div className="container mx-auto px-6 py-2.5 flex justify-between items-center text-[0.6rem] uppercase tracking-[0.2em] text-slate font-mono">
               <span className="flex items-center gap-2"><Zap size={10} className="text-bronze" /> SECURE_CONN: ESTABLISHED</span>
-              <span className="hidden md:block">ENCRYPTION: 256-BIT</span>
+              <span className="hidden md:block">ENCRYPTION: 256-BIT • HUB: BUILDERS_GUILD</span>
           </div>
       </div>
 
       <div className="container mx-auto px-6 py-12">
         <div className="flex flex-col lg:flex-row gap-12 max-w-[1400px] mx-auto">
           
+          {/* Sidebar */}
           <div className="w-full lg:w-1/4">
              <div className="lg:sticky lg:top-40 space-y-8">
+                {/* User Status */}
                 <div className="bg-[#111] border border-white/5 p-8 text-center relative group">
                     <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-bronze/30"></div>
                     <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-bronze/30"></div>
@@ -186,6 +215,31 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                     <Plus size={16} /> {isAr ? 'تدوين ملاحظة' : 'NEW LOG ENTRY'}
                 </button>
 
+                {/* Tags Filter */}
+                <div className="bg-[#111] border border-white/5 p-6 rounded-sm">
+                    <div className="flex items-center gap-2 mb-4 text-[0.6rem] text-slate uppercase tracking-widest">
+                        <Filter size={10} /> {isAr ? 'تصفية البيانات' : 'DATA FILTER'}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        <button 
+                          onClick={() => setActiveTag(null)}
+                          className={`px-3 py-1 text-[0.5rem] uppercase tracking-widest border transition-all ${!activeTag ? 'bg-white text-black border-white' : 'border-white/10 text-slate hover:text-white'}`}
+                        >
+                            {isAr ? 'الكل' : 'ALL'}
+                        </button>
+                        {allTags.map(tag => (
+                            <button 
+                              key={tag}
+                              onClick={() => setActiveTag(tag === activeTag ? null : tag)}
+                              className={`px-3 py-1 text-[0.5rem] uppercase tracking-widest border transition-all ${activeTag === tag ? 'bg-bronze text-white border-bronze' : 'border-white/10 text-slate hover:text-white'}`}
+                            >
+                                {tag}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Site Radar Decoration */}
                 <div className="bg-[#111] border border-white/5 p-6 rounded-sm">
                     <div className="flex justify-between items-center mb-4">
                         <span className="text-[0.6rem] text-slate uppercase tracking-widest font-mono">SITE_RADAR</span>
@@ -208,6 +262,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
              </div>
           </div>
 
+          {/* Feed Content */}
           <div className="w-full lg:w-3/4">
             <div className="flex border-b border-white/10 mb-10 overflow-x-auto no-scrollbar">
                 <button 
@@ -234,15 +289,22 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         key={post.id} 
-                        className={`bg-[#111] border p-8 hover:border-bronze/30 transition-all cursor-pointer relative group ${post.type === 'emergency' ? 'border-red-900/20' : 'border-white/5'}`}
+                        className={`bg-[#111] border p-8 hover:border-bronze/30 transition-all cursor-pointer relative group ${post.type === 'emergency' ? 'border-red-900/20 shadow-[0_0_30px_rgba(153,27,27,0.05)]' : 'border-white/5'}`}
                         onClick={() => setSelectedPost(post)}
                     >
+                        {/* Status Stamp */}
+                        {post.type === 'emergency' && (
+                            <div className="absolute -top-3 -right-3 bg-red-600 text-white text-[0.5rem] font-bold px-2 py-1 uppercase tracking-widest shadow-lg">
+                                SOS
+                            </div>
+                        )}
+
                         <div className="absolute top-4 right-8 text-[0.5rem] font-mono text-slate/30 group-hover:text-bronze/50 transition-colors uppercase tracking-widest">
                             Ref: {post.id}
                         </div>
                         
                         <div className="flex items-center gap-4 mb-6">
-                            <div className="w-12 h-12 bg-[#1a1a1a] border border-white/10 rounded-full flex items-center justify-center font-serif text-white group-hover:border-bronze transition-colors">
+                            <div className="w-12 h-12 bg-[#1a1a1a] border border-white/10 rounded-full flex items-center justify-center font-serif text-white group-hover:border-bronze transition-colors overflow-hidden">
                                 {post.author.charAt(0)}
                             </div>
                             <div>
@@ -257,7 +319,7 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                             </div>
                         </div>
 
-                        <h3 className={`text-2xl mb-4 ${headingFont} text-white group-hover:pl-2 transition-all`}>
+                        <h3 className={`text-2xl mb-4 ${headingFont} text-white group-hover:pl-2 transition-all leading-tight`}>
                             {typeof post.title === 'string' ? post.title : post.title[lang] || post.title['en']}
                         </h3>
                         
@@ -265,13 +327,22 @@ export const CommunityPage: React.FC<CommunityPageProps> = ({ lang, setView, cur
                             {typeof post.content === 'string' ? post.content : post.content[lang] || post.content['en']}
                         </p>
 
+                        {/* Display Tags */}
+                        {post.tags && post.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mb-8">
+                                {post.tags.map(tag => (
+                                    <span key={tag} className="text-[0.5rem] uppercase tracking-widest text-slate/50 bg-white/5 px-2 py-0.5 rounded-sm">#{tag}</span>
+                                ))}
+                            </div>
+                        )}
+
                         <div className="flex justify-between items-center pt-6 border-t border-white/5">
                             <div className="flex gap-6">
                                 <button className="text-[0.6rem] uppercase tracking-widest font-bold text-slate hover:text-bronze flex items-center gap-2 transition-colors">
                                     <Award size={14} /> {post.endorsements} {isAr ? 'مصادقة' : 'ENDORSEMENTS'}
                                 </button>
                                 <button className="text-[0.6rem] uppercase tracking-widest font-bold text-slate hover:text-white flex items-center gap-2 transition-colors">
-                                    <Send size={14} /> {isAr ? 'تعليق' : 'REVIEW'}
+                                    <Send size={14} /> {post.reviews.length} {isAr ? 'تعليق' : 'REVIEW'}
                                 </button>
                             </div>
                             <div className={`px-3 py-1 text-[0.5rem] uppercase font-bold tracking-widest ${post.type === 'emergency' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'bg-white/5 text-slate border border-white/10'}`}>

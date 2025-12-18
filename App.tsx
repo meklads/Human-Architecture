@@ -33,19 +33,19 @@ function App() {
   const [checkoutItems, setCheckoutItems] = useState<Product[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Robust Translation Utility with Deep Search & Fallback
   const t = useCallback((path: string): string => {
     try {
+      if (!path) return '';
       const keys = path.split('.');
       let result: any = TRANSLATIONS;
       for (const key of keys) {
         if (!result || typeof result !== 'object' || !result[key]) {
-            console.warn(`Translation path missing: ${path}`);
             return path;
         }
         result = result[key];
       }
       if (typeof result === 'string') return result;
+      if (!result) return path;
       return result[lang] || result['en'] || result['ar'] || path;
     } catch (e) {
       return path;
@@ -59,7 +59,6 @@ function App() {
   ];
 
   useEffect(() => {
-    // Sync theme with document classes
     document.documentElement.classList.remove('dark', 'light', 'blueprint-mode');
     document.body.classList.remove('dark', 'light', 'blueprint-mode');
 
@@ -99,19 +98,23 @@ function App() {
 
     const savedUser = localStorage.getItem('iham_user_profile');
     if (savedUser) {
-      try { setCurrentUser(JSON.parse(savedUser)); } catch (e) {}
+      try { 
+        const parsed = JSON.parse(savedUser);
+        if (parsed && typeof parsed === 'object') {
+          setCurrentUser(parsed);
+        }
+      } catch (e) { 
+        console.error("Profile load failed", e); 
+      }
     }
   }, [isAuthorized, theme]);
 
-  // Enhanced Navigation with Scroll Management
   const navigateTo = (view: View) => {
     setCurrentView(view);
     setMenuOpen(false);
     const url = new URL(window.location.href);
     url.searchParams.set('view', view);
     window.history.pushState({ view }, '', url.toString());
-    
-    // Ensure every view starts at the top
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -125,13 +128,14 @@ function App() {
   }
 
   if (loading) {
+    const currentPhase = LOAD_PHASES[loadingPhase] || LOAD_PHASES[0];
     return (
       <div className="fixed inset-0 bg-[#050505] text-bronze flex flex-col items-center justify-center z-[9999]">
          <div className="w-64 h-1 bg-white/10 mb-8 rounded-full overflow-hidden relative">
              <motion.div className="absolute top-0 left-0 h-full bg-bronze" initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ duration: 2.2, ease: "easeInOut" }} />
          </div>
          <div className="font-mono text-[0.6rem] uppercase tracking-[0.2em]">
-             {LOAD_PHASES[loadingPhase]?.[lang] || 'LOADING...'}
+             {(currentPhase as any)?.[lang] || (currentPhase as any)?.['en'] || 'LOADING...'}
          </div>
       </div>
     );
@@ -222,7 +226,7 @@ function App() {
             {currentView === 'register' && <RegisterPage key="register" lang={lang} setView={navigateTo} onRegisterSuccess={(p) => { setCurrentUser(p); navigateTo('dashboard'); }} />}
             {currentView === 'dashboard' && <ProgramDashboard key="dashboard" lang={lang} currentUser={currentUser} />}
             {currentView === 'landing' && <LandingPage key="landing" lang={lang} setView={navigateTo} onCheckout={(items) => { setCheckoutItems(items); navigateTo('checkout'); }} />}
-            {currentView === 'checkout' && <CheckoutPage key="checkout" lang={lang} items={checkoutItems} onBack={() => navigateTo('art-store')} onComplete={(u) => { const p = { name: u.name, email: u.email, handle: u.name, level: 1, xp: 50, projects: 0, endorsed: 0, joinedDate: '', avatarChar: u.name[0] || 'A', rank: 'Builder' } as UserProfile; setCurrentUser(p); navigateTo('dashboard'); }} />}
+            {currentView === 'checkout' && <CheckoutPage key="checkout" lang={lang} items={checkoutItems} onBack={() => navigateTo('art-store')} onComplete={(u) => { const p = { name: u?.name || 'Architect', email: u?.email || '', handle: u?.name || 'architect', level: 1, xp: 50, projects: 0, endorsed: 0, joinedDate: new Date().toISOString().split('T')[0], avatarChar: (u?.name && u.name.length > 0 ? u.name[0] : 'A'), rank: 'Builder' } as UserProfile; setCurrentUser(p); localStorage.setItem('iham_user_profile', JSON.stringify(p)); navigateTo('dashboard'); }} />}
         </AnimatePresence>
       </main>
 

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Language, UserProfile, SiteLogEntry } from '../types';
-import { Check, Lock, Play, ArrowRight, Shield, Award, Activity, MessageCircle, Send, Clock, Calendar, Target, Zap, BookOpen } from './Icons';
+import { Check, Lock, ArrowRight, Shield, Award, Activity, MessageCircle, Send, Clock, Calendar, Target, Zap, BookOpen } from './Icons';
 import { THIRTY_DAY_PROGRAM } from '../constants';
 
 interface ProgramDashboardProps {
@@ -12,10 +12,10 @@ interface ProgramDashboardProps {
 
 // --- RANK LOGIC ---
 const calculateRank = (completedCount: number) => {
-    if (completedCount >= 24) return { title: { ar: 'أسطورة', en: 'Legend' }, color: '#FFD700', icon: '👑' }; // Gold
-    if (completedCount >= 16) return { title: { ar: 'كبير البنائين', en: 'Master Builder' }, color: '#C0C0C0', icon: '🏗️' }; // Silver
-    if (completedCount >= 8) return { title: { ar: 'مهندس', en: 'Architect' }, color: '#C5A065', icon: '📐' }; // Bronze
-    return { title: { ar: 'بناء', en: 'Builder' }, color: '#4da6ff', icon: '🔨' }; // Blue
+    if (completedCount >= 24) return { title: { ar: 'أسطورة', en: 'Legend', fr: 'Légende' }, color: '#FFD700', icon: '👑' }; 
+    if (completedCount >= 16) return { title: { ar: 'كبير البنائين', en: 'Master Builder', fr: 'Maître Bâtisseur' }, color: '#C0C0C0', icon: '🏗️' }; 
+    if (completedCount >= 8) return { title: { ar: 'مهندس', en: 'Architect', fr: 'Architecte' }, color: '#C5A065', icon: '📐' }; 
+    return { title: { ar: 'بناء', en: 'Builder', fr: 'Bâtisseur' }, color: '#4da6ff', icon: '🔨' }; 
 };
 
 export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, currentUser }) => {
@@ -23,37 +23,40 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
   const headingFont = isAr ? 'font-amiri' : 'font-playfair';
   const bodyFont = isAr ? 'font-ibm' : 'font-montserrat';
 
-  // --- STATE ---
   const [completedDays, setCompletedDays] = useState<number[]>([]);
   const [feed, setFeed] = useState<SiteLogEntry[]>([]);
   const [newLogContent, setNewLogContent] = useState('');
-  // Track the highest unlocked day (The Active Work Order)
   const [activeDay, setActiveDay] = useState<number>(1);
   
   const totalDays = 30;
   
-  // Load Data
   useEffect(() => {
-      // 1. Load Progress
+      // 1. Load Progress Safely
       const savedProgress = localStorage.getItem('iham_progress');
       if (savedProgress) {
-          const parsed = JSON.parse(savedProgress);
-          setCompletedDays(parsed);
-          // Determine active day: It is the next day after the last completed one.
-          // Example: If [1, 2] are done, max is 2, so active is 3.
-          const maxCompleted = parsed.length > 0 ? Math.max(...parsed) : 0;
-          setActiveDay(Math.min(maxCompleted + 1, totalDays));
-      } else {
-          setCompletedDays([]); 
-          setActiveDay(1);
+          try {
+              const parsed = JSON.parse(savedProgress);
+              if (Array.isArray(parsed)) {
+                  const numericProgress = parsed.map(n => Number(n)).filter(n => !isNaN(n));
+                  setCompletedDays(numericProgress);
+                  const maxCompleted = numericProgress.length > 0 ? Math.max(...numericProgress) : 0;
+                  setActiveDay(Math.min(maxCompleted + 1, totalDays));
+              }
+          } catch (e) {
+              console.error("Failed to parse progress log", e);
+          }
       }
 
-      // 2. Load Local Feed (Simulation of Database)
+      // 2. Load Local Feed Safely
       const savedFeed = localStorage.getItem('iham_site_logs');
       if (savedFeed) {
-          setFeed(JSON.parse(savedFeed));
+          try {
+              const parsedFeed = JSON.parse(savedFeed);
+              if (Array.isArray(parsedFeed)) setFeed(parsedFeed);
+          } catch (e) {
+              console.error("Failed to parse site logs", e);
+          }
       } else {
-          // Dummy Initial Data
           setFeed([
               { id: '1', author: 'Sarah A.', authorChar: 'S', dayNumber: 7, content: 'Finally completed the Foundation week. Sleeping better already.', timestamp: '2h ago', likes: 5 },
               { id: '2', author: 'Karim M.', authorChar: 'K', dayNumber: 3, content: 'Struggling with the digital detox task, but pushing through.', timestamp: '5h ago', likes: 2 }
@@ -61,32 +64,30 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
       }
   }, []);
 
-  // Calculate Progress & Rank
   const completedCount = completedDays.length;
   const progressPercentage = Math.round((completedCount / totalDays) * 100);
   const rankInfo = calculateRank(completedCount);
 
-  // Helper to get task data for a specific day
   const getTaskForDay = (dayNum: number) => {
-      // Flatten the weeks structure to find the day
-      for (const week of THIRTY_DAY_PROGRAM) {
-          const found = week.days.find(d => d.day === dayNum);
-          if (found) return found;
+      if (THIRTY_DAY_PROGRAM && Array.isArray(THIRTY_DAY_PROGRAM)) {
+          for (const week of THIRTY_DAY_PROGRAM) {
+              if (week && week.days && Array.isArray(week.days)) {
+                const found = week.days.find(d => d.day === dayNum);
+                if (found) return found;
+              }
+          }
       }
-      // Fallback
-      return { title: { ar: 'يوم راحة', en: 'Rest Day' }, task: { ar: 'استرح وراجع ما سبق.', en: 'Rest and review.' }, bookPageRef: 0 };
+      return { 
+        title: { ar: 'يوم راحة', en: 'Rest Day', fr: 'Jour de Repos' }, 
+        task: { ar: 'استرح وراجع ما سبق.', en: 'Rest and review.', fr: 'Reposez-vous et révisez.' }, 
+        bookPageRef: 0 
+      };
   };
 
   const activeTaskData = getTaskForDay(activeDay);
 
-  // --- HANDLERS ---
-
   const handleDayClick = (day: number) => {
-      // Strict Mode: You cannot "uncomplete" past days easily to maintain integrity, 
-      // and you cannot click future locked days.
-      if (day > activeDay) return; // Locked
-      
-      // For demo purposes, we allow clicking the *Active* day to complete it via grid too
+      if (day > activeDay) return; 
       if (day === activeDay && !completedDays.includes(day)) {
           handleCompleteDay(day);
       }
@@ -97,12 +98,8 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
           const newCompleted = [...completedDays, day];
           setCompletedDays(newCompleted);
           localStorage.setItem('iham_progress', JSON.stringify(newCompleted));
-          
-          // Auto-advance to next day
           const nextDay = Math.min(day + 1, totalDays);
           setActiveDay(nextDay);
-          
-          // Celebration / Feedback could go here
       }
   };
 
@@ -112,10 +109,10 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
 
       const newPost: SiteLogEntry = {
           id: Date.now().toString(),
-          author: currentUser.name,
+          author: currentUser.name || "Architect",
           authorAvatar: currentUser.avatarImage,
-          authorChar: currentUser.avatarChar,
-          dayNumber: activeDay, // Log is associated with current active day
+          authorChar: currentUser.avatarChar || (currentUser.name ? currentUser.name[0].toUpperCase() : "A"),
+          dayNumber: activeDay, 
           content: newLogContent,
           timestamp: isAr ? 'الآن' : 'Just now',
           likes: 0
@@ -134,43 +131,35 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
     >
       <div className="w-full max-w-6xl px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
           
-          {/* --- LEFT COLUMN: DASHBOARD MAIN --- */}
           <div className="lg:col-span-2 space-y-8">
-            
-            {/* 1. HEADER CARD (Dynamic Rank) */}
             <div className="bg-blueprint text-white rounded-xl p-8 relative overflow-hidden shadow-2xl">
                 <div className="absolute inset-0 opacity-10 pointer-events-none architectural-grid"></div>
                 <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 text-center md:text-start">
-                    
-                    {/* Avatar */}
                     <div className="w-24 h-24 bg-bronze text-white rounded-full flex items-center justify-center text-4xl font-serif border-4 border-white/20 shadow-lg overflow-hidden relative">
                         {currentUser?.avatarImage ? (
                             <img src={currentUser.avatarImage} alt="Profile" className="w-full h-full object-cover" />
                         ) : (
-                            currentUser?.avatarChar || 'A'
+                            currentUser?.avatarChar || (currentUser?.name ? currentUser.name[0].toUpperCase() : 'A')
                         )}
-                        {/* Rank Icon Overlay */}
-                        <div className="absolute bottom-0 right-0 bg-white text-black w-8 h-8 rounded-full flex items-center justify-center text-sm border-2 border-bronze" title={rankInfo.title[lang]}>
+                        <div className="absolute bottom-0 right-0 bg-white text-black w-8 h-8 rounded-full flex items-center justify-center text-sm border-2 border-bronze">
                            {rankInfo.icon}
                         </div>
                     </div>
 
-                    {/* User Info */}
                     <div className="flex-1">
                         <h1 className={`text-3xl md:text-4xl font-bold mb-2 ${headingFont}`}>
-                            {currentUser ? currentUser.name : (isAr ? 'المهندس المعماري' : 'Architect')}
+                            {currentUser?.name || (isAr ? 'المهندس المعماري' : 'Architect')}
                         </h1>
                         <div className="flex flex-wrap gap-2 justify-center md:justify-start items-center">
-                            {/* DYNAMIC RANK BADGE */}
                             <span 
                                 className="px-3 py-1 rounded-full text-xs uppercase tracking-widest font-bold border"
                                 style={{ 
-                                    backgroundColor: `${rankInfo.color}20`, // 20% opacity
+                                    backgroundColor: `${rankInfo.color}20`,
                                     borderColor: rankInfo.color,
                                     color: rankInfo.color 
                                 }}
                             >
-                                {rankInfo.title[lang]}
+                                {rankInfo.title?.[lang] || rankInfo.title?.['en'] || 'Builder'}
                             </span>
                             <span className="bg-white/10 px-3 py-1 rounded-full text-xs uppercase tracking-widest text-slate-300">
                                 {isAr ? `المرحلة الحالية: يوم ${activeDay}` : `Current Phase: Day ${activeDay}`}
@@ -180,7 +169,6 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                 </div>
             </div>
 
-            {/* 2. PROGRESS BAR */}
             <div className="bg-white dark:bg-[#111] p-6 rounded-xl shadow-sm border border-slate-200 dark:border-white/5">
                 <div className="flex justify-between mb-3 font-bold text-blueprint dark:text-blue-300 text-sm uppercase tracking-wider">
                     <span>{isAr ? 'نسبة الإنجاز' : 'Completion Rate'}</span>
@@ -198,9 +186,7 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                 </div>
             </div>
 
-            {/* 3. ACTIVE WORK ORDER (Dynamic Content based on Active Day) */}
             <div className="bg-white dark:bg-[#111] rounded-xl border border-bronze/30 shadow-lg overflow-hidden relative group">
-                {/* Header */}
                 <div className="bg-bronze/10 border-b border-bronze/20 p-4 flex justify-between items-center">
                     <div className="flex items-center gap-2 text-bronze font-bold uppercase tracking-widest text-xs">
                         <Target size={16} />
@@ -211,24 +197,22 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                     </div>
                 </div>
                 
-                {/* Content */}
                 <div className="p-8">
                     <h2 className={`text-3xl mb-4 ${headingFont} text-charcoal dark:text-white`}>
-                        {activeTaskData.title[lang]}
+                        {activeTaskData.title?.[lang] || activeTaskData.title?.['en'] || ''}
                     </h2>
                     <p className={`text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-6 ${bodyFont}`}>
-                        {activeTaskData.task[lang]}
+                        {activeTaskData.task?.[lang] || activeTaskData.task?.['en'] || ''}
                     </p>
                     
-                    {/* BOOK REFERENCE - The Link to "The Accelerator" */}
-                    {activeTaskData.bookPageRef && (
+                    {activeTaskData.bookPageRef ? (
                         <div className="mb-8 inline-flex items-center gap-3 bg-alabaster dark:bg-white/5 px-4 py-2 rounded border border-slate/20">
                             <BookOpen size={16} className="text-bronze" />
                             <span className="text-xs uppercase tracking-widest text-slate">
                                 {isAr ? `المرجع: الكتاب صفحة ${activeTaskData.bookPageRef}` : `Ref: Book Page ${activeTaskData.bookPageRef}`}
                             </span>
                         </div>
-                    )}
+                    ) : null}
                     
                     <div className="mt-2">
                         {!completedDays.includes(activeDay) ? (
@@ -252,7 +236,6 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                 </div>
             </div>
 
-            {/* 4. DAYS GRID */}
             <div>
                 <h3 className={`text-xl text-blueprint dark:text-blue-300 mb-6 border-b-2 border-bronze inline-block pb-2 ${headingFont}`}>
                     {isAr ? 'سجل الإنجاز' : 'Construction Log'}
@@ -261,7 +244,6 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                     {Array.from({ length: totalDays }, (_, i) => i + 1).map((day) => {
                         const isCompleted = completedDays.includes(day);
                         const isCurrent = day === activeDay;
-                        // Day is locked if it's greater than the active day (which is max completed + 1)
                         const isLocked = day > activeDay;
                         
                         return (
@@ -294,11 +276,8 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
 
           </div>
 
-          {/* --- RIGHT COLUMN: SITE LOG FEED --- */}
           <div className="lg:col-span-1">
              <div className="sticky top-24">
-                 
-                 {/* FEED HEADER */}
                  <div className="bg-[#003366] text-white p-4 rounded-t-xl flex justify-between items-center">
                      <h3 className={`text-lg font-bold ${headingFont}`}>
                          {isAr ? 'سجل الموقع اليومي' : 'Daily Site Log'}
@@ -306,12 +285,11 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                      <Activity size={18} className="text-bronze animate-pulse" />
                  </div>
 
-                 {/* FEED INPUT */}
                  <div className="bg-white dark:bg-[#1a1a1a] p-4 border-x border-b border-slate/20 dark:border-white/10 mb-4">
                      <form onSubmit={handlePostLog}>
                          <div className="flex gap-3 mb-3">
                              <div className="w-8 h-8 bg-bronze rounded-full flex items-center justify-center text-white text-xs flex-shrink-0 overflow-hidden">
-                                {currentUser?.avatarImage ? <img src={currentUser.avatarImage} className="w-full h-full object-cover"/> : (currentUser?.avatarChar || 'ME')}
+                                {currentUser?.avatarImage ? <img src={currentUser.avatarImage} className="w-full h-full object-cover" alt="avatar"/> : (currentUser?.avatarChar || (currentUser?.name ? currentUser.name[0].toUpperCase() : 'ME'))}
                              </div>
                              <textarea 
                                 value={newLogContent}
@@ -334,7 +312,6 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                      </form>
                  </div>
 
-                 {/* FEED LIST */}
                  <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
                      <AnimatePresence>
                          {feed.map((post) => (
@@ -344,14 +321,12 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                                 animate={{ opacity: 1, y: 0 }}
                                 className="bg-white dark:bg-[#151515] p-4 rounded-lg shadow-sm border border-slate/10 relative overflow-hidden"
                              >
-                                 {/* Left Colored Line based on day? Or just bronze */}
                                  <div className="absolute top-0 left-0 bottom-0 w-1 bg-gradient-to-b from-[#003366] to-[#C5A065]"></div>
-                                 
                                  <div className="pl-3">
                                      <div className="flex justify-between items-start mb-2">
                                          <div className="flex items-center gap-2">
                                              <div className="w-6 h-6 bg-slate-200 dark:bg-white/10 rounded-full flex items-center justify-center text-xs font-bold text-charcoal dark:text-white overflow-hidden">
-                                                 {post.authorAvatar ? <img src={post.authorAvatar} className="w-full h-full object-cover"/> : post.authorChar}
+                                                 {post.authorAvatar ? <img src={post.authorAvatar} className="w-full h-full object-cover" alt="author"/> : (post.authorChar || "A")}
                                              </div>
                                              <span className={`text-sm font-bold text-[#003366] dark:text-blue-300 ${headingFont}`}>{post.author}</span>
                                          </div>
@@ -359,7 +334,6 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                                              <Clock size={10} /> {post.timestamp}
                                          </span>
                                      </div>
-                                     
                                      <div className="mb-2">
                                          <span className="inline-block bg-[#C5A065]/10 text-[#C5A065] text-[0.6rem] px-2 py-0.5 rounded-sm uppercase tracking-widest font-bold mb-1">
                                              Day {post.dayNumber}
@@ -372,17 +346,14 @@ export const ProgramDashboard: React.FC<ProgramDashboardProps> = ({ lang, curren
                              </motion.div>
                          ))}
                      </AnimatePresence>
-                     
                      {feed.length === 0 && (
                          <div className="text-center py-8 text-slate/40 text-xs">
                              {isAr ? 'كن أول من يوثق إنجازه اليوم.' : 'Be the first to log progress today.'}
                          </div>
                      )}
                  </div>
-
              </div>
           </div>
-
       </div>
     </motion.div>
   );

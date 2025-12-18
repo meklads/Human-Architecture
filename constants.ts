@@ -6,8 +6,8 @@ export const TRANSLATIONS = {
     home: { ar: 'الرئيسية', en: 'HEADQUARTERS', fr: 'QG' },
     blueprint: { ar: 'المخطط', en: 'THE BLUEPRINT', fr: 'LE PLAN' },
     philosophy: { ar: 'الكود', en: 'THE CODE', fr: 'LE CODE' },
-    gallery: { ar: 'المعرض', en: 'THE GALLERY', fr: 'GALERIE' }, // Added Gallery
-    library: { ar: 'الأدوات', en: 'THE TOOLS', fr: 'OUTILS' }, // Renamed from Store
+    gallery: { ar: 'المعرض', en: 'THE GALLERY', fr: 'GALERIE' },
+    library: { ar: 'الأدوات', en: 'THE TOOLS', fr: 'OUTILS' },
     journal: { ar: 'السجل', en: 'SITE LOG', fr: 'JOURNAL' },
     community: { ar: 'النقابة', en: 'BUILDERS GUILD', fr: 'GUILDE' },
     contact: { ar: 'استشارات', en: 'CONSULTANCY', fr: 'CONSULTATION' },
@@ -81,220 +81,14 @@ export const ABOUT_CONTENT = {
     }
 };
 
-// --- UPDATED FUNNEL CONTENT TO MATCH BLUEPRINT ---
-export const LANDING_CONTENT = {
-  header: {
-      left: { en: 'HUMAN ARCHITECTURE™', ar: 'عمارة الإنسان™' },
-      right: { en: 'THE BLUEPRINT', ar: 'المخطط' },
-      join: { en: 'JOIN', ar: 'انضمام' }
-  },
-  warning: {
-      en: 'WARNING: This is not traditional self-help.',
-      ar: 'تحذير: هذا ليس تطوير ذات تقليدي.'
-  },
-  hero: {
-    headline: { en: 'Stop Fixing Cracks.\nRe-Pour the Foundation.', ar: 'توقف عن ترميم الشقوق.\nأعد صب الأساسات.' },
-    subheadline: { 
-        en: 'The only engineering-grade system designed to restructure your mind, body, and internal systems — without motivation, hacks, or self-help hype.', 
-        ar: 'النظام الهندسي الوحيد المصمم لإعادة هيكلة عقلك، جسدك، وأنظمتك الداخلية — بدون حيل تحفيزية أو ضجيج تطوير الذات.' 
-    },
-    support: { en: 'Built on Human Architecture protocols, not inspirational psychology.', ar: 'مبني على بروتوكولات هندسة الإنسان، وليس علم النفس التحفيزي.' },
-    videoLabel: { en: 'WATCH: How the Human Architecture System Works', ar: 'شاهد: كيف يعمل نظام عمارة الإنسان' },
-    videoDuration: { en: 'Duration: 3:45', ar: 'المدة: 3:45' },
-    cta: { en: 'YES — I Want to Rebuild My Internal Structure', ar: 'نعم — أريد إعادة بناء هيكلي الداخلي' },
-    guarantee: { en: '30-Day Money-Back Guarantee', ar: 'ضمان استعادة الأموال لمدة 30 يوماً' }
-  },
-  problem: {
-    headline: { en: 'You Are Not Broken.\nYou Are Carrying Load on a Failing Structure.', ar: 'أنت لست مكسوراً.\nأنت تحمل أحمالاً على هيكل متداعٍ.' },
-    body: { 
-        en: 'Most people try to fix their lives by adding more effort. More discipline. More routines. More optimization. But effort applied to a weak structure doesn’t fix anything. It accelerates collapse.',
-        ar: 'معظم الناس يحاولون إصلاح حياتهم بزيادة الجهد. مزيد من الانضباط. مزيد من الروتين. لكن الجهد المبذول على هيكل ضعيف لا يصلح شيئاً. بل يسرع الانهيار.'
-    },
-    emphasis: { en: 'You don’t need another habit. You need structural correction.', ar: 'أنت لا تحتاج عادة جديدة. أنت تحتاج تصحيحاً إنشائياً.' }
-  },
-  failure: {
-      headline: { en: 'Why Traditional Self-Help Keeps You Stuck', ar: 'لماذا يبقيك تطوير الذات التقليدي عالقاً' },
-      bullets: [
-          { en: 'It treats symptoms in isolation', ar: 'يعالج الأعراض بشكل منفصل' },
-          { en: 'It ignores load distribution', ar: 'يتجاهل توزيع الأحمال' },
-          { en: 'It relies on motivation', ar: 'يعتمد على التحفيز المؤقت' },
-          { en: 'It collapses under pressure', ar: 'ينهار تحت الضغط' }
-      ],
-      closing: { en: 'Humans don’t fail randomly. They fail structurally.', ar: 'البشر لا يفشلون عشوائياً. هم يفشلون إنشائياً.' }
-  },
-  solution: {
-      headline: { en: 'What If Your Life Worked Like a Building?', ar: 'ماذا لو كانت حياتك تعمل مثل المبنى؟' },
-      body: { 
-          en: 'Every high-performance structure is designed to carry load. So is the human system. When pressure increases, a structure must either: redistribute load, reinforce foundations, or collapse.',
-          ar: 'كل مبنى عالي الأداء مصمم لحمل الأوزان. وكذلك النظام البشري. عندما يزداد الضغط، يجب على الهيكل إما: إعادة توزيع الحمل، تدعيم الأساسات، أو الانهيار.' 
-      }
-  },
-  pillars: {
-      title: { en: 'The Four Load-Bearing Pillars', ar: 'الأعمدة الأربعة الحاملة' },
-      items: [
-          { title: { en: 'Foundation', ar: 'الأساس' }, desc: { en: 'Body', ar: 'الجسد' } },
-          { title: { en: 'Frame', ar: 'الإطار' }, desc: { en: 'Mind', ar: 'العقل' } },
-          { title: { en: 'Systems', ar: 'الأنظمة' }, desc: { en: 'Emotional Regulation', ar: 'التنظيم العاطفي' } },
-          { title: { en: 'Spire', ar: 'القمة' }, desc: { en: 'Direction & Meaning', ar: 'الاتجاه والمعنى' } }
-      ],
-      insight: { en: 'When one pillar weakens, stress transfers — silently — until failure appears.', ar: 'عندما يضعف عمود واحد، ينتقل الضغط — بصمت — حتى يظهر الفشل.' }
-  },
-  journey: {
-      title: { en: 'Your Path Through the Human Architecture™ System', ar: 'مسارك عبر نظام عمارة الإنسان™' },
-      intro: { en: 'This is not a collection of books. It is a progressive structural solution.', ar: 'هذه ليست مجموعة كتب. هذا حل إنشائي متدرج.' },
-      steps: [
-          { 
-              step: '01', 
-              name: { en: 'DIAGNOSE', ar: 'التشخيص' }, 
-              product: { en: 'The Blueprint', ar: 'المخطط' },
-              purpose: { en: 'Structural Awareness', ar: 'الوعي الهيكلي' },
-              why: { en: 'Before fixing anything, you must understand where your structure is failing and why.', ar: 'قبل إصلاح أي شيء، يجب أن تفهم أين يفشل هيكلك ولماذا.' },
-              outcome: { en: 'Clarity before correction.', ar: 'الوضوح قبل التصحيح.' }
-          },
-          { 
-              step: '02', 
-              name: { en: 'STABILIZE', ar: 'التثبيت' }, 
-              product: { en: '28-Day Foundation Program', ar: 'برنامج التأسيس 28 يوم' },
-              purpose: { en: 'Stabilization', ar: 'الاستقرار' },
-              why: { en: 'When a system is under stress, optimization makes collapse worse. Stability comes first.', ar: 'عندما يكون النظام تحت الضغط, التحسين يجعل الانهيار أسوأ. الاستقرار يأتي أولاً.' },
-              outcome: { en: 'Stability fixes the present.', ar: 'الاستقرار يصلح الحاضر.' }
-          },
-          { 
-              step: '03', 
-              name: { en: 'PREVENT', ar: 'الوقاية' }, 
-              product: { en: '30-Day Architectural Reset', ar: 'إعادة الضبط المعماري 30 يوم' },
-              purpose: { en: 'Structural Prevention', ar: 'الوقاية الهيكلية' },
-              why: { en: 'Stability alone does not prevent relapse. Design flaws must be corrected.', ar: 'الاستقرار وحده لا يمنع الانتكاس. يجب تصحيح عيوب التصميم.' },
-              outcome: { en: 'Structure protects the future.', ar: 'الهيكل يحمي المستقبل.' }
-          },
-          { 
-              step: '04', 
-              name: { en: 'REDESIGN', ar: 'إعادة التصميم' }, 
-              product: { en: '30-Day Accelerator', ar: 'المسرع 30 يوم' },
-              purpose: { en: 'Structural Redesign', ar: 'إعادة التصميم الهيكلي' },
-              why: { en: 'High performance requires a structure built for pressure — not comfort.', ar: 'الأداء العالي يتطلب هيكلاً مبنياً للضغط — ليس للراحة.' },
-              outcome: { en: 'Design for load, not motivation.', ar: 'صمم للأحمال، ليس للتحفيز.' }
-          }
-      ]
-  },
-  testimonials: {
-      headline: { en: 'Field Inspection Reports', ar: 'تقارير ما بعد الترميم' },
-      list: [
-          {
-              id: 'rep-01',
-              name: { en: 'Sarah K. - Senior Executive', ar: 'سارة ك. - مديرة تنفيذية' },
-              before: { en: 'Structural Fatigue: Near Collapse.', ar: 'الحالة السابقة: إجهاد هيكلي وانهيار وشيك.' },
-              after: { en: 'Reinforced foundation handled 2x workload this quarter.', ar: 'النتيجة: القواعد المدعمة تحملت ضعف العمل هذا الربع.' },
-              status: { en: 'STABLE', ar: 'مستقر' }
-          },
-          {
-              id: 'rep-02',
-              name: { en: 'Ahmed M. - Entrepreneur', ar: 'أحمد م. - رائد أعمال' },
-              before: { en: 'Foundation cracks due to chronic stress.', ar: 'الحالة السابقة: شروخ في الأساس بسبب الضغط المزمن.' },
-              after: { en: 'Repoured foundation. Stress now converting to kinetic energy.', ar: 'النتيجة: تم إعادة الصب. الضغط يتحول الآن لطاقة حركية.' },
-              status: { en: 'OPTIMIZED', ar: 'أداء عالي' }
-          }
-      ]
-  },
-  faq: {
-      headline: { en: 'Technical Specifications (FAQ)', ar: 'المواصفات التقنية (أسئلة شائعة)' },
-      items: [
-          {
-              q: { en: 'Is this suitable for beginners?', ar: 'هل هذا مناسب للمبتدئين؟' },
-              a: { en: 'Yes. The Blueprint assumes no prior structural knowledge. It starts from ground zero.', ar: 'نعم. المخطط يفترض عدم وجود معرفة سابقة. نبدأ من نقطة الصفر (الحفر).' }
-          },
-          {
-              q: { en: 'Digital vs Print: Which is better?', ar: 'أيهما أفضل: الديجيتال أم المطبوع؟' },
-              a: { en: 'The printed book is designed as a physical artifact for deep work. Digital is for quick reference.', ar: 'الكتاب المطبوع مصمم كأداة مادية للعمل العميق. الديجيتال للمراجع السريعة.' }
-          },
-          {
-              q: { en: 'How much time is required daily?', ar: 'كم من الوقت يتطلب يومياً؟' },
-              a: { en: 'The Maintenance Protocol requires 15 minutes AM and 15 minutes PM.', ar: 'بروتوكول الصيانة يتطلب 15 دقيقة صباحاً و 15 دقيقة مساءً.' }
-          }
-      ]
-  },
-  stack: {
-      headline: { en: 'What’s Included in the Complete System', ar: 'ماذا يتضمن النظام الكامل' },
-      items: [
-          { name: { en: 'The Blueprint (Book)', ar: 'كتاب المخطط' }, desc: { en: 'Understand the architecture of collapse before repair.', ar: 'افهم هندسة الانهيار قبل الإصلاح.' } },
-          { name: { en: '28-Day Foundation Workbook', ar: 'كراسة التأسيس 28 يوم' }, desc: { en: 'Stabilize your system and stop internal overload.', ar: 'ثبت نظامك وأوقف الحمل الزائد الداخلي.' } },
-          { name: { en: '30-Day Architectural Reset', ar: 'إعادة الضبط المعماري' }, desc: { en: 'Correct structural design errors and prevent relapse.', ar: 'صحح أخطاء التصميم وامنع الانتكاس.' } },
-          { name: { en: '30-Day Accelerator (Advanced)', ar: 'المسرع المتقدم' }, desc: { en: 'Redesign your internal structure for performance under pressure.', ar: 'أعد تصميم هيكلك للأداء تحت الضغط.' } }
-      ]
-  },
-  qualifiers: {
-      forYou: {
-          title: { en: 'This Is For You If:', ar: 'هذا لك إذا:' },
-          items: [
-              { en: 'You’re capable but exhausted', ar: 'أنت قادر لكنك منهك' },
-              { en: 'You want systems, not motivation', ar: 'تريد أنظمة، لا تحفيز' },
-              { en: 'You respect logic over hype', ar: 'تحترم المنطق أكثر من الضجيج' },
-              { en: 'You’re ready for responsibility', ar: 'أنت مستعد للمسؤولية' }
-          ]
-      },
-      notForYou: {
-          title: { en: 'This Is NOT For You If:', ar: 'هذا ليس لك إذا:' },
-          items: [
-              { en: 'You want quick fixes', ar: 'تريد حلولاً سريعة' },
-              { en: 'You avoid discomfort', ar: 'تتجنب عدم الراحة' },
-              { en: 'You want inspiration without structure', ar: 'تريد إلهاماً بدون هيكل' }
-          ]
-      }
-  },
-  finalCta: {
-      headline: { en: 'You Don’t Need to Change Your Life.\nYou Need a Structure That Can Hold It.', ar: 'لا تحتاج لتغيير حياتك.\nتحتاج لهيكل يمكنه حملها.' },
-      button: { en: 'BEGIN THE REBUILD', ar: 'ابدأ إعادة البناء' },
-      trust: { en: 'Secure Checkout • Instant Access • 30-Day Guarantee', ar: 'دفع آمن • وصول فوري • ضمان 30 يوم' }
-  }
-};
-
-export const REPAIR_PROTOCOLS = {
-    [AssessmentCategory.FOUNDATION]: {
-        severity: { ar: 'تصدع في القواعد', en: 'Foundation Cracks' },
-        prescription: { 
-            ar: 'الجسد هو الأرضية التي تحمل المبنى. أنت بحاجة لتدعيم الخرسانة فوراً.', 
-            en: 'The body is the bedrock. Immediate concrete reinforcement required.' 
-        },
-        action: { ar: 'تطبيق بروتوكول النوم 10-3-2-1.', en: 'Deploy 10-3-2-1 Sleep Protocol.' },
-        ref: 'Spec: Chapter 04'
-    },
-    [AssessmentCategory.STRUCTURE]: {
-        severity: { ar: 'إجهاد في الأعمدة', en: 'Column Fatigue' },
-        prescription: { 
-            ar: 'الأعمدة العقلية تحت ضغط عالٍ. خطر الانهيار الوشيك بسبب الأحمال الزائدة.', 
-            en: 'Cognitive load exceeds capacity. Imminent risk of collapse.' 
-        },
-        action: { ar: 'تفعيل نظام "عزل الضوضاء".', en: 'Activate Noise Insulation Systems.' },
-        ref: 'Spec: Chapter 05'
-    },
-    [AssessmentCategory.INTERIOR]: {
-        severity: { ar: 'عتمة داخلية', en: 'Interior Void' },
-        prescription: { 
-            ar: 'النظام الروحي معطل. الضوء لا يدخل، مما يسبب العفن في الغرف الداخلية.', 
-            en: 'Spiritual HVAC malfunction. Lack of light causing internal decay.' 
-        },
-        action: { ar: 'فتح "منافذ المعنى" يومياً.', en: 'Open Meaning Vents daily.' },
-        ref: 'Spec: Chapter 07'
-    },
-    [AssessmentCategory.EXTERIOR]: {
-        severity: { ar: 'واجهة متآكلة', en: 'Facade Erosion' },
-        prescription: { 
-            ar: 'الحدود الخارجية متهالكة، مما يسمح للمتطفلين بتخريب الموقع.', 
-            en: 'Perimeter fence compromised. Unauthorized entry detected.' 
-        },
-        action: { ar: 'إعادة رسم حدود الملكية.', en: 'Reinforce Perimeter Walls.' },
-        ref: 'Spec: Chapter 08'
-    }
-};
-
 export const PILLARS: PillarData[] = [
   {
     id: 'mind',
     title: { ar: 'غرفة التحكم (العقل)', en: 'Control Room (Mind)', fr: 'Salle de Contrôle' },
     channelId: 'SECTOR-A',
     description: { 
-      ar: 'إعادة برمجة أنظمة التشغيل العقلية.', 
-      en: 'Reprogramming cognitive operating systems.', 
+      ar: 'إعادة برمجة أنظمة التشغيل العقلية لتتحمل ضغوط الحياة الحديثة.', 
+      en: 'Reprogramming cognitive operating systems to handle modern life pressures.', 
       fr: 'Reprogrammation cognitive.' 
     },
     image: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=2068&auto=format&fit=crop',
@@ -305,8 +99,8 @@ export const PILLARS: PillarData[] = [
     title: { ar: 'الأساسات (الجسد)', en: 'Foundation (Body)', fr: 'Fondation' },
     channelId: 'SECTOR-B',
     description: { 
-      ar: 'صب القواعد الخرسانية للطاقة الحيوية.', 
-      en: 'Pouring concrete bases for bio-energy.', 
+      ar: 'صب القواعد الخرسانية للطاقة الحيوية والترميم الجسدي.', 
+      en: 'Pouring concrete bases for bio-energy and physical restoration.', 
       fr: 'Coulage des bases.' 
     },
     image: 'https://images.unsplash.com/photo-1590004953392-5aba2e78b336?q=80&w=2070&auto=format&fit=crop',
@@ -317,8 +111,8 @@ export const PILLARS: PillarData[] = [
     title: { ar: 'التصميم الداخلي (الروح)', en: 'Interiors (Spirit)', fr: 'Intérieurs' },
     channelId: 'SECTOR-C',
     description: { 
-      ar: 'توجيه المبنى نحو الشمال الحقيقي.', 
-      en: 'Orienting the structure to True North.', 
+      ar: 'توجيه المبنى نحو الشمال الحقيقي وإضاءة الغرف المظلمة.', 
+      en: 'Orienting the structure to True North and lighting dark rooms.', 
       fr: 'Orientation vers le Nord.' 
     },
     image: 'https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?q=80&w=2070&auto=format&fit=crop',
@@ -329,8 +123,8 @@ export const PILLARS: PillarData[] = [
     title: { ar: 'الواجهة (العلاقات)', en: 'Facade (Social)', fr: 'Façade' },
     channelId: 'SECTOR-D',
     description: { 
-      ar: 'أنظمة الحماية والاتصال بالعالم الخارجي.', 
-      en: 'Protection systems and external interfaces.', 
+      ar: 'أنظمة الحماية والاتصال بالعالم الخارجي عبر حدود متينة.', 
+      en: 'Protection systems and external interfaces via solid boundaries.', 
       fr: 'Systèmes de protection.' 
     },
     image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop',
@@ -338,156 +132,7 @@ export const PILLARS: PillarData[] = [
   }
 ];
 
-export const PHASES = [
-    {
-        id: '01',
-        title: { ar: 'مسح الموقع', en: 'Site Survey', fr: 'Enquête sur site' },
-        desc: { 
-            ar: 'تحليل التربة النفسية واكتشاف التصدعات المخفية.',
-            en: 'Analyzing psychological soil and detecting hidden fractures.',
-            fr: 'Analyse du sol.'
-        },
-        suffix: { ar: 'Ref: Specs-01', en: 'Ref: Specs-01' }
-    }
-];
-
-export const TOP_BUILDERS = [
-    { id: 'u1', name: 'Sarah A.', rank: { ar: 'مهندس أول', en: 'Senior Architect', fr: 'Architecte Senior' }, projectsCompleted: 12, avatarChar: 'S' },
-    { id: 'u2', name: 'Karim M.', rank: { ar: 'بناء محترف', en: 'Pro Builder', fr: 'Bâtisseur Pro' }, projectsCompleted: 8, avatarChar: 'K' },
-    { id: 'u3', name: 'Lina K.', rank: { ar: 'بناء', en: 'Builder', fr: 'Bâtisseur' }, projectsCompleted: 5, avatarChar: 'L' }
-];
-
-export const COMMUNITY_POSTS: CommunityPost[] = [
-    {
-        id: 'p1',
-        author: 'Ahmed Z.',
-        role: { ar: 'بناء', en: 'Builder', fr: 'Bâtisseur' },
-        rankLevel: 1,
-        phase: 'Foundation',
-        title: { ar: 'اكتشاف شروخ في روتين الصباح', en: 'Found cracks in morning routine', fr: 'Fissures matinales' },
-        content: { ar: 'حاولت البناء على أساسات هشة، والآن أعيد الصب.', en: 'Tried building on weak foundations, now repouring.', fr: 'Refaire les fondations.' },
-        endorsements: 12,
-        reviews: [],
-        tags: ['Foundation'],
-        timestamp: '2h ago',
-        type: 'standard'
-    },
-    {
-        id: 'p2',
-        author: 'Mona L.',
-        role: { ar: 'مهندس مبتدئ', en: 'Novice', fr: 'Novice' },
-        rankLevel: 0,
-        phase: 'Structure',
-        title: { ar: 'انهيار كامل في جدار التركيز', en: 'Total collapse of focus wall', fr: 'Effondrement' },
-        content: { ar: 'أواجه صعوبة في تثبيت عمود "العمل العميق". كلما بدأت، تنهار القلعة بسبب المقاطعات. أحتاج لدعم هندسي عاجل.', en: 'Struggling to fix the Deep Work pillar. Need urgent structural advice.', fr: 'Besoin d\'aide.' },
-        endorsements: 5,
-        reviews: [],
-        tags: ['Focus', 'Structure'],
-        timestamp: '15m ago',
-        type: 'emergency',
-        isSolved: false
-    }
-];
-
-export const RESTORATION_LOGS = [
-    {
-        id: 'LOG-001',
-        name: { ar: 'محمد ع.', en: 'Mohamed A.', fr: 'Mohamed A.' },
-        role: { ar: 'مهندس برمجيات', en: 'Software Engineer', fr: 'Ingénieur' },
-        status: { ar: 'تم الترميم', en: 'Restored', fr: 'Restauré' },
-        report: { 
-            ar: 'كنت أعتقد أن التعب هو "ضريبة النجاح". اكتشفت أنه مجرد "سوء تصميم" لليوم.', 
-            en: 'I thought fatigue was the "tax of success". Discovered it was just "bad design" of the day.',
-            fr: 'Mauvaise conception.' 
-        }
-    },
-    {
-        id: 'LOG-002',
-        name: { ar: 'نور س.', en: 'Nour S.', fr: 'Nour S.' },
-        role: { ar: 'طبيبة', en: 'Doctor', fr: 'Médecin' },
-        status: { ar: 'تحت الإنشاء', en: 'Under Construction', fr: 'En Construction' },
-        report: { 
-            ar: 'بدأت للتو في مرحلة الهدم. إزالة التوقعات القديمة مؤلمة لكنها ضرورية.', 
-            en: 'Just started demolition phase. Removing old expectations is painful but necessary.',
-            fr: 'Démolition en cours.' 
-        }
-    }
-];
-
-// --- MISSING EXPORTS ADDED BELOW ---
-
-/**
- * Missing: BLOG_POSTS
- */
-export const BLOG_POSTS: BlogPost[] = [
-  {
-    id: 'post-1',
-    category: 'mind',
-    title: { ar: 'هندسة النوم', en: 'The Architecture of Sleep', fr: 'Architecture du Sommeil' },
-    date: '2024-03-20',
-    excerpt: { ar: 'كيف تصمم ليلة تعيد بناء خلاياك.', en: 'How to design a night that rebuilds your cells.', fr: 'Concevoir une nuit réparatrice.' },
-    content: { 
-        ar: '<p>النوم ليس مجرد راحة، بل هو عملية ترميم إنشائية مكثفة. في هذا المقال نناقش بروتوكولات تحسين جودة النوم للهيكل البشري.</p>', 
-        en: '<p>Sleep is not merely rest; it is an intensive structural restoration process. In this article, we discuss protocols to optimize sleep quality for the human frame.</p>', 
-        fr: '<p>Le sommeil est une restauration structurelle.</p>' 
-    },
-    image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=2060&auto=format&fit=crop'
-  },
-  {
-    id: 'post-2',
-    category: 'body',
-    title: { ar: 'صب الأساسات', en: 'Pouring the Foundations', fr: 'Coulage des bases' },
-    date: '2024-03-15',
-    excerpt: { ar: 'لماذا يفشل جسدك تحت الضغط؟', en: 'Why does your body fail under pressure?', fr: 'Pourquoi le corps échoue sous pression ?' },
-    content: { 
-        ar: '<p>كلما زاد الحمل، زادت الحاجة لأساس صلب. سنتناول كيفية تقوية القواعد الجسدية لتحمل ضغوط الحياة الحديثة.</p>', 
-        en: '<p>As the load increases, the need for a solid base grows. We explore how to reinforce physical foundations to withstand modern life pressures.</p>', 
-        fr: '<p>Renforcer les bases physiques.</p>' 
-    },
-    image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop'
-  }
-];
-
-/**
- * Missing: PRODUCTS
- */
 export const PRODUCTS: Product[] = [
-  {
-    id: 'book_digital',
-    category: 'book',
-    name: { ar: 'المخطط (نسخة رقمية)', en: 'The Blueprint (Digital)', fr: 'Le Plan (Digital)' },
-    description: { ar: 'النسخة الرقمية الكاملة للمخطط لبدء التشخيص فوراً.', en: 'Full digital version of the blueprint to start diagnosis immediately.', fr: 'Version digitale complète.' },
-    price: 29,
-    type: 'digital',
-    image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=1974&auto=format&fit=crop'
-  },
-  {
-    id: 'book_print',
-    category: 'book',
-    name: { ar: 'المخطط (نسخة مطبوعة)', en: 'The Blueprint (Hardcover)', fr: 'Le Plan (Livre)' },
-    description: { ar: 'نسخة فاخرة مجلدة من المخطط للعمل العميق المستمر.', en: 'Premium hardcover edition of the blueprint for sustained deep work.', fr: 'Édition reliée premium.' },
-    price: 49,
-    type: 'physical',
-    image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2112&auto=format&fit=crop'
-  },
-  {
-      id: 'workbook_print',
-      category: 'book',
-      name: { ar: 'كراسة التأسيس 28 يوم', en: '28-Day Workbook', fr: 'Cahier de 28 jours' },
-      description: { ar: 'تمارين عملية يومية لإعادة صب قواعد حياتك.', en: 'Daily practical drills to re-pour your life foundations.', fr: 'Exercices pratiques quotidiens.' },
-      price: 27,
-      type: 'physical',
-      image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=2070&auto=format&fit=crop'
-  },
-  {
-      id: 'system_hybrid',
-      category: 'course',
-      name: { ar: 'النظام الهجين المتكامل', en: 'Hybrid Integration System', fr: 'Système Hybride' },
-      description: { ar: 'الوصول الكامل للنظام التفاعلي والكتب الرقمية والمطبوعة.', en: 'Full access to interactive system, digital and print books.', fr: 'Accès complet au système.' },
-      price: 97,
-      type: 'hybrid',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop'
-  },
   {
     id: 'bundle_master',
     category: 'bundle',
@@ -496,12 +141,25 @@ export const PRODUCTS: Product[] = [
     price: 397,
     type: 'hybrid',
     image: 'https://images.unsplash.com/photo-1503387762-592dea58ef21?q=80&w=2070&auto=format&fit=crop'
+  },
+  {
+    id: 'book_digital',
+    category: 'book',
+    name: { ar: 'المخطط (PDF)', en: 'The Blueprint (Digital)', fr: 'Le Plan (Digital)' },
+    price: 29,
+    type: 'digital',
+    image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=1974&auto=format&fit=crop'
+  },
+  {
+    id: 'book_print',
+    category: 'book',
+    name: { ar: 'المخطط (مطبوع)', en: 'The Blueprint (Hardcover)', fr: 'Le Plan (Livre)' },
+    price: 49,
+    type: 'physical',
+    image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2112&auto=format&fit=crop'
   }
 ];
 
-/**
- * Missing: ART_PRODUCTS
- */
 export const ART_PRODUCTS: Product[] = [
   {
     id: 'art-new-01',
@@ -535,43 +193,290 @@ export const ART_PRODUCTS: Product[] = [
   }
 ];
 
-/**
- * Missing: THIRTY_DAY_PROGRAM
- */
-export const THIRTY_DAY_PROGRAM: WeekPlan[] = [
-  {
-    id: 1,
-    title: { ar: 'الأسبوع 1: فحص التربة', en: 'Week 1: Soil Survey', fr: 'Semaine 1: Enquête' },
-    focus: { ar: 'تحديد التصدعات الأساسية', en: 'Identifying core fractures', fr: 'Identifier les fissures' },
-    days: [
-      { day: 1, title: { ar: 'بداية الهدم', en: 'Demolition Start', fr: 'Début démolition' }, task: { ar: 'حدد 3 عادات تعيق بناءك وهدمها فوراً.', en: 'Identify 3 habits hindering your structure and demolish them immediately.', fr: '3 habitudes à éliminer.' }, isLocked: false, bookPageRef: 12 },
-      { day: 2, title: { ar: 'تحليل الأحمال', en: 'Load Analysis', fr: 'Analyse de charge' }, task: { ar: 'راقب مستويات التوتر اليومية وحدد مصدر الثقل.', en: 'Monitor daily stress levels and identify the source of load.', fr: 'Surveiller le stress.' }, isLocked: false, bookPageRef: 18 }
-    ]
-  },
-  {
-      id: 2,
-      title: { ar: 'الأسبوع 2: صب القواعد', en: 'Week 2: Pouring Base', fr: 'Semaine 2: Coulage' },
-      focus: { ar: 'تثبيت الأساس الجسدي', en: 'Stabilizing physical foundation', fr: 'Stabilisation physique' },
-      days: [
-          { day: 8, title: { ar: 'خرسانة النوم', en: 'Sleep Concrete', fr: 'Béton du sommeil' }, task: { ar: 'تطبيق بروتوكول 10-3-2-1 للنوم العميق.', en: 'Apply 10-3-2-1 protocol for deep sleep.', fr: 'Protocole 10-3-2-1.' }, isLocked: true, bookPageRef: 45 }
-      ]
-  }
-];
-
-/**
- * Missing: THEORY_CARDS
- */
 export const THEORY_CARDS: DayPlan[] = [
   {
     day: 1,
-    title: { ar: 'قانون الثبات', en: 'Law of Stability', fr: 'Loi de Stabilité' },
-    task: { ar: 'لا يمكن البناء على أرض متحركة. ابدأ بتثبيت موقعك الروحي.', en: 'You cannot build on shifting ground. Start by stabilizing your spiritual site.', fr: 'Pas de construction sur sol mouvant.' },
+    title: { ar: 'قانون الثبات الإنشائي', en: 'Law of Structural Stability', fr: 'Loi de Stabilité' },
+    task: { ar: 'لا يمكن البناء على أرض متحركة. ابدأ بتثبيت موقعك الروحي قبل صب القواعد الجسدية.', en: 'You cannot build on shifting ground. Start by stabilizing your spiritual site before pouring physical bases.', fr: 'Pas de construction sur sol mouvant.' },
     isLocked: false
   },
   {
     day: 2,
     title: { ar: 'قانون توزيع الأحمال', en: 'Law of Load Distribution', fr: 'Loi de Distribution' },
-    task: { ar: 'الضغط غير الموزع يؤدي للانهيار. تعلم كيف تعزل المهام.', en: 'Undistributed pressure leads to collapse. Learn how to isolate tasks.', fr: 'Pression mal répartie = effondrement.' },
+    task: { ar: 'الضغط غير الموزع يؤدي للانهيار الحتمي. تعلم كيف تعزل المهام وتوزع الجهد على الأعمدة الأربعة.', en: 'Undistributed pressure leads to inevitable collapse. Learn how to isolate tasks and distribute effort.', fr: 'Pression mal répartie = effondrement.' },
+    isLocked: false
+  },
+  {
+    day: 3,
+    title: { ar: 'قانون التوسع الهيكلي', en: 'Law of Structural Expansion', fr: 'Loi d\'Expansion' },
+    task: { ar: 'الهيكل القوي هو الذي يسمح بالنمو دون فقدان التوازن. اختبر مرونة جدرانك العقلية اليوم.', en: 'A strong structure allows for growth without losing balance. Test the flexibility of your mental walls.', fr: 'Croissance et équilibre.' },
+    isLocked: false
+  },
+  {
+    day: 4,
+    title: { ar: 'قانون الصيانة الدورية', en: 'Law of Routine Maintenance', fr: 'Loi de Maintenance' },
+    task: { ar: 'أي مبنى يُترك دون صيانة ينهار تدريجياً. حدد "الصدأ" في عاداتك وقم بصنفرته فوراً.', en: 'Any building left without maintenance eventually collapses. Identify the rust in your habits and sand it off.', fr: 'Entretien du système.' },
     isLocked: false
   }
 ];
+
+export const THIRTY_DAY_PROGRAM: WeekPlan[] = [
+  {
+    id: 1,
+    title: { ar: 'الأسبوع 1: مسح الموقع', en: 'Week 1: Site Survey', fr: 'Semaine 1: Enquête' },
+    focus: { ar: 'تحديد التصدعات الأساسية', en: 'Identifying core fractures', fr: 'Identifier les fissures' },
+    days: [
+      { day: 1, title: { ar: 'بداية الهدم', en: 'Demolition Start', fr: 'Début démolition' }, task: { ar: 'حدد 3 عادات تعيق بناءك وهدمها فوراً من جدولك.', en: 'Identify 3 habits hindering your structure and demolish them immediately.', fr: '3 habitudes à éliminer.' }, isLocked: false, bookPageRef: 12 },
+      { day: 2, title: { ar: 'تحليل الأحمال', en: 'Load Analysis', fr: 'Analyse de charge' }, task: { ar: 'راقب مستويات التوتر اليومية وحدد مصدر الثقل الحقيقي على عمود العقل.', en: 'Monitor daily stress levels and identify the source of load.', fr: 'Surveiller le stress.' }, isLocked: false, bookPageRef: 18 },
+      { day: 3, title: { ar: 'فحص التربة', en: 'Soil Testing', fr: 'Test de sol' }, task: { ar: 'حلل البيئة المحيطة بك؛ هل تدعم البناء أم تسبب التآكل؟', en: 'Analyze your environment; does it support building or cause erosion?', fr: 'Analyser l\'environnement.' }, isLocked: false, bookPageRef: 24 }
+    ]
+  },
+  {
+    id: 2,
+    title: { ar: 'الأسبوع 2: صب القواعد', en: 'Week 2: Pouring Foundations', fr: 'Semaine 2: Fondations' },
+    focus: { ar: 'تثبيت الأساس الجسدي', en: 'Stabilizing physical foundation', fr: 'Stabilisation physique' },
+    days: [
+      { day: 8, title: { ar: 'صب الخرسانة', en: 'Concrete Pouring', fr: 'Coulage' }, task: { ar: 'ابدأ بروتوكول التغذية الإنشائية؛ صب الوقود الصحيح في محركك.', en: 'Start structural nutrition protocol.', fr: 'Nutrition structurelle.' }, isLocked: true, bookPageRef: 45 },
+      { day: 9, title: { ar: 'تدعيم الأعمدة', en: 'Column Reinforcement', fr: 'Renforcement' }, task: { ar: 'تمارين القوة الأساسية؛ الجسد هو الحامل لكل الأفكار.', en: 'Basic strength exercises.', fr: 'Force physique.' }, isLocked: true, bookPageRef: 52 }
+    ]
+  },
+  {
+    id: 3,
+    title: { ar: 'الأسبوع 3: الهيكل الحديدي', en: 'Week 3: Steel Frame', fr: 'Semaine 3: Structure' },
+    focus: { ar: 'بناء الانضباط العقلي', en: 'Building mental discipline', fr: 'Discipline mentale' },
+    days: [
+      { day: 15, title: { ar: 'عزل الضوضاء', en: 'Acoustic Insulation', fr: 'Isolation' }, task: { ar: 'صيام رقمي كامل لمدة 12 ساعة؛ اعزل عقلك عن المشتتات.', en: '12-hour digital detox.', fr: 'Détox digitale.' }, isLocked: true, bookPageRef: 78 }
+    ]
+  },
+  {
+    id: 4,
+    title: { ar: 'الأسبوع 4: التشطيب النهائي', en: 'Week 4: Final Finishing', fr: 'Semaine 4: Finitions' },
+    focus: { ar: 'التوجيه الروحي والجمال', en: 'Spiritual orientation and beauty', fr: 'Orientation spirituelle' },
+    days: [
+      { day: 22, title: { ar: 'إضاءة الغرف', en: 'Lighting Rooms', fr: 'Éclairage' }, task: { ar: 'حدد 3 قيم عليا توجه حياتك؛ هذه هي نوافذ الضوء.', en: 'Identify 3 core values.', fr: 'Valeurs fondamentales.' }, isLocked: true, bookPageRef: 110 }
+    ]
+  }
+];
+
+export const BLOG_POSTS: BlogPost[] = [
+  {
+    id: 'post-1',
+    category: 'mind',
+    title: { ar: 'هندسة النوم', en: 'The Architecture of Sleep', fr: 'Architecture du Sommeil' },
+    date: '2024-03-20',
+    excerpt: { ar: 'كيف تصمم ليلة تعيد بناء خلاياك وتثبت أعمدتك العقلية.', en: 'How to design a night that rebuilds your cells.', fr: 'Concevoir une nuit réparatrice.' },
+    content: { ar: '<p>النوم ليس مجرد راحة، بل هو عملية ترميم إنشائية مكثفة تهدف إلى صيانة الذاكرة وترميم الأنسجة العصبية. في هذا المقال، نستعرض مخططاً زمنياً لتجهيز "غرفة المحرك" قبل الإقلاع نحو الأحلام.</p>', en: '<p>Sleep is not merely rest; it is an intensive structural restoration process aimed at maintaining memory and repairing neural tissues. In this entry, we examine a timeline for preparing the "engine room" before taking off into dreams.</p>', fr: '<p>Le sommeil est une restauration structurelle.</p>' },
+    image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=2060&auto=format&fit=crop'
+  },
+  {
+    id: 'post-2',
+    category: 'body',
+    title: { ar: 'قوانين الأحمال النفسية', en: 'Laws of Psychological Loads', fr: 'Lois des charges' },
+    date: '2024-03-25',
+    excerpt: { ar: 'كيف تتعامل مع الضغوط دون أن ينهار هيكلك الداخلي.', en: 'Handling pressure without internal collapse.', fr: 'Gérer la pression.' },
+    content: { ar: '<p>الضغط النفسي يشبه الحمل الميكانيكي على الجسور؛ إذا لم يتم توزيعه بشكل صحيح على الأعمدة (عقلك، جسدك، علاقاتك)، فسيحدث شرخ في أضعف نقطة. تعلم كيف تستخدم "المخمدات الهيكلية" لامتصاص صدمات الحياة.</p>', en: '<p>Stress is like mechanical load on bridges; if not properly distributed across pillars (mind, body, social), a fracture will occur at the weakest point. Learn how to use "structural dampers" to absorb life\'s shocks.</p>', fr: '<p>Le stress est une charge mécanique.</p>' },
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop'
+  },
+  {
+    id: 'post-3',
+    category: 'spirit',
+    title: { ar: 'الواجهة الخارجية: هندسة العلاقات', en: 'The Social Facade: Relationship Engineering', fr: 'Façade Sociale' },
+    date: '2024-04-02',
+    excerpt: { ar: 'كيف تبني حدوداً تحمي هيكلك الداخلي وتسمح بتبادل صحي.', en: 'How to build boundaries that protect your internal structure.', fr: 'Ingénierie des relations.' },
+    content: { ar: '<p>العلاقات هي واجهة المبنى؛ هي ما يراه الناس وما يتفاعلون معه. الحدود (Boundaries) ليست جدراناً صماء، بل هي أنظمة حماية ذكية تسمح بدخول "الضوء" وتمنع "التسلل" الذي يستنزف الطاقة الأساسية. في هذا السجل، نحدد مواصفات السياج الأمني لذاتك.</p>', en: '<p>Relationships are the building\'s facade; they are what people see and interact with. Boundaries are not solid walls, but intelligent protection systems that allow "light" in while preventing "intrusion" that drains core energy. In this log, we define the security fence specifications for your self.</p>', fr: '<p>Ingénierie des relations et limites.</p>' },
+    image: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop'
+  },
+  {
+    id: 'post-4',
+    category: 'mind',
+    title: { ar: 'ترميم الأعمدة العقلية', en: 'Restoring Cognitive Pillars', fr: 'Restauration Cognitive' },
+    date: '2024-04-10',
+    excerpt: { ar: 'تقنيات إصلاح شروخ الإجهاد في إطار اتخاذ القرار.', en: 'Techniques for repairing stress fractures in decision-making.', fr: 'Réparation des piliers.' },
+    content: { ar: '<p>الضبابية العقلية هي علامة على إجهاد المعادن في أعمدتك العقلية. لاتخاذ قرارات حاسمة، يجب أن يكون الهيكل مستقراً. نستعرض تقنيات "الحقن الخرساني" لتعزيز المنطق وتثبيت الوضوح في أوقات الزلازل الوجودية.</p>', en: '<p>Mental fog is a sign of metal fatigue in your cognitive pillars. To make critical decisions, the structure must be stable. We explore "concrete injection" techniques to reinforce logic and stabilize clarity during existential earthquakes.</p>', fr: '<p>Réparer les piliers mentaux.</p>' },
+    image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop'
+  }
+];
+
+export const COMMUNITY_POSTS: CommunityPost[] = [
+  {
+    id: 'post-sos-01',
+    author: 'Architect Alpha',
+    role: { ar: 'كبير المهندسين', en: 'Master Architect', fr: 'Maître Architecte' },
+    rankLevel: 10,
+    phase: 'Structure',
+    title: { ar: 'تسرب في التركيز العالي', en: 'High Focus Leak Detected', fr: 'Fuite de concentration' },
+    content: { ar: 'لاحظت انخفاضاً في عزم التركيز بعد الساعات الست الأولى. هل هناك تعديل في بروتوكول الصيانة؟', en: 'Noticed a drop in focus torque after the first 6 hours. Any adjustments to the maintenance protocol?', fr: 'Baisse de concentration après 6h.' },
+    endorsements: 12,
+    reviews: [],
+    tags: ['Focus', 'Maintenance'],
+    timestamp: '2h ago',
+    type: 'emergency',
+    status: 'approved'
+  },
+  {
+    id: 'post-log-02',
+    author: 'Sarah Jenkins',
+    role: { ar: 'مهندس أول', en: 'Senior Architect', fr: 'Architecte Senior' },
+    rankLevel: 8,
+    phase: 'Foundation',
+    title: { ar: 'نجاح في صب القواعد الجسدية', en: 'Physical Foundation Pour Successful', fr: 'Fondation Physique Réussie' },
+    content: { ar: 'بعد 14 يوماً من الالتزام ببروتوكول النوم 10-3-2-1، انخفض معدل ضربات القلب أثناء الراحة بمقدار 15 نقطة. الهيكل أصبح أكثر ثباتاً.', en: 'After 14 days of adhering to the 10-3-2-1 sleep protocol, my resting HR dropped by 15 points. The structure is feeling significantly more stable.', fr: 'Sommeil amélioré, structure stable.' },
+    endorsements: 24,
+    reviews: [],
+    tags: ['Sleep', 'Success'],
+    timestamp: '5h ago',
+    type: 'standard',
+    status: 'approved'
+  },
+  {
+    id: 'post-share-03',
+    author: 'David Chen',
+    role: { ar: 'مهندس ميداني', en: 'Field Architect', fr: 'Architecte de Terrain' },
+    rankLevel: 5,
+    phase: 'Interiors',
+    title: { ar: 'مشاركة مخطط: عزل العلاقات السامة', en: 'Blueprint Share: Toxic Relationship Isolation', fr: 'Plan: Isolation Toxique' },
+    content: { ar: 'قمت بتصميم نظام "صمامات أحادية الاتجاه" للتواصل مع المحيط السام؛ يسمح بخروج المعلومات الضرورية ويمنع دخول الطاقة السلبية.', en: 'Designed a "one-way valve" communication system for toxic environments; allows necessary info out while blocking negative inflow.', fr: 'Système d\'isolation énergétique.' },
+    endorsements: 45,
+    reviews: [],
+    tags: ['Boundaries', 'Blueprint'],
+    timestamp: 'Yesterday',
+    type: 'standard',
+    status: 'approved'
+  },
+  {
+    id: 'post-sos-04',
+    author: 'Marcus Aurel',
+    role: { ar: 'متدرب بناء', en: 'Builder Apprentice', fr: 'Apprenti Bâtisseur' },
+    rankLevel: 2,
+    phase: 'Demolition',
+    title: { ar: 'تحذير من إجهاد مادي في عمود الإرادة', en: 'Warning: Material Fatigue in Willpower Column', fr: 'Fatigue du Pilier Volonté' },
+    content: { ar: 'أواجه صعوبة في هدم العادات الغذائية القديمة. يبدو أن عمود الإرادة لدي يظهر علامات تصدع مبكرة تحت الضغط.', en: 'Struggling with demolishing old dietary habits. My willpower column is showing early signs of fracture under pressure.', fr: 'Difficulté de démolition.' },
+    endorsements: 8,
+    reviews: [],
+    tags: ['Willpower', 'Crisis'],
+    timestamp: '1d ago',
+    type: 'emergency',
+    status: 'approved'
+  }
+];
+
+export const LANDING_CONTENT = {
+  header: {
+    left: { ar: 'عمارة الإنسان', en: 'HUMAN ARCHITECTURE' },
+    right: { ar: 'العودة للمقر', en: 'BACK TO HQ' },
+    join: { ar: 'انضم للنقابة', en: 'JOIN THE GUILD' }
+  },
+  warning: { ar: 'تحذير: هذا ليس تطوير ذات تقليدي', en: 'WARNING: NOT TRADITIONAL SELF-HELP' },
+  hero: {
+    headline: { ar: 'توقف عن ترميم الشقوق.\nأعد صب الأساسات.', en: 'Stop Fixing Cracks.\nRe-Pour The Foundation.' },
+    subheadline: { ar: 'النظام الهندسي الوحيد الذي يعيد هيكلة عقلك، جسدك، وروحك باستخدام بروتوكولات العمارة البشرية.', en: 'The only engineering-grade system to restructure your mind, body, and soul using Human Architecture protocols.' },
+    support: { ar: 'مدعوم بمبادئ الهندسة الإنشائية', en: 'BACKED BY STRUCTURAL ENGINEERING PRINCIPLES' },
+    videoLabel: { ar: 'شاهد العرض الهندسي', en: 'WATCH THE ARCHITECTURAL PRESENTATION' },
+    videoDuration: { ar: 'المدة: 03:45', en: 'Duration: 03:45' },
+    cta: { ar: 'أريد إعادة بناء حياتي الآن', en: 'I WANT TO REBUILD MY LIFE NOW' },
+    guarantee: { ar: 'ضمان استرجاع 100%', en: '100% MONEY BACK GUARANTEE' }
+  },
+  problem: {
+    headline: { ar: 'أنت تحاول "تزيين" مبنى ينهار.', en: 'You Are Decorating a\nCollapsing Building.' },
+    body: { ar: 'التفكير الإيجابي والتوكيدات مثل طلاء الجدران في منزل أساساته متآكلة.', en: 'Positive thinking and affirmations are like painting the walls of a house with a rotting foundation.' },
+    emphasis: { ar: 'إذا لم تصلح الأساس، فكل ما تبنيه فوقه سيزيد من سرعة الانهيار.', en: 'If you do not fix the foundation, everything you build on top only accelerates the collapse.' }
+  },
+  failure: {
+    headline: { ar: 'لماذا تفشل التنمية البشرية؟', en: 'Why Traditional Self-Help Fails' },
+    bullets: [
+      { ar: 'تعالج الأعراض وليس الجذور', en: 'Treats symptoms, not roots' },
+      { ar: 'تعتمد على التحفيز اللحظي', en: 'Relies on temporary motivation' },
+      { ar: 'تفتقر للمخطط الإنشائي', en: 'Lacks a structural blueprint' }
+    ],
+    closing: { ar: 'أنت لا تحتاج لتحفيز، أنت تحتاج لهندسة.', en: 'You don\'t need motivation. You need engineering.' }
+  },
+  solution: {
+    headline: { ar: 'الحل: عمارة الإنسان', en: 'The Solution: Human Architecture' },
+    body: { ar: 'تطبيق قوانين الفيزياء والهندسة على الكيان البشري لتحقيق استقرار إنشائي حقيقي.', en: 'Applying laws of physics and engineering to the human entity for true structural stability.' }
+  },
+  pillars: {
+    title: { ar: 'الأعمدة الأربعة للاستقرار', en: 'The 4 Pillars of Stability' },
+    items: [
+      { title: { ar: 'العقل', en: 'The Mind' }, desc: { ar: 'غرفة التحكم', en: 'Control Room' } },
+      { title: { ar: 'الجسد', en: 'The Body' }, desc: { ar: 'الأساسات', en: 'Foundations' } },
+      { title: { ar: 'الروح', en: 'The Spirit' }, desc: { ar: 'التصميم الداخلي', en: 'Interiors' } },
+      { title: { ar: 'العلاقات', en: 'Social' }, desc: { ar: 'الواجهة', en: 'Facade' } }
+    ],
+    insight: { ar: 'انهيار عمود واحد يهدد سلامة الهيكل بالكامل.', en: 'The collapse of one pillar threatens the integrity of the entire structure.' }
+  },
+  journey: {
+    title: { ar: 'خارطة الطريق الإنشائية', en: 'The Structural Roadmap' },
+    intro: { ar: 'من التشخيص إلى التسليم النهائي.', en: 'From diagnosis to final delivery.' },
+    steps: [
+      { step: '01', name: { ar: 'التشخيص', en: 'Diagnosis' }, product: { ar: 'اختبار الإجهاد', en: 'Stress Test' }, purpose: { ar: 'تحديد الكسور', en: 'Identify Cracks' }, why: { ar: 'لا يمكن البدء دون مسح الموقع.', en: 'Cannot start without a site survey.' }, outcome: { ar: 'تقرير الحالة الإنشائية', en: 'Integrity Report' } }
+    ]
+  },
+  testimonials: {
+    headline: { ar: 'تقارير الميدان من البنائين', en: 'FIELD REPORTS FROM BUILDERS' },
+    list: [
+      { id: 'R-101', name: { ar: 'أحمد م.', en: 'Ahmed M.' }, before: { ar: 'إرهاق مزمن', en: 'Chronic Fatigue' }, after: { ar: 'طاقة مستقرة', en: 'Stable Energy' }, status: { ar: 'تم الترميم', en: 'Restored' } }
+    ]
+  },
+  stack: {
+    headline: { ar: 'ماذا تتضمن حزمة الترسانة؟', en: 'The Arsenal Stack' },
+    items: [
+      { name: { ar: 'كتاب المخطط', en: 'The Blueprint Book' }, desc: { ar: 'الدليل الهندسي الكامل.', en: 'The complete engineering guide.' } }
+    ]
+  },
+  faq: {
+    headline: { ar: 'المواصفات الفنية (الأسئلة)', en: 'Technical Specifications (FAQ)' },
+    items: [
+      { q: { ar: 'هل أحتاج لخبرة هندسية؟', en: 'Do I need engineering experience?' }, a: { ar: 'لا، المبادئ مشروحة ببساطة للتطبيق الشخصي.', en: 'No, principles are explained simply for personal application.' } }
+    ]
+  },
+  qualifiers: {
+    forYou: { title: { ar: 'هذا النظام لك إذا:', en: 'This is for you if:' }, items: [{ ar: 'تريد نتائج قابلة للقياس', en: 'You want measurable results' }] },
+    notForYou: { title: { ar: 'هذا النظام ليس لك إذا:', en: 'Not for you if:' }, items: [{ ar: 'تبحث عن حلول سحرية سريعة', en: 'Looking for quick magic fixes' }] }
+  }
+};
+
+export const RESTORATION_LOGS = [
+    {
+        id: 'LOG-001',
+        name: { ar: 'محمد ع.', en: 'Mohamed A.', fr: 'Mohamed A.' },
+        role: { ar: 'مهندس برمجيات', en: 'Software Engineer', fr: 'Ingénieur' },
+        status: { ar: 'تم الترميم', en: 'Restored', fr: 'Restauré' },
+        report: { ar: 'كنت أعتقد أن التعب هو ضريبة النجاح. اكتشفت أنه مجرد سوء تصميم لليوم.', en: 'I thought fatigue was the tax of success. Discovered it was just bad design of the day.', fr: 'Mauvaise conception.' }
+    }
+];
+
+export const PHASES = [
+    {
+        id: '01',
+        title: { ar: 'مسح الموقع', en: 'Site Survey', fr: 'Enquête sur site' },
+        desc: { ar: 'تحليل التربة النفسية واكتشاف التصدعات المخفية.', en: 'Analyzing psychological soil and detecting hidden fractures.', fr: 'Analyse du sol.' },
+        suffix: { ar: 'Ref: Specs-01', en: 'Ref: Specs-01' }
+    }
+];
+
+export const REPAIR_PROTOCOLS = {
+    [AssessmentCategory.FOUNDATION]: {
+        severity: { ar: 'تصدع في القواعد', en: 'Foundation Cracks' },
+        prescription: { ar: 'الجسد هو الأرضية التي تحمل المبنى. أنت بحاجة لتدعيم الخرسانة فوراً.', en: 'The body is the bedrock. Immediate concrete reinforcement required.' },
+        action: { ar: 'تطبيق بروتوكول النوم 10-3-2-1.', en: 'Deploy 10-3-2-1 Sleep Protocol.' },
+        ref: 'Spec: Chapter 04'
+    },
+    [AssessmentCategory.STRUCTURE]: {
+        severity: { ar: 'إجهاد في الأعمدة', en: 'Column Fatigue' },
+        prescription: { ar: 'الأعمدة العقلية تحت ضغط عالٍ. خطر الانهيار الوشيك.', en: 'Cognitive load exceeds capacity. Imminent risk of collapse.' },
+        action: { ar: 'تفعيل نظام "عزل الضوضاء".', en: 'Activate Noise Insulation Systems.' },
+        ref: 'Spec: Chapter 05'
+    },
+    [AssessmentCategory.INTERIOR]: {
+        severity: { ar: 'عتمة داخلية', en: 'Interior Void' },
+        prescription: { ar: 'النظام الروحي معطل. الضوء لا يدخل.', en: 'Spiritual HVAC malfunction. Lack of light causing internal decay.' },
+        action: { ar: 'فتح "منافذ المعنى" يومياً.', en: 'Open Meaning Vents daily.' },
+        ref: 'Spec: Chapter 07'
+    },
+    [AssessmentCategory.EXTERIOR]: {
+        severity: { ar: 'واجهة متآكلة', en: 'Facade Erosion' },
+        prescription: { ar: 'الحدود الخارجية متهالكة.', en: 'Perimeter fence compromised. Unauthorized entry detected.' },
+        action: { ar: 'إعادة رسم حدود الملكية.', en: 'Reinforce Perimeter Walls.' },
+        ref: 'Spec: Chapter 08'
+    }
+};

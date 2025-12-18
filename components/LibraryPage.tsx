@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Language, Product } from '../types';
-import { PRODUCTS, LANDING_CONTENT } from '../constants';
+import { PRODUCTS } from '../constants';
 import { Layers, PenTool, Activity, Check, Shield, Lock, Play, ArrowRight, Star, AlertTriangle, Zap, Target, Users, BookOpen, ShoppingBag, Box } from './Icons';
 import { Magnetic } from './Magnetic';
 
