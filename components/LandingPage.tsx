@@ -287,44 +287,102 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
           </div>
       </section>
 
-      {/* 7️⃣ PRICING & CALL TO ACTION */}
+      {/* 7️⃣ PRICING & CALL TO ACTION — 4-Tier Product Ladder */}
       <section id="pricing-table" className="py-32 bg-[#0a0a0a] border-t border-white/5">
            <div className="container mx-auto px-6 text-center">
+                {/* Urgency Bar */}
+                <div className="inline-flex items-center gap-3 bg-red-900/20 border border-red-900/40 px-6 py-3 rounded-sm mb-12">
+                    <Clock size={14} className="text-red-400 animate-pulse" />
+                    <span className="text-red-400 text-xs font-bold uppercase tracking-widest">
+                        {isAr ? '⚡ عرض الإطلاق — أسعار مؤقتة قبل الارتفاع الرسمي' : '⚡ LAUNCH PRICING — Rates increase at full release'}
+                    </span>
+                </div>
+
                 <span className="text-bronze text-xs uppercase tracking-[0.4em] font-bold mb-4 block flex items-center justify-center gap-2">
-                    <CreditCard size={14} /> {isAr ? 'عقد التوريد النهائي' : 'FINAL PROCUREMENT CONTRACT'}
+                    <CreditCard size={14} /> {isAr ? 'سلّم المنتجات الهندسية' : 'ENGINEERING PRODUCT LADDER'}
                 </span>
-                <h2 className={`text-4xl md:text-7xl text-white mb-16 ${headingFont}`}>{isAr ? 'اختر خطة البناء' : 'Select Construction Plan'}</h2>
+                <h2 className={`text-4xl md:text-6xl text-white mb-6 ${headingFont}`}>{isAr ? 'ابدأ من أي مستوى' : 'Start From Any Level'}</h2>
+                <p className="text-slate-500 mb-16 max-w-xl mx-auto">{isAr ? 'كل منتج يبني على السابق — يمكنك الترقية في أي وقت.' : 'Each product builds on the last — upgrade anytime.'}</p>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto items-start">
-                    {/* Basic Tier */}
-                    <motion.div {...fadeInUp} className="bg-[#111] border border-white/10 p-10 text-left group hover:border-bronze/30 transition-all">
-                        <h3 className={`text-2xl text-white mb-4 ${headingFont}`}>{isAr ? 'المخطط الأساسي' : 'The Schematic (Digital)'}</h3>
-                        <div className="text-5xl font-mono text-white mb-10">$49 <span className="text-xs text-slate-500 uppercase tracking-widest">/ ONE TIME</span></div>
-                        <ul className="space-y-4 mb-10 text-sm text-slate-400">
-                            <li className="flex items-center gap-3"><Check size={14} className="text-bronze"/> {isAr ? 'نسخة PDF كاملة من الكتاب' : 'Full Digital Blueprint (PDF)'}</li>
-                            <li className="flex items-center gap-3"><Check size={14} className="text-bronze"/> {isAr ? 'الوورك بوك 28 يوم' : '28-Day Workbook Access'}</li>
-                            <li className="flex items-center gap-3"><Check size={14} className="text-bronze"/> {isAr ? 'تحديثات الكود مدى الحياة' : 'Lifetime Content Updates'}</li>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 max-w-7xl mx-auto items-start">
+                    
+                    {/* TIER 1: Phase 0 — Entry */}
+                    <motion.div {...fadeInUp} className="bg-[#111] border border-white/10 p-8 text-left group hover:border-white/30 transition-all flex flex-col">
+                        <div className="text-[0.5rem] uppercase tracking-[0.3em] text-slate-500 mb-3 font-mono">LEVEL 01</div>
+                        <h3 className={`text-xl text-white mb-2 ${headingFont}`}>{isAr ? 'المرحلة صفر' : 'Phase 0: Foundation'}</h3>
+                        <p className="text-xs text-slate-500 mb-6 flex-1">{isAr ? '10 أيام لتثبيت قدرة النظام قبل الانطلاق' : '10 days to install system capacity before acceleration'}</p>
+                        <div className="text-4xl font-mono text-white mb-6">$27</div>
+                        <ul className="space-y-2 mb-8 text-xs text-slate-400">
+                            <li className="flex items-center gap-2"><Check size={12} className="text-bronze"/>{isAr ? 'بروتوكول 10 أيام كامل' : 'Full 10-Day Protocol'}</li>
+                            <li className="flex items-center gap-2"><Check size={12} className="text-bronze"/>{isAr ? 'تسليم رقمي فوري' : 'Instant Digital Delivery'}</li>
+                            <li className="flex items-center gap-2"><Check size={12} className="text-bronze"/>{isAr ? 'يُحسب عند الترقية' : 'Credit toward upgrade'}</li>
                         </ul>
-                        <button onClick={handleBuyMasterPlan} className="w-full py-4 border border-white/20 text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all">
-                            {isAr ? 'اقتناء المخطط' : 'Acquire Schematic'}
+                        <button onClick={() => { if(onCheckout) { const p = PRODUCTS.find(x => x.id === 'phase0_foundation'); if(p) onCheckout([p]); }}} className="w-full py-3 border border-white/20 text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all">
+                            {isAr ? 'ابدأ هنا' : 'Start Here'}
                         </button>
                     </motion.div>
 
-                    {/* Master Tier */}
-                    <motion.div {...fadeInUp} className="bg-[#151515] border-2 border-bronze p-12 text-left relative shadow-2xl scale-105">
-                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-bronze text-black text-[0.6rem] font-bold px-6 py-1.5 uppercase tracking-[0.3em] shadow-lg">Architect's Pick</div>
-                        <h3 className={`text-3xl text-white mb-4 ${headingFont}`}>{isAr ? 'النظام المتكامل' : 'The Master Plan (Hybrid)'}</h3>
-                        <div className="text-6xl font-mono text-white mb-10">$397 <span className="text-xs text-bronze uppercase tracking-widest">/ LIFETIME</span></div>
-                        <ul className="space-y-4 mb-10 text-sm text-slate-300">
-                            <li className="flex items-center gap-3"><ShieldCheck size={16} className="text-bronze"/> {isAr ? 'كتاب مطبوع فاخر (تغليف يدوي)' : 'Premium Handcrafted Hardcover'}</li>
-                            <li className="flex items-center gap-3"><ShieldCheck size={16} className="text-bronze"/> {isAr ? 'تفعيل لوحة التحكم التفاعلية' : 'Interactive Construction Dashboard'}</li>
-                            <li className="flex items-center gap-3"><ShieldCheck size={16} className="text-bronze"/> {isAr ? 'عضوية النقابة الحصرية' : 'Builders Guild Private Access'}</li>
-                            <li className="flex items-center gap-3"><ShieldCheck size={16} className="text-bronze"/> {isAr ? 'جلسة مراجعة مع المعماري' : 'One-on-One Project Review'}</li>
+                    {/* TIER 2: Workbook — Builder */}
+                    <motion.div {...fadeInUp} transition={{delay:0.1}} className="bg-[#111] border border-white/10 p-8 text-left group hover:border-bronze/30 transition-all flex flex-col">
+                        <div className="text-[0.5rem] uppercase tracking-[0.3em] text-slate-500 mb-3 font-mono">LEVEL 02</div>
+                        <h3 className={`text-xl text-white mb-2 ${headingFont}`}>{isAr ? 'الكتاب + وورك بوك' : 'Blueprint + Workbook'}</h3>
+                        <p className="text-xs text-slate-500 mb-6 flex-1">{isAr ? 'النظرية والتطبيق معاً — 28 تمرين عملي' : 'Theory + Application — 28 hands-on drills'}</p>
+                        <div className="text-4xl font-mono text-white mb-6">$97</div>
+                        <ul className="space-y-2 mb-8 text-xs text-slate-400">
+                            <li className="flex items-center gap-2"><Check size={12} className="text-bronze"/>{isAr ? 'الكتاب الأصلي (PDF)' : 'Original Blueprint (PDF)'}</li>
+                            <li className="flex items-center gap-2"><Check size={12} className="text-bronze"/>{isAr ? 'الوورك بوك 28 يوماً' : '28-Day Workbook (PDF)'}</li>
+                            <li className="flex items-center gap-2"><Check size={12} className="text-bronze"/>{isAr ? 'يُحسب عند الترقية' : 'Credit toward upgrade'}</li>
                         </ul>
-                        <button onClick={handleBuyMasterPlan} className="w-full py-5 bg-bronze text-white text-sm uppercase tracking-[0.3em] font-bold hover:bg-white hover:text-black transition-all shadow-[0_0_40px_rgba(197,160,101,0.3)]">
-                            {isAr ? 'بدء التنفيذ الفوري' : 'Execute Master Plan'}
+                        <button onClick={() => { if(onCheckout) { const p = PRODUCTS.find(x => x.id === 'book_digital'); if(p) onCheckout([p]); }}} className="w-full py-3 border border-white/20 text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all">
+                            {isAr ? 'اقتناء الكتاب' : 'Get Blueprint'}
                         </button>
                     </motion.div>
+
+                    {/* TIER 3: 30-Day Accelerator — HIGHLIGHTED */}
+                    <motion.div {...fadeInUp} transition={{delay:0.2}} className="bg-[#151515] border-2 border-bronze p-8 text-left relative shadow-[0_0_60px_rgba(197,160,101,0.15)] flex flex-col xl:scale-105">
+                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-bronze text-black text-[0.55rem] font-bold px-4 py-1 uppercase tracking-[0.3em] whitespace-nowrap">
+                            {isAr ? '⚡ الأكثر مبيعاً' : '⚡ MOST POPULAR'}
+                        </div>
+                        <div className="text-[0.5rem] uppercase tracking-[0.3em] text-bronze mb-3 font-mono">LEVEL 03</div>
+                        <h3 className={`text-xl text-white mb-2 ${headingFont}`}>{isAr ? 'المسرّع 30 يوماً' : '30-Day Accelerator'}</h3>
+                        <p className="text-xs text-slate-400 mb-6 flex-1">{isAr ? 'البروتوكول الطبي المتكامل — 850+ صفحة علم وتطبيق' : 'Medical-grade protocol — 850+ pages of science & execution'}</p>
+                        <div className="text-4xl font-mono text-white mb-1">$297</div>
+                        <div className="text-slate-500 line-through text-xs font-mono mb-6">$497</div>
+                        <ul className="space-y-2 mb-8 text-xs text-slate-300">
+                            <li className="flex items-center gap-2"><ShieldCheck size={12} className="text-bronze"/>{isAr ? 'البروتوكول الطبي الكامل' : 'Full Medical-Grade Protocol'}</li>
+                            <li className="flex items-center gap-2"><ShieldCheck size={12} className="text-bronze"/>{isAr ? 'الكتاب + الوورك بوك' : 'Book + Workbook Included'}</li>
+                            <li className="flex items-center gap-2"><ShieldCheck size={12} className="text-bronze"/>{isAr ? 'وصول للداشبورد التفاعلي' : 'Interactive Dashboard Access'}</li>
+                            <li className="flex items-center gap-2"><ShieldCheck size={12} className="text-bronze"/>{isAr ? 'عضوية النقابة 30 يوماً' : "30-Day Guild Access"}</li>
+                        </ul>
+                        <button onClick={() => { if(onCheckout) { const p = PRODUCTS.find(x => x.id === 'accelerator_30day'); if(p) onCheckout([p]); }}} className="w-full py-4 bg-bronze text-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-black transition-all shadow-[0_0_30px_rgba(197,160,101,0.4)]">
+                            {isAr ? 'ابدأ المسرّع' : 'Launch Accelerator'}
+                        </button>
+                    </motion.div>
+
+                    {/* TIER 4: Master Bundle — Everything */}
+                    <motion.div {...fadeInUp} transition={{delay:0.3}} className="bg-[#0d0d0d] border border-white/20 p-8 text-left group hover:border-white/40 transition-all flex flex-col">
+                        <div className="text-[0.5rem] uppercase tracking-[0.3em] text-slate-500 mb-3 font-mono">LEVEL 04</div>
+                        <h3 className={`text-xl text-white mb-2 ${headingFont}`}>{isAr ? 'ترسانة المعماري الكاملة' : 'Master Architect Bundle'}</h3>
+                        <p className="text-xs text-slate-500 mb-6 flex-1">{isAr ? 'كل شيء + كتاب مطبوع + جلسة مراجعة شخصية' : 'Everything + Hardcover + Personal Review Session'}</p>
+                        <div className="text-4xl font-mono text-white mb-1">$397</div>
+                        <div className="text-slate-500 line-through text-xs font-mono mb-6">$700</div>
+                        <ul className="space-y-2 mb-8 text-xs text-slate-400">
+                            <li className="flex items-center gap-2"><ShieldCheck size={12} className="text-white"/>{isAr ? 'كتاب مطبوع فاخر (يدوي)' : 'Premium Handcrafted Hardcover'}</li>
+                            <li className="flex items-center gap-2"><ShieldCheck size={12} className="text-white"/>{isAr ? 'المسرّع 30 يوماً كاملاً' : 'Full 30-Day Accelerator'}</li>
+                            <li className="flex items-center gap-2"><ShieldCheck size={12} className="text-white"/>{isAr ? 'عضوية النقابة مدى الحياة' : 'Lifetime Guild Membership'}</li>
+                            <li className="flex items-center gap-2"><ShieldCheck size={12} className="text-white"/>{isAr ? 'جلسة مراجعة مع المعماري' : 'One-on-One Review Session'}</li>
+                        </ul>
+                        <button onClick={handleBuyMasterPlan} className="w-full py-4 border-2 border-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-black transition-all">
+                            {isAr ? 'اقتناء الترسانة الكاملة' : 'Acquire Full Arsenal'}
+                        </button>
+                    </motion.div>
+                </div>
+
+                {/* Guarantee Bar */}
+                <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-8 text-slate-500 text-xs">
+                    <div className="flex items-center gap-2"><Shield size={14} className="text-bronze"/>{isAr ? 'ضمان استرداد 30 يوم' : '30-Day Money Back Guarantee'}</div>
+                    <div className="flex items-center gap-2"><Zap size={14} className="text-bronze"/>{isAr ? 'تسليم رقمي فوري' : 'Instant Digital Delivery'}</div>
+                    <div className="flex items-center gap-2"><Users size={14} className="text-bronze"/>{isAr ? 'انضم لأكثر من 500 بنّاء' : 'Join 500+ Active Builders'}</div>
                 </div>
            </div>
       </section>
