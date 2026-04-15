@@ -178,8 +178,35 @@ export const PRODUCTS: Product[] = [
       price: 197,
       type: 'hybrid',
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop'
+  },
+  {
+    id: 'phase0_foundation',
+    category: 'bundle',
+    name: { ar: 'المرحلة صفر: التأسيس (10 أيام)', en: 'Phase 0: Foundation (10 Days)', fr: 'Phase 0: Fondation' },
+    description: { ar: 'بروتوكول التأهيل قبل الانطلاق.', en: 'Pre-launch capacity installation — build the system before you accelerate it.', fr: 'Installation de capacité.' },
+    price: 27,
+    type: 'digital',
+    image: 'https://images.unsplash.com/photo-1503387762-592dea58ef21?q=80&w=2070&auto=format&fit=crop'
+  },
+  {
+    id: 'phase12_accelerator',
+    category: 'bundle',
+    name: { ar: 'المرحلة 1-2: مسرّع الأساس (20 يوماً)', en: 'Phase 1-2: Foundation Accelerator (20 Days)', fr: 'Phase 1-2: Accélérateur' },
+    description: { ar: 'من الطاقة إلى السرعة.', en: 'From capacity to velocity — the bridge from beginner to advanced.', fr: 'Du débutant à l avancé.' },
+    price: 47,
+    type: 'digital',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop'
+  },
+  {
+    id: 'accelerator_30day',
+    category: 'bundle',
+    name: { ar: 'المسرّع: 30 يوماً للأداء العالي', en: 'The 30-Day Elite Performance Accelerator', fr: 'Accélérateur 30 Jours' },
+    description: { ar: 'البروتوكول الطبي المتكامل — 850+ صفحة من العلم والتطبيق.', en: 'Medical-grade protocol for systematic capacity expansion — 850+ pages of science and execution.', fr: 'Protocole médical de performance.' },
+    price: 297,
+    type: 'hybrid',
+    image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2070&auto=format&fit=crop'
   }
-];
+;
 
 export const ART_PRODUCTS: Product[] = [
   {
