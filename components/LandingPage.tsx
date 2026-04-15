@@ -33,6 +33,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
       return obj[lang] || obj['en'] || obj['ar'] || '';
   }, [lang]);
 
+  const handleBuyProduct = (productId: string) => {
+    if (!onCheckout) return;
+    const product = PRODUCTS.find(p => p.id === productId);
+    if (product) onCheckout([product]);
+  };
+
   const handleBuyMasterPlan = () => {
       if (!onCheckout) return;
       const product = PRODUCTS.find(p => p.id === 'bundle_master');
@@ -317,7 +323,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
                             <li className="flex items-center gap-2"><Check size={12} className="text-bronze"/>{isAr ? 'تسليم رقمي فوري' : 'Instant Digital Delivery'}</li>
                             <li className="flex items-center gap-2"><Check size={12} className="text-bronze"/>{isAr ? 'يُحسب عند الترقية' : 'Credit toward upgrade'}</li>
                         </ul>
-                        <button onClick={() => { if(onCheckout) { const p = PRODUCTS.find(x => x.id === 'phase0_foundation'); if(p) onCheckout([p]); }}} className="w-full py-3 border border-white/20 text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all">
+                        <button onClick={() => handleBuyProduct('phase0_foundation')} className="w-full py-3 border border-white/20 text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all">
                             {isAr ? 'ابدأ هنا' : 'Start Here'}
                         </button>
                     </motion.div>
@@ -333,7 +339,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
                             <li className="flex items-center gap-2"><Check size={12} className="text-bronze"/>{isAr ? 'الوورك بوك 28 يوماً' : '28-Day Workbook (PDF)'}</li>
                             <li className="flex items-center gap-2"><Check size={12} className="text-bronze"/>{isAr ? 'يُحسب عند الترقية' : 'Credit toward upgrade'}</li>
                         </ul>
-                        <button onClick={() => { if(onCheckout) { const p = PRODUCTS.find(x => x.id === 'book_digital'); if(p) onCheckout([p]); }}} className="w-full py-3 border border-white/20 text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all">
+                        <button onClick={() => handleBuyProduct('book_digital')} className="w-full py-3 border border-white/20 text-xs uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all">
                             {isAr ? 'اقتناء الكتاب' : 'Get Blueprint'}
                         </button>
                     </motion.div>
@@ -354,7 +360,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
                             <li className="flex items-center gap-2"><ShieldCheck size={12} className="text-bronze"/>{isAr ? 'وصول للداشبورد التفاعلي' : 'Interactive Dashboard Access'}</li>
                             <li className="flex items-center gap-2"><ShieldCheck size={12} className="text-bronze"/>{isAr ? 'عضوية النقابة 30 يوماً' : "30-Day Guild Access"}</li>
                         </ul>
-                        <button onClick={() => { if(onCheckout) { const p = PRODUCTS.find(x => x.id === 'accelerator_30day'); if(p) onCheckout([p]); }}} className="w-full py-4 bg-bronze text-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-black transition-all shadow-[0_0_30px_rgba(197,160,101,0.4)]">
+                        <button onClick={() => handleBuyProduct('accelerator_30day')} className="w-full py-4 bg-bronze text-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-black transition-all shadow-[0_0_30px_rgba(197,160,101,0.4)]">
                             {isAr ? 'ابدأ المسرّع' : 'Launch Accelerator'}
                         </button>
                     </motion.div>
