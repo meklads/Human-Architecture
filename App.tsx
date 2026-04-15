@@ -174,7 +174,7 @@ function App() {
           </div>
 
           <nav className="hidden xl:flex items-center gap-6">
-             {(['about', 'philosophy', 'journal', 'community', 'art-store', 'contact'] as View[]).map(v => (
+             {(['about', 'philosophy', 'journal', 'library', 'community', 'art-store', 'contact'] as View[]).map(v => (
                  <button key={v} onClick={() => navigateTo(v)} className={`text-[0.65rem] uppercase tracking-widest transition-all duration-300 ${currentView === v ? 'text-white font-bold border-b border-bronze pb-1' : 'text-slate hover:text-white'}`}>
                      {t(`nav.${v === 'art-store' ? 'gallery' : v === 'about' ? 'architect' : v}`)}
                  </button>
@@ -221,7 +221,7 @@ function App() {
                         <button onClick={() => { setTheme('light'); setMenuOpen(false); }} className={`flex flex-col items-center gap-2 ${theme === 'light' ? 'text-bronze' : 'text-slate'}`}><Sun size={24} /><span className="text-[0.5rem] uppercase tracking-widest">Light</span></button>
                         <button onClick={() => { setTheme('blueprint'); setMenuOpen(false); }} className={`flex flex-col items-center gap-2 ${theme === 'blueprint' ? 'text-bronze' : 'text-slate'}`}><Box size={24} /><span className="text-[0.5rem] uppercase tracking-widest">Arch</span></button>
                     </div>
-                    {(['home', 'about', 'philosophy', 'journal', 'community', 'art-store', 'contact', 'landing'] as View[]).map(v => (
+                    {(['home', 'about', 'philosophy', 'journal', 'library', 'community', 'art-store', 'contact', 'landing'] as View[]).map(v => (
                         <button key={v} onClick={() => navigateTo(v)} className={`block text-2xl font-serif transition-colors ${currentView === v ? 'text-bronze' : 'text-white hover:text-bronze'}`}>
                           {t(`nav.${v === 'art-store' ? 'gallery' : v === 'about' ? 'architect' : v === 'landing' ? 'blueprint' : v}`)}
                         </button>
