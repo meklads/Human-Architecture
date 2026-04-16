@@ -136,7 +136,8 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  if (!isAuthorized) {
+  // Landing page is public — no password required
+  if (!isAuthorized && currentView !== 'landing') {
     return (
       <div className="bg-[#050505] min-h-screen">
         <CustomCursor />
@@ -145,7 +146,7 @@ function App() {
     );
   }
 
-  if (loading) {
+  if (loading && isAuthorized) {
     const currentPhase = LOAD_PHASES[loadingPhase] || LOAD_PHASES[0];
     return (
       <div className="fixed inset-0 bg-[#050505] text-bronze flex flex-col items-center justify-center z-[9999]">
@@ -261,3 +262,5 @@ function App() {
 }
 
 export default App;
+
+
