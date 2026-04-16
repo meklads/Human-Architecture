@@ -51,10 +51,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
   };
 
   const fadeInUp = {
-    initial: { opacity: 0, y: 30 },
+    initial: { opacity: 0, y: 24 },
     whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.8 }
+    viewport: { once: true, amount: 0.05, margin: "0px 0px -60px 0px" },
+    transition: { duration: 0.7, ease: "easeOut" }
   };
 
   return (
@@ -294,6 +294,48 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
       </section>
 
       {/* 7️⃣ PRICING & CALL TO ACTION — 4-Tier Product Ladder */}
+
+      {/* 💌 EMAIL CAPTURE: FREE CHAPTER */}
+      <section className="py-20 bg-[#070707] border-y border-white/5">
+        <div className="container mx-auto px-6 max-w-2xl text-center">
+          <motion.div {...fadeInUp}>
+            <span className="text-bronze text-xs uppercase tracking-[0.4em] font-bold mb-4 block">
+              {isAr ? '📐 هدية مجانية' : '📐 FREE RESOURCE'}
+            </span>
+            <h3 className={`text-2xl md:text-4xl text-white mb-4 ${headingFont}`}>
+              {isAr ? 'احصل على الفصل الأول مجاناً' : 'Get The First Chapter Free'}
+            </h3>
+            <p className={`text-slate-400 mb-8 ${bodyFont}`}>
+              {isAr
+                ? 'أدخل بريدك الإلكتروني واحصل فوراً على "الفصل صفر: تشخيص الأساس" — 22 صفحة من بروتوكول العمارة البشرية.'
+                : 'Enter your email and receive "Chapter Zero: Foundation Diagnosis" instantly — 22 pages of the Human Architecture protocol.'}
+            </p>
+            <form
+              onSubmit={(e) => { e.preventDefault(); const email = (e.currentTarget.elements.namedItem('email') as HTMLInputElement)?.value; if(email) { alert(isAr ? 'شكراً! تحقق من بريدك.' : 'Thank you! Check your inbox.'); } }}
+              className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto"
+            >
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder={isAr ? 'بريدك الإلكتروني...' : 'your@email.com'}
+                className="flex-1 bg-white/5 border border-white/10 text-white placeholder-slate-600 px-5 py-4 text-sm focus:outline-none focus:border-bronze transition-colors"
+                dir="ltr"
+              />
+              <button
+                type="submit"
+                className="bg-bronze text-white px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all whitespace-nowrap"
+              >
+                {isAr ? 'أرسل لي المجاني' : 'SEND ME FREE CHAPTER'}
+              </button>
+            </form>
+            <p className="text-slate-600 text-xs mt-4">
+              {isAr ? '🔒 لا spam. لا مشاركة بيانات. يمكنك الإلغاء في أي وقت.' : '🔒 No spam. No data sharing. Unsubscribe anytime.'}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       <section id="pricing-table" className="py-32 bg-[#0a0a0a] border-t border-white/5">
            <div className="container mx-auto px-6 text-center">
                 {/* Urgency Bar */}
@@ -329,7 +371,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
                     </motion.div>
 
                     {/* TIER 2: Workbook — Builder */}
-                    <motion.div {...fadeInUp} transition={{delay:0.1}} className="bg-[#111] border border-white/10 p-8 text-left group hover:border-bronze/30 transition-all flex flex-col">
+                    <motion.div {...fadeInUp} transition={{delay:0.1, duration:0.7, ease:"easeOut"}} className="bg-[#111] border border-white/10 p-8 text-left group hover:border-bronze/30 transition-all flex flex-col">
                         <div className="text-[0.5rem] uppercase tracking-[0.3em] text-slate-500 mb-3 font-mono">LEVEL 02</div>
                         <h3 className={`text-xl text-white mb-2 ${headingFont}`}>{isAr ? 'الكتاب + وورك بوك' : 'Blueprint + Workbook'}</h3>
                         <p className="text-xs text-slate-500 mb-6 flex-1">{isAr ? 'النظرية والتطبيق معاً — 28 تمرين عملي' : 'Theory + Application — 28 hands-on drills'}</p>
@@ -345,7 +387,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
                     </motion.div>
 
                     {/* TIER 3: 30-Day Accelerator — HIGHLIGHTED */}
-                    <motion.div {...fadeInUp} transition={{delay:0.2}} className="bg-[#151515] border-2 border-bronze p-8 text-left relative shadow-[0_0_60px_rgba(197,160,101,0.15)] flex flex-col xl:scale-105">
+                    <motion.div {...fadeInUp} transition={{delay:0.2, duration:0.7, ease:"easeOut"}} className="bg-[#151515] border-2 border-bronze p-8 text-left relative shadow-[0_0_60px_rgba(197,160,101,0.15)] flex flex-col xl:scale-105">
                         <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-bronze text-black text-[0.55rem] font-bold px-4 py-1 uppercase tracking-[0.3em] whitespace-nowrap">
                             {isAr ? '⚡ الأكثر مبيعاً' : '⚡ MOST POPULAR'}
                         </div>
@@ -366,7 +408,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
                     </motion.div>
 
                     {/* TIER 4: Master Bundle — Everything */}
-                    <motion.div {...fadeInUp} transition={{delay:0.3}} className="bg-[#0d0d0d] border border-white/20 p-8 text-left group hover:border-white/40 transition-all flex flex-col">
+                    <motion.div {...fadeInUp} transition={{delay:0.3, duration:0.7, ease:"easeOut"}} className="bg-[#0d0d0d] border border-white/20 p-8 text-left group hover:border-white/40 transition-all flex flex-col">
                         <div className="text-[0.5rem] uppercase tracking-[0.3em] text-slate-500 mb-3 font-mono">LEVEL 04</div>
                         <h3 className={`text-xl text-white mb-2 ${headingFont}`}>{isAr ? 'ترسانة المعماري الكاملة' : 'Master Architect Bundle'}</h3>
                         <p className="text-xs text-slate-500 mb-6 flex-1">{isAr ? 'كل شيء + كتاب مطبوع + جلسة مراجعة شخصية' : 'Everything + Hardcover + Personal Review Session'}</p>
@@ -450,7 +492,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ lang, setView, onCheck
                </div>
                <button 
                   onClick={scrollToOffer}
-                  className="bg-black text-white px-16 py-6 text-base font-bold uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all shadow-2xl"
+                  className="bg-black text-white border-2 border-black px-16 py-6 text-base font-bold uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all shadow-2xl"
                >
                    {getTxt(content.hero.cta)}
                </button>
