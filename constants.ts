@@ -206,7 +206,7 @@ export const PRODUCTS: Product[] = [
     type: 'hybrid',
     image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2070&auto=format&fit=crop'
   }
-;
+];
 
 export const ART_PRODUCTS: Product[] = [
   {
