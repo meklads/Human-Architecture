@@ -474,12 +474,34 @@ export const LANDING_CONTENT = {
   faq: {
     headline: { ar: 'المواصفات الفنية (الأسئلة)', en: 'Technical Specifications (FAQ)', fr: 'Spécifications (FAQ)' },
     items: [
-      { q: { ar: 'هل أحتاج لخبرة هندسية؟', en: 'Do I need engineering experience?', fr: 'Expérience requise?' }, a: { ar: 'لا، المبادئ مشروحة ببساطة للتطبيق الشخصي.', en: 'No, principles are explained simply for personal application.', fr: 'Non, c\'est simple.' } }
+      { q: { ar: 'هل أحتاج لخبرة هندسية مسبقة؟', en: 'Do I need engineering experience?', fr: 'Expérience requise?' }, a: { ar: 'لا إطلاقاً. المبادئ الهندسية مشروحة بلغة بسيطة تصلح للتطبيق الشخصي المباشر. إذا فهمت أن المنزل يحتاج لأساس قبل الجدران، فأنت مؤهل للبدء.', en: 'Not at all. Engineering principles are explained in simple language for direct personal application. If you understand that a house needs a foundation before walls, you qualify to begin.', fr: 'Pas du tout. Les principes sont expliqués simplement.' } },
+      { q: { ar: 'كم من الوقت تستغرق النتائج لتظهر؟', en: 'How long before I see results?', fr: 'Quand voir des résultats?' }, a: { ar: 'المرحلة صفر (10 أيام) تُظهر تغييرات قابلة للقياس في مستوى الطاقة والنوم. البروتوكول الكامل 30 يوماً يُحدث إعادة هيكلة شاملة. معظم المتابعين يلاحظون فارقاً واضحاً في الأسبوع الأول.', en: 'Phase 0 (10 days) shows measurable changes in energy and sleep. The full 30-day protocol delivers comprehensive restructuring. Most participants notice a clear difference within the first week.', fr: 'Phase 0 montre des changements en 10 jours.' } },
+      { q: { ar: 'هل هذا دين أو روحانيات؟', en: 'Is this religious or spiritual content?', fr: 'Contenu religieux ou spirituel?' }, a: { ar: 'لا. هذا نظام يعتمد على علم الأعصاب، الفيزياء الحيوية، وعلم النفس التطبيقي. يُحترم بُعد الروح كعمود وظيفي في البنية البشرية بغض النظر عن أي معتقد.', en: 'No. This system is based on neuroscience, biophysics, and applied psychology. The spirit pillar is treated as a functional dimension of human structure regardless of any belief system.', fr: 'Non. C\'est basé sur les neurosciences.' } },
+      { q: { ar: 'ما الفرق بين هذا وبين الكتب الأخرى؟', en: 'What makes this different from other self-help?', fr: 'Différence avec les autres?' }, a: { ar: 'معظم كتب التنمية تعطيك تقنيات (كيف تفعل). نظام العمارة البشرية يعطيك مخطط هيكلي (لماذا ينهار ثم كيف تبنيه). الفرق بين تعليم شخص كيف يضع طوبة وتعليمه كيف يصمم مبنى كاملاً.', en: 'Most self-help gives you techniques (how to do). Human Architecture gives you a structural blueprint (why it collapses, then how to rebuild). The difference between teaching someone to place a brick versus designing an entire building.', fr: 'La plupart des livres donnent des techniques. Nous donnons un plan structurel complet.' } },
+      { q: { ar: 'ماذا يحدث بعد الشراء؟', en: 'What happens after purchase?', fr: 'Que se passe-t-il après l\'achat?' }, a: { ar: 'تصلك رسالة بريدية فورية تحتوي على رابط التحميل للملفات الرقمية. إذا اخترت الحزمة المطبوعة، يُشحن الكتاب خلال 5-7 أيام عمل. وصولك للداشبورد التفاعلي يبدأ فور إنشاء حسابك.', en: 'You receive an immediate email with the download link for digital files. If you chose the print bundle, the book ships within 5-7 business days. Your interactive dashboard access begins as soon as you create your account.', fr: 'Email immédiat avec le lien de téléchargement.' } },
+      { q: { ar: 'ما هي سياسة الاسترداد؟', en: 'What is the refund policy?', fr: 'Politique de remboursement?' }, a: { ar: '30 يوماً ضمان استرداد كامل بلا أسئلة. إذا طبّقت البروتوكول 10 أيام ولم تلاحظ أي فارق، نعيد لك كامل المبلغ. نثق بالنظام كما تثق المقاولة في صلابة بنائها.', en: '30-day full refund, no questions asked. If you apply the protocol for 10 days and notice no difference, we return the full amount. We trust the system the way a contractor trusts the strength of their build.', fr: '30 jours de remboursement complet, sans question.' } }
     ]
   },
   qualifiers: {
-    forYou: { title: { ar: 'هذا النظام لك إذا:', en: 'This is for you if:', fr: 'Pour vous si:' }, items: [{ ar: 'تريد نتائج قابلة للقياس', en: 'You want measurable results', fr: 'Résultats mesurables' }] },
-    notForYou: { title: { ar: 'هذا النظام ليس لك إذا:', en: 'Not for you if:', fr: 'Pas pour vous si:' }, items: [{ ar: 'تبحث عن حلول سحرية سريعة', en: 'Looking for quick magic fixes', fr: 'Solution magique' }] }
+    forYou: {
+      title: { ar: 'هذا النظام لك إذا:', en: 'This is for you if:', fr: 'Pour vous si:' },
+      items: [
+        { ar: 'تريد نتائج قابلة للقياس، لا مشاعر مؤقتة', en: 'You want measurable results, not temporary feelings', fr: 'Résultats mesurables' },
+        { ar: 'جربت عشرات الكتب والبودكاست دون تغيير حقيقي', en: 'You tried countless books and podcasts with no real change', fr: 'Essayé sans résultats' },
+        { ar: 'أنت جاد ومستعد للالتزام بـ 30 يوماً', en: 'You are serious and ready to commit to 30 days', fr: 'Sérieux et engagé' },
+        { ar: 'تؤمن بأن التغيير يحتاج لنظام وليس لتحفيز', en: 'You believe change requires a system, not motivation', fr: 'Système > motivation' },
+        { ar: 'تريد أن تفهم السبب قبل الحل', en: 'You want to understand the cause before the solution', fr: 'Comprendre avant d\'agir' }
+      ]
+    },
+    notForYou: {
+      title: { ar: 'هذا النظام ليس لك إذا:', en: 'Not for you if:', fr: 'Pas pour vous si:' },
+      items: [
+        { ar: 'تبحث عن حلول سحرية بدون جهد', en: 'Looking for magic fixes without effort', fr: 'Solution magique sans effort' },
+        { ar: 'لا تريد تغيير عاداتك اليومية', en: 'Not willing to change your daily habits', fr: 'Pas prêt à changer' },
+        { ar: 'تتوقع نتائج خلال 48 ساعة فقط', en: 'Expecting results in 48 hours only', fr: 'Résultats en 48h seulement' },
+        { ar: 'تريد أن يُفكر أحد عنك', en: 'Want someone else to do the thinking for you', fr: 'Quelqu\'un d\'autre pense' }
+      ]
+    }
   }
 };
 
@@ -528,3 +550,4 @@ export const REPAIR_PROTOCOLS = {
         ref: 'Spec: Chapter 08'
     }
 };
+
